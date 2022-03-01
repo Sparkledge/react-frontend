@@ -4,7 +4,7 @@ import {Link} from "react-router-dom"
 import { NavbarElem, NavbarElemImg } from "../../../styled/subcomponents/navbar";
 
 interface NavbarElemMapInterface {
-    data: {to: string, isImage: boolean, content: any, callback?: () => void}[],
+    data: {to: string, isImage: boolean, content: any, callback: () => void}[],
     groupName: string
 }
 

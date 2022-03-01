@@ -20,7 +20,8 @@ export const DarkMode = {
 
 export const MainContainer = styled.section`
     width: 100%;
-    height: 100%;
+    height: 90vh;
     position: relative;
     top: 10vh;
+    background: ${(props) => props.theme.bgColor};
 `;

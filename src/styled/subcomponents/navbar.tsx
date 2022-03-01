@@ -19,11 +19,12 @@ export const NavbarContainer = styled.nav<NavbarOpeningInterface>`
     background: ${(props) => props.theme.navBgColor};
     font-family: ${(props) => props.theme.fonts.main};
     color: ${(props) => props.theme.color};
-    box-shadow: 0px 3px 4px rgba(0,0,0,.1);
+    box-shadow: 0px 3px 4px rgba(0,0,0,.2);
     transition: all 0.4s;
     overflow-y: hidden;
     position: fixed;
     top: 0px;
+    z-index: 4;
 
     a{
         text-decoration: none;
@@ -64,7 +65,7 @@ export const NavbarElem = styled.div`
     }
 
     @media screen and (min-width: 425px){
-        font-size: 1.1em;
+        font-size: 0.95em;
     }
 
     @media screen and (min-width: 768px){
@@ -73,6 +74,10 @@ export const NavbarElem = styled.div`
         display: inline-block;
         vertical-align: top;
         margin: 0px 5px;
+    }
+
+    @media screen and (min-width: 840px){
+        font-size: 1.1em;
     }
 
     @media screen and (min-width: 1024px){
