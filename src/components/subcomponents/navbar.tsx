@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import { Link } from "react-router-dom";
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 
-import { NavbarContainer, NavbarAlignGroup, NavbarElem, NavbarElemImg,
-    RespOpeningCloseBtn, RotatingBtnElem } from "../../styled/subcomponents/navbar";
+import { NavbarContainer, NavbarAlignGroup, RespOpeningCloseBtn, RotatingBtnElem } from "../../styled/subcomponents/navbar";
+
+import NavbarElemMap from "../helperComponents/navbar/navbarElemMap";
 
 const NavbarLogo = require("../../assets/sparkledge_logo.png");
 
@@ -54,18 +54,10 @@ const Navbar:React.FC = () => {
             </RotatingBtnElem>
         </RespOpeningCloseBtn>
         <NavbarAlignGroup alignDir="left">
-            {NavbarData[0].map((elem, ind) => <Link to = {elem["to"]} key={"left-nav-group-elem-"+ind}>
-                <NavbarElem>
-                    {elem["isImage"] === true ? <NavbarElemImg src={elem["content"]}/> : elem["content"]}
-                </NavbarElem>
-            </Link>)}
+            <NavbarElemMap data={NavbarData[0]} groupName="left"/>
         </NavbarAlignGroup>
         <NavbarAlignGroup alignDir="right">
-            {NavbarData[1].map((elem, ind) => <Link to = {elem["to"]} key={"right-nav-group-elem-"+ind}>
-                <NavbarElem>
-                    {elem["isImage"] === true ? <NavbarElemImg src={elem["content"]}/> : elem["content"]}
-                </NavbarElem>
-            </Link>)}
+            <NavbarElemMap data={NavbarData[1]} groupName="right"/>
         </NavbarAlignGroup>
     </NavbarContainer>
 };
