@@ -1,13 +1,18 @@
 import React from "react";
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import { ThemeProvider } from "styled-components";
-import { LightMode, DarkMode } from "../styled/main";
+import { useSelector } from "react-redux"
 
+import { LightMode, DarkMode } from "../styled/main";
+import { RootState } from "../redux/mainReducer";
 import Navbar from "./subcomponents/navbar";
 import Welcome from "./subpages/welcome";
 
 const Main:React.FC = () => {
-    return <ThemeProvider theme={LightMode}>
+
+    const graphicalMode: number = useSelector((state:RootState)=> state.generalData.graphicalMode);
+
+    return <ThemeProvider theme={graphicalMode === 0 ? LightMode : DarkMode}>
         <Router>
             <Navbar/>
             <Routes>

@@ -1,10 +1,12 @@
 import React, {useState} from "react";
+import {useDispatch} from "react-redux";
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { NavbarContainer, NavbarAlignGroup, RespOpeningCloseBtn, RotatingBtnElem } from "../../styled/subcomponents/navbar";
 
 import NavbarElemMap from "../helperComponents/navbar/navbarElemMap";
+import { changeGraphicalMode } from "../../redux/actions/generalActions";
 
 const NavbarLogo = require("../../assets/sparkledge_logo.png");
 
@@ -12,7 +14,9 @@ const Navbar:React.FC = () => {
 
     const [isOpened, toggleIsOpened] = useState<boolean>(false);
 
-    const NavbarData:{to: string, isImage: boolean, content: any}[][] = [
+    const dispatch = useDispatch();
+
+    const NavbarData:{to: string, isImage: boolean, content: any, callback?: () => void}[][] = [
         [
             {
                 to: "/",
@@ -40,6 +44,14 @@ const Navbar:React.FC = () => {
                 to: "/signup",
                 isImage: false,
                 content: "Zarejestruj się"
+            },
+            {
+                to: "/#/",
+                isImage: false,
+                content: "Tryb",
+                callback: () => {
+                    dispatch(changeGraphicalMode())
+                }
             }
         ]
     ]
