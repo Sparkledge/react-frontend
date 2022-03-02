@@ -20,15 +20,17 @@ const Navbar:React.FC = () => {
 
     const dispatch = useDispatch();
 
-    const NavbarData:{to: string, isImage: boolean, content: any, callback: () => void}[][] = [
+    const NavbarData:{isLink: boolean, to: string, isImage: boolean, content: any, callback: () => void}[][] = [
         [
             {
+                isLink: true,
                 to: "/",
                 isImage: true,
                 content: NavbarLogo,
                 callback: () => toggleIsOpened(false)
             },
             {
+                isLink: true,
                 to: "/searcher",
                 isImage: false,
                 content: "Wyszukiwarka",
@@ -37,25 +39,29 @@ const Navbar:React.FC = () => {
         ],
         [
             {
+                isLink: true,
                 to: "/about",
                 isImage: false,
                 content: "O nas",
                 callback: () => toggleIsOpened(false)
             },
             {
+                isLink: true,
                 to: "/signin",
                 isImage: false,
                 content: "Zaloguj się",
                 callback: () => toggleIsOpened(false)
             },
             {
+                isLink: true,
                 to: "/signup",
                 isImage: false,
                 content: "Zarejestruj się",
                 callback: () => toggleIsOpened(false)
             },
             {
-                to: "/#/",
+                isLink: false,
+                to: "/",
                 isImage: false,
                 content: graphicalMode === 0 ? <LightModeIcon style={{fontSize: "inherit", height: "inherit"}}/> : 
                 <DarkModeIcon style={{fontSize: "inherit", height: "inherit"}}/>,

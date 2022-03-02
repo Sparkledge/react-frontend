@@ -58,7 +58,7 @@ export const NavbarElem = styled.div`
     text-shadow: 3px 3px 4px rgba(0,0,0,.05);
     transition: all 0.4s;
     cursor: pointer;
-    background: rgba(240,240,240,.2);
+    background: ${(props) => props.theme.navElemBgColor};
 
     &:hover{
         filter: brightness(70%);

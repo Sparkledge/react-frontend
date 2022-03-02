@@ -4,16 +4,18 @@ import {Link} from "react-router-dom"
 import { NavbarElem, NavbarElemImg } from "../../../styled/subcomponents/navbar";
 
 interface NavbarElemMapInterface {
-    data: {to: string, isImage: boolean, content: any, callback: () => void}[],
+    data: {isLink: boolean, to: string, isImage: boolean, content: any, callback: () => void}[],
     groupName: string
 }
 
 const NavbarElemMap:React.FC<NavbarElemMapInterface> = ({data, groupName} : NavbarElemMapInterface) => {
-    return <>{data.map((elem, ind) => <Link to = {elem["to"]} key={groupName+"-nav-group-elem-"+ind}>
+    return <>{data.map((elem, ind) => elem["isLink"] ? <Link to = {elem["to"] === "none" ? "" : elem["to"]} key={groupName+"-nav-group-elem-"+ind}>
         <NavbarElem onClick={elem.callback !== undefined ? elem.callback : () => {}}>
             {elem["isImage"] === true ? <NavbarElemImg src={elem["content"]}/> : elem["content"]}
         </NavbarElem>
-    </Link>)}</>
+    </Link> : <NavbarElem onClick={elem.callback !== undefined ? elem.callback : () => {}} key={groupName+"-nav-group-elem-"+ind}>
+            {elem["isImage"] === true ? <NavbarElemImg src={elem["content"]}/> : elem["content"]}
+        </NavbarElem>)}</>
 };
 
 export default NavbarElemMap;
