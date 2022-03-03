@@ -32,4 +32,8 @@ export const MainContainer = styled.section`
     position: relative;
     top: 10vh;
     background: ${(props) => props.theme.bgColor};
+
+    a{
+        width: fit-content !important;
+    }
 `;

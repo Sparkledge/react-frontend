@@ -68,9 +68,6 @@ export const NavbarElem = styled.div`
         font-size: 0.95em;
     }
 
-    @media screen and (min-width: 768px){
-    }
-
     @media screen and (min-width: 840px){
         font-size: 1.1em;
         width: fit-content;

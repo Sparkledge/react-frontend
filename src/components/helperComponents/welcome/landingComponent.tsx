@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 
 import { LandingSectionWrapper, LandingSectionFilter,
     LandingSectionHeader, LandingSectionSpan,
-    LandingSectionDesc, LandingSectionButton } from "../../../styled/subpages/welcome";
+    LandingSectionDesc, LandingButtonWrapper, LandingSectionButton } from "../../../styled/subpages/welcome";
 
 const Background = require("../../../assets/academic_background_edited_2.png");
 
@@ -11,11 +11,15 @@ const LandingComponent:React.FC = () => {
 
     const [headerHeight, setHeaderHeight] = useState<number>(0);
     const [textPosition, setTextPosition] = useState<number>(100);
+    const [buttonPosition, setButtonPosition] = useState<number>(100);
 
     useEffect(() => {
         setTimeout(() => {
             setHeaderHeight(2.5);
-            setTimeout(() => setTextPosition(0), 200);
+            setTimeout(() => {
+                setTextPosition(0);
+                setTimeout(() => setButtonPosition(0), 200)
+            }, 200);
         }, 200);
     }, [])
 
@@ -28,11 +32,13 @@ const LandingComponent:React.FC = () => {
             <LandingSectionDesc className="block-center" leftPos={textPosition}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum non est vestibulum, feugiat massa nec, convallis purus. Curabitur tristique lobortis lorem, in ullamcorper arcu porta eu. Proin at mauris lacus. Integer suscipit tellus eget consequat consectetur. Nullam suscipit ipsum diam, at dui.
             </LandingSectionDesc>
-            <Link to = "/signup">
-                <LandingSectionButton className="block-center">
-                    Dołącz do nas
-                </LandingSectionButton>
-            </Link>
+            <LandingButtonWrapper className="block-center" rightPos={buttonPosition}>
+                <Link to = "/signup">
+                    <LandingSectionButton className="block-center">
+                        Dołącz do nas
+                    </LandingSectionButton>
+                </Link>
+            </LandingButtonWrapper>
         </LandingSectionFilter>
     </LandingSectionWrapper>
 }

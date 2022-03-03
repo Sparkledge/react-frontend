@@ -11,12 +11,13 @@ interface AnimatingInterface{
 }
 
 interface DownButtonInterface{
-    marginBottom?: number
+    marginBottom?: number,
+    rightPos?: number
 }
 
 export const LandingSectionWrapper = styled.section<LandingWrapperInterface>`
     width: 100%;
-    min-height: 80vh;
+    min-height: 90vh;
     height: fit-content;
     background: ${(props) => props.source !== undefined ? `url(${props.source})` : props.theme.bgColor};
     background-size: cover;
@@ -80,7 +81,7 @@ export const LandingSectionDesc = styled.div<AnimatingInterface>`
     text-shadow: ${(props) => props.theme.fonts.textShadowMain};
     line-height: 1.2em;
     position: relative;
-    margin-bottom: 9vh;
+    margin-bottom: 15vh;
     left: ${(props) => props.leftPos !== undefined ? props.leftPos : "0"}%;
     transition: all 0.4s;
 
@@ -100,6 +101,12 @@ export const LandingSectionDesc = styled.div<AnimatingInterface>`
     }
 `;
 
+export const LandingButtonWrapper = styled.div<DownButtonInterface>`
+    width: fit-content;
+    transition: all 0.4s;
+    ${(props) => props.rightPos !== undefined ? `position: relative; right: ${props.rightPos}%;` : ""}
+`;
+
 export const LandingSectionButton = styled.div<DownButtonInterface>`
     width: fit-content;
     padding: 20px 40px;
@@ -111,7 +118,7 @@ export const LandingSectionButton = styled.div<DownButtonInterface>`
     text-shadow: ${(props) => props.theme.fonts.textShadowMain};
     background: ${(props) => props.theme.landingButtonColor};
     cursor: pointer;
-    transition: filter 0.4s;
+    transition: all 0.4s;
     ${(props) => props.marginBottom !== undefined ? `margin-bottom: ${props.marginBottom}vh;`: ""}
 
     &:hover{
