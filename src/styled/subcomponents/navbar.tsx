@@ -31,13 +31,13 @@ export const NavbarContainer = styled.nav<NavbarOpeningInterface>`
         color: inherit;
     }
 
-    @media screen and (min-width: 768px){
+    @media screen and (min-width: 840px){
         height: 10vh;
     }
 `;
 
 export const NavbarAlignGroup = styled.div<NavbarAlignGroupInterface>`
-    @media screen and (min-width: 768px){
+    @media screen and (min-width: 840px){
         float: ${(props) => props.alignDir}
     }
 `;
@@ -69,15 +69,15 @@ export const NavbarElem = styled.div`
     }
 
     @media screen and (min-width: 768px){
+    }
+
+    @media screen and (min-width: 840px){
+        font-size: 1.1em;
         width: fit-content;
         top: 0.5vh;
         display: inline-block;
         vertical-align: top;
         margin: 0px 5px;
-    }
-
-    @media screen and (min-width: 840px){
-        font-size: 1.1em;
     }
 
     @media screen and (min-width: 1024px){
@@ -103,7 +103,7 @@ export const RespOpeningCloseBtn = styled.div`
         font-size: 5vh;
     }
     
-    @media screen and (min-width: 768px){
+    @media screen and (min-width: 840px){
         display: none;
     }
 `;

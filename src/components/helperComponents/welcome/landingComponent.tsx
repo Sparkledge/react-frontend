@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import {Link} from "react-router-dom";
 
 import { LandingSectionWrapper, LandingSectionFilter,
     LandingSectionHeader, LandingSectionSpan,
@@ -27,9 +28,11 @@ const LandingComponent:React.FC = () => {
             <LandingSectionDesc className="block-center" leftPos={textPosition}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum non est vestibulum, feugiat massa nec, convallis purus. Curabitur tristique lobortis lorem, in ullamcorper arcu porta eu. Proin at mauris lacus. Integer suscipit tellus eget consequat consectetur. Nullam suscipit ipsum diam, at dui.
             </LandingSectionDesc>
-            <LandingSectionButton className="block-center">
-                Dołącz do nas
-            </LandingSectionButton>
+            <Link to = "/signup">
+                <LandingSectionButton className="block-center">
+                    Dołącz do nas
+                </LandingSectionButton>
+            </Link>
         </LandingSectionFilter>
     </LandingSectionWrapper>
 }

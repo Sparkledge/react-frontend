@@ -1,12 +1,17 @@
 import styled from "styled-components";
 
 interface LandingWrapperInterface{
-    source?: any
+    source?: any,
+    reversedShadow?: boolean
 }
 
 interface AnimatingInterface{
     height?: number,
     leftPos?: number
+}
+
+interface DownButtonInterface{
+    marginBottom?: number
 }
 
 export const LandingSectionWrapper = styled.section<LandingWrapperInterface>`
@@ -18,7 +23,11 @@ export const LandingSectionWrapper = styled.section<LandingWrapperInterface>`
     text-align: center;
     font-family: ${(props) => props.theme.fonts.main};
     overflow-x: hidden;
-    box-shadow: inset 0px -3px 4px rgba(0,0,0,.2);
+    box-shadow: inset 0px ${(props) => props.reversedShadow !== undefined ? props.reversedShadow === true ? "3px" : "-3px" : "-3px"} 4px rgba(0,0,0,.2);
+
+    a{
+        text-decoration: none;
+    }
 `;
 
 export const LandingSectionFilter = styled.section`
@@ -91,7 +100,7 @@ export const LandingSectionDesc = styled.div<AnimatingInterface>`
     }
 `;
 
-export const LandingSectionButton = styled.div`
+export const LandingSectionButton = styled.div<DownButtonInterface>`
     width: fit-content;
     padding: 20px 40px;
     border-radius: 20px;
@@ -103,6 +112,7 @@ export const LandingSectionButton = styled.div`
     background: ${(props) => props.theme.landingButtonColor};
     cursor: pointer;
     transition: filter 0.4s;
+    ${(props) => props.marginBottom !== undefined ? `margin-bottom: ${props.marginBottom}vh;`: ""}
 
     &:hover{
         filter: brightness(70%);
