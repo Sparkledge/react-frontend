@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 interface LandingWrapperInterface{
     source?: any,
-    reversedShadow?: boolean
+    reversedShadow?: boolean,
+    bottomPadding?: number
 }
 
 interface AnimatingInterface{
@@ -17,7 +18,7 @@ interface DownButtonInterface{
 
 export const LandingSectionWrapper = styled.section<LandingWrapperInterface>`
     width: 100%;
-    min-height: 90vh;
+    min-height: ${(props) => props.bottomPadding !== undefined ? `${90 + props.bottomPadding}vh` : `90vh`};
     height: fit-content;
     background: ${(props) => props.source !== undefined ? `url(${props.source})` : props.theme.bgColor};
     background-size: cover;
@@ -34,7 +35,7 @@ export const LandingSectionWrapper = styled.section<LandingWrapperInterface>`
 export const LandingSectionFilter = styled.section`
     width: 100%;
     min-height: inherit;
-    height: 100%;
+    height: fit-content;
     position: relative;
     background: ${(props) => props.theme.filterColor};
 `;
@@ -105,6 +106,7 @@ export const LandingButtonWrapper = styled.div<DownButtonInterface>`
     width: fit-content;
     transition: all 0.4s;
     ${(props) => props.rightPos !== undefined ? `position: relative; right: ${props.rightPos}%;` : ""}
+    ${(props) => props.marginBottom !== undefined ? `padding-bottom: ${props.marginBottom}vh;`: ""}
 `;
 
 export const LandingSectionButton = styled.div<DownButtonInterface>`
