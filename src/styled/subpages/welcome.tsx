@@ -3,7 +3,8 @@ import styled from "styled-components";
 interface LandingWrapperInterface{
     source?: any,
     reversedShadow?: boolean,
-    bottomPadding?: number
+    bottomPadding?: number,
+    backgroundSize?: string
 }
 
 interface AnimatingInterface{
@@ -21,7 +22,7 @@ export const LandingSectionWrapper = styled.section<LandingWrapperInterface>`
     min-height: ${(props) => props.bottomPadding !== undefined ? `${90 + props.bottomPadding}vh` : `90vh`};
     height: fit-content;
     background: ${(props) => props.source !== undefined ? `url(${props.source})` : props.theme.bgColor};
-    background-size: cover;
+    background-size: ${(props) => props.backgroundSize !== undefined ? props.backgroundSize : "cover"};
     text-align: center;
     font-family: ${(props) => props.theme.fonts.main};
     overflow-x: hidden;

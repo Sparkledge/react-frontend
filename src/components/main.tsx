@@ -7,6 +7,7 @@ import { LightMode, DarkMode } from "../styled/main";
 import { RootState } from "../redux/mainReducer";
 import Navbar from "./subcomponents/navbar";
 import Welcome from "./subpages/welcome";
+import About from "./subpages/about";
 
 const Main:React.FC = () => {
 
@@ -17,6 +18,7 @@ const Main:React.FC = () => {
             <Navbar/>
             <Routes>
                 <Route path="/" element={<Welcome/>}/>
+                <Route path="/about" element={<About/>}/>
             </Routes>
         </Router>
     </ThemeProvider>

@@ -32,8 +32,27 @@ export const MainContainer = styled.section`
     position: relative;
     top: 10vh;
     background: ${(props) => props.theme.bgColor};
+    font-family: ${(props) => props.theme.fonts.main};
 
     a{
         width: fit-content !important;
+    }
+`;
+
+export const Preloader = styled.div`
+    width: calc(100% - 20px);
+    padding: 10px;
+    text-align: center;
+    font-size: 2.1em;
+    letter-spacing: 0.06em;
+    font-family: ${(props) => props.theme.fonts.main};
+    color: ${(props) => props.theme.color};
+    text-shadow: ${(props) => props.theme.fonts.textShadowMain};
+    position: relative;
+    top: 4vh;
+
+    @media screen and (min-width: 768px){
+        width: calc(80% - 20px);
+        font-size: 2.3em;
     }
 `;
