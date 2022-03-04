@@ -25,7 +25,7 @@ export const LandingSectionWrapper = styled.section<LandingWrapperInterface>`
     background-size: ${(props) => props.backgroundSize !== undefined ? props.backgroundSize : "cover"};
     text-align: center;
     font-family: ${(props) => props.theme.fonts.main};
-    overflow-x: hidden;
+    overflow: hidden;
     box-shadow: inset 0px ${(props) => props.reversedShadow !== undefined ? props.reversedShadow === true ? "3px" : "-3px" : "-3px"} 4px rgba(0,0,0,.2);
 
     a{
