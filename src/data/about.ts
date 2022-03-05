@@ -1,6 +1,8 @@
 import SK_image from "../assets/test_team_image.webp";
 
-const TeamData:{name: string, position: string, describe: string, photo: any}[] = [
+export type TeamDataType = {name: string, position: string, describe: string, photo: any};
+
+const TeamData:TeamDataType[] = [
     {
         name: "Szymon Kupisz",
         position: "Co-founder, Frontend Developer",
