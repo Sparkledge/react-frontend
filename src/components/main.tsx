@@ -8,6 +8,7 @@ import { RootState } from "../redux/mainReducer";
 import Navbar from "./subcomponents/navbar";
 import Welcome from "./subpages/welcome";
 import About from "./subpages/about";
+import SigningPanel from "./subpages/signing";
 
 const Main:React.FC = () => {
 
@@ -19,6 +20,7 @@ const Main:React.FC = () => {
             <Routes>
                 <Route path="/" element={<Welcome/>}/>
                 <Route path="/about" element={<About/>}/>
+                <Route path="/signin" element={<SigningPanel mode={1}/>}/>
             </Routes>
         </Router>
     </ThemeProvider>
