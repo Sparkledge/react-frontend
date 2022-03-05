@@ -17,6 +17,10 @@ interface DownButtonInterface{
     rightPos?: number
 }
 
+interface FilterInterface{
+    minheight?: number
+}
+
 export const LandingSectionWrapper = styled.section<LandingWrapperInterface>`
     width: 100%;
     min-height: ${(props) => props.bottomPadding !== undefined ? `${90 + props.bottomPadding}vh` : `90vh`};
@@ -33,9 +37,9 @@ export const LandingSectionWrapper = styled.section<LandingWrapperInterface>`
     }
 `;
 
-export const LandingSectionFilter = styled.section`
+export const LandingSectionFilter = styled.section<FilterInterface>`
     width: 100%;
-    min-height: inherit;
+    min-height: ${(props) => props.minheight !== undefined ? `${props.minheight}vh !important` : "inherit"};
     height: fit-content;
     position: relative;
     background: ${(props) => props.theme.filterColor};
