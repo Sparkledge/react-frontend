@@ -15,7 +15,8 @@ const FooterComponent = React.lazy(() => import("../helperComponents/welcome/foo
 const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
     return <MainContainer className="block-center">
         <Suspense fallback={<Preloader className="block-center">Ładowanie...</Preloader>}>
-            <LandingSectionWrapper className="block-center" source={BackgroundPattern} backgroundSize="contain">
+            <LandingSectionWrapper className="block-center" source={BackgroundPattern} backgroundSize="contain"
+                bottomPadding={10}>
                 <LandingSectionFilter>
                     <AboutHeader className="block-center">
                         {mode === 1 ? "Panel logowania" : "Panel rejestracji"}    
