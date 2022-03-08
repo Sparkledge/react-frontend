@@ -4,7 +4,6 @@ import "./App.css";
 
 import Main from "./components/main";
 import store from "./redux/store";
-//test commitg
 function App() {
   return (
     <div className="App">
