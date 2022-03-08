@@ -30,8 +30,7 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
 
     return <MainContainer className="block-center">
         <Suspense fallback={<Preloader className="block-center">Ładowanie...</Preloader>}>
-            <LandingSectionWrapper className="block-center" source={BackgroundPattern} backgroundSize="contain"
-                bottomPadding={10}>
+            <LandingSectionWrapper className="block-center" source={BackgroundPattern} backgroundSize="contain">
                 <LandingSectionFilter>
                     <AboutHeader className="block-center">
                         {mode === 1 ? "Panel logowania" : "Panel rejestracji"}    

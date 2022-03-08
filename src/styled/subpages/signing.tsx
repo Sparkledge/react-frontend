@@ -13,8 +13,6 @@ export const SigningPanelWrapper = styled.section`
     text-align: center;
     box-shadow: 3px 3px 4px rgba(0,0,0,.3);
     background: ${(props) => props.theme.landingButtonColor};
-    position: relative;
-    top: -1vh;
 
     @media screen and (min-width: 320px){
         width: calc(90% - 40px);
