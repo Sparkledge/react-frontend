@@ -4,20 +4,20 @@ interface NotfoundWrapperInterface {
   bottomPadding?: number;
 }
 
-export const NotfoundHeader1 = styled.div`
+export const NotfoundHeader1 = styled.h1`
   font-size: xx-large;
   font-weight: bolder;
   font-size: 6em;
   margin-top: 4vh;
   margin-bottom: 2vh;
-  color: #0a77bf;
+  color: ${(props) => props.theme.color};
 `;
 
-export const NotfoundHeader2 = styled.div`
+export const NotfoundHeader2 = styled.h2`
   font-size: xx-large;
   margin-top: 2vh;
   margin-bottom: 4vh;
-  color: #0a77bf;
+  color: ${(props) => props.theme.color};
 `;
 export const NotfoundPanelButton = styled.button`
   width: fit-content;
@@ -46,7 +46,7 @@ export const NotfoundPanelButton = styled.button`
 export const NotfoundWrapper = styled.div<NotfoundWrapperInterface>`
   border-radius: 25px;
   background: rgba(34, 107, 255, 0.15);
-  width: calc(70%);
+  width: calc(70% - 40px);
   margin-left: auto;
   margin-right: auto;
   margin-top: 10%;

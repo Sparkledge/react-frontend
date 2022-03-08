@@ -17,7 +17,6 @@ const FooterComponent = React.lazy(
 );
 
 const Notfound: React.FC = () => {
-  console.log(BackgroundImage);
   return (
     <MainContainer className="block-center">
       <Suspense
