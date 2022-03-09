@@ -23,7 +23,7 @@ const Notfound: React.FC = () => {
         fallback={<Preloader className="block-center">Ładowanie...</Preloader>}
       >
         <LandingSectionWrapper>
-          <NotfoundWrapper>
+          <NotfoundWrapper source={BackgroundImage}>
             <NotfoundHeader1 className="block-center">#404</NotfoundHeader1>
             <NotfoundHeader2 className="block-center">
               Ups... Nie znaleziono strony

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 interface NotfoundWrapperInterface {
   source?: any;
   bottomPadding?: number;
@@ -54,4 +55,5 @@ export const NotfoundWrapper = styled.div<NotfoundWrapperInterface>`
   color: red;
   text-align: center;
   background-image: url(${(props) => props.source});
+  background-size: cover;
 `;
