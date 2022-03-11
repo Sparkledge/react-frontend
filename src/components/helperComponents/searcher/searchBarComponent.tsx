@@ -6,15 +6,15 @@ import { SearcherBar, SearcherInput, SearcherButton } from "../../../styled/subp
 interface SearchBarComponentInterface{
     searchedPhrase: string,
     setSearchedPhrase: (newPhrase: string) => void,
-    setSearcherState: (state: number) => void
+    submitCallback: () => void
 }
 
 const SearchBarComponent:React.FC<SearchBarComponentInterface> = 
-    ({searchedPhrase, setSearcherState, setSearchedPhrase}:SearchBarComponentInterface) => {
+    ({searchedPhrase, submitCallback, setSearchedPhrase}:SearchBarComponentInterface) => {
     return <SearcherBar className="block-center">
         <SearcherInput type="text" placeholder="Czego szukamy?" value={searchedPhrase} 
             onChange={(e) => setSearchedPhrase(e.target.value)}/>   
-        <SearcherButton type="button" onClick={() => setSearcherState(1)}>
+        <SearcherButton type="button" onClick={() => submitCallback()}>
             <SearchIcon style={{color: "inherit", fontSize: "1.9em"}}/>    
         </SearcherButton>
     </SearcherBar>
