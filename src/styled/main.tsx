@@ -1,7 +1,20 @@
-import styled from "styled-components";
+import styled, {createGlobalStyle} from "styled-components";
+
+const LightNavBgColor:string = "#eee";
+const DarkNavBgColor:string = "#0c0c0c";
+
+interface GlobalStyleInterface{
+    isLight: boolean
+}
+
+export const SparkledgeGlobalStyle = createGlobalStyle<GlobalStyleInterface>`
+    body::-webkit-scrollbar{
+        background: ${(props) => props.isLight === true ? LightNavBgColor : DarkNavBgColor};
+    }
+`;
 
 export const LightMode = {
-    navBgColor: "#eeeeee",
+    navBgColor: LightNavBgColor,
     navElemBgColor: "rgba(240,240,240,.2)",
     bgColor: "#f0f0f0",
     filterColor: "rgba(0,0,0,.2)",
@@ -15,7 +28,7 @@ export const LightMode = {
 }
 
 export const DarkMode = {
-    navBgColor: "#0c0c0c",
+    navBgColor: DarkNavBgColor,
     navElemBgColor: "rgba(20,20,20,.2)",
     bgColor: "#111",
     filterColor: "rgba(0,0,0,.7)",

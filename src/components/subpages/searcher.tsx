@@ -6,6 +6,7 @@ import { AboutHeader } from "../../styled/subpages/about";
 
 import SearchBarComponent from "../helperComponents/searcher/searchBarComponent";
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
+import FooterComponent from "../helperComponents/welcome/footerComponent";
 
 const BackgroundPattern = require("../../assets/pattern_background.webp");
 
@@ -33,6 +34,7 @@ const Searcher:React.FC = () => {
                 searcherState === 1 ? <SearchingPreloaderComponent/> : <></>}
             </LandingSectionFilter>    
         </LandingSectionWrapper>
+        <FooterComponent/>
     </MainContainer>
 };
 

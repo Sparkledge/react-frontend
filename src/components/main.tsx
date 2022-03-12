@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { useSelector } from "react-redux";
 
-import { LightMode, DarkMode } from "../styled/main";
+import { LightMode, DarkMode, SparkledgeGlobalStyle } from "../styled/main";
 import { RootState } from "../redux/mainReducer";
 import Navbar from "./subcomponents/navbar";
 import Welcome from "./subpages/welcome";
@@ -19,6 +19,7 @@ const Main: React.FC = () => {
 
   return (
     <ThemeProvider theme={graphicalMode === 0 ? LightMode : DarkMode}>
+      <SparkledgeGlobalStyle isLight={graphicalMode === 0 ? true : false}/>
       <Router>
         <Navbar />
         <Routes>
