@@ -1,8 +1,10 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 
 import { MainContainer } from "../../styled/main";
 import { LandingSectionWrapper, LandingSectionFilter } from "../../styled/subpages/welcome";
 import { AboutHeader } from "../../styled/subpages/about";
+import { SearchingResultsSection, SearchingMainResult, SearchingResultHeader,
+    SearchingResultSubInfo, SearchingResultTagsSection, SearchingResultTag } from "../../styled/subpages/searcher";
 
 import SearchBarComponent from "../helperComponents/searcher/searchBarComponent";
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
@@ -12,7 +14,7 @@ const BackgroundPattern = require("../../assets/pattern_background.webp");
 
 const Searcher:React.FC = () => {
 
-    const [searcherState, setSearcherState] = useState<number>(0); // 0 - nothing searched yet, 1 - search in progress, 2 - search results
+    const [searcherState, setSearcherState] = useState<number>(2); // 0 - nothing searched yet, 1 - search in progress, 2 - search results
     const [searchedPhrase, setSearchedPhrase] = useState<string>("");
 
     const submitTheQuery = () => {
@@ -20,6 +22,8 @@ const Searcher:React.FC = () => {
             setSearcherState(1);
         }
     }
+
+    useEffect(() => searcherState === 1 ? setSearcherState(2) : () => {}, [searcherState]);
 
     return <MainContainer className="block-center">
         <LandingSectionWrapper className="block-center" source={BackgroundPattern} backgroundSize="contain">
@@ -31,7 +35,42 @@ const Searcher:React.FC = () => {
                     searchedPhrase={searchedPhrase} 
                     setSearchedPhrase={setSearchedPhrase} 
                     submitCallback={submitTheQuery}/> : 
-                searcherState === 1 ? <SearchingPreloaderComponent/> : <></>}
+                searcherState === 1 ? <SearchingPreloaderComponent/> : <SearchingResultsSection className="block-center">
+                    <SearchingMainResult className="block-center" animAlign={-10}>
+                        <SearchingResultHeader>
+                            Test header
+                        </SearchingResultHeader>
+                        <SearchingResultSubInfo>
+                            Udostępnione dnia DD/MM/YYYY przez użytkownika testUser
+                        </SearchingResultSubInfo>
+                        <SearchingResultTagsSection className="block-center">
+                            <SearchingResultTag>
+                                Doktorologia
+                            </SearchingResultTag>
+                            <SearchingResultTag>
+                                Doktorologia stosowana
+                            </SearchingResultTag>
+                            <SearchingResultTag>
+                                Doktorologia
+                            </SearchingResultTag>
+                            <SearchingResultTag>
+                                Doktorologia stosowana
+                            </SearchingResultTag>
+                            <SearchingResultTag>
+                                Doktorologia
+                            </SearchingResultTag>
+                            <SearchingResultTag>
+                                Doktorologia stosowana
+                            </SearchingResultTag>
+                            <SearchingResultTag>
+                                Doktorologia
+                            </SearchingResultTag>
+                            <SearchingResultTag>
+                                Doktorologia stosowana
+                            </SearchingResultTag>
+                        </SearchingResultTagsSection>
+                    </SearchingMainResult>
+                    </SearchingResultsSection>}
             </LandingSectionFilter>    
         </LandingSectionWrapper>
         <FooterComponent/>
