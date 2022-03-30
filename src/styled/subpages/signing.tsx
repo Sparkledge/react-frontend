@@ -92,3 +92,19 @@ export const SigningPanelButton = styled.button`
         font-size: 1.2em;
     }
 `;
+
+export const ErrorLabel = styled.div`
+    width: calc(100% - 10px);
+    text-align: center;
+    font-size: 0.95em;
+    text-shadow: ${(props) => props.theme.fonts.textShadowMain};
+    color: ${(props) => props.theme.errorColor};
+
+    @media screen and (min-width: 425px){
+        font-size: 1.1em;
+    }
+
+    @media screen and (min-width: 768px){
+        width: calc(80% - 10px);
+    }
+`;

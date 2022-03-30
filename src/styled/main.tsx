@@ -22,6 +22,7 @@ export const LightMode = {
     landingButtonColor: "rgba(240,240,240,.5)",
     signingInputBackground: "rgba(240,240,240,.7);",
     resultBackground: "rgba(240,240,240,.75)",
+    errorColor: "rgba(240,30,30,.75)",
     fonts: {
         main: "Mohave, sans-serif",
         textShadowMain: "3px 3px 4px rgba(0,0,0,.05)"
@@ -37,6 +38,7 @@ export const DarkMode = {
     landingButtonColor: "rgba(20,20,20,.5)",
     signingInputBackground: "rgba(40,40,40,.7);",
     resultBackground: "rgba(24,87,255,.15)",
+    errorColor: "rgba(240,30,30,.75)",
     fonts: {
         main: "Mohave, sans-serif",
         textShadowMain: "3px 3px 4px rgba(0,0,0,.05)"
