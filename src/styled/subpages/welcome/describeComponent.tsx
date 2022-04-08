@@ -45,7 +45,7 @@ export const DescribeWidget = styled.div`
     padding: 20px 10px;
     border-radius: 20px;
     box-shadow: 3px 3px 4px rgba(0,0,0,.07);
-    background: rgba(34,107,255,.3);
+    background: rgba(34,107,255,.5);
     text-align: center;
     transition: all 0.4s;
     display: block;

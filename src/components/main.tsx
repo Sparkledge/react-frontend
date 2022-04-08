@@ -30,6 +30,7 @@ const Main: React.FC = () => {
           <Route path="/signin" element={<SigningPanel mode={1} />} />
           <Route path="/signup" element={<SigningPanel mode={2} />} />
           <Route path="/searcher" element={<Searcher/>}/>
+          <Route path="/panel" element={<UserPanel/>}/>
           <Route path="*" element={<Notfound />} />
         </Routes>
       </Router>
