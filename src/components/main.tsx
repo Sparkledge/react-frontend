@@ -12,6 +12,8 @@ import SigningPanel from "./subpages/signing";
 import Searcher from "./subpages/searcher";
 import Notfound from "./subpages/notfound";
 
+import UserPanel from "./subpages/userPanel";
+
 const Main: React.FC = () => {
   const graphicalMode: number = useSelector(
     (state: RootState) => state.generalData.graphicalMode

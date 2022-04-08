@@ -6,7 +6,7 @@ export type InitialStateType = {
 };
 
 const initialState:InitialStateType = {
-    graphicalMode: 0
+    graphicalMode: 1
 }
 
 const generalReducer = (state:InitialStateType=initialState, action: ActionType) : InitialStateType => {
