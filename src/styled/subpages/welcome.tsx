@@ -45,6 +45,11 @@ export const LandingSectionFilter = styled.section<FilterInterface>`
     background: ${(props) => props.theme.filterColor};
 `;
 
+export const EndingBlock = styled.div`
+    width: 100%;
+    height: 10vh;
+`
+
 export const LandingSectionHeader = styled.header<AnimatingInterface>`
     width: calc(100% - 20px);
     overflow-y: hidden;

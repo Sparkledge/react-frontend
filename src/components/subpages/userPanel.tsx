@@ -1,6 +1,6 @@
 import React, {Suspense, useState, useEffect} from "react";
 import { MainContainer, Preloader } from "../../styled/main";
-import { LandingSectionWrapper, LandingSectionFilter } from "../../styled/subpages/welcome";
+import { LandingSectionWrapper, LandingSectionFilter, EndingBlock } from "../../styled/subpages/welcome";
 import { UserPanelHeader, UserPanelWelcomeSection, UserPanelLastView ,
     UserPanelLastViewHeader, UserPanelLastViewGallery, UserPanelLastViewItem,
     UserPanelLastViewTitle, UserPanelLastViewAuthor } from "../../styled/subpages/userpanel";
@@ -42,7 +42,8 @@ const UserPanel:React.FC = () => {
 
     return <MainContainer className="block-center">
         <Suspense fallback={<Preloader className="block-center">Ładowanie...</Preloader>}>
-            <LandingSectionWrapper className="block-center" source={Background} backgroundSize="contain">
+            <LandingSectionWrapper className="block-center" source={Background} backgroundSize="contain"
+                bottomPadding={0}>
                 <LandingSectionFilter>
                     <UserPanelHeader className="block-center">
                         Panel użytkownika
@@ -74,6 +75,7 @@ const UserPanel:React.FC = () => {
                             </UserPanelLastViewHeader>
                         </UserPanelLastView>
                     </UserPanelWelcomeSection>
+                    <EndingBlock/>
                 </LandingSectionFilter>
             </LandingSectionWrapper>
             <FooterComponent/>
