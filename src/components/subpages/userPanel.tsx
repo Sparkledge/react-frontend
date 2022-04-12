@@ -1,4 +1,6 @@
 import React, {Suspense, useState, useEffect} from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 
 import { MainContainer, Preloader } from "../../styled/main";
@@ -7,6 +9,7 @@ import { UserPanelHeader, UserPanelWelcomeSection, UserPanelLastView ,
     UserPanelLastViewHeader, UserPanelLastViewGallery, UserPanelLastViewNoItemsHeader } from "../../styled/subpages/userpanel";
 
 import LastViewItemComponent from "../helperComponents/userPanel/LastViewItemComponent";
+import { RootState } from "../../redux/mainReducer";
 
 
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
@@ -30,6 +33,13 @@ const UserPanel:React.FC = () => {
 
     const [lastViewedList, setLastViewedList] = useState<LastViewItemType[]>([]);
     const [lastPublishedList, setLastPublishedList] = useState<LastPublishedItemType[]>([]);
+    const currentToken:string = useSelector((state: RootState) => state.generalData.currentToken);
+    const navigate = useNavigate();
+
+
+    useEffect(() => {
+        if(currentToken.length === 0) navigate("/");
+    }, [currentToken])
 
     return <MainContainer className="block-center">
         <Suspense fallback={<Preloader className="block-center">Ładowanie...</Preloader>}>

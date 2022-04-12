@@ -1,4 +1,6 @@
-import React, {Suspense, useState} from "react";
+import React, {Suspense, useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
 import { MainContainer, Preloader } from "../../styled/main";
@@ -6,6 +8,9 @@ import { LandingSectionWrapper, LandingSectionFilter  } from "../../styled/subpa
 import { AboutHeader } from "../../styled/subpages/about";
 import { SigningPanelWrapper, SigningPanelInput, SigningPanelButton,
     ErrorLabel } from "../../styled/subpages/signing";
+
+import { setNewToken } from "../../redux/actions/generalActions";
+import { RootState } from "../../redux/mainReducer";
 
 interface SigningInterface{
     mode: number
@@ -19,16 +24,22 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
     const [Login, setLogin] = useState<string>("");
     const [userName, setUserName] = useState<string>("");
     const [userSurname, setUserSurname] = useState<string>("");
+    const [isSuccess, toggleIsSuccess] = useState<boolean>(false);
     const [Password, setPassword] = useState<string>("");
     const [RepeatedPassword, setRepeatedPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
+    const currentToken:string = useSelector((state:RootState) => state.generalData.currentToken);
+    
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const TriggerTheShot = () : void => {
+        toggleIsSuccess(false);
         if((mode === 1 && Login.length !== 0 && Password.length !== 0) || 
         (mode === 2 && Login.length !== 0 && Password.length !== 0 && userName.length !== 0 && userSurname.length !== 0)){
             const objectToSend = mode === 1 ? {
-                Login: Login,
-                Passwd: Password
+                email: Login,
+                password: Password
             } : {
                 email: Login,
                 firstName: userName,
@@ -38,11 +49,21 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
 
             setError("");
             if(mode === 1){
-                axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/auth`, objectToSend, {
+                axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/auth/`, objectToSend, {
                     headers: {
                         "Content-Type": "application/json"
                     }
-                }).then((res) => console.log(res))
+                }).then((res) => {
+                    if(res.status === 200) {
+                        setPassword("");
+                        setLogin("");
+                        dispatch(setNewToken(res.data.accessToken));
+                        navigate("/panel");
+                    }
+                    else {
+                        toggleIsSuccess(false); setPassword("Coś poszło nie tak");
+                    }
+                })
                 .catch(() => {
                     setError("Coś poszło nie tak. Spróbuj ponownie");
                 })
@@ -50,11 +71,17 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
             }
             else{
 
-                axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/register`, objectToSend, {
+                axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/register/`, objectToSend, {
                     headers: {
                         "Content-Type": "application/json"
                     }
-                }).then((res) => console.log(res))
+                }).then((res) => {
+                    if(res.status === 201) 
+                        toggleIsSuccess(true) 
+                    else {
+                        toggleIsSuccess(false); setPassword("Coś poszło nie tak");
+                    }
+                })
                 .catch(() => {
                     setError("Coś poszło nie tak. Spróbuj ponownie");
                 })
@@ -62,15 +89,20 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
         }
     }
 
+    useEffect(() => {
+        if(currentToken.length > 0) navigate("/panel");
+    }, [])
+
     return <MainContainer className="block-center">
         <Suspense fallback={<Preloader className="block-center">Ładowanie...</Preloader>}>
             <LandingSectionWrapper className="block-center" source={BackgroundPattern} backgroundSize="contain"
             bottomPadding={10}>
                 <LandingSectionFilter>
                     <AboutHeader className="block-center">
-                        {mode === 1 ? "Panel logowania" : "Panel rejestracji"}    
+                        {mode === 1 ? "Panel logowania" : isSuccess === false ? "Panel rejestracji" : "Potwierdź rejestrację klikając w link wysłany na podany adres e-mail"}    
                     </AboutHeader>
-                    <SigningPanelWrapper className="block-center">
+                    {
+                        mode === 2 && isSuccess ? <></> : <SigningPanelWrapper className="block-center">
                         <SigningPanelInput className="block-center" type={mode === 1 ? "text" : "email"} placeholder={mode === 1 ? "Login..." : "Email..."}
                             value={Login} onChange={(e) => setLogin(e.target.value)} required
                             marginBottom={mode === 2 ? 1 : 2}/>
@@ -99,6 +131,7 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
                             </ErrorLabel> : <></>
                         }
                     </SigningPanelWrapper>
+                    }
                 </LandingSectionFilter>
             </LandingSectionWrapper>
             <FooterComponent/>

@@ -1,12 +1,14 @@
-import { CHANGE_GRAPHICAL_MODE } from "../types/generalTypes";
-import { changeGraphicalMode, ActionType } from "../actions/generalActions";
+import { CHANGE_GRAPHICAL_MODE, SET_NEW_TOKEN } from "../types/generalTypes";
+import { ActionType } from "../actions/generalActions";
 
 export type InitialStateType = {
-    graphicalMode: number
+    graphicalMode: number,
+    currentToken: string
 };
 
 const initialState:InitialStateType = {
-    graphicalMode: 1
+    graphicalMode: 1,
+    currentToken: ""
 }
 
 const generalReducer = (state:InitialStateType=initialState, action: ActionType) : InitialStateType => {
@@ -15,6 +17,11 @@ const generalReducer = (state:InitialStateType=initialState, action: ActionType)
             return {
                 ...state,
                 graphicalMode: state.graphicalMode === 0 ? 1 : 0
+            }
+        case SET_NEW_TOKEN:
+            return {
+                ...state,
+                currentToken: action.supportData.newToken
             }
         default:
             return state;
