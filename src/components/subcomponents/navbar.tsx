@@ -8,7 +8,7 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { NavbarContainer, NavbarAlignGroup, RespOpeningCloseBtn, RotatingBtnElem } from "../../styled/subcomponents/navbar";
 
 import NavbarElemMap from "../helperComponents/navbar/navbarElemMap";
-import { changeGraphicalMode } from "../../redux/actions/generalActions";
+import { changeGraphicalMode, setNewToken } from "../../redux/actions/generalActions";
 import { RootState } from "../../redux/mainReducer";
 
 const NavbarLogo = require("../../assets/sparkledge_logo.png");
@@ -16,7 +16,8 @@ const NavbarLogo = require("../../assets/sparkledge_logo.png");
 const Navbar:React.FC = () => {
 
     const [isOpened, toggleIsOpened] = useState<boolean>(false);
-    const graphicalMode: number = useSelector((state:RootState)=> state.generalData.graphicalMode);
+    const graphicalMode: number = useSelector((state:RootState) => state.generalData.graphicalMode);
+    const currentToken:string = useSelector((state: RootState) => state.generalData.currentToken);
 
     const dispatch = useDispatch();
 
@@ -24,7 +25,7 @@ const Navbar:React.FC = () => {
         [
             {
                 isLink: true,
-                to: "/",
+                to: currentToken.length === 0 ? "/" : "/panel",
                 isImage: true,
                 content: NavbarLogo,
                 callback: () => toggleIsOpened(false)
@@ -47,17 +48,20 @@ const Navbar:React.FC = () => {
             },
             {
                 isLink: true,
-                to: "/signin",
+                to: currentToken.length === 0 ? "/signin" : "/settings",
                 isImage: false,
-                content: "Zaloguj się",
+                content: currentToken.length === 0 ? "Zaloguj się" : "Ustawienia",
                 callback: () => toggleIsOpened(false)
             },
             {
-                isLink: true,
-                to: "/signup",
+                isLink: false,
+                to: currentToken.length === 0 ? "/signup" : "/",
                 isImage: false,
-                content: "Zarejestruj się",
-                callback: () => toggleIsOpened(false)
+                content: currentToken.length === 0 ? "Zarejestruj się" : "Wyloguj",
+                callback: () => {
+                    dispatch(setNewToken(""));
+                    toggleIsOpened(false);
+                }
             },
             {
                 isLink: false,

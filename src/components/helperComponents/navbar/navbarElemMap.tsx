@@ -9,7 +9,7 @@ interface NavbarElemMapInterface {
 }
 
 const NavbarElemMap:React.FC<NavbarElemMapInterface> = ({data, groupName} : NavbarElemMapInterface) => {
-    return <>{data.map((elem, ind) => elem["isLink"] ? <Link to = {elem["to"] === "none" ? "" : elem["to"]} key={groupName+"-nav-group-elem-"+ind}>
+    return <>{data.map((elem, ind) => elem["content"] === "noRender" ? <></> :elem["isLink"] ? <Link to = {elem["to"] === "none" ? "" : elem["to"]} key={groupName+"-nav-group-elem-"+ind}>
         <NavbarElem onClick={elem.callback !== undefined ? elem.callback : () => {}}>
             {elem["isImage"] === true ? <NavbarElemImg src={elem["content"]}/> : elem["content"]}
         </NavbarElem>

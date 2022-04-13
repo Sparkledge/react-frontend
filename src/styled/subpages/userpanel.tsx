@@ -96,6 +96,20 @@ export const UserPanelLastViewGallery = styled.section`
     }
 `
 
+export const UserPanelLastViewNoItemsHeader = styled.header`
+    width: calc(70% - 20px);
+    padding: 10px;
+    text-align: center;
+    font-size: 1.5em;
+    letter-spacing: 0.0em;
+    color: ${(props) => props.theme.color};
+    text-shadow: ${(props) => props.theme.fonts.textShadowMain};
+
+    @media screen and (min-width: 375px){
+        font-size: 1.8em;
+    }
+`
+
 export const UserPanelLastViewItem = styled.div`
     width: calc(90% - 20px);
     padding: 5px;
