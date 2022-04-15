@@ -81,9 +81,7 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
                         toggleOpening={toggleIsCourseOpened}
                         opening={isCourseOpened}
                         choiceCallback={courseCallback}/>
-                </SearcherCategoriesContainer><GoToSearchBarBtn className="block-center" onClick={() => setPhase(2)}>
-                        Continue
-                    </GoToSearchBarBtn>
+                </SearcherCategoriesContainer>
                 {searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 && searchedCourse.length > 0 ? 
                     <GoToSearchBarBtn className="block-center" onClick={() => setPhase(2)}>
                         Continue
