@@ -14,7 +14,11 @@ const BackgroundPattern = require("../../assets/pattern_background.webp");
 
 const Searcher:React.FC = () => {
 
-    const [searcherState, setSearcherState] = useState<number>(2); // 0 - nothing searched yet, 1 - search in progress, 2 - search results
+    const [searcherState, setSearcherState] = useState<number>(0); // 0 - nothing searched yet, 1 - search in progress, 2 - search results
+    const [searchedUniversity, setSearchedUniversity] = useState<string>("");
+    const [searchedFaculty, setSearchedFaculty] = useState<string>("");
+    const [searchedProgramme, setSearchedProgramme] = useState<string>("");
+    const [searchedCourse, setSearchedCourse] = useState<string>("");
     const [searchedPhrase, setSearchedPhrase] = useState<string>("");
 
     const submitTheQuery = () => {
@@ -32,6 +36,14 @@ const Searcher:React.FC = () => {
                     {searcherState === 2 ? "Wyniki wyszukiwania" : searcherState === 1 ? "Ładowanie..." : "Wyszukiwarka"}    
                 </AboutHeader>
                 {searcherState === 0 ? <SearchBarComponent 
+                    searchedUniversity={searchedUniversity}
+                    setSearchedUniversity={setSearchedUniversity}
+                    searchedFaculty={searchedFaculty}
+                    setSearchedFaculty={setSearchedFaculty}
+                    searchedProgramme={searchedProgramme} 
+                    setSearchedProgramme={setSearchedProgramme}
+                    searchedCourse={searchedCourse} 
+                    setSearchedCourse={setSearchedCourse}
                     searchedPhrase={searchedPhrase} 
                     setSearchedPhrase={setSearchedPhrase} 
                     submitCallback={submitTheQuery}/> : 
