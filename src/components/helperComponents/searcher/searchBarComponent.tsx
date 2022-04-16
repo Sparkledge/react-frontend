@@ -32,17 +32,32 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
     const [isCourseOpened, toggleIsCourseOpened] = useState<boolean>(false);
 
     const universityCallback = (uniName: string) => {
-        searchedUniversity === uniName ? setSearchedUniversity("") : setSearchedUniversity(uniName);
+        if(searchedUniversity === uniName){
+            setSearchedUniversity("");
+            setSearchedFaculty("");
+            setSearchedProgramme("");
+            setSearchedCourse("");
+        }
+        else setSearchedUniversity(uniName);
         toggleIsUniversityOpened(false);
     }
 
     const facultyCallback = (facName: string) => {
-        searchedFaculty === facName ? setSearchedFaculty("") : setSearchedFaculty(facName);
+        if(searchedFaculty === facName){
+            setSearchedFaculty("");
+            setSearchedProgramme("");
+            setSearchedCourse("");
+        }
+        else setSearchedFaculty(facName);
         toggleIsFacultyOpened(false);
     }
 
     const programmeCallback = (proName: string) => {
-        searchedProgramme === proName ? setSearchedProgramme("") : setSearchedProgramme(proName);
+        if(searchedProgramme === proName){
+            setSearchedProgramme("");
+            setSearchedCourse("");
+        }
+        else setSearchedProgramme(proName);
         toggleIsProgrammeOpened(false);
     }
 
@@ -64,21 +79,21 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
                     <SearchBarOptionsComponent 
                         sectionHeader= {searchedFaculty.length === 0 ? "Wydział" : searchedFaculty}
                         options={["MiNI"]}
-                        toggleOpening={toggleIsFacultyOpened}
+                        toggleOpening={(newOpeningState: boolean) => { if(searchedUniversity.length > 0 ) toggleIsFacultyOpened(newOpeningState)}}
                         opening={isFacultyOpened}
                         choiceCallback={facultyCallback}/>
 
                     <SearchBarOptionsComponent 
                         sectionHeader= {searchedProgramme.length === 0 ? "Kierunek" : searchedProgramme}
                         options={["Computer Science"]}
-                        toggleOpening={toggleIsProgrammeOpened}
+                        toggleOpening={(newOpeningState: boolean) => { if(searchedFaculty.length > 0 ) toggleIsProgrammeOpened(newOpeningState)}}
                         opening={isProgrammeOpened}
                         choiceCallback={programmeCallback}/>
 
                     <SearchBarOptionsComponent 
                         sectionHeader= {searchedCourse.length === 0 ? "Przedmiot" : searchedCourse}
                         options={["Programming 1", "Programming 2", "Discrete Maths"]}
-                        toggleOpening={toggleIsCourseOpened}
+                        toggleOpening={(newOpeningState: boolean) => { if(searchedProgramme.length > 0 ) toggleIsCourseOpened(newOpeningState)}}
                         opening={isCourseOpened}
                         choiceCallback={courseCallback}/>
                 </SearcherCategoriesContainer>

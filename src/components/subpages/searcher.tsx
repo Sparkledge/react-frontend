@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from "react";
+import axios from "axios";
 
 import { MainContainer } from "../../styled/main";
 import { LandingSectionWrapper, LandingSectionFilter } from "../../styled/subpages/welcome";
 import { AboutHeader } from "../../styled/subpages/about";
 import { SearchingResultsSection, SearchingMainResult, SearchingResultHeader,
-    SearchingResultSubInfo, SearchingResultTagsSection, SearchingResultTag } from "../../styled/subpages/searcher";
+    SearchingResultSubInfo, SearchingResultTagsSection, SearchingResultTag,
+    SearcherFailureContainer, SearcherFailureHeader, SearcherFailureButton } from "../../styled/subpages/searcher";
 
 import SearchBarComponent from "../helperComponents/searcher/searchBarComponent";
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
@@ -21,13 +23,24 @@ const Searcher:React.FC = () => {
     const [searchedCourse, setSearchedCourse] = useState<string>("");
     const [searchedPhrase, setSearchedPhrase] = useState<string>("");
 
-    const submitTheQuery = () => {
-        if(searchedPhrase.length > 0){
+    const submitTheQuery = async() => {
+        if(searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 && 
+            searchedCourse.length > 0 && searchedPhrase.length > 0){
             setSearcherState(1);
+            await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/files/documents?university=${searchedUniversity}&faculty=${searchedFaculty}&programme=${searchedProgramme}&course=${searchedCourse}`)
+                .then((res) => {
+                    console.log(res);
+                    setSearcherState(res.status === 200 ? 2 : 3);
+                    setSearchedPhrase("");
+                })
+                .catch((err) => {
+                    console.log(err);
+                    setSearcherState(3);
+                })
         }
     }
 
-    useEffect(() => searcherState === 1 ? setSearcherState(2) : () => {}, [searcherState]);
+    //useEffect(() => searcherState === 1 ? setSearcherState(2) : () => {}, [searcherState]);
 
     return <MainContainer className="block-center">
         <LandingSectionWrapper className="block-center" source={BackgroundPattern} backgroundSize="contain">
@@ -47,7 +60,7 @@ const Searcher:React.FC = () => {
                     searchedPhrase={searchedPhrase} 
                     setSearchedPhrase={setSearchedPhrase} 
                     submitCallback={submitTheQuery}/> : 
-                searcherState === 1 ? <SearchingPreloaderComponent/> : <SearchingResultsSection className="block-center">
+                searcherState === 1 ? <SearchingPreloaderComponent/> : searcherState === 2 ? <SearchingResultsSection className="block-center">
                     <SearchingMainResult className="block-center" animAlign={-10}>
                         <SearchingResultHeader>
                             Test header
@@ -82,7 +95,15 @@ const Searcher:React.FC = () => {
                             </SearchingResultTag>
                         </SearchingResultTagsSection>
                     </SearchingMainResult>
-                    </SearchingResultsSection>}
+                    </SearchingResultsSection> : <SearcherFailureContainer className="block-center">
+                            <SearcherFailureHeader className="block-center">
+                                Niestety, coś poszło nie tak i połączenie z serwerem nie zakończyło się pomyślnie
+                            </SearcherFailureHeader>
+                            <SearcherFailureButton className="block-center"
+                                onClick={() => setSearcherState(0)}>
+                                    Powrót do wyszukiwania
+                            </SearcherFailureButton>
+                        </SearcherFailureContainer>}
             </LandingSectionFilter>    
         </LandingSectionWrapper>
         <FooterComponent/>
