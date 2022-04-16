@@ -1,8 +1,8 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import SearchIcon from '@mui/icons-material/Search';
 
 import { SearcherCategoriesContainer, GoToSearchBarBtn, 
-    SearcherBar, SearcherInput, SearcherButton } from "../../../styled/subpages/searcher";
+    SearcherBar, SearcherInput, SearcherButton } from "../../../styled/subpages/searcher/searcherBar";
 
 import SearchBarOptionsComponent from "./searchBarOptionsComponent";
 
@@ -32,32 +32,17 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
     const [isCourseOpened, toggleIsCourseOpened] = useState<boolean>(false);
 
     const universityCallback = (uniName: string) => {
-        if(searchedUniversity === uniName){
-            setSearchedUniversity("");
-            setSearchedFaculty("");
-            setSearchedProgramme("");
-            setSearchedCourse("");
-        }
-        else setSearchedUniversity(uniName);
+        searchedUniversity === uniName ? setSearchedUniversity("") : setSearchedUniversity(uniName);
         toggleIsUniversityOpened(false);
     }
 
     const facultyCallback = (facName: string) => {
-        if(searchedFaculty === facName){
-            setSearchedFaculty("");
-            setSearchedProgramme("");
-            setSearchedCourse("");
-        }
-        else setSearchedFaculty(facName);
+        searchedFaculty === facName ? setSearchedFaculty("") : setSearchedFaculty(facName);
         toggleIsFacultyOpened(false);
     }
 
     const programmeCallback = (proName: string) => {
-        if(searchedProgramme === proName){
-            setSearchedProgramme("");
-            setSearchedCourse("");
-        }
-        else setSearchedProgramme(proName);
+        searchedProgramme === proName ? setSearchedProgramme("") : setSearchedProgramme(proName);
         toggleIsProgrammeOpened(false);
     }
 
@@ -65,6 +50,10 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
         searchedCourse === corName ? setSearchedCourse("") : setSearchedCourse(corName);
         toggleIsCourseOpened(false);
     }
+
+    useEffect(() => {if(searchedUniversity === "") setSearchedFaculty("")}, [searchedUniversity])
+    useEffect(() => {if(searchedFaculty === "") setSearchedProgramme("")}, [searchedFaculty])
+    useEffect(() => {if(searchedProgramme === "") setSearchedCourse("")}, [searchedProgramme])
 
     return <SearcherBar className="block-center">
         {
@@ -99,7 +88,7 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
                 </SearcherCategoriesContainer>
                 {searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 && searchedCourse.length > 0 ? 
                     <GoToSearchBarBtn className="block-center" onClick={() => setPhase(2)}>
-                        Continue
+                        Dalej
                     </GoToSearchBarBtn>: <></>}
             </> : <>
                 <SearcherInput type="text" placeholder="Czego szukamy?" value={searchedPhrase} 
