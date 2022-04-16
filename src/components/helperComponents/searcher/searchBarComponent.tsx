@@ -1,8 +1,8 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import SearchIcon from '@mui/icons-material/Search';
 
 import { SearcherCategoriesContainer, GoToSearchBarBtn, 
-    SearcherBar, SearcherInput, SearcherButton } from "../../../styled/subpages/searcher";
+    SearcherBar, SearcherInput, SearcherButton } from "../../../styled/subpages/searcher/searcherBar";
 
 import SearchBarOptionsComponent from "./searchBarOptionsComponent";
 
@@ -51,6 +51,10 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
         toggleIsCourseOpened(false);
     }
 
+    useEffect(() => {if(searchedUniversity === "") setSearchedFaculty("")}, [searchedUniversity])
+    useEffect(() => {if(searchedFaculty === "") setSearchedProgramme("")}, [searchedFaculty])
+    useEffect(() => {if(searchedProgramme === "") setSearchedCourse("")}, [searchedProgramme])
+
     return <SearcherBar className="block-center">
         {
             phase === 1 ? <><SearcherCategoriesContainer className="block-center">
@@ -64,27 +68,27 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
                     <SearchBarOptionsComponent 
                         sectionHeader= {searchedFaculty.length === 0 ? "Wydział" : searchedFaculty}
                         options={["MiNI"]}
-                        toggleOpening={toggleIsFacultyOpened}
+                        toggleOpening={(newOpeningState: boolean) => { if(searchedUniversity.length > 0 ) toggleIsFacultyOpened(newOpeningState)}}
                         opening={isFacultyOpened}
                         choiceCallback={facultyCallback}/>
 
                     <SearchBarOptionsComponent 
                         sectionHeader= {searchedProgramme.length === 0 ? "Kierunek" : searchedProgramme}
                         options={["Computer Science"]}
-                        toggleOpening={toggleIsProgrammeOpened}
+                        toggleOpening={(newOpeningState: boolean) => { if(searchedFaculty.length > 0 ) toggleIsProgrammeOpened(newOpeningState)}}
                         opening={isProgrammeOpened}
                         choiceCallback={programmeCallback}/>
 
                     <SearchBarOptionsComponent 
                         sectionHeader= {searchedCourse.length === 0 ? "Przedmiot" : searchedCourse}
                         options={["Programming 1", "Programming 2", "Discrete Maths"]}
-                        toggleOpening={toggleIsCourseOpened}
+                        toggleOpening={(newOpeningState: boolean) => { if(searchedProgramme.length > 0 ) toggleIsCourseOpened(newOpeningState)}}
                         opening={isCourseOpened}
                         choiceCallback={courseCallback}/>
                 </SearcherCategoriesContainer>
                 {searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 && searchedCourse.length > 0 ? 
                     <GoToSearchBarBtn className="block-center" onClick={() => setPhase(2)}>
-                        Continue
+                        Dalej
                     </GoToSearchBarBtn>: <></>}
             </> : <>
                 <SearcherInput type="text" placeholder="Czego szukamy?" value={searchedPhrase} 

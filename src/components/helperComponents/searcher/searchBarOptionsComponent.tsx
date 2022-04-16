@@ -1,5 +1,5 @@
 import React from "react";
-import { SearcherCategorieWrapper, SearcherCategorieChooser } from "../../../styled/subpages/searcher";
+import { SearcherCategorieWrapper, SearcherCategorieChooser } from "../../../styled/subpages/searcher/searcherBar";
 
 interface SearchBarOptionsComponentInterface{
     sectionHeader: string,
