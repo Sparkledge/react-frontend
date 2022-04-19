@@ -5,7 +5,12 @@ interface SearchingPreloaderInterface{
 }
 
 interface SearchResultInterface{
-    animAlign: number
+    animAlign: number,
+    isMain?: boolean
+}
+
+interface SearchingSideResultDataInterface{
+    width: string
 }
 
 export const SearchingPreloader = styled.div`
@@ -49,15 +54,17 @@ export const SearchingResultsSection = styled.section`
 `;
 
 export const SearchingMainResult = styled.div<SearchResultInterface>`
-    width: calc(95% - 20px);
-    min-height: calc(50vh - 40px);
+    width: calc(100% - 20px);
+    min-height: ${(props) => props.isMain !== undefined ? props.isMain ? "calc(50vh - 40px)" : "fit-content": "calc(50vh - 40px)"};
     height: fit-content;
     padding: 20px 10px;
     border-radius: 10px;
     margin-bottom: 2vh;
     background: ${(props) => props.theme.resultBackground};
+    color: ${(props) => props.theme.color};
     cursor: pointer;
     transition: all 0.4s;
+    text-align: center;
 
     &:hover{
         transform: translateX(${(props) => props.animAlign ? `${props.animAlign}px` : "0px"});
@@ -161,3 +168,50 @@ export const SearchingResultTag = styled.div`
         font-size: 1.2em;
     }
 `;
+
+export const SearchingSideResultTitle = styled.header`
+    width: calc(33% - 20px);
+    padding: 0px 5px;
+    text-align: center;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0px 5px;
+    font-size: 0.7em;
+    letter-spacing: 0.04em;
+    text-shadow: ${(props) => props.theme.fonts.textShadowMain};
+
+    @media screen and (min-width: 600px){
+        width: calc(40% - 20px);
+        font-size: 0.9em;
+    }
+
+    @media screen and (min-width: 768px){
+        font-size: 1.2em;
+    }
+
+    @media screen and (min-width: 1024px){
+        font-size: 1.6em;
+    }
+`
+
+export const SearchingSideResultData = styled.div<SearchingSideResultDataInterface>`
+    width: calc(33% - 20px);
+    padding: 0px 5px;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0px 5px;
+    font-size: 0.7em;
+
+    @media screen and (min-width: 600px){
+        width: ${(props) => props.width};
+        font-size: 0.9em;
+    }
+
+    @media screen and (min-width: 768px){
+        font-size: 1.2em;
+    }
+
+    @media screen and (min-width: 1024px){
+        font-size: 1.6em;
+    }
+`
