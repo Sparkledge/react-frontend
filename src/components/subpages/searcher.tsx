@@ -4,12 +4,13 @@ import axios from "axios";
 import { MainContainer } from "../../styled/main";
 import { LandingSectionWrapper, LandingSectionFilter } from "../../styled/subpages/welcome";
 import { AboutHeader } from "../../styled/subpages/about";
-import { SearchingResultsSection, SearchingMainResult, SearchingResultHeader,
-    SearchingResultSubInfo, SearchingResultTagsSection, SearchingResultTag } from "../../styled/subpages/searcher";
+import { SearchingResultsSection } from "../../styled/subpages/searcher";
 import { SearcherFailureContainer, SearcherFailureHeader, SearcherFailureButton } from "../../styled/subpages/searcher/searcherFailure"
 
 import SearchBarComponent from "../helperComponents/searcher/searchBarComponent";
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
+import SearchingMainResultComponent from "../helperComponents/searcher/searchingMainResultComponent";
+import SearchingSideResultComponent from "../helperComponents/searcher/searchingSideResultComponent";
 import FooterComponent from "../helperComponents/welcome/footerComponent";
 
 const BackgroundPattern = require("../../assets/pattern_background.webp");
@@ -22,15 +23,24 @@ const Searcher:React.FC = () => {
     const [searchedProgramme, setSearchedProgramme] = useState<string>("");
     const [searchedCourse, setSearchedCourse] = useState<string>("");
     const [searchedPhrase, setSearchedPhrase] = useState<string>("");
+    const [searchedResults, setSearchedResults] = useState<any[]>([]);
 
     const submitTheQuery = async() => {
         if(searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 && 
             searchedCourse.length > 0 && searchedPhrase.length > 0){
             setSearcherState(1);
-            await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/files/documents?university=${searchedUniversity}&faculty=${searchedFaculty}&programme=${searchedProgramme}&course=${searchedCourse}`)
+            await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/dev`,{
+                params: {
+                    university: searchedUniversity,
+                    faculty: searchedFaculty,
+                    programme: searchedProgramme,
+                    course: searchedCourse
+                }
+            })
                 .then((res) => {
-                    console.log(res);
+                    console.log(res.data.description);
                     setSearcherState(res.status === 200 ? 2 : 3);
+                    setSearchedResults(res.status === 200 ? res.data.description : []);
                     setSearchedPhrase("");
                 })
                 .catch((err) => {
@@ -61,40 +71,16 @@ const Searcher:React.FC = () => {
                     setSearchedPhrase={setSearchedPhrase} 
                     submitCallback={submitTheQuery}/> : 
                 searcherState === 1 ? <SearchingPreloaderComponent/> : searcherState === 2 ? <SearchingResultsSection className="block-center">
-                    <SearchingMainResult className="block-center" animAlign={-10}>
-                        <SearchingResultHeader>
-                            Test header
-                        </SearchingResultHeader>
-                        <SearchingResultSubInfo>
-                            Udostępnione dnia DD/MM/YYYY przez użytkownika testUser
-                        </SearchingResultSubInfo>
-                        <SearchingResultTagsSection className="block-center">
-                            <SearchingResultTag>
-                                Doktorologia
-                            </SearchingResultTag>
-                            <SearchingResultTag>
-                                Doktorologia stosowana
-                            </SearchingResultTag>
-                            <SearchingResultTag>
-                                Doktorologia
-                            </SearchingResultTag>
-                            <SearchingResultTag>
-                                Doktorologia stosowana
-                            </SearchingResultTag>
-                            <SearchingResultTag>
-                                Doktorologia
-                            </SearchingResultTag>
-                            <SearchingResultTag>
-                                Doktorologia stosowana
-                            </SearchingResultTag>
-                            <SearchingResultTag>
-                                Doktorologia
-                            </SearchingResultTag>
-                            <SearchingResultTag>
-                                Doktorologia stosowana
-                            </SearchingResultTag>
-                        </SearchingResultTagsSection>
-                    </SearchingMainResult>
+                    {searchedResults.map((elem, ind) => ind < 4 ? <SearchingMainResultComponent
+                        title={elem["title"]}
+                        publishedOn={elem["createdDate"]}
+                        publisher={elem["creatorEmail"]}
+                        animAlign={ind % 2 === 0 ? -10 : 10}
+                        key={`search-result-${ind}`}/> : <SearchingSideResultComponent 
+                        title={elem["title"]}
+                        publishedOn={elem["createdDate"]}
+                        publisher={elem["creatorEmail"]}
+                        animAlign={ind % 2 === 0 ? -10 : 10}/>)}
                     </SearchingResultsSection> : <SearcherFailureContainer className="block-center">
                             <SearcherFailureHeader className="block-center">
                                 Niestety, coś poszło nie tak i połączenie z serwerem nie zakończyło się pomyślnie
