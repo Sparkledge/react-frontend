@@ -55,7 +55,7 @@ const Navbar:React.FC = () => {
                 callback: () => toggleIsOpened(false)
             },
             {
-                isLink: false,
+                isLink: currentToken.length === 0,
                 to: currentToken.length === 0 ? "/signup" : "/",
                 isImage: false,
                 content: currentToken.length === 0 ? "Zarejestruj się" : "Wyloguj",
