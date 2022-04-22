@@ -6,10 +6,10 @@ import { DescribeHeader, DescribeWidgetsSection } from "../../../styled/subpages
 
 import DescribeComponentWidget from "./describeComponentWidget";
 
-const BackgroundPatter = require("../../../assets/pattern_background.webp");
+const BackgroundPattern = require("../../../assets/pattern_background.webp");
 
 const DescribeComponent:React.FC = () => {
-    return <LandingSectionWrapper className="block-center" source={BackgroundPatter} reversedShadow={true} 
+    return <LandingSectionWrapper className="block-center" source={BackgroundPattern} reversedShadow={true} 
         bottomPadding={10} backgroundSize="contain">
         <LandingSectionFilter>
             <DescribeHeader className="block-center">
