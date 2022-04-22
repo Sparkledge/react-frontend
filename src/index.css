@@ -14,20 +14,6 @@ code {
     monospace;
 }
 
-body::-webkit-scrollbar{
-  width: 11px;
-}
-
-body::-webkit-scrollbar-thumb{
-  border-radius: 10px;
-  width: 5px;
-  background: rgba(34,107,255,.9);
-}
-
-body::-webkit-scrollbar-track{
-  width: 10px;
-}
-
 .block-center{
   display: block;
   margin-left: auto;
