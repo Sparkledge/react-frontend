@@ -59,8 +59,7 @@ const FooterComponent:React.FC = () => {
                 {footerData[0].map((elem, ind) => <Link to={elem["addr"]} key={"column-0-elem-"+ind}>
                     <FooterColumnElem>
                         {
-                            elem["type"] === "image" ? <FooterImage src={elem["content"]} width="200" height="100"
-                                alt="Footer-logo-image"/>: elem["content"]
+                            elem["type"] === "image" ? <FooterImage src={elem["content"]}/>: elem["content"]
                         }
                     </FooterColumnElem>
                 </Link>)}

@@ -15,8 +15,6 @@ const Welcome:React.FC = () => {
         <Suspense fallback={<Preloader className="block-center">Ładowanie...</Preloader>}>
             <LandingComponent/>    
             <DescribeComponent/>  
-        </Suspense>
-        <Suspense fallback={<></>}>
             <FooterComponent/>
         </Suspense>
     </MainContainer>
