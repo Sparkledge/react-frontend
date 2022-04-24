@@ -8,42 +8,8 @@ interface GlobalStyleInterface{
 }
 
 export const SparkledgeGlobalStyle = createGlobalStyle<GlobalStyleInterface>`
-
-    @import url('https://fonts.googleapis.com/css2?family=Mohave:wght@500&display=swap');
-
-    body {
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-            'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-            sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-
-    code {
-        font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-            monospace;
-    }
-
-    .block-center{
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    
     body::-webkit-scrollbar{
-        width: 11px;
         background: ${(props) => props.isLight === true ? LightNavBgColor : DarkNavBgColor};
-    }
-      
-    body::-webkit-scrollbar-thumb{
-        border-radius: 10px;
-        width: 5px;
-        background: rgba(34,107,255,.9);
-    }
-      
-    body::-webkit-scrollbar-track{
-        width: 10px;
     }
 `;
 
