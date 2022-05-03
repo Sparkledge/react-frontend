@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { FooterContainer, FooterColumnsWrapper, FooterColumnElem, FooterColumn,
     FooterImage } from "../../../styled/subcomponents/footer";
 
-const LogoImage = require("../../../assets/sparkledge_logo.png");
+const LogoImage = require("../../../assets/sparkledge_logo.webp");
 
 const FooterComponent:React.FC = () => {
 
