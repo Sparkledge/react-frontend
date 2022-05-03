@@ -12,7 +12,7 @@ import { changeGraphicalMode, setNewToken } from "../../redux/actions/generalAct
 import { RootState } from "../../redux/mainReducer";
 import axios from "axios";
 
-const NavbarLogo = require("../../assets/sparkledge_logo.png");
+const NavbarLogo = require("../../assets/sparkledge_logo.webp");
 
 const Navbar:React.FC = () => {
 
