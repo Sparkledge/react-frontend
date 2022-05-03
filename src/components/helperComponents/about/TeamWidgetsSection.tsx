@@ -21,7 +21,7 @@ const TeamWidgetsSection:React.FC = () => {
                     {elem["position"]}    
                 </AboutTeamWidgetPosition>
                 <AboutTeamWidgetDesc className="block-center">
-                    {elem["describe"]}
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus totam, voluptate obcaecati suscipit rem quo officiis non vitae hic nesciunt ipsam quae modi quisquam fugit! Eius modi quaerat necessitatibus ipsum.
                 </AboutTeamWidgetDesc>
             </AboutTeamWidgetTextSection>
         </AboutTeamWidget>): <></>
