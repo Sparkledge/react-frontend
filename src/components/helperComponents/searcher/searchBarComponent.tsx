@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import SearchIcon from '@mui/icons-material/Search';
 
-import { SearcherCategoriesContainer, GoToSearchBarBtn, 
+import { SearcherCategoriesSubContainer, SearcherCategoriesContainer, GoToSearchBarBtn, 
     SearcherBar, SearcherInput, SearcherButton } from "../../../styled/subpages/searcher/searcherBar";
 
 import SearchBarOptionsComponent from "./searchBarOptionsComponent";
@@ -13,6 +13,8 @@ interface SearchBarComponentInterface{
     setSearchedFaculty: (newFaculty: string) => void,
     searchedProgramme: string,
     setSearchedProgramme: (newProgramme: string) => void,
+    searchedSemester: string,
+    setSearchedSemester: (newSemester: string) => void,
     searchedCourse: string,
     setSearchedCourse: (newCourse: string) => void,
     searchedPhrase: string,
@@ -22,13 +24,16 @@ interface SearchBarComponentInterface{
 
 const SearchBarComponent:React.FC<SearchBarComponentInterface> = 
     ({searchedUniversity, setSearchedUniversity, searchedFaculty, setSearchedFaculty,
-        searchedProgramme, setSearchedProgramme, searchedCourse, setSearchedCourse,
+        searchedProgramme, setSearchedProgramme, searchedSemester, setSearchedSemester,
+        searchedCourse, setSearchedCourse,
         searchedPhrase, submitCallback, setSearchedPhrase}:SearchBarComponentInterface) => {
 
     const [phase, setPhase] = useState<number>(1); // 1 - research data, 2 - string data
+    const [paramsPhase, setParamsPhase] = useState<number>(0); // 0 - university, fauculty and programme, 1 - semester, course
     const [isUniversityOpened, toggleIsUniversityOpened] = useState<boolean>(false);
     const [isFacultyOpened, toggleIsFacultyOpened] = useState<boolean>(false);
     const [isProgrammeOpened, toggleIsProgrammeOpened] = useState<boolean>(false);
+    const [isSemesterOpened, toggleIsSemesterOpened] = useState<boolean>(false);
     const [isCourseOpened, toggleIsCourseOpened] = useState<boolean>(false);
 
     const universityCallback = (uniName: string) => {
@@ -46,6 +51,11 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
         toggleIsProgrammeOpened(false);
     }
 
+    const semesterCallback = (semName: string) => {
+        searchedSemester === semName ? setSearchedSemester("") : setSearchedSemester(semName);
+        toggleIsSemesterOpened(false);
+    }
+
     const courseCallback = (corName: string) => {
         searchedCourse === corName ? setSearchedCourse("") : setSearchedCourse(corName);
         toggleIsCourseOpened(false);
@@ -53,11 +63,19 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
 
     useEffect(() => {if(searchedUniversity === "") setSearchedFaculty("")}, [searchedUniversity])
     useEffect(() => {if(searchedFaculty === "") setSearchedProgramme("")}, [searchedFaculty])
-    useEffect(() => {if(searchedProgramme === "") setSearchedCourse("")}, [searchedProgramme])
+    useEffect(() => {
+        if(searchedProgramme === "") { 
+            setSearchedSemester(""); 
+            setParamsPhase(0);
+        } else setParamsPhase(1)
+    }, [searchedProgramme])
+    useEffect(() => {if(searchedSemester === "") setSearchedCourse("")}, [searchedSemester]);
 
     return <SearcherBar className="block-center">
         {
             phase === 1 ? <><SearcherCategoriesContainer className="block-center">
+                
+                    <SearcherCategoriesSubContainer isOpened={paramsPhase === 0 ? true : false}>
                     <SearchBarOptionsComponent 
                         sectionHeader= {searchedUniversity.length === 0 ? "Uczelnia" : searchedUniversity}
                         options={["Politechnika Warszawska"]}
@@ -77,16 +95,35 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
                         options={["Computer Science"]}
                         toggleOpening={(newOpeningState: boolean) => { if(searchedFaculty.length > 0 ) toggleIsProgrammeOpened(newOpeningState)}}
                         opening={isProgrammeOpened}
-                        choiceCallback={programmeCallback}/>
+                        choiceCallback={programmeCallback}/></SearcherCategoriesSubContainer>
+                    
+                    <SearcherCategoriesSubContainer isOpened={paramsPhase === 1 ? true : false}>
+                    <SearchBarOptionsComponent 
+                        sectionHeader= {searchedSemester.length === 0 ? "Semestr" : searchedSemester}
+                        options={["Semestr 1", "Semestr 2", "Semestr 3"]}
+                        toggleOpening={(newOpeningState: boolean) => { if(searchedProgramme.length > 0 ) toggleIsSemesterOpened(newOpeningState)}}
+                        opening={isSemesterOpened}
+                        choiceCallback={semesterCallback}/>
 
                     <SearchBarOptionsComponent 
                         sectionHeader= {searchedCourse.length === 0 ? "Przedmiot" : searchedCourse}
                         options={["Programming 1", "Programming 2", "Discrete Maths"]}
-                        toggleOpening={(newOpeningState: boolean) => { if(searchedProgramme.length > 0 ) toggleIsCourseOpened(newOpeningState)}}
+                        toggleOpening={(newOpeningState: boolean) => { if(searchedSemester.length > 0 ) toggleIsCourseOpened(newOpeningState)}}
                         opening={isCourseOpened}
-                        choiceCallback={courseCallback}/>
+                        choiceCallback={courseCallback}/></SearcherCategoriesSubContainer>
+                
+                    
+
+                    
                 </SearcherCategoriesContainer>
-                {searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 && searchedCourse.length > 0 ? 
+                {
+                    searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 ?
+                    <GoToSearchBarBtn className="block-center" onClick={() => setParamsPhase(1)}>
+                        Wróć
+                    </GoToSearchBarBtn> : <></>
+                }
+                {searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 && 
+                searchedSemester.length > 0 && searchedCourse.length > 0 ? 
                     <GoToSearchBarBtn className="block-center" onClick={() => setPhase(2)}>
                         Dalej
                     </GoToSearchBarBtn>: <></>}

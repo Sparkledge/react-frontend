@@ -5,6 +5,11 @@ interface SearcherCategorieChooserInterface{
     isOpened?: boolean
 }
 
+interface SearcherCategoriesSubContainerInterface{
+    isOpened: boolean
+}
+
+// main container - to wrap all of the content into one piece
 export const SearcherCategoriesContainer = styled.section`
     width: calc(100% - 20px);
     padding: 10px;
@@ -18,6 +23,17 @@ export const SearcherCategoriesContainer = styled.section`
         width: calc(95% - 20px);
     }
 `
+// sub container - to make the change of categories in searching more convienient and eye-candy
+export const SearcherCategoriesSubContainer = styled.div<SearcherCategoriesSubContainerInterface>`
+    width: 100%;
+    position: relative;
+    top: 0vh;
+    left: ${(props) => props.isOpened ? "0%" : "100%"};
+    height: ${(props) => props.isOpened ? "fit-content" : "0"};
+    overflow-y: hidden;
+    transition: all 0.4s;
+
+`;
 
 export const SearcherCategorieWrapper = styled.div`
     width: calc(100% - 30px);
