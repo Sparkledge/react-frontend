@@ -21,6 +21,7 @@ const Searcher:React.FC = () => {
     const [searchedUniversity, setSearchedUniversity] = useState<string>("");
     const [searchedFaculty, setSearchedFaculty] = useState<string>("");
     const [searchedProgramme, setSearchedProgramme] = useState<string>("");
+    const [searchedSemester, setSearchedSemester] = useState<string>("");
     const [searchedCourse, setSearchedCourse] = useState<string>("");
     const [searchedPhrase, setSearchedPhrase] = useState<string>("");
     const [searchedResults, setSearchedResults] = useState<any[]>([]);
@@ -65,6 +66,8 @@ const Searcher:React.FC = () => {
                     setSearchedFaculty={setSearchedFaculty}
                     searchedProgramme={searchedProgramme} 
                     setSearchedProgramme={setSearchedProgramme}
+                    searchedSemester={searchedSemester}
+                    setSearchedSemester={setSearchedSemester}
                     searchedCourse={searchedCourse} 
                     setSearchedCourse={setSearchedCourse}
                     searchedPhrase={searchedPhrase} 
@@ -80,13 +83,14 @@ const Searcher:React.FC = () => {
                         title={elem["title"]}
                         publishedOn={elem["createdDate"]}
                         publisher={elem["creatorEmail"]}
-                        animAlign={ind % 2 === 0 ? -10 : 10}/>)}
+                        animAlign={ind % 2 === 0 ? -10 : 10}
+                        key={`search-result-${ind}`}/>)}
                     </SearchingResultsSection> : <SearcherFailureContainer className="block-center">
                             <SearcherFailureHeader className="block-center">
                                 Niestety, coś poszło nie tak i połączenie z serwerem nie zakończyło się pomyślnie
                             </SearcherFailureHeader>
                             <SearcherFailureButton className="block-center"
-                                onClick={() => setSearcherState(0)}>
+                                onClick={() => {setSearcherState(0); setSearchedUniversity("");}}>
                                     Powrót do wyszukiwania
                             </SearcherFailureButton>
                         </SearcherFailureContainer>}
