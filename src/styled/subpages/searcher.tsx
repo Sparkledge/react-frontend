@@ -52,10 +52,10 @@ export const SearchingResultsSection = styled.section`
         width: calc(90% - 20px);
     }
 `;
-
+//min-height: ${(props) => props.isMain !== undefined ? props.isMain ? "calc(50vh - 40px)" : "fit-content": "calc(50vh - 40px)"};
 export const SearchingMainResult = styled.div<SearchResultInterface>`
     width: calc(100% - 20px);
-    min-height: ${(props) => props.isMain !== undefined ? props.isMain ? "calc(50vh - 40px)" : "fit-content": "calc(50vh - 40px)"};
+    
     height: fit-content;
     padding: 20px 10px;
     border-radius: 10px;

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, Suspense} from "react";
 import axios from "axios";
 
 import { MainContainer } from "../../styled/main";
@@ -9,10 +9,10 @@ import { SearcherFailureContainer, SearcherFailureHeader, SearcherFailureButton 
 
 import SearchBarComponent from "../helperComponents/searcher/searchBarComponent";
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
-import SearchingMainResultComponent from "../helperComponents/searcher/searchingMainResultComponent";
-import SearchingSideResultComponent from "../helperComponents/searcher/searchingSideResultComponent";
 import FooterComponent from "../helperComponents/welcome/footerComponent";
 
+const SearchingMainResultComponent = React.lazy(() => import("../helperComponents/searcher/searchingMainResultComponent"));
+const SearchingSideResultComponent = React.lazy(() => import("../helperComponents/searcher/searchingSideResultComponent"));
 const BackgroundPattern = require("../../assets/pattern_background.webp");
 
 const Searcher:React.FC = () => {
@@ -51,8 +51,6 @@ const Searcher:React.FC = () => {
         }
     }
 
-    //useEffect(() => searcherState === 1 ? setSearcherState(2) : () => {}, [searcherState]);
-
     return <MainContainer className="block-center">
         <LandingSectionWrapper className="block-center" source={BackgroundPattern} backgroundSize="contain">
             <LandingSectionFilter>
@@ -74,17 +72,17 @@ const Searcher:React.FC = () => {
                     setSearchedPhrase={setSearchedPhrase} 
                     submitCallback={submitTheQuery}/> : 
                 searcherState === 1 ? <SearchingPreloaderComponent/> : searcherState === 2 ? <SearchingResultsSection className="block-center">
-                    {searchedResults.map((elem, ind) => ind < 4 ? <SearchingMainResultComponent
+                    {searchedResults.map((elem, ind) => ind < 4 ? <Suspense fallback={<></>}><SearchingMainResultComponent
                         title={elem["title"]}
                         publishedOn={elem["createdDate"]}
                         publisher={elem["creatorEmail"]}
                         animAlign={ind % 2 === 0 ? -10 : 10}
-                        key={`search-result-${ind}`}/> : <SearchingSideResultComponent 
+                        key={`search-result-${ind}`}/></Suspense> : <Suspense fallback={<></>}><SearchingSideResultComponent 
                         title={elem["title"]}
                         publishedOn={elem["createdDate"]}
                         publisher={elem["creatorEmail"]}
                         animAlign={ind % 2 === 0 ? -10 : 10}
-                        key={`search-result-${ind}`}/>)}
+                        key={`search-result-${ind}`}/></Suspense>)}
                     </SearchingResultsSection> : <SearcherFailureContainer className="block-center">
                             <SearcherFailureHeader className="block-center">
                                 Niestety, coś poszło nie tak i połączenie z serwerem nie zakończyło się pomyślnie
