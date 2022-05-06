@@ -90,7 +90,7 @@ const Searcher:React.FC = () => {
                                 Niestety, coś poszło nie tak i połączenie z serwerem nie zakończyło się pomyślnie
                             </SearcherFailureHeader>
                             <SearcherFailureButton className="block-center"
-                                onClick={() => setSearcherState(0)}>
+                                onClick={() => {setSearcherState(0); setSearchedUniversity("");}}>
                                     Powrót do wyszukiwania
                             </SearcherFailureButton>
                         </SearcherFailureContainer>}
