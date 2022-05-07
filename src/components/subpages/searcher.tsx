@@ -1,4 +1,4 @@
-import React, {useState, Suspense} from "react";
+import React, {useState, useEffect, Suspense} from "react";
 import axios from "axios";
 
 import { MainContainer } from "../../styled/main";
@@ -16,6 +16,9 @@ const SearchingSideResultComponent = React.lazy(() => import("../helperComponent
 const BackgroundPattern = require("../../assets/pattern_background.webp");
 
 const Searcher:React.FC = () => {
+
+    const [universitiesList, setUniversitiesList] = useState<any[]>([]);
+    const [facultiesList, setFacultiesList] = useState<any[]>([]);
 
     const [searcherState, setSearcherState] = useState<number>(0); // 0 - nothing searched yet, 1 - search in progress, 2 - search results
     const [searchedUniversity, setSearchedUniversity] = useState<string>("");
@@ -51,6 +54,45 @@ const Searcher:React.FC = () => {
         }
     }
 
+    useEffect(() => {
+        axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/university`)
+        .then((res) => {
+            setUniversitiesList(res.data);
+        })
+        .catch(() => {
+            setSearcherState(3);
+        })
+    }, []);
+
+    useEffect(() => {
+        if(searchedFaculty.length > 0) {
+            setFacultiesList([]);
+
+            const facultyID:string = universitiesList.filter((elem:any) => elem["name"] !== undefined && elem["name"] === searchedUniversity)[0]["faculties"]
+            .filter((elem: any) => elem["name"] !== undefined && elem["name"] === searchedFaculty)[0]["_id"];
+
+            const requestBody:Object = {
+                "facultyid": facultyID
+            }
+
+            axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/faculty`, requestBody, {
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8"
+                }
+            })
+            .then((res) => {
+                console.log(res.data);
+                console.log(res.data.programmes);
+                setFacultiesList(res.data.programmes)
+            })
+            .catch((err) => {
+                console.log(err);
+                setSearcherState(3);
+            })
+
+        }
+    }, [searchedFaculty])
+
     return <MainContainer className="block-center">
         <LandingSectionWrapper className="block-center" source={BackgroundPattern} backgroundSize="contain">
             <LandingSectionFilter>
@@ -58,6 +100,8 @@ const Searcher:React.FC = () => {
                     {searcherState === 2 ? "Wyniki wyszukiwania" : searcherState === 1 ? "Ładowanie..." : "Wyszukiwarka"}    
                 </AboutHeader>
                 {searcherState === 0 ? <SearchBarComponent 
+                    universities={universitiesList}
+                    faculties={facultiesList}
                     searchedUniversity={searchedUniversity}
                     setSearchedUniversity={setSearchedUniversity}
                     searchedFaculty={searchedFaculty}

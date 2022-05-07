@@ -7,6 +7,8 @@ import { SearcherCategoriesSubContainer, SearcherCategoriesContainer, GoToSearch
 import SearchBarOptionsComponent from "./searchBarOptionsComponent";
 
 interface SearchBarComponentInterface{
+    universities: any[],
+    faculties: any[],
     searchedUniversity: string,
     setSearchedUniversity: (newUniversity: string) => void,
     searchedFaculty: string,
@@ -23,7 +25,7 @@ interface SearchBarComponentInterface{
 }
 
 const SearchBarComponent:React.FC<SearchBarComponentInterface> = 
-    ({searchedUniversity, setSearchedUniversity, searchedFaculty, setSearchedFaculty,
+    ({universities, faculties, searchedUniversity, setSearchedUniversity, searchedFaculty, setSearchedFaculty,
         searchedProgramme, setSearchedProgramme, searchedSemester, setSearchedSemester,
         searchedCourse, setSearchedCourse,
         searchedPhrase, submitCallback, setSearchedPhrase}:SearchBarComponentInterface) => {
@@ -78,21 +80,22 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
                     <SearcherCategoriesSubContainer isOpened={paramsPhase === 0 ? true : false}>
                     <SearchBarOptionsComponent 
                         sectionHeader= {searchedUniversity.length === 0 ? "Uczelnia" : searchedUniversity}
-                        options={["Politechnika Warszawska"]}
+                        options={universities.map((elem: any) => elem["name"])}
                         toggleOpening={toggleIsUniversityOpened}
                         opening={isUniversityOpened}
                         choiceCallback={universityCallback}/>
 
                     <SearchBarOptionsComponent 
                         sectionHeader= {searchedFaculty.length === 0 ? "Wydział" : searchedFaculty}
-                        options={["MiNI"]}
+                        options={searchedUniversity.length === 0 ? [] : universities.filter((elem:any) => elem["name"] !== undefined && elem["name"] === searchedUniversity)
+                            [0]["faculties"].map((elem: any) => elem["name"])}
                         toggleOpening={(newOpeningState: boolean) => { if(searchedUniversity.length > 0 ) toggleIsFacultyOpened(newOpeningState)}}
                         opening={isFacultyOpened}
                         choiceCallback={facultyCallback}/>
 
                     <SearchBarOptionsComponent 
                         sectionHeader= {searchedProgramme.length === 0 ? "Kierunek" : searchedProgramme}
-                        options={["Computer Science"]}
+                        options={searchedFaculty.length === 0 ? [] : faculties.map((elem: any) => elem["name"])}
                         toggleOpening={(newOpeningState: boolean) => { if(searchedFaculty.length > 0 ) toggleIsProgrammeOpened(newOpeningState)}}
                         opening={isProgrammeOpened}
                         choiceCallback={programmeCallback}/></SearcherCategoriesSubContainer>
@@ -117,8 +120,8 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
                     
                 </SearcherCategoriesContainer>
                 {
-                    searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 ?
-                    <GoToSearchBarBtn className="block-center" onClick={() => setParamsPhase(1)}>
+                    searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 && paramsPhase === 1 ?
+                    <GoToSearchBarBtn className="block-center" onClick={() => setSearchedProgramme("")}>
                         Wróć
                     </GoToSearchBarBtn> : <></>
                 }
