@@ -19,6 +19,7 @@ const Searcher:React.FC = () => {
 
     const [universitiesList, setUniversitiesList] = useState<any[]>([]);
     const [facultiesList, setFacultiesList] = useState<any[]>([]);
+    const [programmesList, setProgrammesList] = useState<any[]>([]);
 
     const [searcherState, setSearcherState] = useState<number>(0); // 0 - nothing searched yet, 1 - search in progress, 2 - search results
     const [searchedUniversity, setSearchedUniversity] = useState<string>("");
@@ -93,6 +94,37 @@ const Searcher:React.FC = () => {
         }
     }, [searchedFaculty])
 
+    useEffect(() => {
+        if(searchedProgramme.length > 0){
+            setProgrammesList([]);
+            console.log(facultiesList);
+
+            console.log(facultiesList.filter((elem:any) => elem["name"] !== undefined && elem["name"] === searchedProgramme)[0]["_id"]);
+
+            const programmeID:string = facultiesList.filter((elem:any) => elem["name"] !== undefined && elem["name"] === searchedProgramme)[0]["_id"];
+
+            const requestBody:Object = {
+                "programmeid": programmeID
+            }
+
+            axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/programme`, requestBody, {
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8"
+                }
+            })
+            .then((res) => {
+                console.log(res.data);
+                console.log(res.data.courses);
+                setProgrammesList(res.data.courses)
+            })
+            .catch((err) => {
+                console.log(err);
+                setSearcherState(3);
+            })
+
+        }
+    }, [searchedProgramme])
+
     return <MainContainer className="block-center">
         <LandingSectionWrapper className="block-center" source={BackgroundPattern} backgroundSize="contain">
             <LandingSectionFilter>
@@ -102,6 +134,7 @@ const Searcher:React.FC = () => {
                 {searcherState === 0 ? <SearchBarComponent 
                     universities={universitiesList}
                     faculties={facultiesList}
+                    programmes={programmesList}
                     searchedUniversity={searchedUniversity}
                     setSearchedUniversity={setSearchedUniversity}
                     searchedFaculty={searchedFaculty}

@@ -9,6 +9,7 @@ import SearchBarOptionsComponent from "./searchBarOptionsComponent";
 interface SearchBarComponentInterface{
     universities: any[],
     faculties: any[],
+    programmes: any[],
     searchedUniversity: string,
     setSearchedUniversity: (newUniversity: string) => void,
     searchedFaculty: string,
@@ -25,7 +26,8 @@ interface SearchBarComponentInterface{
 }
 
 const SearchBarComponent:React.FC<SearchBarComponentInterface> = 
-    ({universities, faculties, searchedUniversity, setSearchedUniversity, searchedFaculty, setSearchedFaculty,
+    ({universities, faculties, programmes, 
+        searchedUniversity, setSearchedUniversity, searchedFaculty, setSearchedFaculty,
         searchedProgramme, setSearchedProgramme, searchedSemester, setSearchedSemester,
         searchedCourse, setSearchedCourse,
         searchedPhrase, submitCallback, setSearchedPhrase}:SearchBarComponentInterface) => {
@@ -110,7 +112,7 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
 
                     <SearchBarOptionsComponent 
                         sectionHeader= {searchedCourse.length === 0 ? "Przedmiot" : searchedCourse}
-                        options={["Programming 1", "Programming 2", "Discrete Maths"]}
+                        options={searchedSemester.length === 0 ? [] : programmes.map((elem:any) => elem["name"])}
                         toggleOpening={(newOpeningState: boolean) => { if(searchedSemester.length > 0 ) toggleIsCourseOpened(newOpeningState)}}
                         opening={isCourseOpened}
                         choiceCallback={courseCallback}/></SearcherCategoriesSubContainer>
