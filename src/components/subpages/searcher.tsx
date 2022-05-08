@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect, Suspense} from "react";
 import axios from "axios";
 
 import { MainContainer } from "../../styled/main";
@@ -9,13 +9,17 @@ import { SearcherFailureContainer, SearcherFailureHeader, SearcherFailureButton 
 
 import SearchBarComponent from "../helperComponents/searcher/searchBarComponent";
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
-import SearchingMainResultComponent from "../helperComponents/searcher/searchingMainResultComponent";
-import SearchingSideResultComponent from "../helperComponents/searcher/searchingSideResultComponent";
 import FooterComponent from "../helperComponents/welcome/footerComponent";
 
+const SearchingMainResultComponent = React.lazy(() => import("../helperComponents/searcher/searchingMainResultComponent"));
+const SearchingSideResultComponent = React.lazy(() => import("../helperComponents/searcher/searchingSideResultComponent"));
 const BackgroundPattern = require("../../assets/pattern_background.webp");
 
 const Searcher:React.FC = () => {
+
+    const [universitiesList, setUniversitiesList] = useState<any[]>([]);
+    const [facultiesList, setFacultiesList] = useState<any[]>([]);
+    const [programmesList, setProgrammesList] = useState<any[]>([]);
 
     const [searcherState, setSearcherState] = useState<number>(0); // 0 - nothing searched yet, 1 - search in progress, 2 - search results
     const [searchedUniversity, setSearchedUniversity] = useState<string>("");
@@ -51,7 +55,75 @@ const Searcher:React.FC = () => {
         }
     }
 
-    //useEffect(() => searcherState === 1 ? setSearcherState(2) : () => {}, [searcherState]);
+    useEffect(() => {
+        axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/university`)
+        .then((res) => {
+            setUniversitiesList(res.data);
+        })
+        .catch(() => {
+            setSearcherState(3);
+        })
+    }, []);
+
+    useEffect(() => {
+        if(searchedFaculty.length > 0) {
+            setFacultiesList([]);
+
+            const facultyID:string = universitiesList.filter((elem:any) => elem["name"] !== undefined && elem["name"] === searchedUniversity)[0]["faculties"]
+            .filter((elem: any) => elem["name"] !== undefined && elem["name"] === searchedFaculty)[0]["_id"];
+
+            const requestBody:Object = {
+                "facultyid": facultyID
+            }
+
+            axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/faculty`, requestBody, {
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8"
+                }
+            })
+            .then((res) => {
+                console.log(res.data);
+                console.log(res.data.programmes);
+                setFacultiesList(res.data.programmes)
+            })
+            .catch((err) => {
+                console.log(err);
+                setSearcherState(3);
+            })
+
+        }
+    }, [searchedFaculty])
+
+    useEffect(() => {
+        if(searchedProgramme.length > 0){
+            setProgrammesList([]);
+            console.log(facultiesList);
+
+            console.log(facultiesList.filter((elem:any) => elem["name"] !== undefined && elem["name"] === searchedProgramme)[0]["_id"]);
+
+            const programmeID:string = facultiesList.filter((elem:any) => elem["name"] !== undefined && elem["name"] === searchedProgramme)[0]["_id"];
+
+            const requestBody:Object = {
+                "programmeid": programmeID
+            }
+
+            axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/programme`, requestBody, {
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8"
+                }
+            })
+            .then((res) => {
+                console.log(res.data);
+                console.log(res.data.courses);
+                setProgrammesList(res.data.courses)
+            })
+            .catch((err) => {
+                console.log(err);
+                setSearcherState(3);
+            })
+
+        }
+    }, [searchedProgramme])
 
     return <MainContainer className="block-center">
         <LandingSectionWrapper className="block-center" source={BackgroundPattern} backgroundSize="contain">
@@ -60,6 +132,9 @@ const Searcher:React.FC = () => {
                     {searcherState === 2 ? "Wyniki wyszukiwania" : searcherState === 1 ? "Ładowanie..." : "Wyszukiwarka"}    
                 </AboutHeader>
                 {searcherState === 0 ? <SearchBarComponent 
+                    universities={universitiesList}
+                    faculties={facultiesList}
+                    programmes={programmesList}
                     searchedUniversity={searchedUniversity}
                     setSearchedUniversity={setSearchedUniversity}
                     searchedFaculty={searchedFaculty}
@@ -74,17 +149,17 @@ const Searcher:React.FC = () => {
                     setSearchedPhrase={setSearchedPhrase} 
                     submitCallback={submitTheQuery}/> : 
                 searcherState === 1 ? <SearchingPreloaderComponent/> : searcherState === 2 ? <SearchingResultsSection className="block-center">
-                    {searchedResults.map((elem, ind) => ind < 4 ? <SearchingMainResultComponent
+                    {searchedResults.map((elem, ind) => ind < 4 ? <Suspense fallback={<></>}><SearchingMainResultComponent
                         title={elem["title"]}
                         publishedOn={elem["createdDate"]}
                         publisher={elem["creatorEmail"]}
                         animAlign={ind % 2 === 0 ? -10 : 10}
-                        key={`search-result-${ind}`}/> : <SearchingSideResultComponent 
+                        key={`search-result-${ind}`}/></Suspense> : <Suspense fallback={<></>}><SearchingSideResultComponent 
                         title={elem["title"]}
                         publishedOn={elem["createdDate"]}
                         publisher={elem["creatorEmail"]}
                         animAlign={ind % 2 === 0 ? -10 : 10}
-                        key={`search-result-${ind}`}/>)}
+                        key={`search-result-${ind}`}/></Suspense>)}
                     </SearchingResultsSection> : <SearcherFailureContainer className="block-center">
                             <SearcherFailureHeader className="block-center">
                                 Niestety, coś poszło nie tak i połączenie z serwerem nie zakończyło się pomyślnie

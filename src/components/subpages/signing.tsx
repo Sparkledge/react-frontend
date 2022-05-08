@@ -64,7 +64,7 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
                         toggleIsSuccess(false); setPassword("Coś poszło nie tak");
                     }
                 })
-                .catch(() => {
+                .catch((err) => {
                     setError("Coś poszło nie tak. Spróbuj ponownie");
                 })
 

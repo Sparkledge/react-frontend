@@ -30,7 +30,8 @@ const LandingComponent:React.FC = () => {
                 <LandingSectionSpan>Spark of your knowledge</LandingSectionSpan>
             </LandingSectionHeader>
             <LandingSectionDesc className="block-center" leftPos={textPosition}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum non est vestibulum, feugiat massa nec, convallis purus. Curabitur tristique lobortis lorem, in ullamcorper arcu porta eu. Proin at mauris lacus. Integer suscipit tellus eget consequat consectetur. Nullam suscipit ipsum diam, at dui.
+            Sparkledge to platforma łącząca studentów, dającą im możliwość rozwoju i osiągania lepszych wyników.Sparklege to platforma stworzona przez studentów dla studentów. Znajdziesz na niej notatki Twoich znajomych oraz absolwentów ocenione przez innych użytkowników. Dzięki niej nauka do kolosów będzie przyjemniejsza.
+                Jedyne co musisz zrobić aby dostać dostęp do skarbnicy wiedzy to załączyć swoje notataki
             </LandingSectionDesc>
             <LandingButtonWrapper className="block-center" rightPos={buttonPosition}>
                 <Link to = "/signup">
