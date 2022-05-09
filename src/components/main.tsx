@@ -11,6 +11,7 @@ import About from "./subpages/about";
 import SigningPanel from "./subpages/signing";
 import Searcher from "./subpages/searcher";
 import DocumentDisplayer from "./subpages/documentDisplayer";
+import DocumentUpload from "./subpages/documentUpload";
 import Notfound from "./subpages/notfound";
 
 import UserPanel from "./subpages/userPanel";
@@ -33,6 +34,7 @@ const Main: React.FC = () => {
           <Route path="/searcher" element={<Searcher/>}/>
           <Route path="/document/:docId" element={<DocumentDisplayer/>}/>
           <Route path="/document/" element={<DocumentDisplayer/>}/>
+          <Route path="/documentUpload" element={<DocumentUpload/>}/>
           <Route path="/panel" element={<UserPanel/>}/>
           <Route path="*" element={<Notfound />} />
         </Routes>
