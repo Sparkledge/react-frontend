@@ -65,7 +65,7 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
                     }
                 })
                 .catch((err) => {
-                    setError("Coś poszło nie tak. Spróbuj ponownie");
+                    err.response.status === 403 ? setError("Dokończ proces rejestracji") : setError("Coś poszło nie tak. Spróbuj ponownie");
                 })
 
             }
@@ -91,7 +91,7 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
 
     useEffect(() => {
         if(currentToken.length > 0) navigate("/panel");
-    }, [])
+    }, [currentToken])
 
     return <MainContainer className="block-center">
         <Suspense fallback={<Preloader className="block-center">Ładowanie...</Preloader>}>

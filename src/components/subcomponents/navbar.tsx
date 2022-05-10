@@ -49,9 +49,9 @@ const Navbar:React.FC = () => {
             },
             {
                 isLink: true,
-                to: currentToken.length === 0 ? "/signin" : "/settings",
+                to: currentToken.length === 0 ? "/signin" : "/documentUpload",
                 isImage: false,
-                content: currentToken.length === 0 ? "Zaloguj się" : "Ustawienia",
+                content: currentToken.length === 0 ? "Zaloguj się" : "Opublikuj",
                 callback: () => toggleIsOpened(false)
             },
             {
