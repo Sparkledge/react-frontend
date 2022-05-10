@@ -7,10 +7,10 @@ import { AboutHeader } from "../../styled/subpages/about";
 import { SearchingResultsSection } from "../../styled/subpages/searcher";
 import { SearcherFailureContainer, SearcherFailureHeader, SearcherFailureButton } from "../../styled/subpages/searcher/searcherFailure"
 
-import SearchBarComponent from "../helperComponents/searcher/searchBarComponent";
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
-import FooterComponent from "../helperComponents/welcome/footerComponent";
 
+const SearchBarComponent = React.lazy(() => import("../helperComponents/searcher/searchBarComponent"));
+const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
 const SearchingMainResultComponent = React.lazy(() => import("../helperComponents/searcher/searchingMainResultComponent"));
 const SearchingSideResultComponent = React.lazy(() => import("../helperComponents/searcher/searchingSideResultComponent"));
 const BackgroundPattern = require("../../assets/pattern_background.webp");
@@ -43,7 +43,6 @@ const Searcher:React.FC = () => {
                 }
             })
                 .then((res) => {
-                    console.log(res.data.description);
                     setSearcherState(res.status === 200 ? 2 : 3);
                     setSearchedResults(res.status === 200 ? res.data.description : []);
                     setSearchedPhrase("");
@@ -82,8 +81,6 @@ const Searcher:React.FC = () => {
                 }
             })
             .then((res) => {
-                console.log(res.data);
-                console.log(res.data.programmes);
                 setFacultiesList(res.data.programmes)
             })
             .catch((err) => {
@@ -131,23 +128,25 @@ const Searcher:React.FC = () => {
                 <AboutHeader className="block-center">
                     {searcherState === 2 ? "Wyniki wyszukiwania" : searcherState === 1 ? "Ładowanie..." : "Wyszukiwarka"}    
                 </AboutHeader>
-                {searcherState === 0 ? <SearchBarComponent 
-                    universities={universitiesList}
-                    faculties={facultiesList}
-                    programmes={programmesList}
-                    searchedUniversity={searchedUniversity}
-                    setSearchedUniversity={setSearchedUniversity}
-                    searchedFaculty={searchedFaculty}
-                    setSearchedFaculty={setSearchedFaculty}
-                    searchedProgramme={searchedProgramme} 
-                    setSearchedProgramme={setSearchedProgramme}
-                    searchedSemester={searchedSemester}
-                    setSearchedSemester={setSearchedSemester}
-                    searchedCourse={searchedCourse} 
-                    setSearchedCourse={setSearchedCourse}
-                    searchedPhrase={searchedPhrase} 
-                    setSearchedPhrase={setSearchedPhrase} 
-                    submitCallback={submitTheQuery}/> : 
+                {searcherState === 0 ? <Suspense fallback={<></>}>
+                    <SearchBarComponent 
+                        universities={universitiesList}
+                        faculties={facultiesList}
+                        programmes={programmesList}
+                        searchedUniversity={searchedUniversity}
+                        setSearchedUniversity={setSearchedUniversity}
+                        searchedFaculty={searchedFaculty}
+                        setSearchedFaculty={setSearchedFaculty}
+                        searchedProgramme={searchedProgramme} 
+                        setSearchedProgramme={setSearchedProgramme}
+                        searchedSemester={searchedSemester}
+                        setSearchedSemester={setSearchedSemester}
+                        searchedCourse={searchedCourse} 
+                        setSearchedCourse={setSearchedCourse}
+                        searchedPhrase={searchedPhrase} 
+                        setSearchedPhrase={setSearchedPhrase} 
+                        submitCallback={submitTheQuery}/>
+                </Suspense> : 
                 searcherState === 1 ? <SearchingPreloaderComponent/> : searcherState === 2 ? <SearchingResultsSection className="block-center">
                     {searchedResults.map((elem, ind) => ind < 4 ? <Suspense fallback={<></>}><SearchingMainResultComponent
                         title={elem["title"]}
@@ -171,7 +170,9 @@ const Searcher:React.FC = () => {
                         </SearcherFailureContainer>}
             </LandingSectionFilter>    
         </LandingSectionWrapper>
-        <FooterComponent/>
+        <Suspense fallback={<></>}>
+            <FooterComponent/>
+        </Suspense>
     </MainContainer>
 };
 
