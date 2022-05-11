@@ -25,7 +25,7 @@ const Searcher:React.FC = () => {
     const [searchedUniversity, setSearchedUniversity] = useState<string>("");
     const [searchedFaculty, setSearchedFaculty] = useState<string>("");
     const [searchedProgramme, setSearchedProgramme] = useState<string>("");
-    const [searchedSemester, setSearchedSemester] = useState<string>("");
+    const [searchedSemester, setSearchedSemester] = useState<number>(0); // 0 - nothing chosen
     const [searchedCourse, setSearchedCourse] = useState<string>("");
     const [searchedPhrase, setSearchedPhrase] = useState<string>("");
     const [searchedResults, setSearchedResults] = useState<any[]>([]);
