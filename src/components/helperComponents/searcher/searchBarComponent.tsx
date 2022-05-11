@@ -16,8 +16,8 @@ interface SearchBarComponentInterface{
     setSearchedFaculty: (newFaculty: string) => void,
     searchedProgramme: string,
     setSearchedProgramme: (newProgramme: string) => void,
-    searchedSemester: string,
-    setSearchedSemester: (newSemester: string) => void,
+    searchedSemester: number,
+    setSearchedSemester: (newSemester: number) => void,
     searchedCourse: string,
     setSearchedCourse: (newCourse: string) => void,
     searchedPhrase: string,
@@ -40,6 +40,8 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
     const [isSemesterOpened, toggleIsSemesterOpened] = useState<boolean>(false);
     const [isCourseOpened, toggleIsCourseOpened] = useState<boolean>(false);
 
+    const [helperSemesterArray, setHelperSemesterArray] = useState<string[]>([]);
+
     const universityCallback = (uniName: string) => {
         searchedUniversity === uniName ? setSearchedUniversity("") : setSearchedUniversity(uniName);
         toggleIsUniversityOpened(false);
@@ -55,8 +57,8 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
         toggleIsProgrammeOpened(false);
     }
 
-    const semesterCallback = (semName: string) => {
-        searchedSemester === semName ? setSearchedSemester("") : setSearchedSemester(semName);
+    const semesterCallback = (semNumber: number) => {
+        searchedSemester === semNumber ? setSearchedSemester(0) : setSearchedSemester(semNumber);
         toggleIsSemesterOpened(false);
     }
 
@@ -65,15 +67,30 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
         toggleIsCourseOpened(false);
     }
 
+    const generateTheArrayForSemesters = () :string[] => {
+        
+        if(searchedProgramme === "" || programmes.length === 0) return [];
+        let final:string[] = [];
+        for(let i = 0; i < programmes[programmes.length-1]["semester"]; i++) final.push(`Semestr ${i+1}`);
+        return final;
+    }
+
     useEffect(() => {if(searchedUniversity === "") setSearchedFaculty("")}, [searchedUniversity])
     useEffect(() => {if(searchedFaculty === "") setSearchedProgramme("")}, [searchedFaculty])
     useEffect(() => {
         if(searchedProgramme === "") { 
-            setSearchedSemester(""); 
+            setSearchedSemester(0); 
             setParamsPhase(0);
-        } else setParamsPhase(1)
+        } else {
+            setHelperSemesterArray(generateTheArrayForSemesters());
+            setParamsPhase(1);
+        }
     }, [searchedProgramme])
-    useEffect(() => {if(searchedSemester === "") setSearchedCourse("")}, [searchedSemester]);
+    useEffect(() => {if(searchedSemester === 0) {setSearchedCourse(""); toggleIsCourseOpened(false);}}, [searchedSemester]);
+
+    useEffect(() => {
+        setHelperSemesterArray(generateTheArrayForSemesters());
+    }, [programmes])
 
     return <SearcherBar className="block-center">
         {
@@ -104,18 +121,20 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
                     
                     <SearcherCategoriesSubContainer isOpened={paramsPhase === 1 ? true : false}>
                     <SearchBarOptionsComponent 
-                        sectionHeader= {searchedSemester.length === 0 ? "Semestr" : searchedSemester}
-                        options={["Semestr 1", "Semestr 2", "Semestr 3"]}
+                        sectionHeader= {searchedSemester === 0 ? "Semestr" : `Semestr ${searchedSemester}`}
+                        options={helperSemesterArray}
                         toggleOpening={(newOpeningState: boolean) => { if(searchedProgramme.length > 0 ) toggleIsSemesterOpened(newOpeningState)}}
                         opening={isSemesterOpened}
-                        choiceCallback={semesterCallback}/>
+                        choiceCallback={semesterCallback}
+                        typeOfCallbackValue="index"/>
 
                     <SearchBarOptionsComponent 
                         sectionHeader= {searchedCourse.length === 0 ? "Przedmiot" : searchedCourse}
-                        options={searchedSemester.length === 0 ? [] : programmes.map((elem:any) => elem["name"])}
-                        toggleOpening={(newOpeningState: boolean) => { if(searchedSemester.length > 0 ) toggleIsCourseOpened(newOpeningState)}}
+                        options={searchedSemester === 0 ? [] : programmes.filter((elem:any) =>  elem.semester === searchedSemester).map((elem:any) => elem["name"])}
+                        toggleOpening={(newOpeningState: boolean) => { if(searchedSemester > 0 ) toggleIsCourseOpened(newOpeningState)}}
                         opening={isCourseOpened}
-                        choiceCallback={courseCallback}/></SearcherCategoriesSubContainer>
+                        choiceCallback={courseCallback}/>
+                </SearcherCategoriesSubContainer>
                 
                     
 
@@ -128,7 +147,7 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
                     </GoToSearchBarBtn> : <></>
                 }
                 {searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 && 
-                searchedSemester.length > 0 && searchedCourse.length > 0 ? 
+                searchedSemester > 0 && searchedCourse.length > 0 ? 
                     <GoToSearchBarBtn className="block-center" onClick={() => setPhase(2)}>
                         Dalej
                     </GoToSearchBarBtn>: <></>}
