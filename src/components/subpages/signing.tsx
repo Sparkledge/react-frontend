@@ -1,5 +1,5 @@
 import React, {Suspense, useEffect, useState} from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
@@ -25,6 +25,7 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
     const [userName, setUserName] = useState<string>("");
     const [userSurname, setUserSurname] = useState<string>("");
     const [isSuccess, toggleIsSuccess] = useState<boolean>(false);
+    const [isVerificationSuccessful, toggleIsVerificationSuccessful] = useState<number>(0); // 0 - status unknown, 1 - verified, 2 - verification failed
     const [Password, setPassword] = useState<string>("");
     const [RepeatedPassword, setRepeatedPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
@@ -32,6 +33,9 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
     
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    
+    const useQuery:any = () => new URLSearchParams(useLocation().search);
+    const query = useQuery();
 
     const TriggerTheShot = () : void => {
         toggleIsSuccess(false);
@@ -89,9 +93,25 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
         }
     }
 
+    const verifyEmail = async(verifyCode: string) => {
+        await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/register/verify/${verifyCode}`)
+        .then((res) => {
+            toggleIsVerificationSuccessful(1);
+        })
+        .catch((err) => {
+            toggleIsVerificationSuccessful(2);
+            toggleIsSuccess(true);
+            
+        })
+    }
+
     useEffect(() => {
+        toggleIsVerificationSuccessful(0);
+        toggleIsSuccess(false);
         if(currentToken.length > 0) navigate("/panel");
-    }, [currentToken])
+        const verifyCode:string = query.get("verifyemail");
+        if(verifyCode !== null && verifyCode.length > 0) verifyEmail(verifyCode);
+    }, [])
 
     return <MainContainer className="block-center">
         <Suspense fallback={<Preloader className="block-center">Ładowanie...</Preloader>}>
@@ -99,10 +119,11 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
             bottomPadding={10}>
                 <LandingSectionFilter>
                     <AboutHeader className="block-center">
-                        {mode === 1 ? "Panel logowania" : isSuccess === false ? "Panel rejestracji" : "Potwierdź rejestrację klikając w link wysłany na podany adres e-mail"}    
+                        {isVerificationSuccessful === 2 ? "Błąd weryfikacji. Spróbuj ponownie." :
+                        isVerificationSuccessful === 1 ? "Profil zweryfikowany. Zaloguj się" : mode === 1 ? "Panel logowania" : isSuccess === false ? "Panel rejestracji" :  "Potwierdź rejestrację klikając w link wysłany na podany adres e-mail"}    
                     </AboutHeader>
                     {
-                        mode === 2 && isSuccess ? <></> : <SigningPanelWrapper className="block-center">
+                        (mode === 2 && isSuccess) || isVerificationSuccessful === 2 ? <></> : <SigningPanelWrapper className="block-center">
                         <SigningPanelInput className="block-center" type={mode === 1 ? "text" : "email"} placeholder={mode === 1 ? "Login..." : "Email..."}
                             value={Login} onChange={(e) => setLogin(e.target.value)} required
                             marginBottom={mode === 2 ? 1 : 2}/>
