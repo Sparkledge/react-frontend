@@ -17,7 +17,9 @@ To maintain the connection with the backend of Sparkledge web service, applicati
 Full list of used packages and libraries can be found in `package.json` file.
 
 ## Project structure
-All of the source files necessary to make the Sparkledge work correctly are stored in the `src` directory. There, they are divided into the following categories and are kept in the according folders:
+All of the source files necessary to make the Sparkledge work correctly are stored in the `src` directory and `public` directory.  
+## Source directory 
+In the `src` directory, which stores all of the application mechanics, files are divided into the following categories and are kept in the according folders:
 ### assets
 In this folder, you can find all of the non-coding static resources like images, photos and background patterns. All of the graphical content should be saved into `.webp` file in order to reduce the weigh of recources and to improve loading speed of application.
 ### components
@@ -47,7 +49,10 @@ To know more, check the [redux official site](https://redux.js.org/ "redux offic
 ### styled
 This directory contains all of the files that are used to built the application GUI with the `styled-components` library. The structure should be created exactly like the components directory in order to not make the project hard-to-read. If needed, code meant for `components/helperComponents` components can be stored in a files placed in `styled/subcomponents`.  
 The directory consists of `main.tsx` file and two subdirectories: `subpages` and `subcomponents`.  
-In the `main.tsx` file, all of the graphical interface is configured in two JSON objects: `LightMode` and `DarkMode`, which are used accordingly to the graphical mode chosen by the user. Also, the MainContainer section and the main preloader are defined in this file.
+In the `main.tsx` file, all of the graphical interface is configured in two JSON objects: `LightMode` and `DarkMode`, which are used accordingly to the graphical mode chosen by the user. Also, the MainContainer section and the main preloader are defined in this file.  
+## Public directory
+In the `public` directory, the files responsible for displaying the application (`index.html` file and `<div id="root"></div>` DOM element) and converting the Sparkledge to PWA (progressive web application), which makes it possible to use Sparkledge on mobile devices just like a regular mobile application.  
+The files `serviceWorker.js`, `offline.html` and `manifest.json` are responsible for correct functioning of PWA. The `_redirects` file is there in order to prevent certain Netlify hosting platform errors.  
 
 ## Summing up
 If you need any additional informations, contact [Szymon Kupisz](https://github.com/SKupisz/ "Szymon Kupisz") or write to us on [kontakt@sparkledge.pl](mailto:kontakt@sparkledge.pl "kontakt@sparkledge.pl")
