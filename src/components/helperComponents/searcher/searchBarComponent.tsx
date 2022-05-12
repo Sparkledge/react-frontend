@@ -148,16 +148,10 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
                 }
                 {searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 && 
                 searchedSemester > 0 && searchedCourse.length > 0 ? 
-                    <GoToSearchBarBtn className="block-center" onClick={() => setPhase(2)}>
+                    <GoToSearchBarBtn className="block-center" onClick={() => {setPhase(2);submitCallback();}}>
                         Dalej
                     </GoToSearchBarBtn>: <></>}
-            </> : <>
-                <SearcherInput type="text" placeholder="Czego szukamy?" value={searchedPhrase} 
-                    onChange={(e) => setSearchedPhrase(e.target.value)}/>   
-                <SearcherButton type="button" onClick={() => submitCallback()}>
-                    <SearchIcon style={{color: "inherit", fontSize: "1.9em"}}/>    
-                </SearcherButton>
-            </>
+            </> : <></>
         }
     </SearcherBar>
 }
