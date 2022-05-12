@@ -134,6 +134,13 @@ export const SearcherBar = styled.div`
     }
 `;
 
+export const SearcherBarInputContainer = styled.div`
+    width: calc(100% - 10px);
+    padding: 5px;
+    text-align: center;
+    margin-bottom: 4vh;
+`
+
 export const SearcherInput = styled.input`
     width: calc(60% - 24px);
     padding: 20px 10px;

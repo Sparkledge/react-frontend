@@ -25,7 +25,7 @@ const SearchingSideResultComponent:React.FC<SearchingMainResultComponentInterfac
             {publishedOn.substring(0,10)}
         </SearchingSideResultData>
         <SearchingSideResultData width={"calc(30% - 20px)"}>
-            {publisher}
+            {publisher.length > 15 ? publisher.substring(0,12)+"..." : publisher}
         </SearchingSideResultData>
     </SearchingMainResult>
 };

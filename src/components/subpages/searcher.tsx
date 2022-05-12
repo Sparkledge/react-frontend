@@ -1,4 +1,5 @@
 import React, {useState, useEffect, Suspense} from "react";
+import SearchIcon from '@mui/icons-material/Search';
 import axios from "axios";
 
 import { MainContainer } from "../../styled/main";
@@ -6,6 +7,7 @@ import { LandingSectionWrapper, LandingSectionFilter } from "../../styled/subpag
 import { AboutHeader } from "../../styled/subpages/about";
 import { SearchingResultsSection } from "../../styled/subpages/searcher";
 import { SearcherFailureContainer, SearcherFailureHeader, SearcherFailureButton } from "../../styled/subpages/searcher/searcherFailure"
+import { SearcherBarInputContainer, SearcherInput, SearcherButton } from "../../styled/subpages/searcher/searcherBar";
 
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
 
@@ -32,19 +34,15 @@ const Searcher:React.FC = () => {
 
     const submitTheQuery = async() => {
         if(searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 && 
-            searchedCourse.length > 0 && searchedPhrase.length > 0){
-            setSearcherState(1);
-            await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/dev`,{
-                params: {
-                    university: searchedUniversity,
-                    faculty: searchedFaculty,
-                    programme: searchedProgramme,
-                    course: searchedCourse
-                }
+            searchedCourse.length > 0 && programmesList.filter((elem:any) => elem.name === searchedCourse).length > 0){
+                setSearcherState(1);
+            await axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/course`,{
+                    courseId: programmesList.filter((elem:any) => elem.name === searchedCourse)[0]["_id"]
             })
                 .then((res) => {
+                    console.log(res);
                     setSearcherState(res.status === 200 ? 2 : 3);
-                    setSearchedResults(res.status === 200 ? res.data.description : []);
+                    setSearchedResults(res.status === 200 ? res.data.documents : []);
                     setSearchedPhrase("");
                 })
                 .catch((err) => {
@@ -72,8 +70,10 @@ const Searcher:React.FC = () => {
             .filter((elem: any) => elem["name"] !== undefined && elem["name"] === searchedFaculty)[0]["_id"];
 
             const requestBody:Object = {
-                "facultyid": facultyID
+                "facultyId": facultyID
             }
+
+            console.log(requestBody);
 
             axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/faculty`, requestBody, {
                 headers: {
@@ -101,7 +101,7 @@ const Searcher:React.FC = () => {
             const programmeID:string = facultiesList.filter((elem:any) => elem["name"] !== undefined && elem["name"] === searchedProgramme)[0]["_id"];
 
             const requestBody:Object = {
-                "programmeid": programmeID
+                "programmeId": programmeID
             }
 
             axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/programme`, requestBody, {
@@ -148,6 +148,13 @@ const Searcher:React.FC = () => {
                         submitCallback={submitTheQuery}/>
                 </Suspense> : 
                 searcherState === 1 ? <SearchingPreloaderComponent/> : searcherState === 2 ? <SearchingResultsSection className="block-center">
+                    <SearcherBarInputContainer className="block-center">
+                <SearcherInput type="text" placeholder="Czego szukamy?" value={searchedPhrase} 
+                    onChange={(e) => setSearchedPhrase(e.target.value)}/>   
+                <SearcherButton type="button" onClick={() => {}}>
+                    <SearchIcon style={{color: "inherit", fontSize: "1.9em"}}/>    
+                </SearcherButton>
+            </SearcherBarInputContainer>
                     {searchedResults.map((elem, ind) => ind < 4 ? <Suspense fallback={<></>}><SearchingMainResultComponent
                         title={elem["title"]}
                         publishedOn={elem["createdDate"]}
