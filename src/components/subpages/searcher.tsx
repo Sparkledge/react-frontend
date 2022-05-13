@@ -1,6 +1,7 @@
 import React, {useState, useEffect, Suspense} from "react";
-import SearchIcon from '@mui/icons-material/Search';
+import {Link} from "react-router-dom";
 import axios from "axios";
+import SearchIcon from '@mui/icons-material/Search';
 
 import { MainContainer } from "../../styled/main";
 import { LandingSectionWrapper, LandingSectionFilter } from "../../styled/subpages/welcome";
@@ -73,8 +74,6 @@ const Searcher:React.FC = () => {
                 "facultyId": facultyID
             }
 
-            console.log(requestBody);
-
             axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/faculty`, requestBody, {
                 headers: {
                     "Content-Type": "application/json; charset=UTF-8"
@@ -94,10 +93,7 @@ const Searcher:React.FC = () => {
     useEffect(() => {
         if(searchedProgramme.length > 0){
             setProgrammesList([]);
-            console.log(facultiesList);
-
-            console.log(facultiesList.filter((elem:any) => elem["name"] !== undefined && elem["name"] === searchedProgramme)[0]["_id"]);
-
+            
             const programmeID:string = facultiesList.filter((elem:any) => elem["name"] !== undefined && elem["name"] === searchedProgramme)[0]["_id"];
 
             const requestBody:Object = {
@@ -155,17 +151,22 @@ const Searcher:React.FC = () => {
                     <SearchIcon style={{color: "inherit", fontSize: "1.9em"}}/>    
                 </SearcherButton>
             </SearcherBarInputContainer>
-                    {searchedResults.map((elem, ind) => ind < 4 ? <Suspense fallback={<></>}><SearchingMainResultComponent
-                        title={elem["title"]}
-                        publishedOn={elem["createdDate"]}
-                        publisher={elem["creatorEmail"]}
-                        animAlign={ind % 2 === 0 ? -10 : 10}
-                        key={`search-result-${ind}`}/></Suspense> : <Suspense fallback={<></>}><SearchingSideResultComponent 
-                        title={elem["title"]}
-                        publishedOn={elem["createdDate"]}
-                        publisher={elem["creatorEmail"]}
-                        animAlign={ind % 2 === 0 ? -10 : 10}
-                        key={`search-result-${ind}`}/></Suspense>)}
+                    {searchedResults.map((elem, ind) => <Suspense fallback={<></>}>
+                        <Link to={`/document/${elem["_id"]}`}>
+                            {ind < 4 ? <SearchingMainResultComponent
+                                title={elem["title"]}
+                                publishedOn={elem["createdDate"]}
+                                publisher={elem["creatorEmail"]}
+                                likesNum={elem["likesNum"]}
+                                animAlign={ind % 2 === 0 ? -10 : 10}
+                                key={`search-result-${ind}`}/> : <SearchingSideResultComponent 
+                                title={elem["title"]}
+                                publishedOn={elem["createdDate"]}
+                                publisher={elem["creatorEmail"]}
+                                likesNum={elem["likesNum"]}
+                                animAlign={ind % 2 === 0 ? -10 : 10}
+                                key={`search-result-${ind}`}/>}
+                        </Link></Suspense>)}
                     </SearchingResultsSection> : <SearcherFailureContainer className="block-center">
                             <SearcherFailureHeader className="block-center">
                                 Niestety, coś poszło nie tak i połączenie z serwerem nie zakończyło się pomyślnie
