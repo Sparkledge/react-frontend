@@ -10,7 +10,7 @@ secondary results of the search (usually 5th, 6th result and so on)
 
 import React from "react";
 import { SearchingMainResult, SearchingSideResultTitle,
-    SearchingSideResultData } from "../../../styled/subpages/searcher";
+    SearchingSideResultData } from "../../../styled/subpages/searcher/searcherResults";
 
 import { SearchingMainResultComponentInterface } from "./searchingMainResultComponent";
 

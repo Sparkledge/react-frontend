@@ -1,14 +1,14 @@
 import React, {useState, useEffect, Suspense} from "react";
 import {Link} from "react-router-dom";
 import axios from "axios";
-import SearchIcon from '@mui/icons-material/Search';
 
 import { MainContainer } from "../../styled/main";
 import { LandingSectionWrapper, LandingSectionFilter } from "../../styled/subpages/welcome";
 import { AboutHeader } from "../../styled/subpages/about";
 import { SearchingResultsSection } from "../../styled/subpages/searcher";
+import { SearchingNoResultsContainer } from "../../styled/subpages/searcher/searcherResults";
 import { SearcherFailureContainer, SearcherFailureHeader, SearcherFailureButton } from "../../styled/subpages/searcher/searcherFailure"
-import { SearcherBarInputContainer, SearcherInput, SearcherButton } from "../../styled/subpages/searcher/searcherBar";
+import { SearcherBarInputContainer, SearcherInput } from "../../styled/subpages/searcher/searcherBar";
 
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
 
@@ -16,7 +16,7 @@ const SearchBarComponent = React.lazy(() => import("../helperComponents/searcher
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
 const SearchingMainResultComponent = React.lazy(() => import("../helperComponents/searcher/searchingMainResultComponent"));
 const SearchingSideResultComponent = React.lazy(() => import("../helperComponents/searcher/searchingSideResultComponent"));
-const BackgroundPattern = require("../../assets/pattern_background.webp");
+const BackgroundPattern = require("../../assets/pattern_background2.webp");
 
 const Searcher:React.FC = () => {
 
@@ -32,26 +32,6 @@ const Searcher:React.FC = () => {
     const [searchedCourse, setSearchedCourse] = useState<string>("");
     const [searchedPhrase, setSearchedPhrase] = useState<string>("");
     const [searchedResults, setSearchedResults] = useState<any[]>([]);
-
-    const submitTheQuery = async() => {
-        if(searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 && 
-            searchedCourse.length > 0 && programmesList.filter((elem:any) => elem.name === searchedCourse).length > 0){
-                setSearcherState(1);
-            await axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/course`,{
-                    courseId: programmesList.filter((elem:any) => elem.name === searchedCourse)[0]["_id"]
-            })
-                .then((res) => {
-                    console.log(res);
-                    setSearcherState(res.status === 200 ? 2 : 3);
-                    setSearchedResults(res.status === 200 ? res.data.documents : []);
-                    setSearchedPhrase("");
-                })
-                .catch((err) => {
-                    console.log(err);
-                    setSearcherState(3);
-                })
-        }
-    }
 
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/university`)
@@ -117,9 +97,43 @@ const Searcher:React.FC = () => {
 
         }
     }, [searchedProgramme])
+    
+    const submitTheQuery = async() => {
+        if(searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 && 
+            searchedCourse.length > 0 && programmesList.filter((elem:any) => elem.name === searchedCourse).length > 0){
+                setSearcherState(1);
+            await axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/course`,{
+                    courseId: programmesList.filter((elem:any) => elem.name === searchedCourse)[0]["_id"]
+            })
+                .then((res) => {
+                    setSearcherState(res.status === 200 ? 2 : 3);
+                    setSearchedResults(res.status === 200 ? res.data.documents.map((elem:any) => {elem["isDisplayed"] = 1; return elem;}) : []);
+                    setSearchedPhrase("");
+                })
+                .catch((err) => {
+                    setSearcherState(3);
+                })
+        }
+    }
+
+    useEffect(() => {
+        if(searchedResults.length > 0 ){
+            let operand = [...searchedResults];
+            if(searchedPhrase.length === 0) operand.map((elem:any) => {elem["isDisplayed"] = 1; return elem;});
+            else operand.map((elem:any) => {
+                    elem["title"].search(searchedPhrase) !== -1 ? elem["isDisplayed"] = 1 :
+                    elem["creatorEmail"].search(searchedPhrase) !== -1 ? elem["isDisplayed"] = 1 :
+                    elem["description"].search(searchedPhrase) !== -1 ? elem["isDisplayed"] = 1: 
+                    elem["isDisplayed"] = 0;
+                return elem;
+            })
+            setSearchedResults(operand);
+        }
+    }, [searchedPhrase])
 
     return <MainContainer className="block-center">
-        <LandingSectionWrapper className="block-center" source={BackgroundPattern} backgroundSize="contain">
+        <LandingSectionWrapper className="block-center" source={BackgroundPattern} backgroundSize="initial"
+        backgroundRepeat="repeat">
             <LandingSectionFilter>
                 <AboutHeader className="block-center">
                     {searcherState === 2 ? "Wyniki wyszukiwania" : searcherState === 1 ? "Ładowanie..." : "Wyszukiwarka"}    
@@ -139,33 +153,32 @@ const Searcher:React.FC = () => {
                         setSearchedSemester={setSearchedSemester}
                         searchedCourse={searchedCourse} 
                         setSearchedCourse={setSearchedCourse}
-                        searchedPhrase={searchedPhrase} 
-                        setSearchedPhrase={setSearchedPhrase} 
                         submitCallback={submitTheQuery}/>
                 </Suspense> : 
                 searcherState === 1 ? <SearchingPreloaderComponent/> : searcherState === 2 ? <SearchingResultsSection className="block-center">
                     <SearcherBarInputContainer className="block-center">
                 <SearcherInput type="text" placeholder="Czego szukamy?" value={searchedPhrase} 
-                    onChange={(e) => setSearchedPhrase(e.target.value)}/>   
-                <SearcherButton type="button" onClick={() => {}}>
-                    <SearchIcon style={{color: "inherit", fontSize: "1.9em"}}/>    
-                </SearcherButton>
+                    onChange={(e) => setSearchedPhrase(e.target.value)}/>
             </SearcherBarInputContainer>
-                    {searchedResults.map((elem, ind) => <Suspense fallback={<></>}>
+                    {
+                    searchedResults.filter((elem:any) => elem["isDisplayed"] === 1).length === 0 ?
+                    <SearchingNoResultsContainer className="block-center">
+                        Brak wyników. Spróbuj innych słów kluczowych
+                    </SearchingNoResultsContainer> :
+                    searchedResults.map((elem, ind) => elem["isDisplayed"] === 0 ? <div key={`search-result-${ind}`}></div> : <Suspense fallback={<></>}
+                                key={`search-result-${ind}`}>
                         <Link to={`/document/${elem["_id"]}`}>
                             {ind < 4 ? <SearchingMainResultComponent
                                 title={elem["title"]}
                                 publishedOn={elem["createdDate"]}
                                 publisher={elem["creatorEmail"]}
                                 likesNum={elem["likesNum"]}
-                                animAlign={ind % 2 === 0 ? -10 : 10}
-                                key={`search-result-${ind}`}/> : <SearchingSideResultComponent 
+                                animAlign={ind % 2 === 0 ? -10 : 10}/> : <SearchingSideResultComponent 
                                 title={elem["title"]}
                                 publishedOn={elem["createdDate"]}
                                 publisher={elem["creatorEmail"]}
                                 likesNum={elem["likesNum"]}
-                                animAlign={ind % 2 === 0 ? -10 : 10}
-                                key={`search-result-${ind}`}/>}
+                                animAlign={ind % 2 === 0 ? -10 : 10}/>}
                         </Link></Suspense>)}
                     </SearchingResultsSection> : <SearcherFailureContainer className="block-center">
                             <SearcherFailureHeader className="block-center">

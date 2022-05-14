@@ -4,7 +4,8 @@ interface LandingWrapperInterface{
     source?: any,
     reversedShadow?: boolean,
     bottomPadding?: number,
-    backgroundSize?: string
+    backgroundSize?: string,
+    backgroundRepeat?: string
 }
 
 interface AnimatingInterface{
@@ -27,6 +28,7 @@ export const LandingSectionWrapper = styled.section<LandingWrapperInterface>`
     height: fit-content;
     background: ${(props) => props.source !== undefined ? `url(${props.source})` : props.theme.bgColor};
     background-size: ${(props) => props.backgroundSize !== undefined ? props.backgroundSize : "cover"};
+    background-repeat: ${(props) => props.backgroundRepeat !== undefined ? props.backgroundRepeat : "auto"};
     text-align: center;
     font-family: ${(props) => props.theme.fonts.main};
     overflow: hidden;
