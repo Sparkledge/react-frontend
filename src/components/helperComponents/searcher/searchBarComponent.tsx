@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from "react";
-import SearchIcon from '@mui/icons-material/Search';
+import SwipeLeftAltIcon from '@mui/icons-material/SwipeLeftAlt';
+import SwipeRightAltIcon from '@mui/icons-material/SwipeRightAlt';
 
 import { SearcherCategoriesSubContainer, SearcherCategoriesContainer, GoToSearchBarBtn, 
-    SearcherBar, SearcherInput, SearcherButton } from "../../../styled/subpages/searcher/searcherBar";
+    SearcherBar } from "../../../styled/subpages/searcher/searcherBar";
 
 import SearchBarOptionsComponent from "./searchBarOptionsComponent";
 
@@ -20,8 +21,6 @@ interface SearchBarComponentInterface{
     setSearchedSemester: (newSemester: number) => void,
     searchedCourse: string,
     setSearchedCourse: (newCourse: string) => void,
-    searchedPhrase: string,
-    setSearchedPhrase: (newPhrase: string) => void,
     submitCallback: () => void
 }
 
@@ -29,8 +28,7 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
     ({universities, faculties, programmes, 
         searchedUniversity, setSearchedUniversity, searchedFaculty, setSearchedFaculty,
         searchedProgramme, setSearchedProgramme, searchedSemester, setSearchedSemester,
-        searchedCourse, setSearchedCourse,
-        searchedPhrase, submitCallback, setSearchedPhrase}:SearchBarComponentInterface) => {
+        searchedCourse, setSearchedCourse, submitCallback}:SearchBarComponentInterface) => {
 
     const [phase, setPhase] = useState<number>(1); // 1 - research data, 2 - string data
     const [paramsPhase, setParamsPhase] = useState<number>(0); // 0 - university, fauculty and programme, 1 - semester, course
@@ -143,13 +141,13 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
                 {
                     searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 && paramsPhase === 1 ?
                     <GoToSearchBarBtn className="block-center" onClick={() => setSearchedProgramme("")}>
-                        Wróć
+                        <SwipeLeftAltIcon style={{color: "inherit", fontSize: "2em"}}/>
                     </GoToSearchBarBtn> : <></>
                 }
                 {searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 && 
                 searchedSemester > 0 && searchedCourse.length > 0 ? 
                     <GoToSearchBarBtn className="block-center" onClick={() => {setPhase(2);submitCallback();}}>
-                        Dalej
+                        <SwipeRightAltIcon style={{color: "inherit", fontSize: "2em"}}/>
                     </GoToSearchBarBtn>: <></>}
             </> : <></>
         }

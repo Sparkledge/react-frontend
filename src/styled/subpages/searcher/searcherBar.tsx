@@ -87,16 +87,18 @@ export const SearcherCategorieChooser = styled.div<SearcherCategorieChooserInter
     }
 `
 
-export const GoToSearchBarBtn = styled.div`
+export const GoToSearchBarBtn = styled.button`
     width: calc(95% - 80px);
-    padding: 20px 40px;
+    padding: 10px 40px;
+    height: fit-content;
+    border: none;
     border-radius: 10px;
     font-size: 1em;
     letter-spacing: 0.06em;
     text-shadow: ${(props) => props.theme.fonts.textShadowMain};
     text-align: center;
     color: ${(props) => props.theme.color};
-    background: ${(props) => props.theme.landingButtonColor};
+    background: transparent;
     margin-bottom: 4vh;
     text-align: center;
     cursor: pointer;
@@ -142,10 +144,10 @@ export const SearcherBarInputContainer = styled.div`
 `
 
 export const SearcherInput = styled.input`
-    width: calc(60% - 24px);
+    width: calc(80% - 24px);
     padding: 20px 10px;
     border: none;
-    border-radius: 10px 0px 0px 10px;
+    border-radius: 10px;
     color: ${(props) => props.theme.color};
     background: ${(props) => props.theme.signingInputBackground};
     font-family: ${(props) => props.theme.fonts.main};
@@ -165,8 +167,12 @@ export const SearcherInput = styled.input`
 
     @media screen and (min-width: 375px){ 
         font-size: 1.1em;
-        width: calc(60% - 30px);
+        width: calc(70% - 30px);
         margin: 0px 5px;
+    }
+
+    @media screen and (min-width: 425px){
+        width: calc(60% - 30px);
     }
 
     @media screen and (min-width: 768px){

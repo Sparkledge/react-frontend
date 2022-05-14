@@ -1,6 +1,6 @@
 import React from "react";
 import { SearchingMainResult, SearchingResultHeader,
-    SearchingResultSubInfo, SearchingResultTagsSection, SearchingResultTag } from "../../../styled/subpages/searcher";
+    SearchingResultSubInfo, SearchingResultTagsSection, SearchingResultTag } from "../../../styled/subpages/searcher/searcherResults";
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
 export interface SearchingMainResultComponentInterface{
