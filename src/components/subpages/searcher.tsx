@@ -15,7 +15,7 @@ import SearchingPreloaderComponent from "../helperComponents/searcher/searchingP
 const SearchBarComponent = React.lazy(() => import("../helperComponents/searcher/searchBarComponent"));
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
 const SearchingMainResultComponent = React.lazy(() => import("../helperComponents/searcher/searchingMainResultComponent"));
-const SearchingSideResultComponent = React.lazy(() => import("../helperComponents/searcher/searchingSideResultComponent"));
+//const SearchingSideResultComponent = React.lazy(() => import("../helperComponents/searcher/searchingSideResultComponent"));
 const BackgroundPattern = require("../../assets/pattern_background2.webp");
 
 const Searcher:React.FC = () => {
@@ -170,7 +170,7 @@ const Searcher:React.FC = () => {
                     </SearchingNoResultsContainer> :
                     searchedResults.map((elem, ind) => elem["isDisplayed"] === 0 ? <div key={`search-result-${ind}`}></div> : <Suspense fallback={<></>}
                                 key={`search-result-${ind}`}>
-                        <Link to={`/document/${elem["fileKey"]}`}>
+                        <Link to={`/document/${elem["_id"]}`}>
                             <SearchingMainResultComponent
                                 title={elem["title"]}
                                 publishedOn={elem["createdDate"]}

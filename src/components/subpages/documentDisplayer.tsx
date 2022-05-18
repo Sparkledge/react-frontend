@@ -8,6 +8,8 @@ import { MainContainer } from "../../styled/main";
 import { LandingSectionWrapper, LandingSectionFilter, LandingSectionHeader } from "../../styled/subpages/welcome";
 import { DocumentDisplayerErrorHeader } from "../../styled/subpages/documentDisplayer";
 
+import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
+
 import { RootState } from "../../redux/mainReducer";
 
 const Background = require("../../assets/pattern_background.webp");
@@ -17,6 +19,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 const DocumentDisplayer:React.FC = () => {
     
     const [isError, toggleIsError] = useState<boolean>(false);
+    const [title, setTitle] = useState<string>("");
     const [isFile, toggleIsFile] = useState<boolean>(false);
     const [file, setFile] = useState<any>(0);
     const loginUserSelector = useSelector((state: RootState) => state.generalData.currentToken);
@@ -26,7 +29,9 @@ const DocumentDisplayer:React.FC = () => {
     const getTheData = async() => {
         if(loginUserSelector.length > 0 ){
             toggleIsFile(false);
-            await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/${docId}`,{
+            await axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/document/`, {
+                documentId: docId
+            },{
                 headers: {
                     "Authorization": `Bearer ${loginUserSelector}`,
                     "responseType": "arraybuffer",
@@ -35,12 +40,29 @@ const DocumentDisplayer:React.FC = () => {
                 }
             })
             .then((res) => {
-                toggleIsFile(true);
                 console.log(res);
-                setFile(res.data);
+                setTitle(res.data.title);
+                axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/${res.data.fileKey}`, {
+                    headers: {
+                        "Authorization": `Bearer ${loginUserSelector}`,
+                        "responseType": "arraybuffer",
+                        'Content-Type': 'application/json',
+                        "Accept": 'application/pdf',
+                    }
+                }).then((res) => {
+                    toggleIsFile(true);
+                    console.log(res);
+                    setFile(res.data);
+                })
+                .catch((err) => {
+                    console.log(err)
+                    toggleIsFile(false);
+                    toggleIsError(true);
+                });
             })
             .catch((err) => {
                 console.log(err)
+                toggleIsError(true);
             });
         }
     }
@@ -61,7 +83,7 @@ const DocumentDisplayer:React.FC = () => {
             <LandingSectionFilter>
 
                 <LandingSectionHeader className="block-center">
-                    Document title
+                    {title}
                 </LandingSectionHeader>
 
                 {loginUserSelector.length === 0 || isError? 
@@ -69,8 +91,8 @@ const DocumentDisplayer:React.FC = () => {
                     {isError ? "Coś poszło nie tak. Spróbuj ponownie": "Zaloguj się, aby móc wyświetlić dokument"}
                 </DocumentDisplayerErrorHeader>: isFile ? <>
                     <Document file={`data:application/pdf;base64,${file}`} onLoadSuccess={() => {console.log("loaded")}} 
-                    loading={<div style={{color: "white"}}>Ładowanie...</div>} error={<div>Coś dupło</div>}>
-                        <Page pageNumber={0} />
+                    loading={<SearchingPreloaderComponent/>} error={<div>Coś dupło</div>}>
+                        <Page pageNumber={1} />
                     </Document>
                 </> : <></>}
 

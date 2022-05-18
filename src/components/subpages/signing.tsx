@@ -1,6 +1,7 @@
 import React, {Suspense, useEffect, useState} from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useCookies } from 'react-cookie';
 import axios from "axios";
 
 import { MainContainer, Preloader } from "../../styled/main";
@@ -29,6 +30,7 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
     const [Password, setPassword] = useState<string>("");
     const [RepeatedPassword, setRepeatedPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
+    const [cookies, setCookies] = useCookies(['userId']);
     const currentToken:string = useSelector((state:RootState) => state.generalData.currentToken);
     
     const navigate = useNavigate();
@@ -62,6 +64,7 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
                         setPassword("");
                         setLogin("");
                         dispatch(setNewToken(res.data.accessToken));
+                        setCookies("userId", res.data.accessToken, {path: '/'});
                         navigate("/panel");
                     }
                     else {
