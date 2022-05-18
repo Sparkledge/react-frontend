@@ -19,7 +19,9 @@ const About:React.FC = () => {
                         O nas
                     </AboutHeader>
                     <AboutDesc className="block-center">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex consequuntur incidunt repellendus delectus fugiat sit ut dolores perferendis aperiam aliquid quaerat accusamus itaque maiores atque impedit autem sequi, soluta ullam.    
+                    Cześć! <br/>
+Bardzo miło nam, że korzystasz z naszej platformy. Mamy nadzieje, że ułatwia Ci ona studiowanie. Oto kilka słow o nas, żebyś mógł/mogła nas lepiej poznać. 
+Cała nasza ekipa studiuje na kierunku Computer Science na wydziale MiNI PW. Tam tez się poznaliśmy.
                     </AboutDesc>
                     <TeamWidgetsSection/>
                 </LandingSectionFilter>

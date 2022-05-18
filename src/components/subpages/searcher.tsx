@@ -86,8 +86,6 @@ const Searcher:React.FC = () => {
                 }
             })
             .then((res) => {
-                console.log(res.data);
-                console.log(res.data.courses);
                 setProgrammesList(res.data.courses)
             })
             .catch((err) => {
@@ -106,6 +104,7 @@ const Searcher:React.FC = () => {
                     courseId: programmesList.filter((elem:any) => elem.name === searchedCourse)[0]["_id"]
             })
                 .then((res) => {
+                    console.log(res.data.documents);
                     setSearcherState(res.status === 200 ? 2 : 3);
                     setSearchedResults(res.status === 200 ? res.data.documents.map((elem:any) => {elem["isDisplayed"] = 1; return elem;}) : []);
                     setSearchedPhrase("");
@@ -116,15 +115,19 @@ const Searcher:React.FC = () => {
         }
     }
 
+    const checkIfFound = (elem: any) :boolean => {
+        return elem["title"].toLowerCase().search(searchedPhrase.toLowerCase()) !== -1 ? true :
+        elem["creatorEmail"].toLowerCase().search(searchedPhrase.toLowerCase()) !== -1 ?  true :
+        elem["description"].toLowerCase().search(searchedPhrase.toLowerCase()) !== -1 ? true: 
+        searchedPhrase.toLowerCase().split(' ').filter((toAnalyze: string) => elem["title"].search(toAnalyze) !== -1).length > 0 ? true : false;
+    }
+
     useEffect(() => {
         if(searchedResults.length > 0 ){
             let operand = [...searchedResults];
             if(searchedPhrase.length === 0) operand.map((elem:any) => {elem["isDisplayed"] = 1; return elem;});
             else operand.map((elem:any) => {
-                    elem["title"].search(searchedPhrase) !== -1 ? elem["isDisplayed"] = 1 :
-                    elem["creatorEmail"].search(searchedPhrase) !== -1 ? elem["isDisplayed"] = 1 :
-                    elem["description"].search(searchedPhrase) !== -1 ? elem["isDisplayed"] = 1: 
-                    elem["isDisplayed"] = 0;
+                    checkIfFound(elem) ? elem["isDisplayed"] = 1 : elem["isDisplayed"] = 0;
                 return elem;
             })
             setSearchedResults(operand);
@@ -167,18 +170,15 @@ const Searcher:React.FC = () => {
                     </SearchingNoResultsContainer> :
                     searchedResults.map((elem, ind) => elem["isDisplayed"] === 0 ? <div key={`search-result-${ind}`}></div> : <Suspense fallback={<></>}
                                 key={`search-result-${ind}`}>
-                        <Link to={`/document/${elem["_id"]}`}>
-                            {ind < 4 ? <SearchingMainResultComponent
+                        <Link to={`/document/${elem["fileKey"]}`}>
+                            <SearchingMainResultComponent
                                 title={elem["title"]}
                                 publishedOn={elem["createdDate"]}
                                 publisher={elem["creatorEmail"]}
+                                description={elem["description"]}
                                 likesNum={elem["likesNum"]}
-                                animAlign={ind % 2 === 0 ? -10 : 10}/> : <SearchingSideResultComponent 
-                                title={elem["title"]}
-                                publishedOn={elem["createdDate"]}
-                                publisher={elem["creatorEmail"]}
-                                likesNum={elem["likesNum"]}
-                                animAlign={ind % 2 === 0 ? -10 : 10}/>}
+                                viewsNum={elem["viewsNum"]}
+                                animAlign={ind % 2 === 0 ? -10 : 10}/>
                         </Link></Suspense>)}
                     </SearchingResultsSection> : <SearcherFailureContainer className="block-center">
                             <SearcherFailureHeader className="block-center">
