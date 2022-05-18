@@ -1,5 +1,5 @@
 import SK_image from "../assets/test_team_image.webp";
-import WojtekBasinski from "../assets/staff/Wojtek_Basiński.jpg";
+import WojtekBasinski from "../assets/staff/Wojtek_Basiński.webp";
 import SzymonKupisz from "../assets/staff/Szymon_Kupisz.webp";
 import OlaWieczorek from "../assets/staff/Ola_Wieczorek.webp";
 
@@ -20,13 +20,13 @@ const TeamData:TeamDataType[] = [
     },
     {
         name: "Ola Kłos",
-        position: "Graphic developer",
+        position: "Graphic designer",
         describe: "Tworzy grafiki do naszej aplikacji. Gra na pianinie, Interesuje się fizyka kwantową, w szczególności komputerami kwantowymi. Lubi podróżować i czytać książki.  ",
         photo: SK_image
     },
     {
         name: "Ola Wieczorek",
-        position: "Social media specialist",
+        position: "Head of Social Media",
         describe: "Odpowiedzialna za Social Media. Uwielbia tańczyć i podróżować. Lubi żeglować i chodzić po górach.",
         photo: OlaWieczorek
     },
