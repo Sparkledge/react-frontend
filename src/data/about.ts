@@ -1,6 +1,6 @@
-import SK_image from "../assets/test_team_image.webp";
 import WojtekBasinski from "../assets/staff/Wojtek_Basiński.webp";
 import SzymonKupisz from "../assets/staff/Szymon_Kupisz.webp";
+import OlaKlos from "../assets/staff/Ola_Kłos.webp";
 import OlaWieczorek from "../assets/staff/Ola_Wieczorek.webp";
 
 export type TeamDataType = {name: string, position: string, describe: string, photo: any};
@@ -22,7 +22,7 @@ const TeamData:TeamDataType[] = [
         name: "Ola Kłos",
         position: "Graphic designer",
         describe: "Tworzy grafiki do naszej aplikacji. Gra na pianinie, Interesuje się fizyka kwantową, w szczególności komputerami kwantowymi. Lubi podróżować i czytać książki.  ",
-        photo: SK_image
+        photo: OlaKlos
     },
     {
         name: "Ola Wieczorek",
