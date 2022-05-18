@@ -1,9 +1,11 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, {useEffect} from "react";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useCookies } from "react-cookie"; 
 
 import { LightMode, DarkMode, SparkledgeGlobalStyle } from "../styled/main";
+import { setNewToken } from "../redux/actions/generalActions";
 import { RootState } from "../redux/mainReducer";
 import Navbar from "./subcomponents/navbar";
 import Welcome from "./subpages/welcome";
@@ -17,9 +19,20 @@ import Notfound from "./subpages/notfound";
 import UserPanel from "./subpages/userPanel";
 
 const Main: React.FC = () => {
+
+  const [cookies, setCookies] = useCookies(["userId"]);
+
+  const dispatch = useDispatch();
+
   const graphicalMode: number = useSelector(
     (state: RootState) => state.generalData.graphicalMode
   );
+
+  useEffect(() => {
+    if(cookies["userId"] !== undefined){
+      dispatch(setNewToken(cookies["userId"]));
+    }
+  }, [])
 
   return (
     <ThemeProvider theme={graphicalMode === 0 ? LightMode : DarkMode}>

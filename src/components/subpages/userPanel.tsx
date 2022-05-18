@@ -1,6 +1,7 @@
 import React, {Suspense, useState, useEffect} from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import {useCookies} from "react-cookie";
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 
 import { MainContainer, Preloader } from "../../styled/main";
@@ -35,11 +36,13 @@ const UserPanel:React.FC = () => {
     const [lastPublishedList, setLastPublishedList] = useState<LastPublishedItemType[]>([]);
     const currentToken:string = useSelector((state: RootState) => state.generalData.currentToken);
     const navigate = useNavigate();
+    const [cookies, setCookies] = useCookies(["userId"]);
 
 
     useEffect(() => {
-        if(currentToken.length === 0) navigate("/");
-    }, [currentToken])
+        if(cookies["userId"] === undefined) navigate("/");
+        else if(cookies["userId"] === undefined && currentToken.length === 0) navigate("/"); // the same logic is implemented twice, as there is risk that the cookies' content may not be uniform with the current state of application
+    }, [currentToken, cookies])
 
     return <MainContainer className="block-center">
         <Suspense fallback={<Preloader className="block-center">Ładowanie...</Preloader>}>

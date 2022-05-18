@@ -35,6 +35,7 @@ export const AboutDesc = styled.div`
     @media screen and (min-width: 768px){
         width: calc(70% - 20px);
         font-size: 1.7em;
+        line-height: 1.3em;
     }
 `;
 
