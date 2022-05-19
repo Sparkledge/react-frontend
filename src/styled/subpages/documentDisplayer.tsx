@@ -26,3 +26,40 @@ export const DocumentDisplayerErrorHeader = styled.header`
         font-size: 1.9em;
     }
 `;
+
+export const DocumentDisplayerWrapper = styled.section`
+    width: auto;
+    height: fit-content;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+`;
+
+export const SwipperBtn = styled.button`
+    width: calc(25% - 20px);
+    padding: 10px;
+    text-align: center;
+    font-size: 2.1em;
+    color: ${(props) => props.theme.color};
+    text-shadow: ${(props) => props.theme.fonts.textShadowMain};
+    background: none;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0px 5px;
+    transition: all 0.4s;
+
+    &:hover{
+        filter: brightness(70%);
+    }
+`;
+
+export const DocumentDataWrapper = styled.section`
+    width: calc(100% - 10px);
+    padding: 10px 5px 10vh 5px;
+    text-align: center;
+    position: relative;
+    top: 3vh;
+`

@@ -17,6 +17,7 @@ const DocumentUpload:React.FC = () => {
     const currentToken:string = useSelector((state: RootState) => state.generalData.currentToken);
 
     const [isWorking, toggleIsWorking] = useState<boolean>(true);
+    const [phaseNumber, setPhaseNumber] = useState<number>(1); // 1 - name, 2 - file & upload
     const [materialName, setMaterialName] = useState<string>("");
 
     useEffect(() => {
@@ -32,15 +33,18 @@ const DocumentUpload:React.FC = () => {
                     </DocumentUploadFormHeader>
                     <DocumentUploadFormDataSection className="block-center">
                         {
-                            isWorking ? <>
+                            isWorking ? phaseNumber === 1 ? <>
                                 <DocumentUploadTextInput type="text" placeholder="Jak nazwiesz ten materiał?"
                                     value={materialName} onChange={(e) => setMaterialName(e.target.value)}/>
+                             </> : <>
+
                              </> : <DocumentUploadNotWorking className="block-center">
                                 {currentToken.length === 0 ? "Zaloguj się, żeby wrzucić materiał" : "Coś poszło nie tak. Spróbuj ponownie"}
                             </DocumentUploadNotWorking>
                         }
                     </DocumentUploadFormDataSection>
-                    <DocumentUploadNextButton className="block-center" scale={materialName.length === 0 ? 0 : 1}>
+                    <DocumentUploadNextButton className="block-center" scale={materialName.length === 0 || phaseNumber !== 1 ? 0 : 1}
+                        onClick={() => setPhaseNumber(2)}>
                         <SwipeRightAltIcon style={{color: "inherit", fontSize: "inherit"}}/>
                     </DocumentUploadNextButton>
                 </DocumentUploadFormWrapper>
