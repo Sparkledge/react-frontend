@@ -34,24 +34,19 @@ const DocumentDisplayer:React.FC = () => {
             },{
                 headers: {
                     "Authorization": `Bearer ${loginUserSelector}`,
-                    "responseType": "arraybuffer",
                     'Content-Type': 'application/json',
-                    "Accept": 'application/pdf',
                 }
             })
-            .then((res) => {
+            .then(async(res) => {
                 console.log(res);
                 setTitle(res.data.title);
-                axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/${res.data.fileKey}`, {
+                await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/${res.data.fileKey}`, {
                     headers: {
-                        "Authorization": `Bearer ${loginUserSelector}`,
-                        "responseType": "arraybuffer",
-                        'Content-Type': 'application/json',
-                        "Accept": 'application/pdf',
-                    }
+                        "Authorization": `Bearer ${loginUserSelector}`
+                    },
+                    responseType: 'blob',
                 }).then((res) => {
                     toggleIsFile(true);
-                    console.log(res);
                     setFile(res.data);
                 })
                 .catch((err) => {
@@ -75,7 +70,7 @@ const DocumentDisplayer:React.FC = () => {
         else{
             getTheData();
         }
-    }, [])
+    }, [docId, loginUserSelector])
 
     return <MainContainer className="block-center">
         <LandingSectionWrapper className="block-center" source={Background} backgroundSize="contain"
@@ -90,9 +85,10 @@ const DocumentDisplayer:React.FC = () => {
                 <DocumentDisplayerErrorHeader className="block-center">
                     {isError ? "Coś poszło nie tak. Spróbuj ponownie": "Zaloguj się, aby móc wyświetlić dokument"}
                 </DocumentDisplayerErrorHeader>: isFile ? <>
-                    <Document file={`data:application/pdf;base64,${file}`} onLoadSuccess={() => {console.log("loaded")}} 
-                    loading={<SearchingPreloaderComponent/>} error={<div>Coś dupło</div>}>
-                        <Page pageNumber={1} />
+                    <Document file = {`data:application/pdf;base64,${file}`} onLoadSuccess={() => {console.log("loaded")}} 
+                    onLoadProgress={() => console.log("loading")}
+                    loading={<SearchingPreloaderComponent/>} onLoadError = {() => toggleIsError(true)} error={<div>Coś dupło</div>}>
+                        <Page pageNumber={1}/>
                     </Document>
                 </> : <></>}
 
@@ -102,5 +98,5 @@ const DocumentDisplayer:React.FC = () => {
 
     </MainContainer>
 };
-
+/* */
 export default DocumentDisplayer;
