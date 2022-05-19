@@ -33,3 +33,9 @@ body::-webkit-scrollbar-track{
   margin-left: auto;
   margin-right: auto;
 }
+
+.inline{
+  display: inline-block;
+  margin-left: 5px;
+  margin-right: 5px;
+}
