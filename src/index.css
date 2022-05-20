@@ -39,3 +39,12 @@ body::-webkit-scrollbar-track{
   margin-left: 5px;
   margin-right: 5px;
 }
+
+.hoverClass{
+  cursor: pointer;
+  transition: all 0.4s;
+}
+
+.hoverClass:hover{
+  filter: brightness(70%);
+}

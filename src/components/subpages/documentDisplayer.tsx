@@ -1,18 +1,22 @@
 import React, {useState, useEffect, Suspense} from "react";
 import { Document, Page, pdfjs } from 'react-pdf';
-import axios from "axios";
+import jwt from 'jwt-decode'
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import axios from "axios";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import SwipeLeftAltIcon from '@mui/icons-material/SwipeLeftAlt';
 import SwipeRightAltIcon from '@mui/icons-material/SwipeRightAlt';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 import { MainContainer } from "../../styled/main";
 import { LandingSectionWrapper, LandingSectionFilter, LandingSectionHeader } from "../../styled/subpages/welcome";
 import { DocumentDisplayerErrorHeader, DocumentDisplayerWrapper,
-    DocumentDataWrapper, SwipperBtn } from "../../styled/subpages/documentDisplayer";
+    DocumentDataWrapper, SwipperBtn, InfoContainer, DescriptionDataContainer,
+    DescriptionDataHeader, DescriptionDataContent } from "../../styled/subpages/documentDisplayer";
 
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
 
@@ -28,11 +32,19 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 const DocumentDisplayer:React.FC = () => {
     
     const [isError, toggleIsError] = useState<boolean>(false);
+
     const [title, setTitle] = useState<string>("");
+    const [likesNumber, setLikesNumber] = useState<number>(0);
+    const [isLiked, toggleIsLiked] = useState<boolean>(false);
+    const [viewsNumber, setViewsNumber] = useState<number>(0);
+    const [descriptionOfFile, setDescriptionOfFile] = useState<string>("");
+    const [fileAuthor, setFileAuthor] = useState<string>("");
+
     const [isFile, toggleIsFile] = useState<boolean>(false);
     const [file, setFile] = useState<any>(null);
-    const [currentPage, setCurrentPage] = useState<number>(0);
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [pagesNumber, setPagesNumber] = useState<number>(1);
+
     const loginUserSelector = useSelector((state: RootState) => state.generalData.currentToken);
 
     const tabletWidthChecker = useMediaQuery('(min-width: 768px)');
@@ -70,7 +82,7 @@ const DocumentDisplayer:React.FC = () => {
         }
       
         // Deal with the remaining bytes and padding
-        if (byteRemainder == 1) {
+        if (byteRemainder === 1) {
           chunk = bytes[mainLength];
       
           a = (chunk & 252) >> 2; // 252 = (2^6 - 1) << 2
@@ -78,8 +90,8 @@ const DocumentDisplayer:React.FC = () => {
           // Set the 4 least significant bits to zero
           b = (chunk & 3)   << 4; // 3   = 2^2 - 1
       
-          base64 += encodings[a] + encodings[b] + '==';
-        } else if (byteRemainder == 2) {
+          base64 += encodings[a] + encodings[b] + '===';
+        } else if (byteRemainder === 2) {
           chunk = (bytes[mainLength] << 8) | bytes[mainLength + 1];
       
           a = (chunk & 64512) >> 10 // 64512 = (2^6 - 1) << 10
@@ -94,11 +106,6 @@ const DocumentDisplayer:React.FC = () => {
         return base64;
     }
 
-    const onDocumentLoad = ({numPages}:{numPages: number}) => {
-        setPagesNumber(numPages);
-        setCurrentPage(1);
-    }
-
     const getTheData = async() => {
         if(loginUserSelector.length > 0 ){
             toggleIsFile(false);
@@ -111,7 +118,14 @@ const DocumentDisplayer:React.FC = () => {
                 }
             })
             .then(async(res) => {
+                let id:any = jwt(loginUserSelector);
                 setTitle(res.data.title);
+                setLikesNumber(res.data.likesNum);
+                toggleIsLiked(res.data.likes.find((elem: string) => elem === id.UserInfo.id) === undefined ? false : true);
+                setViewsNumber(res.data.viewsNum);
+                setFileAuthor(res.data.creatorEmail);
+                setDescriptionOfFile(res.data.description);
+                id = null;
                 await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/${res.data.fileKey}`, {
                     headers: {
                         "Authorization": `Bearer ${loginUserSelector}`
@@ -127,9 +141,33 @@ const DocumentDisplayer:React.FC = () => {
                 });
             })
             .catch((err) => {
+                console.log(err);
                 toggleIsError(true);
             });
         }
+    }
+
+    const onDocumentLoad = ({numPages}:{numPages: number}) => {
+        setPagesNumber(numPages);
+        setCurrentPage(1);
+    }
+
+    const addLike = async() => {
+        await axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/likes`, {
+                documentId: docId
+        }, {
+            headers: {
+                 "Content-Type": "application/json",
+                 "Authorization": `Bearer ${loginUserSelector}`,
+            } 
+        })
+        .then((res) => {
+            setLikesNumber(isLiked ? likesNumber-1 : likesNumber+1);
+            toggleIsLiked(!isLiked);
+        })
+        .catch((err) => {
+            console.log(err);
+        })
     }
 
     useEffect(() => {
@@ -177,9 +215,22 @@ const DocumentDisplayer:React.FC = () => {
                     <SwipperBtn onClick={() => setCurrentPage(pagesNumber)}>
                         <FastForwardIcon style={{color: "inherit", fontSize: "inherit"}}/>
                     </SwipperBtn>
-
+                    <InfoContainer>
+                        <RemoveRedEyeIcon style={{color: "inherit",fontSize: "1.6em", verticalAlign: "middle"}}/> {viewsNumber}
+                    </InfoContainer>
+                    <InfoContainer className="hoverClass">
+                        <ThumbUpIcon style={{color: "inherit",fontSize: "1.6em", verticalAlign: "middle"}}
+                            onClick={() => addLike()}/> {likesNumber}
+                    </InfoContainer>
                 </DocumentDataWrapper>
-                
+                <DescriptionDataContainer className="block-center">
+                    <DescriptionDataHeader className="block-center">
+                        Autor: {fileAuthor}
+                    </DescriptionDataHeader>
+                    <DescriptionDataContent className="block-center">
+                        {descriptionOfFile}
+                    </DescriptionDataContent>
+                </DescriptionDataContainer>
                 </> : <></>}
 
             </LandingSectionFilter>
