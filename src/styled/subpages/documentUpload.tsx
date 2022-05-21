@@ -131,4 +131,46 @@ export const DocumentUploadNextButton = styled.div<NextButtonInterface>`
     &:hover{
         filter: brightness(70%);
     }
+`;
+
+export const DocumentUploadDataSubSection = styled.section`
+    width: 100%;
+    text-align: center;
+    line-height: initial;
+    position: relative;
+    top: 4vh;
 `
+
+export const DocumentUploadFileHeader = styled.header`
+    width: calc(80% - 20px);
+    padding: 10px;
+    text-align: center;
+    font-size: 1.9em;
+    letter-spacing: 0.07em;
+    color: ${(props) => props.theme.color};
+    text-shadow: ${(props) => props.theme.fonts.textShadowMain};
+    margin-bottom: 3vh;
+`;
+
+export const DocumentUploadFileInput = styled.input`
+    display: none;
+`;
+
+export const DocumentUploadFileButton = styled.button`
+    width: fit-content;
+    padding: 20px 40px;
+    border: none;
+    border-radius: 20px;
+    box-shadow: ${(props) => props.theme.fonts.textShadowMain};
+    color: ${(props) => props.theme.color};
+    font-family: ${(props) => props.theme.fonts.main};
+    font-size: 1.6em;
+    letter-spacing: 0.05em;
+    background: ${(props) => props.theme.signingInputBackground};
+    cursor: pointer;
+    transition: all 0.4s;
+
+    &:hover{
+        filter: brightness(70%);
+    }
+`;

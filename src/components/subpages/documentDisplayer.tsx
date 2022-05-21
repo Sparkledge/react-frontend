@@ -109,15 +109,14 @@ const DocumentDisplayer:React.FC = () => {
     const getTheData = async() => {
         if(loginUserSelector.length > 0 ){
             toggleIsFile(false);
-            await axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/document/`, {
-                documentId: docId
-            },{
+            await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/getDocument/${docId}`,{
                 headers: {
                     "Authorization": `Bearer ${loginUserSelector}`,
                     'Content-Type': 'application/json',
                 }
             })
             .then(async(res) => {
+                console.log(res.data);
                 let id:any = jwt(loginUserSelector);
                 setTitle(res.data.title);
                 setLikesNumber(res.data.likesNum);
