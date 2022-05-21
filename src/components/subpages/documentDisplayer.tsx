@@ -25,7 +25,7 @@ import { RootState } from "../../redux/mainReducer";
 
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
 
-const Background = require("../../assets/pattern_background.webp");
+const Background = require("../../assets/pattern_background5.webp");
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -109,15 +109,14 @@ const DocumentDisplayer:React.FC = () => {
     const getTheData = async() => {
         if(loginUserSelector.length > 0 ){
             toggleIsFile(false);
-            await axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/document/`, {
-                documentId: docId
-            },{
+            await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/getDocument/${docId}`,{
                 headers: {
                     "Authorization": `Bearer ${loginUserSelector}`,
                     'Content-Type': 'application/json',
                 }
             })
             .then(async(res) => {
+                console.log(res.data);
                 let id:any = jwt(loginUserSelector);
                 setTitle(res.data.title);
                 setLikesNumber(res.data.likesNum);
@@ -181,8 +180,8 @@ const DocumentDisplayer:React.FC = () => {
     }, [docId, loginUserSelector])
 
     return <MainContainer className="block-center">
-        <LandingSectionWrapper className="block-center" source={Background} backgroundSize="contain"
-            bottomPadding={10}>
+        <LandingSectionWrapper className="block-center" source={Background} backgroundSize="initial"
+            bottomPadding={10} backgroundRepeat="repeat">
             <LandingSectionFilter>
 
                 <LandingSectionHeader className="block-center">

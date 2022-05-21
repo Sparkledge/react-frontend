@@ -7,13 +7,14 @@ import { AboutHeader, AboutDesc } from "../../styled/subpages/about";
 
 const TeamWidgetsSection = React.lazy(() => import("../helperComponents/about/TeamWidgetsSection"));
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
-const BackgroundPattern = require("../../assets/pattern_background.webp");
+const BackgroundPattern = require("../../assets/pattern_background4_1.webp");
 
 const About:React.FC = () => {
 
     return <MainContainer className="block-center">
         <Suspense fallback={<Preloader className="block-center">Ładowanie...</Preloader>}>
-            <LandingSectionWrapper className="block-center" source={BackgroundPattern} backgroundSize="contain">
+            <LandingSectionWrapper className="block-center" source={BackgroundPattern} backgroundSize="initlal"
+                backgroundRepeat="repeat">
                 <LandingSectionFilter>
                     <AboutHeader className="block-center">
                         O nas

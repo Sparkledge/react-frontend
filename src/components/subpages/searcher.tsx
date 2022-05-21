@@ -16,7 +16,7 @@ const SearchBarComponent = React.lazy(() => import("../helperComponents/searcher
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
 const SearchingMainResultComponent = React.lazy(() => import("../helperComponents/searcher/searchingMainResultComponent"));
 //const SearchingSideResultComponent = React.lazy(() => import("../helperComponents/searcher/searchingSideResultComponent"));
-const BackgroundPattern = require("../../assets/pattern_background2.webp");
+const BackgroundPattern = require("../../assets/pattern_background5.webp");
 
 const Searcher:React.FC = () => {
 

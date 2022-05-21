@@ -6,11 +6,11 @@ import { DescribeHeader, DescribeWidgetsSection } from "../../../styled/subpages
 
 import DescribeComponentWidget from "./describeComponentWidget";
 
-const BackgroundPatter = require("../../../assets/pattern_background.webp");
+const BackgroundPattern = require("../../../assets/pattern_background4_1.webp");
 
 const DescribeComponent:React.FC = () => {
-    return <LandingSectionWrapper className="block-center" source={BackgroundPatter} reversedShadow={true} 
-        bottomPadding={10} backgroundSize="contain">
+    return <LandingSectionWrapper className="block-center" source={BackgroundPattern} reversedShadow={true} 
+        bottomPadding={10} backgroundSize="initial" backgroundRepeat="repeat">
         <LandingSectionFilter>
             <DescribeHeader className="block-center">
                 Co może Tobie dać korzystanie ze Sparkledge?
