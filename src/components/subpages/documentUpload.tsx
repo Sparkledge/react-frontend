@@ -10,7 +10,7 @@ import { DocumentUploadFormWrapper, DocumentUploadFormHeader,
 
 import { RootState } from "../../redux/mainReducer";
 
-const BackgroundPattern = require("../../assets/pattern_background.webp");
+const BackgroundPattern = require("../../assets/pattern_background5.webp");
 
 const DocumentUpload:React.FC = () => {
 
@@ -25,7 +25,8 @@ const DocumentUpload:React.FC = () => {
     }, [])
 
     return <MainContainer className="block-center">
-        <LandingSectionWrapper className="block-center" backgroundSize="contain" source={BackgroundPattern}>
+        <LandingSectionWrapper className="block-center" backgroundSize="initial" source={BackgroundPattern}
+            backgroundRepeat="repeat">
             <LandingSectionFilter>
                 <DocumentUploadFormWrapper className="block-center">
                     <DocumentUploadFormHeader className="block-center">

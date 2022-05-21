@@ -25,7 +25,7 @@ import { RootState } from "../../redux/mainReducer";
 
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
 
-const Background = require("../../assets/pattern_background.webp");
+const Background = require("../../assets/pattern_background5.webp");
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -181,8 +181,8 @@ const DocumentDisplayer:React.FC = () => {
     }, [docId, loginUserSelector])
 
     return <MainContainer className="block-center">
-        <LandingSectionWrapper className="block-center" source={Background} backgroundSize="contain"
-            bottomPadding={10}>
+        <LandingSectionWrapper className="block-center" source={Background} backgroundSize="initial"
+            bottomPadding={10} backgroundRepeat="repeat">
             <LandingSectionFilter>
 
                 <LandingSectionHeader className="block-center">

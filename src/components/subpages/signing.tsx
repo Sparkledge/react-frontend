@@ -17,7 +17,7 @@ interface SigningInterface{
     mode: number
 }
 
-const BackgroundPattern = require("../../assets/pattern_background.webp");
+const BackgroundPattern = require("../../assets/pattern_background4_1.webp");
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"))
 
 const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
@@ -118,8 +118,8 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
 
     return <MainContainer className="block-center">
         <Suspense fallback={<Preloader className="block-center">Ładowanie...</Preloader>}>
-            <LandingSectionWrapper className="block-center" source={BackgroundPattern} backgroundSize="contain"
-            bottomPadding={10}>
+            <LandingSectionWrapper className="block-center" source={BackgroundPattern} backgroundSize="initial"
+            bottomPadding={10} backgroundRepeat="repeat">
                 <LandingSectionFilter>
                     <AboutHeader className="block-center">
                         {isVerificationSuccessful === 2 ? "Błąd weryfikacji. Spróbuj ponownie." :

@@ -15,7 +15,7 @@ import { RootState } from "../../redux/mainReducer";
 
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
 
-const Background = require("../../assets/pattern_background.webp");
+const Background = require("../../assets/pattern_background4_1.webp");
 
 type LastViewItemType = {
     title: string,
@@ -46,8 +46,8 @@ const UserPanel:React.FC = () => {
 
     return <MainContainer className="block-center">
         <Suspense fallback={<Preloader className="block-center">Ładowanie...</Preloader>}>
-            <LandingSectionWrapper className="block-center" source={Background} backgroundSize="contain"
-                bottomPadding={0}>
+            <LandingSectionWrapper className="block-center" source={Background} backgroundSize="initial"
+                bottomPadding={0} backgroundRepeat="repeat">
                 <LandingSectionFilter>
                     <UserPanelHeader className="block-center">
                         Panel użytkownika
