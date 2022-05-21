@@ -4,9 +4,14 @@ interface NextButtonInterface{
     scale: number
 }
 
+interface UploadButtonInterface{
+    top?: number
+}
+
 export const DocumentUploadFormWrapper = styled.section`
     width: calc(95% - 20px);
-    height: calc(80vh - 20px);
+    min-height: calc(80vh - 20px);
+    height: fit-content;
     padding: 10px;
     border: none;
     border-radius: 10px;
@@ -40,8 +45,12 @@ export const DocumentUploadFormHeader = styled.header`
     width: calc(100% - 10px);
     padding: 5px;
     text-align: center;
-    font-size: 1.6em;
+    font-size: 1.4em;
     letter-spacing: 0.06em;
+
+    @media screen and (min-width: 425px){
+        font-size: 1.6em;
+    }
 
     @media screen and (min-width: 768px){
         font-size: 1.9em;
@@ -142,21 +151,30 @@ export const DocumentUploadDataSubSection = styled.section`
 `
 
 export const DocumentUploadFileHeader = styled.header`
-    width: calc(80% - 20px);
+    width: calc(100% - 20px);
     padding: 10px;
     text-align: center;
-    font-size: 1.9em;
+    font-size: 1.3em;
     letter-spacing: 0.07em;
     color: ${(props) => props.theme.color};
     text-shadow: ${(props) => props.theme.fonts.textShadowMain};
     margin-bottom: 3vh;
+
+    @media screen and (min-width: 425px){
+        font-size: 1.6em;
+    }
+
+    @media screen and (min-width: 1024px){
+        width: calc(80% - 20px);
+        font-size: 1.9em;
+    }
 `;
 
 export const DocumentUploadFileInput = styled.input`
     display: none;
 `;
 
-export const DocumentUploadFileButton = styled.button`
+export const DocumentUploadFileButton = styled.button<UploadButtonInterface>`
     width: fit-content;
     padding: 20px 40px;
     border: none;
@@ -164,13 +182,55 @@ export const DocumentUploadFileButton = styled.button`
     box-shadow: ${(props) => props.theme.fonts.textShadowMain};
     color: ${(props) => props.theme.color};
     font-family: ${(props) => props.theme.fonts.main};
-    font-size: 1.6em;
+    font-size: 1em;
     letter-spacing: 0.05em;
     background: ${(props) => props.theme.signingInputBackground};
     cursor: pointer;
     transition: all 0.4s;
+    margin-bottom: 4vh;
+    position: relative;
+    top: ${(props) => props.top !== undefined ? `${props.top}vh` : "0vh"};
+
 
     &:hover{
         filter: brightness(70%);
+    }
+
+    @media screen and (min-width: 425px){
+        font-size: 1.4em;
+    }
+
+    @media screen and (min-width: 768px){
+        font-size: 1.6em;
+        margin-bottom: 2vh;
+    }
+`;
+
+export const DocumentUploadFileDescription = styled.textarea`
+    max-width: calc(90% - 20px);
+    min-width: calc(90% - 20px);
+    min-height: calc(20vh - 20px);
+    max-height: calc(23vh - 20px);
+    padding: 10px;
+    text-shadow: ${(props) => props.theme.fonts.textShadowMain};
+    font-family: ${(props) => props.theme.fonts.main};
+    color: ${(props) => props.theme.color};
+    font-size: 0.85em;
+    text-indent: 0.4em;
+    letter-spacing: 0.06em;
+    line-height: 1.1em;
+    border-radius: 10px;
+    border: none;
+    background: ${(props) => props.theme.signingInputBackground};
+
+    @media screen and (min-width: 425px){
+        font-size: 1.1em;
+        line-height: 1.15em;
+    }
+
+    @media screen and (min-width: 768px){
+        max-width: calc(70% - 20px);
+        min-width: calc(70% - 20px);
+        font-size: 1.2em;
     }
 `;

@@ -7,7 +7,7 @@ import { LandingSectionWrapper, LandingSectionFilter } from "../../styled/subpag
 import { DocumentUploadFormWrapper, DocumentUploadFormHeader,
     DocumentUploadFormDataSection, DocumentUploadNotWorking, DocumentUploadTextInput,
     DocumentUploadNextButton, DocumentUploadDataSubSection, DocumentUploadFileHeader, DocumentUploadFileInput,
-    DocumentUploadFileButton } from "../../styled/subpages/documentUpload";
+    DocumentUploadFileDescription, DocumentUploadFileButton } from "../../styled/subpages/documentUpload";
 
 import { RootState } from "../../redux/mainReducer";
 
@@ -20,8 +20,14 @@ const DocumentUpload:React.FC = () => {
     const [isWorking, toggleIsWorking] = useState<boolean>(true);
     const [phaseNumber, setPhaseNumber] = useState<number>(1); // 1 - name, 2 - file & upload
     const [materialName, setMaterialName] = useState<string>("");
+    const [file, setFile] = useState<any>(null);
+    const [desc, setDesc] = useState<string>("");
 
     const FileRef = createRef<HTMLInputElement>();
+
+    const sendFile = () => {
+        console.log(file);
+    }
 
     useEffect(() => {
         toggleIsWorking(currentToken.length === 0 ? false : true);
@@ -48,9 +54,17 @@ const DocumentUpload:React.FC = () => {
                                     <DocumentUploadFileButton className="block-center" onClick={() => FileRef !== undefined && FileRef.current !== null ? FileRef.current.click() : null}>
                                         Wybierz
                                     </DocumentUploadFileButton>
-                                    <DocumentUploadFileInput type="file" ref={FileRef}/>
-
+                                    <DocumentUploadFileInput type="file" ref={FileRef}
+                                        onClick={async(e:any) => {console.log(e.target.files);e.target.files && e.target.files.length > 0 ? setFile(e.target.files[0]) : setFile(null)}}/>
+                                    <DocumentUploadFileDescription className="block-center"
+                                        onChange={(e:any) => setDesc(e.target.value)}></DocumentUploadFileDescription>
                                 </DocumentUploadDataSubSection>
+                                {
+                                    file !== null ? <DocumentUploadFileButton className="block-center" top={5}
+                                        onClick={() => sendFile()}>
+                                        Wyślij
+                                    </DocumentUploadFileButton>: null
+                                }
                              </> : <DocumentUploadNotWorking className="block-center">
                                 {currentToken.length === 0 ? "Zaloguj się, żeby wrzucić materiał" : "Coś poszło nie tak. Spróbuj ponownie"}
                             </DocumentUploadNotWorking>
