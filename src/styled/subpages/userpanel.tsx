@@ -159,9 +159,10 @@ export const UserPanelLastViewAuthor = styled.div<UserPanelLastViewAuthorInterfa
     font-size: 1.1em;
     letter-spacing: 0.05em;
     margin-bottom: ${(props) => props.marginBottom !== undefined ? props.marginBottom : 6}vh;
+    white-space: normal;
 
     @media screen and (min-width: 768px){
         width: calc(70% - 20px);
-        font-sie: 1.2em;
+        font-size: 1.2em;
     }
 `
