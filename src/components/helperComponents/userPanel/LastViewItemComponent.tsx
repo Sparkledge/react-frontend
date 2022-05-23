@@ -13,11 +13,11 @@ const LastViewItemComponent:React.FC<LastViewItemComponentInterface> = ({header,
         {header.length > 30 ? header.substring(0,27)+"..." : header}
     </UserPanelLastViewTitle>
     <UserPanelLastViewAuthor className="block-center">
-        {secondHeader}
+        {secondHeader.length > 20 ? secondHeader.substring(0,17)+"..." : secondHeader}
     </UserPanelLastViewAuthor>
     {additionalData.map((elem, key) =>
     <UserPanelLastViewAuthor key={`additional-data-${elem[1]}-${key}`} className="block-center" marginBottom={2}>
-        {elem[0]} {elem[1]}
+        {elem[0]} {elem[1].substring(0,10)}
     </UserPanelLastViewAuthor>)}
 </UserPanelLastViewItem>
 }

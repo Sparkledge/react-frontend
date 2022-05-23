@@ -2,6 +2,7 @@ import React, {Suspense, useState, useEffect} from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {useCookies} from "react-cookie";
+import axios from "axios";
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 
 import { MainContainer, Preloader } from "../../styled/main";
@@ -19,8 +20,8 @@ const Background = require("../../assets/pattern_background4_1.webp");
 
 type LastViewItemType = {
     title: string,
-    author: string,
-    publishedOn: string
+    creatorEmail: string,
+    createdDate: string
 }
 
 type LastPublishedItemType = {
@@ -34,6 +35,7 @@ const UserPanel:React.FC = () => {
 
     const [lastViewedList, setLastViewedList] = useState<LastViewItemType[]>([]);
     const [lastPublishedList, setLastPublishedList] = useState<LastPublishedItemType[]>([]);
+    const [isWorking, toggleIsWorking] = useState<boolean>(true);
     const currentToken:string = useSelector((state: RootState) => state.generalData.currentToken);
     const navigate = useNavigate();
     const [cookies, setCookies] = useCookies(["userId"]);
@@ -42,6 +44,21 @@ const UserPanel:React.FC = () => {
     useEffect(() => {
         if(cookies["userId"] === undefined) navigate("/");
         else if(cookies["userId"] === undefined && currentToken.length === 0) navigate("/"); // the same logic is implemented twice, as there is risk that the cookies' content may not be uniform with the current state of application
+        else{
+            axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/users/lastViews`, {
+                headers: {
+                    "Content-type": "application/json",
+                    "Authorization": `Bearer ${currentToken}`
+                }
+            })
+            .then((res) => {
+                setLastViewedList(res.data);
+                toggleIsWorking(true);
+            })
+            .catch((err) => {
+                toggleIsWorking(false);
+            });
+        }
     }, [currentToken, cookies])
 
     return <MainContainer className="block-center">
@@ -59,11 +76,11 @@ const UserPanel:React.FC = () => {
                             </UserPanelLastViewHeader>
                             <UserPanelLastViewGallery className="block-center">
                                 {
-                                    lastViewedList.length > 0 ? lastViewedList.map((elem, ind) => <LastViewItemComponent key={`last-viewed-${ind}`}
-                                    header={elem["title"]} secondHeader={`Autor: ${elem["author"]}`}
+                                    lastViewedList.length > 0 && isWorking ? lastViewedList.map((elem, ind) => <LastViewItemComponent key={`last-viewed-${ind}`}
+                                    header={elem["title"]} secondHeader={elem["creatorEmail"]}
                                     additionalData={[[<PublishedWithChangesIcon style={{color: "inherit", fontSize: "1.3em", 
-                                    verticalAlign: "top"}}/>, elem["publishedOn"]]]}/>) : <UserPanelLastViewNoItemsHeader className="block-center">
-                                        Brak danych
+                                    verticalAlign: "top"}}/>, elem["createdDate"]]]}/>) : <UserPanelLastViewNoItemsHeader className="block-center">
+                                        {isWorking ? "Błąd połączenia. Spróbuj ponownie" : "Brak danych"}
                                     </UserPanelLastViewNoItemsHeader>
                                 }
                             </UserPanelLastViewGallery>
@@ -75,7 +92,7 @@ const UserPanel:React.FC = () => {
                             <UserPanelLastViewGallery className="block-center">
                                 {
                                     lastPublishedList.length > 0 ? lastViewedList.map((elem, ind) => <LastViewItemComponent key={`last-viewed-${ind}`}
-                                    header={elem["title"]} secondHeader={`Autor: ${elem["author"]}`} 
+                                    header={elem["title"]} secondHeader={`Autor: ${elem["creatorEmail"]}`} 
                                     additionalData={[]}/>) : <UserPanelLastViewNoItemsHeader className="block-center">
                                         Brak danych
                                     </UserPanelLastViewNoItemsHeader>
