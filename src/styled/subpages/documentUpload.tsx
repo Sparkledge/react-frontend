@@ -63,7 +63,8 @@ export const DocumentUploadFormHeader = styled.header`
 `
 
 export const DocumentUploadFormDataSection = styled.div`
-    height: calc(50vh - 10px);
+    min-height: calc(50vh - 10px);
+    height: fit-content;
     line-height: calc(50vh - 10px);
     width: 100%;
     padding: 5px 0px;
