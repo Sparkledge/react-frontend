@@ -7,13 +7,14 @@ interface SearchBarOptionsComponentInterface{
     toggleOpening: (newState: boolean) => void,
     opening: boolean,
     choiceCallback: (newNameOfSection: any) => void,
-    typeOfCallbackValue?: string
+    typeOfCallbackValue?: string,
+    isBiggerScale: boolean
 }
 
 const SearchBarOptionsComponent:React.FC<SearchBarOptionsComponentInterface> = 
     ({sectionHeader, options, toggleOpening, opening, choiceCallback,
-        typeOfCallbackValue} : SearchBarOptionsComponentInterface) => {
-    return <SearcherCategorieWrapper>
+        typeOfCallbackValue, isBiggerScale} : SearchBarOptionsComponentInterface) => {
+    return <SearcherCategorieWrapper isBiggerScale={isBiggerScale}>
         <SearcherCategorieChooser className="block-center" isOption={false}
             onClick={() => toggleOpening(!opening)}>
             {sectionHeader}

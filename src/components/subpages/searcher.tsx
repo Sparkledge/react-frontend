@@ -8,7 +8,7 @@ import { AboutHeader } from "../../styled/subpages/about";
 import { SearchingResultsSection } from "../../styled/subpages/searcher";
 import { SearchingNoResultsContainer } from "../../styled/subpages/searcher/searcherResults";
 import { SearcherFailureContainer, SearcherFailureHeader, SearcherFailureButton } from "../../styled/subpages/searcher/searcherFailure"
-import { SearcherBarInputContainer, SearcherInput } from "../../styled/subpages/searcher/searcherBar";
+import { SearcherBarInputContainer, SearcherInput, SearcherButton } from "../../styled/subpages/searcher/searcherBar";
 
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
 
@@ -115,6 +115,15 @@ const Searcher:React.FC = () => {
         }
     }
 
+    const getBackToSearch = () => {
+        setSearchedCourse("");
+        setSearchedPhrase("");
+        setSearchedProgramme("");
+        setSearchedSemester(0);
+        setSearchedResults([]);
+        setSearcherState(0);
+    }
+
     const checkIfFound = (elem: any) :boolean => {
         return elem["title"].toLowerCase().search(searchedPhrase.toLowerCase()) !== -1 ? true :
         elem["creatorEmail"].toLowerCase().search(searchedPhrase.toLowerCase()) !== -1 ?  true :
@@ -160,9 +169,12 @@ const Searcher:React.FC = () => {
                 </Suspense> : 
                 searcherState === 1 ? <SearchingPreloaderComponent/> : searcherState === 2 ? <SearchingResultsSection className="block-center">
                     <SearcherBarInputContainer className="block-center">
-                <SearcherInput type="text" placeholder="Czego szukamy?" value={searchedPhrase} 
-                    onChange={(e) => setSearchedPhrase(e.target.value)}/>
-            </SearcherBarInputContainer>
+                        <SearcherInput type="text" placeholder="Czego szukamy?" value={searchedPhrase} 
+                            onChange={(e) => setSearchedPhrase(e.target.value)} className="block-center"/>
+                    </SearcherBarInputContainer>
+                    <SearcherButton className="block-center" onClick={() => getBackToSearch()}>
+                        Wróć do wyszukiwania
+                    </SearcherButton>
                     {
                     searchedResults.filter((elem:any) => elem["isDisplayed"] === 1).length === 0 ?
                     <SearchingNoResultsContainer className="block-center">

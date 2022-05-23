@@ -9,6 +9,10 @@ interface SearcherCategoriesSubContainerInterface{
     isOpened: boolean
 }
 
+interface SearcherCategorieWrapperInterface{
+    isBiggerScale: boolean
+}
+
 // main container - to wrap all of the content into one piece
 export const SearcherCategoriesContainer = styled.section`
     width: calc(100% - 20px);
@@ -35,7 +39,7 @@ export const SearcherCategoriesSubContainer = styled.div<SearcherCategoriesSubCo
 
 `;
 
-export const SearcherCategorieWrapper = styled.div`
+export const SearcherCategorieWrapper = styled.div<SearcherCategorieWrapperInterface>`
     width: calc(100% - 30px);
     padding: 10px;
     display: inline-block;
@@ -51,7 +55,7 @@ export const SearcherCategorieWrapper = styled.div`
     }
 
     @media screen and (min-width: 768px){
-        width: calc(25% - 30px);
+        width: calc(${(props) => props.isBiggerScale ? "50%" : "25%"} - 30px);
         margin: 0px 5px;
     }
 `
@@ -140,11 +144,11 @@ export const SearcherBarInputContainer = styled.div`
     width: calc(100% - 10px);
     padding: 5px;
     text-align: center;
-    margin-bottom: 4vh;
+    margin-bottom: 2vh;
 `
 
 export const SearcherInput = styled.input`
-    width: calc(80% - 24px);
+    width: calc(100% - 24px);
     padding: 20px 10px;
     border: none;
     border-radius: 10px;
@@ -155,9 +159,6 @@ export const SearcherInput = styled.input`
     font-size: 0.78em;
     letter-spacing: 0.06em;
     text-indent: 0.6em;
-    display: inline-block;
-    vertical-align: top;
-    margin: 0px 2px;
     cursor: pointer;
     transition: all 0.4s;
 
@@ -165,10 +166,13 @@ export const SearcherInput = styled.input`
         filter: brightness(70%);
     }
 
+    @media screen and (min-width: 320px){
+        width: calc(80% - 24px);
+    }
+
     @media screen and (min-width: 375px){ 
         font-size: 1.1em;
         width: calc(70% - 30px);
-        margin: 0px 5px;
     }
 
     @media screen and (min-width: 425px){
@@ -182,42 +186,39 @@ export const SearcherInput = styled.input`
 `;
 
 export const SearcherButton = styled.button`
-    width: calc(40% - 24px);
-    padding: 10px;
+    width: calc(80% - 20px);
+    padding: 20px 10px;
     border: none;
-    border-radius: 0px 10px 10px 0px;
+    border-radius: 10px;
     color: ${(props) => props.theme.color};
     background: ${(props) => props.theme.signingInputBackground};
     font-family: ${(props) => props.theme.fonts.main};
     text-shadow: ${(props) => props.theme.fonts.textShadowMain};
     font-size: 1em;
     letter-spacing: 0.06em;
-    display: inline-block;
-    vertical-align: top;
-    margin: 0px 2px;
     cursor: pointer;
     transition: all 0.4s;
+    margin-bottom: 4.5vh;
 
     &:hover{
         filter: brightness(70%);
     }
 
     @media screen and (min-width: 375px){
-        font-size: 1.2em;
-        width: calc(40% - 30px);
-        margin: 0px 5px;
+        width: calc(60% - 30px);
     }
 
     @media screen and (min-width: 425px){
-        width: calc(30% - 30px);
+        width: calc(55% - 30px);
+        font-size: 1.2em;
     }
 
     @media screen and (min-width: 768px){
-        width: calc(20% - 30px);
+        width: calc(40% - 30px);
         font-size: 1.4em;
     }
 
     @media screen and (min-width: 1024px){
-        width: calc(10% - 30px);
+        width: calc(50% - 30px);
     }
 `;
