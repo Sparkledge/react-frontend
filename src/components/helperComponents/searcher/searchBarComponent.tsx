@@ -21,7 +21,7 @@ interface SearchBarComponentInterface{
     setSearchedSemester: (newSemester: number) => void,
     searchedCourse: string,
     setSearchedCourse: (newCourse: string) => void,
-    submitCallback: () => void,
+    submitCallback?: () => void,
     isBiggerScale?: boolean
 }
 
@@ -153,7 +153,7 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> =
                     </GoToSearchBarBtn> : <></>
                 }
                 {searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 && 
-                searchedSemester > 0 && searchedCourse.length > 0 ? 
+                searchedSemester > 0 && searchedCourse.length > 0 && submitCallback !== undefined ? 
                     <GoToSearchBarBtn className="block-center" onClick={() => {setPhase(2);submitCallback();}}>
                         <SwipeRightAltIcon style={{color: "inherit", fontSize: "2em"}}/>
                     </GoToSearchBarBtn>: <></>}

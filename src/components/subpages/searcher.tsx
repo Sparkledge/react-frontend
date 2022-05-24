@@ -1,5 +1,6 @@
 import React, {useState, useEffect, Suspense} from "react";
 import {Link} from "react-router-dom";
+import { useDispatch, useSelector} from "react-redux";
 import axios from "axios";
 
 import { MainContainer } from "../../styled/main";
@@ -9,6 +10,9 @@ import { SearchingResultsSection } from "../../styled/subpages/searcher";
 import { SearchingNoResultsContainer } from "../../styled/subpages/searcher/searcherResults";
 import { SearcherFailureContainer, SearcherFailureHeader, SearcherFailureButton } from "../../styled/subpages/searcher/searcherFailure"
 import { SearcherBarInputContainer, SearcherInput, SearcherButton } from "../../styled/subpages/searcher/searcherBar";
+
+import { RootState } from "../../redux/mainReducer";
+import { setNewUni, setNewFac } from "../../redux/actions/searcherActions";
 
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
 
@@ -33,10 +37,15 @@ const Searcher:React.FC = () => {
     const [searchedPhrase, setSearchedPhrase] = useState<string>("");
     const [searchedResults, setSearchedResults] = useState<any[]>([]);
 
+    const currentUniversity = useSelector((state:RootState) => state.searcherData.searchedUni);
+    const currentFaculty = useSelector((state:RootState) => state.searcherData.searchedFac);
+    const dispatch = useDispatch();
+
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/university`)
         .then((res) => {
             setUniversitiesList(res.data);
+            if(currentUniversity.length > 0 && res.data.filter((elem: any) => elem["name"] === currentUniversity).length > 0) setSearchedUniversity(currentUniversity);
         })
         .catch(() => {
             setSearcherState(3);
@@ -44,7 +53,13 @@ const Searcher:React.FC = () => {
     }, []);
 
     useEffect(() => {
-        if(searchedFaculty.length > 0) {
+        if(currentUniversity !== searchedUniversity) {
+            dispatch(setNewUni(searchedUniversity));
+        }
+    }, [searchedUniversity])
+
+    useEffect(() => {
+        if(searchedFaculty.length > 0 && currentFaculty !== searchedFaculty) {
             setFacultiesList([]);
 
             const facultyID:string = universitiesList.filter((elem:any) => elem["name"] !== undefined && elem["name"] === searchedUniversity)[0]["faculties"]
@@ -61,13 +76,14 @@ const Searcher:React.FC = () => {
             })
             .then((res) => {
                 setFacultiesList(res.data.programmes)
+                dispatch(setNewFac(searchedFaculty));
             })
             .catch((err) => {
                 console.log(err);
                 setSearcherState(3);
             })
 
-        }
+        } 
     }, [searchedFaculty])
 
     useEffect(() => {
@@ -95,6 +111,10 @@ const Searcher:React.FC = () => {
 
         }
     }, [searchedProgramme])
+
+    useEffect(() => {
+        if(searchedCourse.length > 0) submitTheQuery();
+    }, [searchedCourse]);
     
     const submitTheQuery = async() => {
         if(searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 && 
@@ -164,8 +184,7 @@ const Searcher:React.FC = () => {
                         searchedSemester={searchedSemester}
                         setSearchedSemester={setSearchedSemester}
                         searchedCourse={searchedCourse} 
-                        setSearchedCourse={setSearchedCourse}
-                        submitCallback={submitTheQuery}/>
+                        setSearchedCourse={setSearchedCourse}/>
                 </Suspense> : 
                 searcherState === 1 ? <SearchingPreloaderComponent/> : searcherState === 2 ? <SearchingResultsSection className="block-center">
                     <SearcherBarInputContainer className="block-center">
