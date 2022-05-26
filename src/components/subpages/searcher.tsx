@@ -1,4 +1,5 @@
 import React, {useState, useEffect, Suspense} from "react";
+import useLocalStorage from "use-local-storage";
 import {Link} from "react-router-dom";
 import axios from "axios";
 
@@ -15,7 +16,6 @@ import SearchingPreloaderComponent from "../helperComponents/searcher/searchingP
 const SearchBarComponent = React.lazy(() => import("../helperComponents/searcher/searchBarComponent"));
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
 const SearchingMainResultComponent = React.lazy(() => import("../helperComponents/searcher/searchingMainResultComponent"));
-//const SearchingSideResultComponent = React.lazy(() => import("../helperComponents/searcher/searchingSideResultComponent"));
 const BackgroundPattern = require("../../assets/pattern_background5.webp");
 
 const Searcher:React.FC = () => {
@@ -33,10 +33,19 @@ const Searcher:React.FC = () => {
     const [searchedPhrase, setSearchedPhrase] = useState<string>("");
     const [searchedResults, setSearchedResults] = useState<any[]>([]);
 
+    const [previouslySearchedUni, setPreviouslySearchedUni] = useLocalStorage<string>("uni","");
+    const [previouslySearchedFac, setPreviouslySearchedFac] = useLocalStorage<string>("fac","");
+
     useEffect(() => {
         axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/university`)
         .then((res) => {
             setUniversitiesList(res.data);
+            if(previouslySearchedUni.length > 0 && res.data.filter((elem: any) => elem["name"] === previouslySearchedUni).length > 0) {
+                setSearchedUniversity(previouslySearchedUni);
+                if(previouslySearchedFac.length > 0 && res.data.filter((elem: any) => elem["name"] === previouslySearchedUni)[0]["faculties"]
+                    .filter((elem:any) => elem["name"] === previouslySearchedFac).length > 0) {setSearchedFaculty(previouslySearchedFac);}
+                    else setPreviouslySearchedFac(undefined);
+            }
         })
         .catch(() => {
             setSearcherState(3);
@@ -67,7 +76,7 @@ const Searcher:React.FC = () => {
                 setSearcherState(3);
             })
 
-        }
+        } 
     }, [searchedFaculty])
 
     useEffect(() => {
@@ -95,6 +104,10 @@ const Searcher:React.FC = () => {
 
         }
     }, [searchedProgramme])
+
+    useEffect(() => {
+        if(searchedCourse.length > 0) submitTheQuery();
+    }, [searchedCourse]);
     
     const submitTheQuery = async() => {
         if(searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 && 
@@ -104,7 +117,6 @@ const Searcher:React.FC = () => {
                     courseId: programmesList.filter((elem:any) => elem.name === searchedCourse)[0]["_id"]
             })
                 .then((res) => {
-                    console.log(res.data.documents);
                     setSearcherState(res.status === 200 ? 2 : 3);
                     setSearchedResults(res.status === 200 ? res.data.documents.map((elem:any) => {elem["isDisplayed"] = 1; return elem;}) : []);
                     setSearchedPhrase("");
@@ -156,16 +168,18 @@ const Searcher:React.FC = () => {
                         faculties={facultiesList}
                         programmes={programmesList}
                         searchedUniversity={searchedUniversity}
-                        setSearchedUniversity={setSearchedUniversity}
+                        setSearchedUniversity={(newUni:string) => {setSearchedUniversity(newUni);
+                            setPreviouslySearchedUni(newUni === "" ? undefined : newUni);
+                            if(newUni === "") setPreviouslySearchedFac(undefined)}}
                         searchedFaculty={searchedFaculty}
-                        setSearchedFaculty={setSearchedFaculty}
+                        setSearchedFaculty={(newFac: string) => {setSearchedFaculty(newFac);
+                            if(previouslySearchedUni !== undefined && previouslySearchedUni.length > 0 && searchedUniversity.length > 0) setPreviouslySearchedFac(newFac === "" ? undefined : newFac)}}
                         searchedProgramme={searchedProgramme} 
                         setSearchedProgramme={setSearchedProgramme}
                         searchedSemester={searchedSemester}
                         setSearchedSemester={setSearchedSemester}
                         searchedCourse={searchedCourse} 
-                        setSearchedCourse={setSearchedCourse}
-                        submitCallback={submitTheQuery}/>
+                        setSearchedCourse={setSearchedCourse}/>
                 </Suspense> : 
                 searcherState === 1 ? <SearchingPreloaderComponent/> : searcherState === 2 ? <SearchingResultsSection className="block-center">
                     <SearcherBarInputContainer className="block-center">
@@ -197,7 +211,7 @@ const Searcher:React.FC = () => {
                                 Niestety, coś poszło nie tak i połączenie z serwerem nie zakończyło się pomyślnie
                             </SearcherFailureHeader>
                             <SearcherFailureButton className="block-center"
-                                onClick={() => {setSearcherState(0); setSearchedUniversity("");}}>
+                                onClick={() => {setSearcherState(0); setSearchedProgramme("");}}>
                                     Powrót do wyszukiwania
                             </SearcherFailureButton>
                         </SearcherFailureContainer>}

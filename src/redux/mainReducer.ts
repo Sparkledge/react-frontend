@@ -1,5 +1,5 @@
 import {combineReducers} from "redux";
-import generalReducer from "./reducers/generalReducer"
+import generalReducer from "./reducers/generalReducer";
 
 const finalReducer = combineReducers({
     generalData: generalReducer

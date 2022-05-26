@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Suspense} from "react";
+import React, {useState, useEffect, Suspense, MouseEvent } from "react";
 import { Document, Page, pdfjs } from 'react-pdf';
 import jwt from 'jwt-decode'
 import { useParams } from "react-router-dom";
@@ -42,6 +42,7 @@ const DocumentDisplayer:React.FC = () => {
 
     const [isFile, toggleIsFile] = useState<boolean>(false);
     const [file, setFile] = useState<any>(null);
+    const [fileSrc, setFileSrc] = useState<string>("");
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [pagesNumber, setPagesNumber] = useState<number>(1);
 
@@ -127,11 +128,16 @@ const DocumentDisplayer:React.FC = () => {
                 id = null;
                 await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/${res.data.fileKey}`, {
                     headers: {
-                        "Authorization": `Bearer ${loginUserSelector}`
+                        "Authorization": `Bearer ${loginUserSelector}`,
+                        'Accept': 'application/pdf'
                     },
                     responseType: 'arraybuffer',
                 }).then((res) => {
                     toggleIsFile(true);
+                    /*const blob = new Blob([res.data]);
+                    const srcBlob = URL.createObjectURL(blob);
+                    console.log(srcBlob);
+                    setFileSrc(srcBlob);*/
                     setFile(res.data);
                 })
                 .catch((err) => {
@@ -193,11 +199,17 @@ const DocumentDisplayer:React.FC = () => {
                     {isError ? "Coś poszło nie tak. Spróbuj ponownie": "Zaloguj się, aby móc wyświetlić dokument"}
                 </DocumentDisplayerErrorHeader>: isFile ? <>
                 
-                <DocumentDisplayerWrapper className="block-center">
+                <DocumentDisplayerWrapper className="block-center"  onContextMenu={(e:MouseEvent) => e.preventDefault()}>
+                    {/*<embed
+                        src={fileSrc + "#toolbar=0"}
+                        type="application/pdf"
+                        height={800}
+                        width={500}/>*/}
                     <Document file = {`data:application/pdf;base64,${base64ArrayBuffer(file)}`} 
                     onLoadSuccess={onDocumentLoad} 
-                    loading={<SearchingPreloaderComponent/>} onLoadError = {() => toggleIsError(true)} error={<div>Coś dupło</div>}
-                    className="inline">
+                    loading={<SearchingPreloaderComponent/>} onLoadError = {() => toggleIsError(true)} 
+                    error={<div>Coś dupło</div>}
+                    className="inline displayer">
                         <Page pageNumber={currentPage} scale={tabletWidthChecker ? 1 : phoneWidthChecker ? 0.7 : smallDevicesWidthChecker ? 0.5 : microDevicesWidthChecker? 0.4 : 0.3}/>
                     </Document>
                 </DocumentDisplayerWrapper>

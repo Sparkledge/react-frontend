@@ -48,3 +48,9 @@ body::-webkit-scrollbar-track{
 .hoverClass:hover{
   filter: brightness(70%);
 }
+
+@media print {
+  .displayer {
+    display: none;
+  }
+}
