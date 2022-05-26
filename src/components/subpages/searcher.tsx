@@ -43,7 +43,8 @@ const Searcher:React.FC = () => {
             if(previouslySearchedUni.length > 0 && res.data.filter((elem: any) => elem["name"] === previouslySearchedUni).length > 0) {
                 setSearchedUniversity(previouslySearchedUni);
                 if(previouslySearchedFac.length > 0 && res.data.filter((elem: any) => elem["name"] === previouslySearchedUni)[0]["faculties"]
-                    .filter((elem:any) => elem["name"] === previouslySearchedFac).length > 0) setSearchedFaculty(previouslySearchedFac);
+                    .filter((elem:any) => elem["name"] === previouslySearchedFac).length > 0) {setSearchedFaculty(previouslySearchedFac);}
+                    else setPreviouslySearchedFac(undefined);
             }
         })
         .catch(() => {
@@ -172,7 +173,7 @@ const Searcher:React.FC = () => {
                             if(newUni === "") setPreviouslySearchedFac(undefined)}}
                         searchedFaculty={searchedFaculty}
                         setSearchedFaculty={(newFac: string) => {setSearchedFaculty(newFac);
-                            setPreviouslySearchedFac(newFac === "" ? undefined : newFac)}}
+                            if(previouslySearchedUni !== undefined && previouslySearchedUni.length > 0 && searchedUniversity.length > 0) setPreviouslySearchedFac(newFac === "" ? undefined : newFac)}}
                         searchedProgramme={searchedProgramme} 
                         setSearchedProgramme={setSearchedProgramme}
                         searchedSemester={searchedSemester}
