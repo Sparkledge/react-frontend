@@ -45,6 +45,7 @@ const Main: React.FC = () => {
           <Route path="/signin" element={<SigningPanel mode={1} />} />
           <Route path="/signup" element={<SigningPanel mode={2} />} />
           <Route path="/searcher" element={<Searcher/>}/>
+          <Route path="/searcher/:courseId" element={<Searcher/>}/>
           <Route path="/document/:docId" element={<DocumentDisplayer/>}/>
           <Route path="/document/" element={<DocumentDisplayer/>}/>
           <Route path="/documentUpload" element={<DocumentUpload/>}/>
