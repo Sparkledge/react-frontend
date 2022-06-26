@@ -22,6 +22,7 @@ const DocumentUpload:React.FC = () => {
     const currentToken:string = useSelector((state: RootState) => state.generalData.currentToken);
 
     const [isWorking, toggleIsWorking] = useState<boolean>(true);
+    const [isOnline, toggleIsOnline] = useState<boolean>(window.navigator.onLine);
     const [phaseNumber, setPhaseNumber] = useState<number>(1); // 1 - name, 2 - category 3- file & upload, 4 - file uploaded
     const [materialName, setMaterialName] = useState<string>("");
     const [file, setFile] = useState<any>(null);
@@ -152,9 +153,13 @@ const DocumentUpload:React.FC = () => {
     }
 
     useEffect(() => {
-        console.log(currentToken);
         toggleIsWorking(currentToken.length === 0 ? false : true);
     }, [currentToken])
+
+    useEffect(() => {
+        window.addEventListener("offline", () => toggleIsOnline(false));
+        window.addEventListener("online", () => toggleIsOnline(true));
+    }, [])
 
     return <MainContainer className="block-center">
         <LandingSectionWrapper className="block-center" backgroundSize="initial" source={BackgroundPattern}
@@ -166,9 +171,9 @@ const DocumentUpload:React.FC = () => {
                     </DocumentUploadFormHeader>
                     <DocumentUploadFormDataSection className="block-center">
                         {
-                            isWorking ? phaseNumber === 1 ? <>
+                            isWorking && isOnline ? phaseNumber === 1 ? <>
                                 <DocumentUploadTextInput type="text" placeholder="Jak nazwiesz ten materiał?"
-                                    value={materialName} onChange={(e) => setMaterialName(e.target.value)}/>
+                                    value={materialName} onChange={(e) => {setMaterialName(e.target.value); toggleIsOnline(navigator.onLine)}}/>
                              </> : phaseNumber === 2 ? <DocumentUploadDataSubSection className="block-center">
                                 <SearchBarComponent
                                     universities={universitiesList}
@@ -215,14 +220,14 @@ const DocumentUpload:React.FC = () => {
                                     </DocumentUploadNotWorking>
                                 </Link>: <></>}
                              </> : <DocumentUploadNotWorking className="block-center">
-                                {currentToken.length === 0 ? "Zaloguj się, żeby wrzucić materiał" : "Coś poszło nie tak. Spróbuj ponownie"}
+                                {!isOnline ? "Brak połączenia z siecią" : currentToken.length === 0 ? "Zaloguj się, żeby wrzucić materiał" : "Coś poszło nie tak. Spróbuj ponownie"}
                             </DocumentUploadNotWorking>
                         }
                     </DocumentUploadFormDataSection>
-                    <DocumentUploadNextButton className="block-center" scale={materialName.length === 0 || phaseNumber !== 1 ? 0 : 1}
+                    {isOnline ? <DocumentUploadNextButton className="block-center" scale={materialName.length === 0 || phaseNumber !== 1 ? 0 : 1}
                         onClick={() => setPhaseNumber(2)}>
                         <SwipeRightAltIcon style={{color: "inherit", fontSize: "inherit"}}/>
-                    </DocumentUploadNextButton>
+                    </DocumentUploadNextButton> : <></>}
                 </DocumentUploadFormWrapper>
             </LandingSectionFilter>
         </LandingSectionWrapper>
