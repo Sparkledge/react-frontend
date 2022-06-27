@@ -128,23 +128,27 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
                     {
                         (mode === 2 && isSuccess) || isVerificationSuccessful === 2 ? <></> : <SigningPanelWrapper className="block-center">
                         <SigningPanelInput className="block-center" type={mode === 1 ? "text" : "email"} placeholder={mode === 1 ? "Login..." : "Email..."}
-                            value={Login} onChange={(e) => setLogin(e.target.value)} required
+                            value={Login} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLogin(e.target.value)} required
                             marginBottom={mode === 2 ? 1 : 2}/>
                             {
                                 mode === 2 ? <>
                                 <SigningPanelInput className="block-center" type="text" placeholder="Imię..."
-                                    marginBottom={1} value={userName} onChange={(e) => setUserName(e.target.value)} required/>
+                                    marginBottom={1} value={userName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUserName(e.currentTarget.value)} required/>
                                 <SigningPanelInput className="block-center" type="text" placeholder="Nazwisko..."
-                                    marginBottom={1} value={userSurname} onChange={(e) => setUserSurname(e.target.value)} required/>
+                                    marginBottom={1} value={userSurname} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUserSurname(e.currentTarget.value)} required/>
                                 
                                 </>: <></>
                             }
                         <SigningPanelInput className="block-center" type="password" placeholder="Hasło..."
-                            marginBottom={mode === 1 ? 20 : 1} value={Password} onChange={(e) => setPassword(e.target.value)} required/>
+                            marginBottom={mode === 1 ? 20 : 1} value={Password} 
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.currentTarget.value)} 
+                            onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && mode === 1 ? TriggerTheShot() : null} required/>
                         {
                             
                             mode === 2 ? <SigningPanelInput className="block-center" type="password" placeholder="Powtórz hasło..."
-                            marginBottom={10} value={RepeatedPassword} onChange={(e) => setRepeatedPassword(e.target.value)} required/> : <></>
+                            marginBottom={10} value={RepeatedPassword} 
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRepeatedPassword(e.target.value)}
+                            onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && mode === 2 ? TriggerTheShot() : null} required/> : <></>
                         }
                         <SigningPanelButton className="block-center" onClick={() => TriggerTheShot()}>
                             {mode === 1 ? "Zaloguj" : "Zarejestruj"} się    
