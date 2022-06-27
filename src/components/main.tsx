@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-route
 import { ThemeProvider } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useCookies } from "react-cookie"; 
+import useLocalStorage from "use-local-storage";
 
 import { LightMode, DarkMode, SparkledgeGlobalStyle } from "../styled/main";
 import { setNewToken } from "../redux/actions/generalActions";
@@ -20,7 +21,7 @@ import UserPanel from "./subpages/userPanel";
 
 const Main: React.FC = () => {
 
-  const [cookies, setCookies] = useCookies(["userId"]);
+  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
 
   const dispatch = useDispatch();
 
@@ -29,8 +30,8 @@ const Main: React.FC = () => {
   );
 
   useEffect(() => {
-    if(cookies["userId"] !== undefined){
-      dispatch(setNewToken(cookies["userId"]));
+    if(memoryUserId.length > 0){
+      dispatch(setNewToken(memoryUserId));
     }
   }, [])
 

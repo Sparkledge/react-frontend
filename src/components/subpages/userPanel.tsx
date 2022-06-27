@@ -1,9 +1,9 @@
 import React, {Suspense, useState, useEffect} from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {useCookies} from "react-cookie";
 import axios from "axios";
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
+import useLocalStorage from "use-local-storage";
 
 import { MainContainer, Preloader } from "../../styled/main";
 import { LandingSectionWrapper, LandingSectionFilter, EndingBlock } from "../../styled/subpages/welcome";
@@ -38,12 +38,12 @@ const UserPanel:React.FC = () => {
     const [isWorking, toggleIsWorking] = useState<boolean>(true);
     const currentToken:string = useSelector((state: RootState) => state.generalData.currentToken);
     const navigate = useNavigate();
-    const [cookies, setCookies] = useCookies(["userId"]);
+    const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u","");
 
 
     useEffect(() => {
-        if(cookies["userId"] === undefined) navigate("/");
-        else if(cookies["userId"] === undefined && currentToken.length === 0) navigate("/"); // the same logic is implemented twice, as there is risk that the cookies' content may not be uniform with the current state of application
+        if(memoryUserId.length === 0) navigate("/");
+        else if(memoryUserId.length === 0 && currentToken.length === 0) navigate("/"); // the same logic is implemented twice, as there is risk that the local storage's content may not be uniform with the current state of application
         else{
             axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/users/lastViews`, {
                 headers: {
@@ -59,7 +59,7 @@ const UserPanel:React.FC = () => {
                 toggleIsWorking(false);
             });
         }
-    }, [currentToken, cookies])
+    }, [currentToken, memoryUserId])
 
     return <MainContainer className="block-center">
         <Suspense fallback={<Preloader className="block-center">Ładowanie...</Preloader>}>

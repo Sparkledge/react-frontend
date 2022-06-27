@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useCookies } from "react-cookie";
+import useLocalStorage from "use-local-storage";
 
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
@@ -22,7 +23,7 @@ const Navbar:React.FC = () => {
     const graphicalMode: number = useSelector((state:RootState) => state.generalData.graphicalMode);
     const currentToken:string = useSelector((state: RootState) => state.generalData.currentToken);
 
-    const [cookies, setCookies, deleteCookies] = useCookies(["userId"]);
+    const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u","");
     const dispatch = useDispatch();
 
     const NavbarData:{isLink: boolean, to: string, isImage: boolean, content: any, callback: () => void}[][] = [
@@ -68,7 +69,7 @@ const Navbar:React.FC = () => {
                     .then((res) => {
                         if(res.status === 200 || res.status === 204){
                             dispatch(setNewToken(""));
-                            deleteCookies("userId", {path: '/'});
+                            setMemoryUserId("");
                             toggleIsOpened(false);
                         }
                     })
