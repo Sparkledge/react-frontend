@@ -134,10 +134,6 @@ const DocumentDisplayer:React.FC = () => {
                     responseType: 'arraybuffer',
                 }).then((res) => {
                     toggleIsFile(true);
-                    /*const blob = new Blob([res.data]);
-                    const srcBlob = URL.createObjectURL(blob);
-                    console.log(srcBlob);
-                    setFileSrc(srcBlob);*/
                     setFile(res.data);
                 })
                 .catch((err) => {
