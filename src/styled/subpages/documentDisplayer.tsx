@@ -101,7 +101,7 @@ export const DescriptionDataContainer = styled.section`
     text-align: center;
     letter-spacing: 0.05em;
     top: 3vh;
-    padding-bottom: 10vh;
+    margin-bottom: 3vh;
 
     @media screen and (min-width: 425px){
         width: calc(80% - 20px);

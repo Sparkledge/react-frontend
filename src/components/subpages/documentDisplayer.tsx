@@ -19,10 +19,14 @@ import { DocumentDisplayerErrorHeader, DocumentDisplayerWrapper,
     DescriptionDataHeader, DescriptionDataContent } from "../../styled/subpages/documentDisplayer";
 
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
+
 import base64ArrayBuffer from "../auxiliaryFunctions/documentDisplayer/decodingToBase64";
 import addLike from "../auxiliaryFunctions/documentDisplayer/addLikeFunction";
 
 import { RootState } from "../../redux/mainReducer";
+
+const CommentingForm = React.lazy(() => import("../helperComponents/documentDisplayer/commentingForm"));
+const CommentingSectionDisplay = React.lazy(() => import("../helperComponents/documentDisplayer/commentingDisplay"));
 
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
 
@@ -121,7 +125,7 @@ const DocumentDisplayer:React.FC = () => {
                     {title}
                 </LandingSectionHeader>
 
-                {loginUserSelector.length === 0 || isError? 
+                {loginUserSelector.length === 0 || isError ? 
                 <DocumentDisplayerErrorHeader className="block-center">
                     {isError ? "Coś poszło nie tak. Spróbuj ponownie": "Zaloguj się, aby móc wyświetlić dokument"}
                 </DocumentDisplayerErrorHeader>: isFile ? <>
@@ -167,6 +171,8 @@ const DocumentDisplayer:React.FC = () => {
                         {descriptionOfFile}
                     </DescriptionDataContent>
                 </DescriptionDataContainer>
+                {/*<CommentingForm/>
+                <CommentingSectionDisplay/>*/}
                 </> : <></>}
 
             </LandingSectionFilter>
