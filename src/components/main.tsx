@@ -2,8 +2,8 @@ import React, {useEffect} from "react";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { useCookies } from "react-cookie"; 
 import useLocalStorage from "use-local-storage";
+import axios from "axios";
 
 import { LightMode, DarkMode, SparkledgeGlobalStyle } from "../styled/main";
 import { setNewToken } from "../redux/actions/generalActions";

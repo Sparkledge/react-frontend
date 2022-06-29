@@ -1,12 +1,16 @@
 import styled from "styled-components";
 
-export const CommentingFormWrapper = styled.section`
+interface CommentingFormWrapperInterface{
+    paddingBottom?: number
+}
+
+export const CommentingWrapper = styled.section<CommentingFormWrapperInterface>`
     width: calc(100% - 20px);
     padding: 10px;
     text-align: center;
     position: relative;
     top: 1vh;
-    padding-bottom: 4vh;
+    padding-bottom: ${(props) => props.paddingBottom !== undefined ? props.paddingBottom : 4}vh;
 
     @media screen and (min-width: 375px){
         width: calc(90% - 20px);

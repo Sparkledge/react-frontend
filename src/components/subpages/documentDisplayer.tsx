@@ -171,8 +171,10 @@ const DocumentDisplayer:React.FC = () => {
                         {descriptionOfFile}
                     </DescriptionDataContent>
                 </DescriptionDataContainer>
-                {/*<CommentingForm/>
-                <CommentingSectionDisplay/>*/}
+                <Suspense fallback={<></>}>
+                    <CommentingForm/>
+                    <CommentingSectionDisplay/>
+                </Suspense>
                 </> : <></>}
 
             </LandingSectionFilter>

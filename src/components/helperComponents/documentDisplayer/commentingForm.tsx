@@ -1,12 +1,14 @@
 /*
     In this file, all the logic regarding sending the comment is handled
+    
+    NOTE: currently it's a template, so it doesn't have the entire logic implemented
 */
 
 import React, {useState, useEffect} from "react";
 import SendIcon from '@mui/icons-material/Send';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import { CommentingFormWrapper, CommentingFormTextarea, 
+import { CommentingWrapper, CommentingFormTextarea, 
     CommentingFormButton } from "../../../styled/subpages/documentDisplayer/commentingSectionForm";
 
 const CommentingForm: React.FC = () => {
@@ -20,7 +22,7 @@ const CommentingForm: React.FC = () => {
         */
     }
 
-    return <CommentingFormWrapper className="block-center">
+    return <CommentingWrapper className="block-center">
         <CommentingFormTextarea placeholder="Napisz komentarz..." 
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setCommentText(e.currentTarget.value)}
             onKeyPress={(e: React.KeyboardEvent<HTMLTextAreaElement>) => e.key === "Enter" && commentText.length > 0 && !isDeviceSmallerThanLaptop ? SendTheComment() : {}}
@@ -28,7 +30,7 @@ const CommentingForm: React.FC = () => {
         <CommentingFormButton type="button" onClick={() => SendTheComment()}>
             <SendIcon style={{color: "inherit", fontSize: "inherit"}}/>
         </CommentingFormButton>
-    </CommentingFormWrapper>;
+    </CommentingWrapper>;
 };
 
 export default CommentingForm;
