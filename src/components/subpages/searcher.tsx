@@ -13,6 +13,8 @@ import { SearcherBarInputContainer, SearcherInput, SearcherButton } from "../../
 
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
 
+import checkIfFound from "../auxiliaryFunctions/searcher/checkIfFound";
+
 const SearchBarComponent = React.lazy(() => import("../helperComponents/searcher/searchBarComponent"));
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
 const SearchingMainResultComponent = React.lazy(() => import("../helperComponents/searcher/searchingMainResultComponent"));
@@ -148,19 +150,12 @@ const Searcher:React.FC = () => {
         navigate("/searcher/");
     }
 
-    const checkIfFound = (elem: any) :boolean => {
-        return elem["title"].toLowerCase().search(searchedPhrase.toLowerCase()) !== -1 ? true :
-        elem["creatorEmail"].toLowerCase().search(searchedPhrase.toLowerCase()) !== -1 ?  true :
-        elem["description"].toLowerCase().search(searchedPhrase.toLowerCase()) !== -1 ? true: 
-        searchedPhrase.toLowerCase().split(' ').filter((toAnalyze: string) => elem["title"].search(toAnalyze) !== -1).length > 0 ? true : false;
-    }
-
     useEffect(() => {
         if(searchedResults.length > 0 ){
             let operand = [...searchedResults];
             if(searchedPhrase.length === 0) operand.map((elem:any) => {elem["isDisplayed"] = 1; return elem;});
             else operand.map((elem:any) => {
-                    checkIfFound(elem) ? elem["isDisplayed"] = 1 : elem["isDisplayed"] = 0;
+                    checkIfFound(elem, searchedPhrase) ? elem["isDisplayed"] = 1 : elem["isDisplayed"] = 0;
                 return elem;
             })
             setSearchedResults(operand);
