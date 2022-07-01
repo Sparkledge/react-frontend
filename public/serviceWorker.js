@@ -1,4 +1,4 @@
-const CACHE_NAME = "sparkledge-";
+const CACHE_NAME = "SPARKLEDGE";
 const urlsToCache = ["index.html", "offline.html"];
 
 let self = this;

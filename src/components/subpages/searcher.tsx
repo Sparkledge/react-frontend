@@ -53,8 +53,8 @@ const Searcher:React.FC = () => {
                     if(previouslySearchedFac.length > 0 && res.data.filter((elem: any) => elem["name"] === previouslySearchedUni)[0]["faculties"]
                         .filter((elem:any) => elem["name"] === previouslySearchedFac).length > 0) {setSearchedFaculty(previouslySearchedFac);}
                         else setPreviouslySearchedFac(undefined);
-                    toggleIsLoaded(true);
                 }
+                toggleIsLoaded(true);
             })
             .catch(() => {
                 setSearcherState(3);

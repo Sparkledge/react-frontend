@@ -30,9 +30,36 @@ export const DocumentDisplayerErrorHeader = styled.header`
 export const DocumentDisplayerWrapper = styled.section`
     width: auto;
     height: fit-content;
-    padding: 10px;
     border-radius: 10px;
     text-align: center;
+`;
+
+export const DocumentDisplayerIframe = styled.iframe`
+    min-width: 65%;
+    height: 100vh;
+    border: none;
+    overflow-x: hidden !important;
+    border-radius: 10px;
+
+    &>#document>#toolbar{
+        background-color: red;
+    }
+    
+    &::-webkit-scrollbar{
+        background: ${(props) => props.theme.signingInputBackground};
+        width: 6px;
+        border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb{
+        background: ${(props) => props.theme.resultBackground};
+        width: 4px;
+        border-radius: 5px;
+    }
+
+    @media screen and (min-width: 1024px){
+        min-width: 55%;
+    }
 `;
 
 export const DocumentDataWrapper = styled.section`

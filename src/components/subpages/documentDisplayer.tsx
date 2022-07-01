@@ -3,7 +3,9 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import jwt from 'jwt-decode'
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useWindowSize } from 'react-use';
 import axios from "axios";
+
 import useMediaQuery from '@mui/material/useMediaQuery';
 import SwipeLeftAltIcon from '@mui/icons-material/SwipeLeftAlt';
 import SwipeRightAltIcon from '@mui/icons-material/SwipeRightAlt';
@@ -16,7 +18,7 @@ import { MainContainer } from "../../styled/main";
 import { LandingSectionWrapper, LandingSectionFilter, LandingSectionHeader } from "../../styled/subpages/welcome";
 import { DocumentDisplayerErrorHeader, DocumentDisplayerWrapper,
     DocumentDataWrapper, SwipperBtn, InfoContainer, DescriptionDataContainer,
-    DescriptionDataHeader, DescriptionDataContent } from "../../styled/subpages/documentDisplayer";
+    DescriptionDataHeader, DescriptionDataContent, DocumentDisplayerIframe } from "../../styled/subpages/documentDisplayer";
 
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
 
@@ -47,7 +49,8 @@ const DocumentDisplayer:React.FC = () => {
 
     const [isFile, toggleIsFile] = useState<boolean>(false);
     const [file, setFile] = useState<any>(null);
-    const [fileSrc, setFileSrc] = useState<string>("");
+    const [fileSrc, setFileSrc] = useState<any>(null);
+    const [fileContentRef, setFileContentRef] = useState<any>(null);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [pagesNumber, setPagesNumber] = useState<number>(1);
 
@@ -57,6 +60,7 @@ const DocumentDisplayer:React.FC = () => {
     const phoneWidthChecker = useMediaQuery('(min-width: 460px)');
     const smallDevicesWidthChecker = useMediaQuery('(min-width: 350px)');
     const microDevicesWidthChecker = useMediaQuery('(min-width: 290px)');
+    const {width, height} = useWindowSize();
     
     const {docId} = useParams();
 
@@ -70,7 +74,6 @@ const DocumentDisplayer:React.FC = () => {
                 }
             })
             .then(async(res) => {
-                console.log(res.data);
                 let id:any = jwt(loginUserSelector);
                 setTitle(res.data.title);
                 setLikesNumber(res.data.likesNum);
@@ -88,6 +91,10 @@ const DocumentDisplayer:React.FC = () => {
                 }).then((res) => {
                     toggleIsFile(true);
                     setFile(res.data);
+                    setFileSrc((window.URL ? URL : webkitURL).createObjectURL(new Blob([res.data], {
+                        type: "application/pdf",
+                    })))
+ 
                 })
                 .catch((err) => {
                     toggleIsFile(false);
@@ -116,6 +123,15 @@ const DocumentDisplayer:React.FC = () => {
         }
     }, [docId, loginUserSelector])
 
+    const insertStylesToPDF = () : void => {
+        if(fileContentRef !== undefined && fileContentRef.contentWindow !== undefined
+                && fileContentRef.contentWindow.document !== undefined 
+                && fileContentRef.contentWindow.document.body !== undefined){
+            console.log(fileContentRef.contentWindow.document.body.querySelector("embed").contentDocument);
+            fileContentRef.contentWindow.document.body.style.background = "transparent";
+        }
+    }
+
     return <MainContainer className="block-center">
         <LandingSectionWrapper className="block-center" source={Background} backgroundSize="initial"
             bottomPadding={10} backgroundRepeat="repeat">
@@ -131,16 +147,23 @@ const DocumentDisplayer:React.FC = () => {
                 </DocumentDisplayerErrorHeader>: isFile ? <>
                 
                 <DocumentDisplayerWrapper className="block-center"  onContextMenu={(e:MouseEvent) => e.preventDefault()}>
-                    <Document file = {`data:application/pdf;base64,${base64ArrayBuffer(file)}`} 
+                    
+                    <DocumentDisplayerIframe src={`${fileSrc}#toolbar=1&view=Fit`} 
+                        title={title}
+                        width={smallDevicesWidthChecker ? 
+                            phoneWidthChecker ? tabletWidthChecker ? width*0.6 : width*0.8 : width*0.9 : width*0.95}
+                        ref={setFileContentRef}
+                        onLoad={() => insertStylesToPDF()}/>
+                    {/*<Document file = {`data:application/pdf;base64,${base64ArrayBuffer(file)}`} 
                     onLoadSuccess={onDocumentLoad} 
                     loading={<SearchingPreloaderComponent/>} onLoadError = {() => toggleIsError(true)} 
                     error={<div></div>}
                     className="inline displayer">
                         <Page pageNumber={currentPage} scale={tabletWidthChecker ? 1 : phoneWidthChecker ? 0.7 : smallDevicesWidthChecker ? 0.5 : microDevicesWidthChecker? 0.4 : 0.3}/>
-                    </Document>
+                </Document>*/}
                 </DocumentDisplayerWrapper>
                 <DocumentDataWrapper className="block-center">
-                    <SwipperBtn onClick={() => setCurrentPage(1)}>
+                    {/*<SwipperBtn onClick={() => setCurrentPage(1)}>
                         <FastRewindIcon style={{color: "inherit", fontSize: "inherit"}}/>
                     </SwipperBtn>
                     <SwipperBtn onClick={() => setCurrentPage(currentPage-1 < 1 ? 1 : currentPage-1)}>
@@ -151,13 +174,13 @@ const DocumentDisplayer:React.FC = () => {
                     </SwipperBtn>
                     <SwipperBtn onClick={() => setCurrentPage(pagesNumber)}>
                         <FastForwardIcon style={{color: "inherit", fontSize: "inherit"}}/>
-                    </SwipperBtn>
+            </SwipperBtn>*/}
                     <InfoContainer>
                         <RemoveRedEyeIcon style={{color: "inherit",fontSize: "1.6em", verticalAlign: "middle"}}/> {viewsNumber}
                     </InfoContainer>
-                    <InfoContainer>
+                    {/*<InfoContainer>
                         {`${currentPage}/${pagesNumber}`}
-                    </InfoContainer>
+            </InfoContainer>*/}
                     <InfoContainer className="hoverClass">
                         <ThumbUpIcon style={{color: "inherit",fontSize: "1.6em", verticalAlign: "middle"}}
                             onClick={() => addLike(docId, loginUserSelector, isLiked, likesNumber, setLikesNumber, toggleIsLiked)}/> {likesNumber}
