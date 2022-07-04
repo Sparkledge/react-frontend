@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useCookies } from "react-cookie";
 import useLocalStorage from "use-local-storage";
 
 import MenuIcon from '@mui/icons-material/Menu';
@@ -64,12 +63,12 @@ const Navbar:React.FC = () => {
                 isImage: false,
                 content: currentToken.length === 0 ? "Zarejestruj się" : "Wyloguj",
                 callback: () => {
-                    currentToken.length === 0 ? toggleIsOpened(false) : 
+                    memoryUserId === undefined && currentToken.length === 0 ? toggleIsOpened(false) : 
                     axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/logout?user=${currentToken}`)
                     .then((res) => {
                         if(res.status === 200 || res.status === 204){
                             dispatch(setNewToken(""));
-                            setMemoryUserId("");
+                            setMemoryUserId(undefined);
                             toggleIsOpened(false);
                         }
                     })

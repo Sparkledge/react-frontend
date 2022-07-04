@@ -1,14 +1,14 @@
 import React, {useState, useEffect, Suspense, MouseEvent } from "react";
 import { Document, Page, pdfjs } from 'react-pdf';
-import jwt from 'jwt-decode'
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import axios from "axios";
+import { useWindowSize } from 'react-use';
+
 import useMediaQuery from '@mui/material/useMediaQuery';
-import SwipeLeftAltIcon from '@mui/icons-material/SwipeLeftAlt';
+/*import SwipeLeftAltIcon from '@mui/icons-material/SwipeLeftAlt';
 import SwipeRightAltIcon from '@mui/icons-material/SwipeRightAlt';
 import FastForwardIcon from '@mui/icons-material/FastForward';
-import FastRewindIcon from '@mui/icons-material/FastRewind';
+import FastRewindIcon from '@mui/icons-material/FastRewind';*/
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
@@ -16,13 +16,18 @@ import { MainContainer } from "../../styled/main";
 import { LandingSectionWrapper, LandingSectionFilter, LandingSectionHeader } from "../../styled/subpages/welcome";
 import { DocumentDisplayerErrorHeader, DocumentDisplayerWrapper,
     DocumentDataWrapper, SwipperBtn, InfoContainer, DescriptionDataContainer,
-    DescriptionDataHeader, DescriptionDataContent } from "../../styled/subpages/documentDisplayer";
+    DescriptionDataHeader, DescriptionDataContent, DocumentDisplayerIframe } from "../../styled/subpages/documentDisplayer";
 
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
+
 import base64ArrayBuffer from "../auxiliaryFunctions/documentDisplayer/decodingToBase64";
+import getTheData from "../../connectionFunctions/documentDisplayer/getTheData";
 import addLike from "../auxiliaryFunctions/documentDisplayer/addLikeFunction";
 
 import { RootState } from "../../redux/mainReducer";
+
+const CommentingForm = React.lazy(() => import("../helperComponents/documentDisplayer/commentingForm"));
+const CommentingSectionDisplay = React.lazy(() => import("../helperComponents/documentDisplayer/commentingDisplay"));
 
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
 
@@ -42,10 +47,11 @@ const DocumentDisplayer:React.FC = () => {
     const [fileAuthor, setFileAuthor] = useState<string>("");
 
     const [isFile, toggleIsFile] = useState<boolean>(false);
-    const [file, setFile] = useState<any>(null);
-    const [fileSrc, setFileSrc] = useState<string>("");
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [pagesNumber, setPagesNumber] = useState<number>(1);
+    //const [file, setFile] = useState<any>(null);
+    const [fileSrc, setFileSrc] = useState<any>(null);
+    const [fileContentRef, setFileContentRef] = useState<any>(null);
+    /*const [currentPage, setCurrentPage] = useState<number>(1);
+    const [pagesNumber, setPagesNumber] = useState<number>(1);*/
 
     const loginUserSelector = useSelector((state: RootState) => state.generalData.currentToken);
 
@@ -53,10 +59,11 @@ const DocumentDisplayer:React.FC = () => {
     const phoneWidthChecker = useMediaQuery('(min-width: 460px)');
     const smallDevicesWidthChecker = useMediaQuery('(min-width: 350px)');
     const microDevicesWidthChecker = useMediaQuery('(min-width: 290px)');
+    const {width, height} = useWindowSize();
     
     const {docId} = useParams();
 
-    const getTheData = async() => {
+    /*const getTheData = async() => {
         if(loginUserSelector.length > 0 ){
             toggleIsFile(false);
             await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/getDocument/${docId}`,{
@@ -66,7 +73,6 @@ const DocumentDisplayer:React.FC = () => {
                 }
             })
             .then(async(res) => {
-                console.log(res.data);
                 let id:any = jwt(loginUserSelector);
                 setTitle(res.data.title);
                 setLikesNumber(res.data.likesNum);
@@ -84,6 +90,10 @@ const DocumentDisplayer:React.FC = () => {
                 }).then((res) => {
                     toggleIsFile(true);
                     setFile(res.data);
+                    setFileSrc((window.URL ? URL : webkitURL).createObjectURL(new Blob([res.data], {
+                        type: "application/pdf",
+                    })))
+ 
                 })
                 .catch((err) => {
                     toggleIsFile(false);
@@ -95,12 +105,12 @@ const DocumentDisplayer:React.FC = () => {
                 toggleIsError(true);
             });
         }
-    }
+    }*/
 
-    const onDocumentLoad = ({numPages}:{numPages: number}) => {
+    /*const onDocumentLoad = ({numPages}:{numPages: number}) => {
         setPagesNumber(numPages);
         setCurrentPage(1);
-    }
+    }*/
 
     useEffect(() => {
         toggleIsError(false);
@@ -108,9 +118,21 @@ const DocumentDisplayer:React.FC = () => {
             toggleIsError(true);
         }
         else{
-            getTheData();
+            getTheData(loginUserSelector, toggleIsFile, docId, setTitle, setLikesNumber, 
+                toggleIsLiked, setViewsNumber, setFileAuthor,
+                setDescriptionOfFile, toggleIsError, setFileSrc,
+                smallDevicesWidthChecker);
         }
     }, [docId, loginUserSelector])
+
+    const insertStylesToPDF = () : void => {
+        if(fileContentRef !== undefined && fileContentRef.contentWindow !== undefined
+                && fileContentRef.contentWindow.document !== undefined 
+                && fileContentRef.contentWindow.document.body !== undefined){
+            console.log(fileContentRef.contentWindow.document.body.querySelector("embed").contentDocument);
+            fileContentRef.contentWindow.document.body.style.background = "transparent";
+        }
+    }
 
     return <MainContainer className="block-center">
         <LandingSectionWrapper className="block-center" source={Background} backgroundSize="initial"
@@ -121,22 +143,29 @@ const DocumentDisplayer:React.FC = () => {
                     {title}
                 </LandingSectionHeader>
 
-                {loginUserSelector.length === 0 || isError? 
+                {loginUserSelector.length === 0 || isError ? 
                 <DocumentDisplayerErrorHeader className="block-center">
                     {isError ? "Coś poszło nie tak. Spróbuj ponownie": "Zaloguj się, aby móc wyświetlić dokument"}
                 </DocumentDisplayerErrorHeader>: isFile ? <>
                 
                 <DocumentDisplayerWrapper className="block-center"  onContextMenu={(e:MouseEvent) => e.preventDefault()}>
-                    <Document file = {`data:application/pdf;base64,${base64ArrayBuffer(file)}`} 
+                    {smallDevicesWidthChecker ? <DocumentDisplayerIframe src={`${fileSrc}#toolbar=1&view=Fit`} 
+                        title={title}
+                        width={smallDevicesWidthChecker ? 
+                            phoneWidthChecker ? tabletWidthChecker ? width*0.6 : width*0.8 : width*0.9 : width*0.95}
+                        ref={setFileContentRef}
+                        onLoad={() => insertStylesToPDF()}/>: <></>}
+                    
+                    {/*<Document file = {`data:application/pdf;base64,${base64ArrayBuffer(file)}`} 
                     onLoadSuccess={onDocumentLoad} 
                     loading={<SearchingPreloaderComponent/>} onLoadError = {() => toggleIsError(true)} 
                     error={<div></div>}
                     className="inline displayer">
                         <Page pageNumber={currentPage} scale={tabletWidthChecker ? 1 : phoneWidthChecker ? 0.7 : smallDevicesWidthChecker ? 0.5 : microDevicesWidthChecker? 0.4 : 0.3}/>
-                    </Document>
+                </Document>*/}
                 </DocumentDisplayerWrapper>
                 <DocumentDataWrapper className="block-center">
-                    <SwipperBtn onClick={() => setCurrentPage(1)}>
+                    {/*<SwipperBtn onClick={() => setCurrentPage(1)}>
                         <FastRewindIcon style={{color: "inherit", fontSize: "inherit"}}/>
                     </SwipperBtn>
                     <SwipperBtn onClick={() => setCurrentPage(currentPage-1 < 1 ? 1 : currentPage-1)}>
@@ -147,13 +176,13 @@ const DocumentDisplayer:React.FC = () => {
                     </SwipperBtn>
                     <SwipperBtn onClick={() => setCurrentPage(pagesNumber)}>
                         <FastForwardIcon style={{color: "inherit", fontSize: "inherit"}}/>
-                    </SwipperBtn>
+            </SwipperBtn>*/}
                     <InfoContainer>
                         <RemoveRedEyeIcon style={{color: "inherit",fontSize: "1.6em", verticalAlign: "middle"}}/> {viewsNumber}
                     </InfoContainer>
-                    <InfoContainer>
+                    {/*<InfoContainer>
                         {`${currentPage}/${pagesNumber}`}
-                    </InfoContainer>
+            </InfoContainer>*/}
                     <InfoContainer className="hoverClass">
                         <ThumbUpIcon style={{color: "inherit",fontSize: "1.6em", verticalAlign: "middle"}}
                             onClick={() => addLike(docId, loginUserSelector, isLiked, likesNumber, setLikesNumber, toggleIsLiked)}/> {likesNumber}
@@ -167,6 +196,10 @@ const DocumentDisplayer:React.FC = () => {
                         {descriptionOfFile}
                     </DescriptionDataContent>
                 </DescriptionDataContainer>
+                <Suspense fallback={<></>}>
+                    <CommentingForm/>
+                    <CommentingSectionDisplay/>
+                </Suspense>
                 </> : <></>}
 
             </LandingSectionFilter>

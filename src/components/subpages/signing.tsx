@@ -10,6 +10,9 @@ import { AboutHeader } from "../../styled/subpages/about";
 import { SigningPanelWrapper, SigningPanelInput, SigningPanelButton,
     ErrorLabel } from "../../styled/subpages/signing";
 
+import TriggerTheShot from "../../connectionFunctions/signin/sendSigningData";
+import verifyEmail from "../../connectionFunctions/signin/verifyEmail";
+
 import { setNewToken } from "../../redux/actions/generalActions";
 import { RootState } from "../../redux/mainReducer";
 
@@ -39,73 +42,12 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
     const useQuery:any = () => new URLSearchParams(useLocation().search);
     const query = useQuery();
 
-    const TriggerTheShot = () : void => {
-        toggleIsSuccess(false);
-        if((mode === 1 && Login.length !== 0 && Password.length !== 0) || 
-        (mode === 2 && Login.length !== 0 && Password.length !== 0 && userName.length !== 0 && userSurname.length !== 0)){
-            const objectToSend = mode === 1 ? {
-                email: Login,
-                password: Password
-            } : {
-                email: Login,
-                firstName: userName,
-                lastName: userSurname,
-                password: Password
-            };
-
-            setError("");
-            if(mode === 1){
-                axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/auth/`, objectToSend, {
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                }).then((res) => {
-                    if(res.status === 200) {
-                        setPassword("");
-                        setLogin("");
-                        dispatch(setNewToken(res.data.accessToken));
-                        setMemoryUserId(res.data.accessToken);
-                        navigate("/panel");
-                    }
-                    else {
-                        toggleIsSuccess(false); setPassword("Coś poszło nie tak");
-                    }
-                })
-                .catch((err) => {
-                    err.response.status === 403 ? setError("Dokończ proces rejestracji") : setError("Coś poszło nie tak. Spróbuj ponownie");
-                })
-
-            }
-            else{
-
-                axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/register/`, objectToSend, {
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                }).then((res) => {
-                    if(res.status === 201) 
-                        toggleIsSuccess(true) 
-                    else {
-                        toggleIsSuccess(false); setPassword("Coś poszło nie tak");
-                    }
-                })
-                .catch(() => {
-                    setError("Coś poszło nie tak. Spróbuj ponownie");
-                })
-            }
-        }
-    }
-
-    const verifyEmail = async(verifyCode: string) => {
-        await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/register/verify/${verifyCode}`)
-        .then((res) => {
-            toggleIsVerificationSuccessful(1);
-        })
-        .catch((err) => {
-            toggleIsVerificationSuccessful(2);
-            toggleIsSuccess(true);
-            
-        })
+    const sendTheData = () => {
+        TriggerTheShot(mode, toggleIsSuccess, Login, Password, userName, userSurname,
+            setError, setPassword, setLogin, (newToken: string) => {
+                dispatch(setNewToken(newToken));
+                setMemoryUserId(newToken);
+            }, navigate)
     }
 
     useEffect(() => {
@@ -113,7 +55,7 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
         toggleIsSuccess(false);
         if(currentToken.length > 0) navigate("/panel");
         const verifyCode:string = query.get("verifyemail");
-        if(verifyCode !== null && verifyCode.length > 0) verifyEmail(verifyCode);
+        if(verifyCode !== null && verifyCode.length > 0) verifyEmail(verifyCode, toggleIsVerificationSuccessful, toggleIsSuccess);
     }, [])
 
     return <MainContainer className="block-center">
@@ -142,15 +84,15 @@ const SigningPanel:React.FC<SigningInterface> = ({mode}: SigningInterface) => {
                         <SigningPanelInput className="block-center" type="password" placeholder="Hasło..."
                             marginBottom={mode === 1 ? 20 : 1} value={Password} 
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.currentTarget.value)} 
-                            onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && mode === 1 ? TriggerTheShot() : null} required/>
+                            onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && mode === 1 ? sendTheData() : null} required/>
                         {
                             
                             mode === 2 ? <SigningPanelInput className="block-center" type="password" placeholder="Powtórz hasło..."
                             marginBottom={10} value={RepeatedPassword} 
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRepeatedPassword(e.target.value)}
-                            onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && mode === 2 ? TriggerTheShot() : null} required/> : <></>
+                            onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && mode === 2 ? sendTheData() : null} required/> : <></>
                         }
-                        <SigningPanelButton className="block-center" onClick={() => TriggerTheShot()}>
+                        <SigningPanelButton className="block-center" onClick={() => sendTheData()}>
                             {mode === 1 ? "Zaloguj" : "Zarejestruj"} się    
                         </SigningPanelButton>
                         {

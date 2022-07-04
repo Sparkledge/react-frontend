@@ -42,8 +42,7 @@ const UserPanel:React.FC = () => {
 
 
     useEffect(() => {
-        if(memoryUserId.length === 0) navigate("/");
-        else if(memoryUserId.length === 0 && currentToken.length === 0) navigate("/"); // the same logic is implemented twice, as there is risk that the local storage's content may not be uniform with the current state of application
+        if(memoryUserId.length === 0 || memoryUserId === undefined || currentToken.length === 0) navigate("/");
         else{
             axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/users/lastViews`, {
                 headers: {

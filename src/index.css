@@ -54,3 +54,8 @@ body::-webkit-scrollbar-track{
     display: none;
   }
 }
+
+.news-export-doc .title-page {
+  background-color: #00a4fd;
+color: #fff;
+}
