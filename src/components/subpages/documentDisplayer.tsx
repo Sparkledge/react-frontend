@@ -1,16 +1,14 @@
 import React, {useState, useEffect, Suspense, MouseEvent } from "react";
 import { Document, Page, pdfjs } from 'react-pdf';
-import jwt from 'jwt-decode'
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useWindowSize } from 'react-use';
-import axios from "axios";
 
 import useMediaQuery from '@mui/material/useMediaQuery';
-import SwipeLeftAltIcon from '@mui/icons-material/SwipeLeftAlt';
+/*import SwipeLeftAltIcon from '@mui/icons-material/SwipeLeftAlt';
 import SwipeRightAltIcon from '@mui/icons-material/SwipeRightAlt';
 import FastForwardIcon from '@mui/icons-material/FastForward';
-import FastRewindIcon from '@mui/icons-material/FastRewind';
+import FastRewindIcon from '@mui/icons-material/FastRewind';*/
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
@@ -23,6 +21,7 @@ import { DocumentDisplayerErrorHeader, DocumentDisplayerWrapper,
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
 
 import base64ArrayBuffer from "../auxiliaryFunctions/documentDisplayer/decodingToBase64";
+import getTheData from "../../connectionFunctions/documentDisplayer/getTheData";
 import addLike from "../auxiliaryFunctions/documentDisplayer/addLikeFunction";
 
 import { RootState } from "../../redux/mainReducer";
@@ -48,11 +47,11 @@ const DocumentDisplayer:React.FC = () => {
     const [fileAuthor, setFileAuthor] = useState<string>("");
 
     const [isFile, toggleIsFile] = useState<boolean>(false);
-    const [file, setFile] = useState<any>(null);
+    //const [file, setFile] = useState<any>(null);
     const [fileSrc, setFileSrc] = useState<any>(null);
     const [fileContentRef, setFileContentRef] = useState<any>(null);
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [pagesNumber, setPagesNumber] = useState<number>(1);
+    /*const [currentPage, setCurrentPage] = useState<number>(1);
+    const [pagesNumber, setPagesNumber] = useState<number>(1);*/
 
     const loginUserSelector = useSelector((state: RootState) => state.generalData.currentToken);
 
@@ -64,7 +63,7 @@ const DocumentDisplayer:React.FC = () => {
     
     const {docId} = useParams();
 
-    const getTheData = async() => {
+    /*const getTheData = async() => {
         if(loginUserSelector.length > 0 ){
             toggleIsFile(false);
             await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/getDocument/${docId}`,{
@@ -106,12 +105,12 @@ const DocumentDisplayer:React.FC = () => {
                 toggleIsError(true);
             });
         }
-    }
+    }*/
 
-    const onDocumentLoad = ({numPages}:{numPages: number}) => {
+    /*const onDocumentLoad = ({numPages}:{numPages: number}) => {
         setPagesNumber(numPages);
         setCurrentPage(1);
-    }
+    }*/
 
     useEffect(() => {
         toggleIsError(false);
@@ -119,7 +118,10 @@ const DocumentDisplayer:React.FC = () => {
             toggleIsError(true);
         }
         else{
-            getTheData();
+            getTheData(loginUserSelector, toggleIsFile, docId, setTitle, setLikesNumber, 
+                toggleIsLiked, setViewsNumber, setFileAuthor,
+                setDescriptionOfFile, toggleIsError, setFileSrc,
+                smallDevicesWidthChecker);
         }
     }, [docId, loginUserSelector])
 
@@ -147,13 +149,13 @@ const DocumentDisplayer:React.FC = () => {
                 </DocumentDisplayerErrorHeader>: isFile ? <>
                 
                 <DocumentDisplayerWrapper className="block-center"  onContextMenu={(e:MouseEvent) => e.preventDefault()}>
-                    
-                    <DocumentDisplayerIframe src={`${fileSrc}#toolbar=1&view=Fit`} 
+                    {smallDevicesWidthChecker ? <DocumentDisplayerIframe src={`${fileSrc}#toolbar=1&view=Fit`} 
                         title={title}
                         width={smallDevicesWidthChecker ? 
                             phoneWidthChecker ? tabletWidthChecker ? width*0.6 : width*0.8 : width*0.9 : width*0.95}
                         ref={setFileContentRef}
-                        onLoad={() => insertStylesToPDF()}/>
+                        onLoad={() => insertStylesToPDF()}/>: <></>}
+                    
                     {/*<Document file = {`data:application/pdf;base64,${base64ArrayBuffer(file)}`} 
                     onLoadSuccess={onDocumentLoad} 
                     loading={<SearchingPreloaderComponent/>} onLoadError = {() => toggleIsError(true)} 
