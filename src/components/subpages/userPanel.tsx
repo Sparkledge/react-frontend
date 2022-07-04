@@ -1,7 +1,6 @@
 import React, {Suspense, useState, useEffect} from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import useLocalStorage from "use-local-storage";
 
@@ -13,6 +12,7 @@ import { UserPanelHeader, UserPanelWelcomeSection, UserPanelLastView ,
 import LastViewItemComponent from "../helperComponents/userPanel/LastViewItemComponent";
 import { RootState } from "../../redux/mainReducer";
 
+import getLastViews from "../../connectionFunctions/userPanel/loadLastViews";
 
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
 
@@ -40,23 +40,10 @@ const UserPanel:React.FC = () => {
     const navigate = useNavigate();
     const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u","");
 
-
     useEffect(() => {
         if(memoryUserId.length === 0 || memoryUserId === undefined || currentToken.length === 0) navigate("/");
         else{
-            axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/users/lastViews`, {
-                headers: {
-                    "Content-type": "application/json",
-                    "Authorization": `Bearer ${currentToken}`
-                }
-            })
-            .then((res) => {
-                setLastViewedList(res.data);
-                toggleIsWorking(true);
-            })
-            .catch((err) => {
-                toggleIsWorking(false);
-            });
+            getLastViews(currentToken, setLastViewedList, toggleIsWorking);
         }
     }, [currentToken, memoryUserId])
 

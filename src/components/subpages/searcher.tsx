@@ -1,7 +1,6 @@
 import React, {useState, useEffect, Suspense} from "react";
 import useLocalStorage from "use-local-storage";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 
 import { MainContainer } from "../../styled/main";
 import { LandingSectionWrapper, LandingSectionFilter } from "../../styled/subpages/welcome";
@@ -12,6 +11,10 @@ import { SearcherFailureContainer, SearcherFailureHeader, SearcherFailureButton 
 import { SearcherBarInputContainer, SearcherInput, SearcherButton } from "../../styled/subpages/searcher/searcherBar";
 
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
+
+import getUniversitiesInfrastructure from "../../connectionFunctions/searcher/getUniversitiesInfrastructure";
+import getProgrammeOrFacultyInfrastructure from "../../connectionFunctions/searcher/getProgrammeOrFacultyInfrastructure"
+import submitTheQuery from "../../connectionFunctions/searcher/submitTheQuery"
 
 import checkIfFound from "../auxiliaryFunctions/searcher/checkIfFound";
 
@@ -45,100 +48,33 @@ const Searcher:React.FC = () => {
 
     useEffect(() => {
         toggleIsLoaded(false);
-        if(courseId !== undefined && courseId.length > 0) {submitTheQuery(); toggleIsLoaded(true);}
-        else{
-            axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/university`)
-            .then((res) => {
-                setUniversitiesList(res.data);
-                if(previouslySearchedUni.length > 0 && res.data.filter((elem: any) => elem["name"] === previouslySearchedUni).length > 0) {
-                    setSearchedUniversity(previouslySearchedUni);
-                    if(previouslySearchedFac.length > 0 && res.data.filter((elem: any) => elem["name"] === previouslySearchedUni)[0]["faculties"]
-                        .filter((elem:any) => elem["name"] === previouslySearchedFac).length > 0) {setSearchedFaculty(previouslySearchedFac);}
-                        else setPreviouslySearchedFac(undefined);
-                }
-                toggleIsLoaded(true);
-            })
-            .catch(() => {
-                setSearcherState(3);
-            })
-
-        }
+        if(courseId !== undefined && courseId.length > 0) {
+            submitTheQuery(searchedUniversity, searchedFaculty, searchedProgramme,
+                searchedCourse, programmesList, courseId,
+                setSearcherState, setSearchedResults, setSearchedPhrase); 
+            toggleIsLoaded(true);}
+        else getUniversitiesInfrastructure(setUniversitiesList, previouslySearchedUni, previouslySearchedFac,
+                setSearchedUniversity, setSearchedFaculty, setPreviouslySearchedFac, toggleIsLoaded,
+                setSearcherState);
     }, [courseId]);
 
     useEffect(() => {
         if(searchedFaculty.length > 0) {
-            setFacultiesList([]);
-
-            const facultyID:string = universitiesList.filter((elem:any) => elem["name"] !== undefined && elem["name"] === searchedUniversity)[0]["faculties"]
-            .filter((elem: any) => elem["name"] !== undefined && elem["name"] === searchedFaculty)[0]["_id"];
-
-            const requestBody:Object = {
-                "facultyId": facultyID
-            }
-
-            axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/faculty`, requestBody, {
-                headers: {
-                    "Content-Type": "application/json; charset=UTF-8"
-                }
-            })
-            .then((res) => {
-                setFacultiesList(res.data.programmes)
-            })
-            .catch((err) => {
-                console.log(err);
-                setSearcherState(3);
-            })
-
+            getProgrammeOrFacultyInfrastructure(universitiesList, setFacultiesList, searchedFaculty,
+                "faculty", setSearcherState, searchedUniversity);
         } 
     }, [searchedFaculty])
 
     useEffect(() => {
         if(searchedProgramme.length > 0){
-            setProgrammesList([]);
-            
-            const programmeID:string = facultiesList.filter((elem:any) => elem["name"] !== undefined && elem["name"] === searchedProgramme)[0]["_id"];
-
-            const requestBody:Object = {
-                "programmeId": programmeID
-            }
-
-            axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/programme`, requestBody, {
-                headers: {
-                    "Content-Type": "application/json; charset=UTF-8"
-                }
-            })
-            .then((res) => {
-                setProgrammesList(res.data.courses)
-            })
-            .catch((err) => {
-                console.log(err);
-                setSearcherState(3);
-            })
-
+            getProgrammeOrFacultyInfrastructure(facultiesList, setProgrammesList, searchedProgramme,
+                "programme", setSearcherState);
         }
     }, [searchedProgramme])
 
     useEffect(() => {
         if(searchedCourse.length > 0) navigate(`/searcher/${programmesList.filter((elem:any) => elem.name === searchedCourse)[0]["_id"]}`);//submitTheQuery();
     }, [searchedCourse]);
-    
-    const submitTheQuery = async() => {
-        if((searchedUniversity.length > 0 && searchedFaculty.length > 0 && searchedProgramme.length > 0 && 
-            searchedCourse.length > 0 && programmesList.filter((elem:any) => elem.name === searchedCourse).length > 0) || (courseId !== undefined && courseId.length > 0)){
-                setSearcherState(1);
-            await axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/course`,{
-                    courseId: courseId !== undefined ? courseId : programmesList.filter((elem:any) => elem.name === searchedCourse)[0]["_id"]
-            })
-                .then((res) => {
-                    setSearcherState(res.status === 200 ? 2 : 3);
-                    setSearchedResults(res.status === 200 ? res.data.documents.map((elem:any) => {elem["isDisplayed"] = 1; return elem;}) : []);
-                    setSearchedPhrase("");
-                })
-                .catch((err) => {
-                    setSearcherState(3);
-                })
-        }
-    }
 
     const getBackToSearch = () => {
         setSearchedCourse("");
