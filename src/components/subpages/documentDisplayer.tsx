@@ -66,50 +66,6 @@ const DocumentDisplayer:React.FC = () => {
     
     const {docId} = useParams();
 
-    /*const getTheData = async() => {
-        if(loginUserSelector.length > 0 ){
-            toggleIsFile(false);
-            await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/getDocument/${docId}`,{
-                headers: {
-                    "Authorization": `Bearer ${loginUserSelector}`,
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(async(res) => {
-                let id:any = jwt(loginUserSelector);
-                setTitle(res.data.title);
-                setLikesNumber(res.data.likesNum);
-                toggleIsLiked(res.data.likes.find((elem: string) => elem === id.UserInfo.id) === undefined ? false : true);
-                setViewsNumber(res.data.viewsNum);
-                setFileAuthor(res.data.creatorEmail);
-                setDescriptionOfFile(res.data.description);
-                id = null;
-                await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/${res.data.fileKey}`, {
-                    headers: {
-                        "Authorization": `Bearer ${loginUserSelector}`,
-                        'Accept': 'application/pdf'
-                    },
-                    responseType: 'arraybuffer',
-                }).then((res) => {
-                    toggleIsFile(true);
-                    setFile(res.data);
-                    setFileSrc((window.URL ? URL : webkitURL).createObjectURL(new Blob([res.data], {
-                        type: "application/pdf",
-                    })))
- 
-                })
-                .catch((err) => {
-                    toggleIsFile(false);
-                    toggleIsError(true);
-                });
-            })
-            .catch((err) => {
-                console.log(err);
-                toggleIsError(true);
-            });
-        }
-    }*/
-
     const onDocumentLoad = ({numPages}:{numPages: number}) => {
         setPagesNumber(numPages);
         setCurrentPage(1);
@@ -131,17 +87,19 @@ const DocumentDisplayer:React.FC = () => {
     const handleScrolling = (e:any) => {
         if((changeDimensionsOfDocumentChecker && e.currentTarget.scrollTop/e.currentTarget.scrollHeight > 0.9)
         ||(!changeDimensionsOfDocumentChecker && e.currentTarget.scrollTop/e.currentTarget.scrollHeight > 0.8)
-        || (!phoneWidthChecker && e.currentTarget.scrollTop/e.currentTarget.scrollHeight > 0.72)) setCurrentlyRendered(currentlyRendered+10);
+        || (!phoneWidthChecker && e.currentTarget.scrollTop/e.currentTarget.scrollHeight > 0.6)) {
+            setCurrentlyRendered(currentlyRendered+5)
+        };
     }
 
-    const insertStylesToPDF = () : void => {
+    /*const insertStylesToPDF = () : void => {
         if(fileContentRef !== undefined && fileContentRef.contentWindow !== undefined
                 && fileContentRef.contentWindow.document !== undefined 
                 && fileContentRef.contentWindow.document.body !== undefined){
             console.log(fileContentRef.contentWindow.document.body.querySelector("embed").contentDocument);
             fileContentRef.contentWindow.document.body.style.background = "transparent";
         }
-    }
+    }*/
 
     return <MainContainer className="block-center">
         <LandingSectionWrapper className="block-center" source={Background} backgroundSize="initial"
@@ -200,9 +158,9 @@ const DocumentDisplayer:React.FC = () => {
                     <InfoContainer>
                         <RemoveRedEyeIcon style={{color: "inherit",fontSize: "1.6em", verticalAlign: "middle"}}/> {viewsNumber}
                     </InfoContainer>
-                    {/*<InfoContainer>
+                    <InfoContainer>
                         {`${currentPage}/${pagesNumber}`}
-            </InfoContainer>*/}
+            </InfoContainer>
                     <InfoContainer className="hoverClass">
                         <ThumbUpIcon style={{color: "inherit",fontSize: "1.6em", verticalAlign: "middle"}}
                             onClick={() => addLike(docId, loginUserSelector, isLiked, likesNumber, setLikesNumber, toggleIsLiked)}/> {likesNumber}
