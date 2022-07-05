@@ -28,10 +28,32 @@ export const DocumentDisplayerErrorHeader = styled.header`
 `;
 
 export const DocumentDisplayerWrapper = styled.section`
-    width: auto;
-    height: fit-content;
+    width: 100%;
+    height: 70vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
     border-radius: 10px;
     text-align: center;
+
+    &::-webkit-scrollbar{
+        background: ${(props) => props.theme.signingInputBackground};
+        width: 6px;
+        border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb{
+        background: ${(props) => props.theme.resultBackground};
+        width: 4px;
+        border-radius: 5px;
+    }
+
+    @media screen and (min-width: 350px){
+        height: 100vh;
+    }
+
+    @media screen and (min-width: 460px){
+        width: fit-content;
+    }
 `;
 
 export const DocumentDisplayerIframe = styled.iframe`

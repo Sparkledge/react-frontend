@@ -5,7 +5,7 @@ const getTheData = async(loginUserSelector: string, toggleIsFile: (newState: boo
     docId: string, setTitle: (newState: string) => void, setLikesNumber: (newState: number) => void, toggleIsLiked: (newState: boolean) => void,
     setViewsNumber: (newState: number) => void, setFileAuthor: (newState: string) => void, 
     setDescriptionOfFile: (newState: string) => void, toggleIsError: (newState: boolean) => void, 
-    setFileSrc: (newState: any) => void, smallDevicesWidthChecker: boolean ) => {
+    setFileSrc: (newState: any) => void, smallDevicesWidthChecker: boolean, setFile: (newState: any) => void ) => {
     if(loginUserSelector.length > 0 ){
         toggleIsFile(false);
         await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/getDocument/${docId}`,{
@@ -31,8 +31,8 @@ const getTheData = async(loginUserSelector: string, toggleIsFile: (newState: boo
                 responseType: 'arraybuffer',
             }).then((res) => {
                 toggleIsFile(true);
-                //setFile(res.data);
-                const tmp_path = (window.URL ? URL : webkitURL).createObjectURL(new Blob([res.data], {
+                setFile(res.data);
+                /*const tmp_path = (window.URL ? URL : webkitURL).createObjectURL(new Blob([res.data], {
                     type: "application/pdf",
                 }))
                 setFileSrc(tmp_path)
@@ -42,7 +42,7 @@ const getTheData = async(loginUserSelector: string, toggleIsFile: (newState: boo
                         pdfWindow.location.href = tmp_path;
                     }
                 }
-                URL.revokeObjectURL(tmp_path);
+                URL.revokeObjectURL(tmp_path);*/
 
             })
             .catch((err) => {

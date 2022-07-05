@@ -1,7 +1,6 @@
 import React, {Suspense, useEffect, useState} from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import useLocalStorage from "use-local-storage";
 
 import { MainContainer, Preloader } from "../../styled/main";
