@@ -1,7 +1,6 @@
 import React, {useState, useEffect, createRef} from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import SwipeRightAltIcon from '@mui/icons-material/SwipeRightAlt';
 
 import { MainContainer } from "../../styled/main";
@@ -14,6 +13,12 @@ import { DocumentUploadFormWrapper, DocumentUploadFormHeader,
 import { RootState } from "../../redux/mainReducer";
 
 import SearchBarComponent from "../helperComponents/searcher/searchBarComponent";
+
+import sendFile from "../../connectionFunctions/documentUpload/sendFile";
+import getProgrammeOrFacultyInfrastructure from "../../connectionFunctions/searcher/getProgrammeOrFacultyInfrastructure";
+import loadUniversities from "../../connectionFunctions/documentUpload/loadUniversities";
+
+import selectFile from "../auxiliaryFunctions/documentUpload/selectFile";
 
 const BackgroundPattern = require("../../assets/pattern_background5.webp");
 
@@ -44,122 +49,29 @@ const DocumentUpload:React.FC = () => {
 
     const FileRef = createRef<HTMLInputElement>();
 
-
     useEffect(() => {
-        axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/university`)
-        .then((res) => {
-            setUniversitiesList(res.data);
-        })
-        .catch(() => {
-            toggleIsWorking(false);
-        })
+        loadUniversities(setUniversitiesList, toggleIsWorking);
+        window.addEventListener("offline", () => toggleIsOnline(false));
+        window.addEventListener("online", () => toggleIsOnline(true));
     }, []);
 
     useEffect(() => {
         if(searchedFaculty.length > 0) {
-            setFacultiesList([]);
-
-            const facultyID:string = universitiesList.filter((elem:any) => elem["name"] !== undefined && elem["name"] === searchedUniversity)[0]["faculties"]
-            .filter((elem: any) => elem["name"] !== undefined && elem["name"] === searchedFaculty)[0]["_id"];
-
-            const requestBody:Object = {
-                "facultyId": facultyID
-            }
-
-            axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/faculty`, requestBody, {
-                headers: {
-                    "Content-Type": "application/json; charset=UTF-8"
-                }
-            })
-            .then((res) => {
-                setFacultiesList(res.data.programmes)
-            })
-            .catch((err) => {
-                console.log(err);
-                toggleIsWorking(false);
-            })
-
-        }
+            getProgrammeOrFacultyInfrastructure(universitiesList, setFacultiesList, searchedFaculty,
+                "faculty", toggleIsWorking, searchedUniversity, true);
+        } 
     }, [searchedFaculty])
 
     useEffect(() => {
         if(searchedProgramme.length > 0){
-            setProgrammesList([]);
-            
-            const programmeID:string = facultiesList.filter((elem:any) => elem["name"] !== undefined && elem["name"] === searchedProgramme)[0]["_id"];
-
-            const requestBody:Object = {
-                "programmeId": programmeID
-            }
-
-            axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/programme`, requestBody, {
-                headers: {
-                    "Content-Type": "application/json; charset=UTF-8"
-                }
-            })
-            .then((res) => {
-                setProgrammesList(res.data.courses)
-            })
-            .catch((err) => {
-                console.log(err);
-                toggleIsWorking(false);
-            })
-
+            getProgrammeOrFacultyInfrastructure(facultiesList, setProgrammesList, searchedProgramme,
+                "programme", toggleIsWorking, "",true);
         }
     }, [searchedProgramme])
-
-
-    const selectFile = async(e:any) => {
-        if(!(e.target.files && e.target.files.length > 0)) setFile(null);
-        else{
-            setWarning("");
-            const forStoring = e.target.files[0];
-            if(forStoring.type !== "application/pdf") {
-                setFile(null);
-                setWarning("Dozwolone wyłącznie pliki PDF");
-            }
-            else if(forStoring.size /(1024*1024) > 50){
-                setFile(null);
-                setWarning("Plik nie może przekroczyć 50MB");
-            }
-            else {
-                setFile(forStoring);
-                setIsFileLoaded(1);
-            }
-        }
-    }
-
-    const sendFile = async() => {
-        const formData = new FormData();
-        formData.append("title",materialName);
-        formData.append("description", desc);
-        formData.append("courseId", programmesList.filter((elem:any) => elem.name === searchedCourse)[0]["_id"]);
-        formData.append("file",file);
-        await axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents`, formData, {
-            headers: {
-                "Authorization": `Bearer ${currentToken}`,
-                'Content-Type': 'multipart/form-data',
-            }
-        })
-        .then((res) => {
-            if(res.status === 201){
-                setPhaseNumber(4);
-                setDocumentId(res.data.id);
-            }
-        })
-        .catch((err) => {
-            toggleIsWorking(false);
-        });
-    }
 
     useEffect(() => {
         toggleIsWorking(currentToken.length === 0 ? false : true);
     }, [currentToken])
-
-    useEffect(() => {
-        window.addEventListener("offline", () => toggleIsOnline(false));
-        window.addEventListener("online", () => toggleIsOnline(true));
-    }, [])
 
     return <MainContainer className="block-center">
         <LandingSectionWrapper className="block-center" backgroundSize="initial" source={BackgroundPattern}
@@ -200,13 +112,14 @@ const DocumentUpload:React.FC = () => {
                                         Wybierz
                                     </DocumentUploadFileButton>
                                     <DocumentUploadFileInput type="file" ref={FileRef}
-                                        onChange={async(e:any) => await selectFile(e)}/>
+                                        onChange={async(e:any) => await selectFile(e, setFile, setWarning, setIsFileLoaded)}/>
                                     <DocumentUploadFileDescription className="block-center"
                                         onChange={(e:any) => setDesc(e.target.value)}></DocumentUploadFileDescription>
                                 </DocumentUploadDataSubSection>
                                 {
                                     isFileLoaded === 1 && programmesList.filter((elem:any) => elem.name === searchedCourse).length > 0? <DocumentUploadFileButton className="block-center" top={5}
-                                        onClick={() => sendFile()}>
+                                        onClick={() => sendFile(materialName, desc, programmesList, searchedCourse, file,
+                                            currentToken, setPhaseNumber, setDocumentId, toggleIsWorking)}>
                                         Wyślij
                                     </DocumentUploadFileButton>: null
                                 }

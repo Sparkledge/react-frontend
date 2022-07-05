@@ -2,10 +2,6 @@ import React, {Suspense} from "react";
 
 import { MainContainer, Preloader } from "../../styled/main";
 
-//import LandingComponent from "../helperComponents/welcome/landingComponent";
-//import DescribeComponent from "../helperComponents/welcome/describeComponents";
-//import FooterComponent from "../helperComponents/welcome/footerComponent";
-
 const LandingComponent = React.lazy(() => import("../helperComponents/welcome/landingComponent"))
 const DescribeComponent = React.lazy(() => import("../helperComponents/welcome/describeComponents"));
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));

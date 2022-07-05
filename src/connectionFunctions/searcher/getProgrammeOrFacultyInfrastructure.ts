@@ -11,14 +11,15 @@ const getProgrammeOrFacultyInfrastructure = async(
     setInfrastructureList: (newData: any[]) => void,
     searchedInfrastructure: string,
     destination: string,
-    setSearcherState: (newState: number) => void,
+    setSearcherState: (newState: any) => void,
     oldInfrastructure?: string,
+    isSearcherBoolean?: boolean
 ) => {
     setInfrastructureList([]);
     
     let infrastructureId:string="";
 
-    if(destination === "faculty" && oldInfrastructure !== undefined){
+    if(destination === "faculty" && oldInfrastructure !== undefined && oldInfrastructure.length > 0){
         infrastructureId = infrastructureList.filter((elem:any) => elem["name"] !== undefined && elem["name"] === oldInfrastructure)[0]["faculties"]
         .filter((elem: any) => elem["name"] !== undefined && elem["name"] === searchedInfrastructure)[0]["_id"];
     }
@@ -52,7 +53,7 @@ const getProgrammeOrFacultyInfrastructure = async(
     })
     .catch((err) => {
         console.log(err);
-        setSearcherState(3);
+        setSearcherState(isSearcherBoolean ? false : 3);
     })    
 };
 

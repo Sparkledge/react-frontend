@@ -12,7 +12,8 @@ import { NavbarContainer, NavbarAlignGroup, RespOpeningCloseBtn, RotatingBtnElem
 import NavbarElemMap from "../helperComponents/navbar/navbarElemMap";
 import { changeGraphicalMode, setNewToken } from "../../redux/actions/generalActions";
 import { RootState } from "../../redux/mainReducer";
-import axios from "axios";
+
+import logout from "../../connectionFunctions/navbar/logout";
 
 const NavbarLogo = require("../../assets/sparkledge_logo.webp");
 
@@ -64,15 +65,7 @@ const Navbar:React.FC = () => {
                 content: currentToken.length === 0 ? "Zarejestruj się" : "Wyloguj",
                 callback: () => {
                     memoryUserId === undefined && currentToken.length === 0 ? toggleIsOpened(false) : 
-                    axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/logout?user=${currentToken}`)
-                    .then((res) => {
-                        if(res.status === 200 || res.status === 204){
-                            dispatch(setNewToken(""));
-                            setMemoryUserId(undefined);
-                            toggleIsOpened(false);
-                        }
-                    })
-                    .catch(() => {});
+                    logout(currentToken, () => dispatch(setNewToken("")), setMemoryUserId, toggleIsOpened);
                 }
             },
             {
