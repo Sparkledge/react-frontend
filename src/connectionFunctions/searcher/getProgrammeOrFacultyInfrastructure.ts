@@ -30,7 +30,7 @@ const getProgrammeOrFacultyInfrastructure = async (
   if (destination === "faculties") {
     requestBody = {
       ...requestBody,
-      facultyId: infrastructureId,
+      university: infrastructureId,
     };
   } else {
     requestBody = {

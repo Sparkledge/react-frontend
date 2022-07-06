@@ -2,7 +2,7 @@ import React, {
   useState, useEffect, Suspense, MouseEvent, 
 } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useWindowSize } from "react-use";
 
@@ -11,6 +11,9 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import SwipeRightAltIcon from '@mui/icons-material/SwipeRightAlt';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind'; */
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import DownloadIcon from "@mui/icons-material/Download";
+import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 
@@ -20,12 +23,13 @@ import {
   DocumentDisplayerErrorHeader, DocumentDisplayerWrapper,
   DocumentDataWrapper, SwipperBtn, InfoContainer, DescriptionDataContainer,
   DescriptionDataHeader, DescriptionDataContent, DocumentDisplayerIframe, 
+  DocumentDisplayerDownloadBtn,
 } from "../../styled/subpages/documentDisplayer";
 
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
 
-import base64ArrayBuffer from "../auxiliaryFunctions/documentDisplayer/decodingToBase64";
-import getTheData from "../../connectionFunctions/documentDisplayer/getTheData";
+import blobToBase64 from "../auxiliaryFunctions/documentDisplayer/decodingToBase64";
+import { getTheData, loadTheDownloadLink, loadTheFile } from "../../connectionFunctions/documentDisplayer/getTheData";
 import addLike from "../auxiliaryFunctions/documentDisplayer/addLikeFunction";
 
 import { RootState } from "../../redux/mainReducer";
@@ -48,10 +52,12 @@ const DocumentDisplayer:React.FC = () => {
   const [viewsNumber, setViewsNumber] = useState<number>(0);
   const [descriptionOfFile, setDescriptionOfFile] = useState<string>("");
   const [fileAuthor, setFileAuthor] = useState<string>("");
+  const [fileId, setFileId] = useState<string>("");
 
   const [isFile, toggleIsFile] = useState<boolean>(false);
   const [file, setFile] = useState<any>(null);
-  const [fileSrc, setFileSrc] = useState<any>(null);
+  const [fileSrc, setFileSrc] = useState<string>("");
+  const [isFileRequested, toggleIsFileRequested] = useState<boolean>(false);
   const [fileContentRef, setFileContentRef] = useState<any>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pagesNumber, setPagesNumber] = useState<number>(1);
@@ -90,9 +96,9 @@ const DocumentDisplayer:React.FC = () => {
         setFileAuthor,
         setDescriptionOfFile, 
         toggleIsError, 
-        setFileSrc,
+        setFileSrc, 
         smallDevicesWidthChecker, 
-        setFile,
+        setFileId,
       );
     }
   }, [docId, loginUserSelector]);
@@ -105,14 +111,14 @@ const DocumentDisplayer:React.FC = () => {
     }
   };
 
-  /* const insertStylesToPDF = () : void => {
-        if(fileContentRef !== undefined && fileContentRef.contentWindow !== undefined
+  const insertStylesToPDF = () : void => {
+    if (fileContentRef !== undefined && fileContentRef.contentWindow !== undefined
                 && fileContentRef.contentWindow.document !== undefined 
-                && fileContentRef.contentWindow.document.body !== undefined){
-            console.log(fileContentRef.contentWindow.document.body.querySelector("embed").contentDocument);
-            fileContentRef.contentWindow.document.body.style.background = "transparent";
-        }
-    } */
+                && fileContentRef.contentWindow.document.body !== undefined) {
+      console.log(fileContentRef.contentWindow.document.body.querySelector("embed").contentDocument);
+      fileContentRef.contentWindow.document.body.style.background = "transparent";
+    }
+  };
 
   return (
     <MainContainer className="block-center">
@@ -132,11 +138,38 @@ const DocumentDisplayer:React.FC = () => {
           {loginUserSelector.length === 0 || isError 
             ? (
               <DocumentDisplayerErrorHeader className="block-center">
-                {isError ? "Coś poszło nie tak. Spróbuj ponownie" : "Zaloguj się, aby móc wyświetlić dokument"}
+                {isError ? "Coś poszło nie tak. Spróbuj ponownie" : (
+                  <Link to="/signin">
+                    <DocumentDisplayerDownloadBtn className="block-center">
+                      Zaloguj się
+                    </DocumentDisplayerDownloadBtn>
+                  </Link>
+                )}
               </DocumentDisplayerErrorHeader>
-            ) : isFile ? (
-              <>
-                
+            ) : !isFileRequested && title.length > 0
+              ? (
+                <DocumentDisplayerDownloadBtn
+                  className="block-center"
+                  onClick={() => {
+                    loadTheDownloadLink(
+                      loginUserSelector, 
+                      fileId,  
+                      toggleIsError,
+                      setFileSrc,
+                      toggleIsFileRequested,
+                    ); loadTheFile(
+                      loginUserSelector,
+                      fileId,
+                      toggleIsFile,
+                      toggleIsError,
+                      setFile,
+                    );
+                  }}
+                >
+                  <CloudDownloadIcon style={{ color: "inherit", fontSize: "1.2em" }} />
+                </DocumentDisplayerDownloadBtn>
+              )
+              : isFile ? (
                 <DocumentDisplayerWrapper
                   className="block-center"
                   onContextMenu={(e:MouseEvent) => e.preventDefault()} 
@@ -148,9 +181,8 @@ const DocumentDisplayer:React.FC = () => {
                             phoneWidthChecker ? tabletWidthChecker ? width*0.6 : width*0.8 : width*0.9 : width*0.95}
                         ref={setFileContentRef}
                         onLoad={() => insertStylesToPDF()}/>: <></> */}
-                    
                   <Document
-                    file={`data:application/pdf;base64,${base64ArrayBuffer(file)}`} 
+                    file={`data:application/pdf;base64,${file}`} 
                     onLoadSuccess={onDocumentLoad} 
                     loading={<SearchingPreloaderComponent />}
                     onLoadError={() => toggleIsError(true)} 
@@ -172,8 +204,13 @@ const DocumentDisplayer:React.FC = () => {
                         
                   </Document>
                 </DocumentDisplayerWrapper>
-                <DocumentDataWrapper className="block-center">
-                  {/* <SwipperBtn onClick={() => setCurrentPage(1)}>
+              ) : null}
+          {
+              loginUserSelector.length > 0 && !isError && title.length > 0 ? (
+                <>
+              
+                  <DocumentDataWrapper className="block-center">
+                    {/* <SwipperBtn onClick={() => setCurrentPage(1)}>
                         <FastRewindIcon style={{color: "inherit", fontSize: "inherit"}}/>
                     </SwipperBtn>
                     <SwipperBtn onClick={() => setCurrentPage(currentPage-1 < 1 ? 1 : currentPage-1)}>
@@ -185,39 +222,54 @@ const DocumentDisplayer:React.FC = () => {
                     <SwipperBtn onClick={() => setCurrentPage(pagesNumber)}>
                         <FastForwardIcon style={{color: "inherit", fontSize: "inherit"}}/>
             </SwipperBtn> */}
-                  <InfoContainer>
-                    <RemoveRedEyeIcon style={{ color: "inherit", fontSize: "1.6em", verticalAlign: "middle" }} /> 
-                    {" "}
-                    {viewsNumber}
-                  </InfoContainer>
-                  <InfoContainer>
-                    {`${currentPage}/${pagesNumber}`}
-                  </InfoContainer>
-                  <InfoContainer className="hoverClass">
-                    <ThumbUpIcon
-                      style={{ color: "inherit", fontSize: "1.6em", verticalAlign: "middle" }}
-                      onClick={() => addLike(docId, loginUserSelector, isLiked, likesNumber, setLikesNumber, toggleIsLiked)}
-                    /> 
-                    {" "}
-                    {likesNumber}
-                  </InfoContainer>
-                </DocumentDataWrapper>
-                <DescriptionDataContainer className="block-center">
-                  <DescriptionDataHeader className="block-center">
-                    Autor: 
-                    {" "}
-                    {fileAuthor}
-                  </DescriptionDataHeader>
-                  <DescriptionDataContent className="block-center">
-                    {descriptionOfFile}
-                  </DescriptionDataContent>
-                </DescriptionDataContainer>
-                <Suspense fallback={null}>
-                  <CommentingForm />
-                  <CommentingSectionDisplay />
-                </Suspense>
-              </>
-            ) : null}
+                    <InfoContainer>
+                      <RemoveRedEyeIcon style={{ color: "inherit", fontSize: "1.6em", verticalAlign: "middle" }} /> 
+                      {" "}
+                      {viewsNumber}
+                    </InfoContainer>
+                    {/* <InfoContainer>
+                      {`${currentPage}/${pagesNumber}`}
+          </InfoContainer> */}
+                    <InfoContainer className="hoverClass">
+                      <ThumbUpIcon
+                        style={{ color: "inherit", fontSize: "1.6em", verticalAlign: "middle" }}
+                        onClick={() => addLike(docId, loginUserSelector, isLiked, likesNumber, setLikesNumber, toggleIsLiked)}
+                      /> 
+                      {" "}
+                      {likesNumber}
+                    </InfoContainer>
+                    {isFileRequested ? (
+                      <InfoContainer>
+                        <a href={fileSrc} download={fileSrc.length > 0}>
+                          <DocumentDisplayerDownloadBtn
+                            className="block-center"
+                            isInline
+                          >
+                            {fileSrc.length === 0 ? <AccessTimeFilledIcon style={{ color: "inherit", fontSize: "1em" }} />
+                              : <DownloadIcon style={{ color: "inherit", fontSize: "1em" }} />}
+                          </DocumentDisplayerDownloadBtn>
+                        </a>
+                        
+                      </InfoContainer>
+                    ) : null}
+                  </DocumentDataWrapper>
+                  <DescriptionDataContainer className="block-center">
+                    <DescriptionDataHeader className="block-center">
+                      Autor: 
+                      {" "}
+                      {fileAuthor}
+                    </DescriptionDataHeader>
+                    <DescriptionDataContent className="block-center">
+                      {descriptionOfFile}
+                    </DescriptionDataContent>
+                  </DescriptionDataContainer>
+                  <Suspense fallback={null}>
+                    <CommentingForm />
+                    <CommentingSectionDisplay />
+                  </Suspense>
+                </>
+              ) : null
+            }
 
         </LandingSectionFilter>
                 

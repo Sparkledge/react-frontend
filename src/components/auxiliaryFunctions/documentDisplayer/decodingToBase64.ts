@@ -51,4 +51,22 @@ const base64ArrayBuffer = (arrayBuffer:ArrayBuffer):string => {
   return base64;
 };
 
+const blobToBase64 = (blob: Blob) => {
+  console.log(blob);
+  const reader = new FileReader();
+  reader.readAsDataURL(blob);
+  return new Promise((resolve) => {
+    reader.onloadend = () => {
+      resolve(reader.result);
+    };
+  });
+};
+
+const blob2Base64 = (blob:Blob):Promise<string> => new Promise<string>((resolve, reject) => {
+  const reader = new FileReader();
+  reader.readAsDataURL(blob);
+  reader.onload = () => { if (reader.result !== null) resolve(reader.result.toString()); }; 
+  reader.onerror = (error) => reject(error);
+});
+
 export default base64ArrayBuffer;
