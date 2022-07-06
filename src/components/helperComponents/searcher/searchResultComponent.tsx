@@ -1,32 +1,42 @@
 import React from "react";
-import { SearchingMainResult, SearchingResultHeader, SearchingResultSubInfo, 
-    SearchingResultTagsSection, SearchingResultTag } from "../../../styled/subpages/searcher/searcherResults";
+import {
+  SearchingMainResult, SearchingResultHeader, SearchingResultSubInfo, 
+  SearchingResultTagsSection, SearchingResultTag, 
+} from "../../../styled/subpages/searcher/searcherResults";
 
-interface SearchResultComponentInterface{
-    align: boolean,
-    header: string,
-    shareDay: string,
-    author: string,
-    tags: string[]
+interface SearchResultComponentInterface {
+  align: boolean,
+  header: string,
+  shareDay: string,
+  author: string,
+  tags: string[]
 }
 
-const SearchResultComponent:React.FC<SearchResultComponentInterface> = 
-({align, header, shareDay, author, tags}:SearchResultComponentInterface) => {
-    return <SearchingMainResult className="block-center" animAlign={align ? -10 : 10}>
+const SearchResultComponent:React.FC<SearchResultComponentInterface> = ({
+  align, header, shareDay, author, tags, 
+}:SearchResultComponentInterface) => (
+  <SearchingMainResult className="block-center" animAlign={align ? -10 : 10}>
     <SearchingResultHeader>
-        {header}
+      {header}
     </SearchingResultHeader>
     <SearchingResultSubInfo>
-        Udostępnione dnia {shareDay} przez użytkownika {author}
+      Udostępnione dnia 
+      {" "}
+      {shareDay}
+      {" "}
+      przez użytkownika
+      {author}
     </SearchingResultSubInfo>
     <SearchingResultTagsSection className="block-center">
-        {
-            tags.map((elem, ind) => <SearchingResultTag key={`${author}-${header}-${ind}`}>
+      {
+            tags.map((elem, ind) => (
+              <SearchingResultTag>
                 {elem}
-            </SearchingResultTag>)
+              </SearchingResultTag>
+            ))
         }
     </SearchingResultTagsSection>
-</SearchingMainResult>
-};
+  </SearchingMainResult>
+);
 
 export default SearchResultComponent;

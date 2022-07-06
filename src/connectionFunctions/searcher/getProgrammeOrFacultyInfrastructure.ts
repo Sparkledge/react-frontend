@@ -6,55 +6,53 @@
 
 import axios from "axios";
 
-const getProgrammeOrFacultyInfrastructure = async(
-    infrastructureList: any[],
-    setInfrastructureList: (newData: any[]) => void,
-    searchedInfrastructure: string,
-    destination: string,
-    setSearcherState: (newState: any) => void,
-    oldInfrastructure?: string,
-    isSearcherBoolean?: boolean
+const getProgrammeOrFacultyInfrastructure = async (
+  infrastructureList: any[],
+  setInfrastructureList: (newData: any[]) => void,
+  searchedInfrastructure: string,
+  destination: string,
+  setSearcherState: (newState: any) => void,
+  oldInfrastructure?: string,
+  isSearcherBoolean?: boolean,
 ) => {
-    setInfrastructureList([]);
+  setInfrastructureList([]);
     
-    let infrastructureId:string="";
+  let infrastructureId:string = "";
 
-    if(destination === "faculty" && oldInfrastructure !== undefined && oldInfrastructure.length > 0){
-        infrastructureId = infrastructureList.filter((elem:any) => elem["name"] !== undefined && elem["name"] === oldInfrastructure)[0]["faculties"]
-        .filter((elem: any) => elem["name"] !== undefined && elem["name"] === searchedInfrastructure)[0]["_id"];
-    }
-    else{
-        infrastructureId = infrastructureList.filter((elem:any) => elem["name"] !== undefined && elem["name"] === searchedInfrastructure)[0]["_id"];
-    }
+  if (destination === "faculties" && oldInfrastructure !== undefined && oldInfrastructure.length > 0) {
+    infrastructureId = infrastructureList.filter((elem:any) => elem.name !== undefined && elem.name === oldInfrastructure)[0].faculties
+      .filter((elem: any) => elem.name !== undefined && elem.name === searchedInfrastructure)[0]._id;
+  } else {
+    infrastructureId = infrastructureList.filter((elem:any) => elem.name !== undefined && elem.name === searchedInfrastructure)[0]._id;
+  }
 
-    let requestBody:Object = {};
-    if(destination === "faculty"){
-        requestBody = {
-            ...requestBody,
-            facultyId: infrastructureId
-        }
-    }
-    else{
-        requestBody = {
-            ...requestBody,
-            programmeId: infrastructureId
-        }
-    }
+  let requestBody:Object = {};
+  if (destination === "faculties") {
+    requestBody = {
+      ...requestBody,
+      facultyId: infrastructureId,
+    };
+  } else {
+    requestBody = {
+      ...requestBody,
+      programmeId: infrastructureId,
+    };
+  }
 
-    const path = `${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/${destination}`;
+  const path = `${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/${destination}&${destination === "faculties" ? "universityId" : "facultyId"}=${oldInfrastructure}`;
 
-    await axios.post(path, requestBody, {
-        headers: {
-            "Content-Type": "application/json; charset=UTF-8"
-        }
-    })
+  await axios.post(path, requestBody, {
+    headers: {
+      "Content-Type": "application/json; charset=UTF-8",
+    },
+  })
     .then((res) => {
-        setInfrastructureList(destination === "faculty" ? res.data.programmes : res.data.courses)
+      setInfrastructureList(destination === "faculties" ? res.data.programmes : res.data.courses);
     })
     .catch((err) => {
-        console.log(err);
-        setSearcherState(isSearcherBoolean ? false : 3);
-    })    
+      console.log(err);
+      setSearcherState(isSearcherBoolean ? false : 3);
+    });    
 };
 
 export default getProgrammeOrFacultyInfrastructure;

@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
-interface SearchResultInterface{
-    animAlign: number,
-    isMain?: boolean
+interface SearchResultInterface {
+  animAlign: number,
+  isMain?: boolean
 }
 
-interface SearchingSideResultDataInterface{
-    width: string
+interface SearchingSideResultDataInterface {
+  width: string
 }
 
 export const SearchingMainResult = styled.div<SearchResultInterface>`
@@ -148,7 +148,7 @@ export const SearchingSideResultTitle = styled.header`
     @media screen and (min-width: 1024px){
         font-size: 1.6em;
     }
-`
+`;
 
 export const SearchingSideResultData = styled.div<SearchingSideResultDataInterface>`
     width: calc(33% - 20px);
@@ -170,7 +170,7 @@ export const SearchingSideResultData = styled.div<SearchingSideResultDataInterfa
     @media screen and (min-width: 1024px){
         font-size: 1.6em;
     }
-`
+`;
 
 export const SearchingNoResultsContainer = styled.div`
     width: calc(100% - 20px);

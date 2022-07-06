@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-interface CommentContainerInteractiveInfoLabelInterface{
-    isClickable?: boolean
+interface CommentContainerInteractiveInfoLabelInterface {
+  isClickable?: boolean
 }
 
-interface CommentContainerInteractiveInfoInterface{
-    isSendingButton?: boolean
+interface CommentContainerInteractiveInfoInterface {
+  isSendingButton?: boolean
 }
 
 export const CommentContainer = styled.div`
@@ -100,14 +100,14 @@ export const CommentContainerInteractiveInfoLabel = styled.label<CommentContaine
     display: inline-block;
     vertical-align: top;
     text-indent: 0.2em;
-    ${(props) => props.isClickable !== undefined ? 
-        props.isClickable ? `cursor: pointer;
+    ${(props) => props.isClickable !== undefined 
+    ? props.isClickable ? `cursor: pointer;
         transition: filter 0.2s;
     
         &:hover{
             filter: brightness(70%);
         }` 
-    : "" :""};
+      : "" : ""};
 `;
 
 export const CommentContainerInteractiveCommentInput = styled.input`

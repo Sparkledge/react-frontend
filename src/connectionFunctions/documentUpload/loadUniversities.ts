@@ -4,17 +4,17 @@
 
 import axios from "axios";
 
-const loadUniversities = async(
-    setUniversitiesList: (newData: any[]) => void,
-    toggleIsWorking: (newState: boolean) => void
+const loadUniversities = async (
+  setUniversitiesList: (newData: any[]) => void,
+  toggleIsWorking: (newState: boolean) => void,
 ) => {
-    await axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/university`)
+  await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/universities`)
     .then((res) => {
-        setUniversitiesList(res.data);
+      setUniversitiesList(res.data);
     })
     .catch(() => {
-        toggleIsWorking(false);
-    })
+      toggleIsWorking(false);
+    });
 };
 
 export default loadUniversities;

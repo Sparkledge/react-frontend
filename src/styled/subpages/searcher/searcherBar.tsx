@@ -1,16 +1,16 @@
 import styled from "styled-components";
 
-interface SearcherCategorieChooserInterface{
-    isOption: boolean,
-    isOpened?: boolean
+interface SearcherCategorieChooserInterface {
+  isOption: boolean,
+  isOpened?: boolean
 }
 
-interface SearcherCategoriesSubContainerInterface{
-    isOpened: boolean
+interface SearcherCategoriesSubContainerInterface {
+  isOpened: boolean
 }
 
-interface SearcherCategorieWrapperInterface{
-    isBiggerScale: boolean
+interface SearcherCategorieWrapperInterface {
+  isBiggerScale: boolean
 }
 
 // main container - to wrap all of the content into one piece
@@ -26,7 +26,7 @@ export const SearcherCategoriesContainer = styled.section`
     @media screen and (min-width: 1024px){
         width: calc(95% - 20px);
     }
-`
+`;
 // sub container - to make the change of categories in searching more convienient and eye-candy
 export const SearcherCategoriesSubContainer = styled.div<SearcherCategoriesSubContainerInterface>`
     width: 100%;
@@ -58,7 +58,7 @@ export const SearcherCategorieWrapper = styled.div<SearcherCategorieWrapperInter
         width: calc(${(props) => props.isBiggerScale ? "50%" : "25%"} - 30px);
         margin: 0px 5px;
     }
-`
+`;
 
 export const SearcherCategorieChooser = styled.div<SearcherCategorieChooserInterface>`
     width: calc(100% - 20px);
@@ -89,7 +89,7 @@ export const SearcherCategorieChooser = styled.div<SearcherCategorieChooserInter
         width: calc(90% - 20px);
     font-size: ${(props) => props.isOption ? props.isOpened !== undefined ? props.isOpened ? "1em" : "0em" : "1em" : "1.4em"};
     }
-`
+`;
 
 export const GoToSearchBarBtn = styled.button`
     width: calc(95% - 80px);
@@ -123,7 +123,7 @@ export const GoToSearchBarBtn = styled.button`
     @media screen and (min-width: 768px){
         font-size: 1.7em;
     }
-`
+`;
 
 export const SearcherBar = styled.div`
     width: calc(100% - 10px);
@@ -145,7 +145,7 @@ export const SearcherBarInputContainer = styled.div`
     padding: 5px;
     text-align: center;
     margin-bottom: 2vh;
-`
+`;
 
 export const SearcherInput = styled.input`
     width: calc(100% - 24px);

@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-interface UserPanelWelcomeViewInterface{
-    width: number
+interface UserPanelWelcomeViewInterface {
+  width: number
 }
 
-interface UserPanelLastViewAuthorInterface{
-    marginBottom?: number
+interface UserPanelLastViewAuthorInterface {
+  marginBottom?: number
 }
 
 export const UserPanelHeader = styled.header`
@@ -17,7 +17,7 @@ export const UserPanelHeader = styled.header`
     color: ${(props) => props.theme.color};
     font-family: ${(props) => props.theme.fonts.main};
     text-shadow: ${(props) => props.theme.fonts.textShadowMain};
-`
+`;
 
 export const UserPanelWelcomeSection = styled.section`
     width: calc(100% - 10px);
@@ -29,7 +29,7 @@ export const UserPanelWelcomeSection = styled.section`
     @media screen and (min-width: 1440px){
         width: calc(95% - 10px);
     }
-`
+`;
 
 export const UserPanelLastView = styled.section<UserPanelWelcomeViewInterface>`
     width: calc(100% - 20px);
@@ -62,7 +62,7 @@ export const UserPanelLastView = styled.section<UserPanelWelcomeViewInterface>`
         vertical-align: top;
         margin: 0px 5px;
     }
-`
+`;
 
 export const UserPanelLastViewHeader = styled.header`
     width: calc(100% - 10px);
@@ -82,7 +82,7 @@ export const UserPanelLastViewHeader = styled.header`
     @media screen and (min-width: 425px){
         width: calc(90% - 10px);
     }
-`
+`;
 
 export const UserPanelLastViewGallery = styled.section`
     width: 100%;
@@ -94,7 +94,7 @@ export const UserPanelLastViewGallery = styled.section`
         border-radius: 10px;
         height: 10px;
     }
-`
+`;
 
 export const UserPanelLastViewNoItemsHeader = styled.header`
     width: calc(70% - 20px);
@@ -108,7 +108,7 @@ export const UserPanelLastViewNoItemsHeader = styled.header`
     @media screen and (min-width: 375px){
         font-size: 1.8em;
     }
-`
+`;
 
 export const UserPanelLastViewItem = styled.div`
     width: calc(90% - 20px);
@@ -133,7 +133,7 @@ export const UserPanelLastViewItem = styled.div`
     @media screen and (min-width: 768px){
         width: calc(40% - 20px);
     }
-`
+`;
 
 export const UserPanelLastViewTitle = styled.header`
     width: calc(90% - 10px);
@@ -150,7 +150,7 @@ export const UserPanelLastViewTitle = styled.header`
         font-size: 1.4em;
         margin-bottom: 3vh;
     }
-`
+`;
 
 export const UserPanelLastViewAuthor = styled.div<UserPanelLastViewAuthorInterface>`
     width: calc(90% - 20px);
@@ -165,4 +165,4 @@ export const UserPanelLastViewAuthor = styled.div<UserPanelLastViewAuthorInterfa
         width: calc(70% - 20px);
         font-size: 1.2em;
     }
-`
+`;

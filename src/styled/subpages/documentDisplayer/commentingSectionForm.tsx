@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-interface CommentingFormWrapperInterface{
-    paddingBottom?: number
+interface CommentingFormWrapperInterface {
+  paddingBottom?: number
 }
 
 export const CommentingWrapper = styled.section<CommentingFormWrapperInterface>`

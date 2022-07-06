@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-interface InputInterface{
-    marginBottom?: number
+interface InputInterface {
+  marginBottom?: number
 }
 
 export const SigningPanelWrapper = styled.section`

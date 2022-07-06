@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-interface NextButtonInterface{
-    scale: number
+interface NextButtonInterface {
+  scale: number
 }
 
-interface UploadButtonInterface{
-    top?: number
+interface UploadButtonInterface {
+  top?: number
 }
 
 export const DocumentUploadFormWrapper = styled.section`
@@ -39,7 +39,7 @@ export const DocumentUploadFormWrapper = styled.section`
     @media screen and (min-width: 1024px){
         width: calc(40% - 20px);
     }
-`
+`;
 
 export const DocumentUploadFormHeader = styled.header`
     width: calc(100% - 10px);
@@ -60,7 +60,7 @@ export const DocumentUploadFormHeader = styled.header`
         width: calc(90% - 10px);
         font-size: 2.3em;
     }
-`
+`;
 
 export const DocumentUploadFormDataSection = styled.div`
     min-height: calc(50vh - 10px);
@@ -69,8 +69,7 @@ export const DocumentUploadFormDataSection = styled.div`
     width: 100%;
     padding: 5px 0px;
     text-align: center;
-`
-
+`;
 
 export const DocumentUploadNotWorking = styled.header`
     width: calc(100% - 10px);
@@ -87,7 +86,7 @@ export const DocumentUploadNotWorking = styled.header`
         font-size: 1.6em;
         line-height: 1.6em;
     }
-`
+`;
 
 export const DocumentUploadTextInput = styled.input`
     width: calc(95% - 20px);
@@ -124,7 +123,7 @@ export const DocumentUploadTextInput = styled.input`
         width: calc(70% - 20px);
         font-size: 1.6em;
     }
-`
+`;
 
 export const DocumentUploadNextButton = styled.div<NextButtonInterface>`
     width: fit-content;
@@ -149,7 +148,7 @@ export const DocumentUploadDataSubSection = styled.section`
     line-height: initial;
     position: relative;
     top: 4vh;
-`
+`;
 
 export const DocumentUploadFileHeader = styled.header`
     width: calc(100% - 20px);

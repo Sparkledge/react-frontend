@@ -1,15 +1,15 @@
 import styled from "styled-components";
 
-interface NavbarAlignGroupInterface{
-    alignDir: string
+interface NavbarAlignGroupInterface {
+  alignDir: string
 }
 
-interface NavbarOpeningInterface{
-    isOpened?: string
+interface NavbarOpeningInterface {
+  isOpened?: string
 }
 
-interface RotatingBtnElemInterface{
-    isrotated: string
+interface RotatingBtnElemInterface {
+  isrotated: string
 }
 
 export const NavbarContainer = styled.nav<NavbarOpeningInterface>`
@@ -110,8 +110,7 @@ export const RotatingBtnElem = styled.div<RotatingBtnElemInterface>`
     width: fit-content;
     height: fit-content;
     transition: all 0.4s;
-    ${(props) => 
-        props.isrotated === "true"? `
+    ${(props) => props.isrotated === "true" ? `
         transform: rotateX(90deg) scale(0);
-        font-size: 0;` : ``}
+        font-size: 0;` : ""}
 `;
