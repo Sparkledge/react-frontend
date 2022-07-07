@@ -70,6 +70,8 @@
         "no-param-reassign": ["off"],
         "@typescript-eslint/no-unused-expressions": ["off"],
         "@typescript-eslint/no-shadow": ["warn"],
+        "import/no-extraneous-dependencies": ["off"],
+        "react/jsx-closing-tag-location": ["warn"],
         "react/jsx-using-react": ["off"],
         "react/react-in-jsx-scope": ["off"],
         "react/jsx-props-no-spreading": ["off"],

@@ -9,8 +9,8 @@ const addLike = async (
   toggleIsLiked: (newState: boolean) => void,
 ) => {
   if (docId !== undefined) {
-    await axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/likes`, {
-      documentId: docId,
+    await axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/toggle-like/${docId}`, {
+      
     }, {
       headers: {
         "Content-Type": "application/json",

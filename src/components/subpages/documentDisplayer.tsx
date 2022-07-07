@@ -30,7 +30,8 @@ import SearchingPreloaderComponent from "../helperComponents/searcher/searchingP
 
 import blobToBase64 from "../auxiliaryFunctions/documentDisplayer/decodingToBase64";
 import { getTheData, loadTheDownloadLink, loadTheFile } from "../../connectionFunctions/documentDisplayer/getTheData";
-import addLike from "../auxiliaryFunctions/documentDisplayer/addLikeFunction";
+import addLike from "../../connectionFunctions/documentDisplayer/addLikeFunction";
+import checkIfLiked from "../../connectionFunctions/documentDisplayer/checkIfLiked";
 
 import { RootState } from "../../redux/mainReducer";
 
@@ -85,6 +86,7 @@ const DocumentDisplayer:React.FC = () => {
     if (docId === undefined || docId.length === 0) {
       toggleIsError(true);
     } else {
+      checkIfLiked(docId, loginUserSelector, toggleIsLiked);
       getTheData(
         loginUserSelector, 
         toggleIsFile, 

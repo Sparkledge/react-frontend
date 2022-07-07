@@ -28,10 +28,10 @@ export const getTheData = async (
     })
       .then(async (res) => {
         let id:any = jwt(loginUserSelector);
-        console.log(res.data);
+        console.log(res.data, id);
         setTitle(res.data.title);
         setLikesNumber(res.data.likesNumber);
-        toggleIsLiked(res.data.likesList.find((elem: string) => elem === id.UserInfo.id) !== undefined);
+        toggleIsLiked(res.data.likesList.find((elem: string) => elem === id.id) !== undefined);
         setViewsNumber(res.data.viewsNumber);
         setFileAuthor(`${res.data.user.firstName} ${res.data.user.lastName}`);
         setDescriptionOfFile(res.data.description);
