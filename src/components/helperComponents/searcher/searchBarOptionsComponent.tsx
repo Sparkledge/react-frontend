@@ -16,25 +16,28 @@ const SearchBarOptionsComponent:React.FC<SearchBarOptionsComponentInterface> = (
   typeOfCallbackValue, isBiggerScale, 
 } : SearchBarOptionsComponentInterface) => (
   <SearcherCategorieWrapper isBiggerScale={isBiggerScale}>
-    <SearcherCategorieChooser
-      className="block-center"
-      isOption={false}
-      onClick={() => toggleOpening(!opening)}
-    >
-      {sectionHeader}
-    </SearcherCategorieChooser>
     {
             options.map((elem, ind) => (
               <SearcherCategorieChooser
                 className="block-center"
                 isOption
-                isOpened={opening}
+                isOpened
+                isBiggerScale={isBiggerScale}
                 onClick={() => choiceCallback(typeOfCallbackValue !== undefined ? typeOfCallbackValue === "index" ? ind + 1 : elem : elem)}
               >
                 {elem}
               </SearcherCategorieChooser>
             ))
         }
+    <SearcherCategorieChooser
+      className="block-center"
+      isOption
+      isOpened
+      isBiggerScale={isBiggerScale}
+      onClick={() => {}}
+    >
+      Nie ma Twojej uczelni? Skontaktuj się z nami
+    </SearcherCategorieChooser>
         
   </SearcherCategorieWrapper>
 );

@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 interface SearcherCategorieChooserInterface {
   isOption: boolean,
-  isOpened?: boolean
+  isOpened?: boolean,
+  isBiggerScale: boolean
 }
 
 interface SearcherCategoriesSubContainerInterface {
@@ -36,6 +37,7 @@ export const SearcherCategoriesSubContainer = styled.div<SearcherCategoriesSubCo
     height: ${(props) => props.isOpened ? "fit-content" : "0"};
     overflow-y: hidden;
     transition: all 0.4s;
+    text-align: center;
 
 `;
 
@@ -45,30 +47,17 @@ export const SearcherCategorieWrapper = styled.div<SearcherCategorieWrapperInter
     display: inline-block;
     vertical-align: top;
     margin: 5px;
-
-    @media screen and (min-width: 375px){
-        width: calc(80% - 30px);
-    }
-
-    @media screen and (min-width: 425px){
-        width: calc(50% - 30px);
-    }
-
-    @media screen and (min-width: 768px){
-        width: calc(${(props) => props.isBiggerScale ? "50%" : "25%"} - 30px);
-        margin: 0px 5px;
-    }
 `;
 
 export const SearcherCategorieChooser = styled.div<SearcherCategorieChooserInterface>`
-    width: calc(100% - 20px);
-    padding: ${(props) => props.isOption ? props.isOpened !== undefined ? props.isOpened ? "10px" : "0px" : "10px" : "30px"} 10px;
+    width: calc(100% - 50px);
+    padding: 40px 10px;
     text-align: center;
     margin-bottom: ${(props) => props.isOpened !== undefined ? props.isOpened ? "1vh" : "0vh" : "1vh"};
     color: ${(props) => props.theme.color};
     background: ${(props) => props.theme.landingButtonColor};
     text-shadow: ${(props) => props.theme.fonts.textShadowMain};
-    font-size: ${(props) => props.isOption ? props.isOpened !== undefined ? props.isOpened ? "0.8em" : "0em" : "0.8em" : "1em"};
+    font-size: 1em;
     letter-spacing: 0.06em;
     border-radius: 10px;
     transition: all 0.4s;
@@ -76,18 +65,30 @@ export const SearcherCategorieChooser = styled.div<SearcherCategorieChooserInter
     height: ${(props) => props.isOpened !== undefined ? props.isOpened ? "fit-content" : 0 : "fit-content"} !important;
     overflow-y: hidden;
     transform: scale(${(props) => props.isOpened !== undefined ? props.isOpened ? 1.0 : 0.0 : 1.0});
+    display: inline-block;
+    vertical-align: top;
+    margin: 0px 10px;
 
     &:hover{
         filter: brightness(70%);
     }
 
-    @media screen and (min-width: 425px){
-        font-size: ${(props) => props.isOption ? props.isOpened !== undefined ? props.isOpened ? "1em" : "0em" : "1em" : "1.2em"};
+    @media screen and (min-width: 375px){
+        width: calc(80% - 50px);
     }
 
+    @media screen and (min-width: 425px){
+        width: calc(50% - 50px);
+        font-size: 1.2em;
+    }
+
+    @media screen and (min-width: 768px){
+        width: calc(${(props) => props.isBiggerScale ? "50%" : "25%"} - 50px);
+        margin: 0px 5px;
+    }
+    
     @media screen and (min-width: 1024px){
-        width: calc(90% - 20px);
-    font-size: ${(props) => props.isOption ? props.isOpened !== undefined ? props.isOpened ? "1em" : "0em" : "1em" : "1.4em"};
+        font-size: 1.8em;
     }
 `;
 

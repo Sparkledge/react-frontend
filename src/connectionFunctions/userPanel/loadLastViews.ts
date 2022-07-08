@@ -9,13 +9,14 @@ const getLastViews = async (
   setLastViewedList: (newData: any[]) => void,
   toggleIsWorking: (newState: boolean) => void,
 ) => {
-  await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/users/lastViews`, {
+  await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/users/viewedDocuments`, {
     headers: {
       "Content-type": "application/json",
       Authorization: `Bearer ${currentToken}`,
     },
   })
     .then((res) => {
+      console.log(res);
       setLastViewedList(res.data);
       toggleIsWorking(true);
     })

@@ -2,18 +2,22 @@ import React from "react";
 import { UserPanelLastViewItem, UserPanelLastViewTitle, UserPanelLastViewAuthor } from "../../../styled/subpages/userpanel";
 
 interface LastViewItemComponentInterface {
-  header: string,
-  secondHeader: string,
+  title: string,
+  name: string,
   additionalData: [any, string][]
 }
 
-const LastViewItemComponent:React.FC<LastViewItemComponentInterface> = ({ header, secondHeader, additionalData } : LastViewItemComponentInterface) => (
+const LastViewItemComponent:React.FC<LastViewItemComponentInterface> = ({
+  title,
+  name,
+  additionalData, 
+} : LastViewItemComponentInterface) => (
   <UserPanelLastViewItem>
     <UserPanelLastViewTitle className="block-center">
-      {header.length > 30 ? `${header.substring(0, 27)}...` : header}
+      {title.length > 30 ? `${title.substring(0, 27)}...` : title}
     </UserPanelLastViewTitle>
     <UserPanelLastViewAuthor className="block-center">
-      {secondHeader.length > 20 ? `${secondHeader.substring(0, 17)}...` : secondHeader}
+      {name.length > 20 ? `${name.substring(0, 17)}...` : name}
     </UserPanelLastViewAuthor>
     {additionalData.map((elem, key) => (
       <UserPanelLastViewAuthor key="additional-data-render" className="block-center" marginBottom={2}>

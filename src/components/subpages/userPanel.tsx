@@ -1,6 +1,6 @@
 import React, { Suspense, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import useLocalStorage from "use-local-storage";
 
@@ -21,9 +21,13 @@ const FooterComponent = React.lazy(() => import("../helperComponents/welcome/foo
 const Background = require("../../assets/pattern_background4_1.webp");
 
 type LastViewItemType = {
+  id: string,
   title: string,
-  creatorEmail: string,
-  createdDate: string
+  createdAt: string,
+  user: {
+    firstName: string,
+    lastName: string
+  }
 };
 
 type LastPublishedItemType = {
@@ -42,9 +46,9 @@ const UserPanel:React.FC = () => {
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
 
   useEffect(() => {
-    if (memoryUserId.length === 0 || memoryUserId === undefined || currentToken.length === 0) navigate("/");
+    if (memoryUserId.length === 0 || memoryUserId === undefined) navigate("/");
     else {
-      getLastViews(currentToken, setLastViewedList, toggleIsWorking);
+      getLastViews(memoryUserId, setLastViewedList, toggleIsWorking);
     }
   }, [currentToken, memoryUserId]);
 
@@ -70,20 +74,22 @@ const UserPanel:React.FC = () => {
                 <UserPanelLastViewGallery className="block-center">
                   {
                       lastViewedList.length > 0 && isWorking ? lastViewedList.map((elem, ind) => (
-                        <LastViewItemComponent
-                          key="last-view-material"
-                          header={elem.title}
-                          secondHeader={elem.creatorEmail}
-                          additionalData={[[<PublishedWithChangesIcon style={{
-                            color: "inherit",
-                            fontSize: "1.3em", 
-                            verticalAlign: "top", 
-                          }}
-                          />, elem.createdDate]]}
-                        />
+                        <Link to={`/document/${elem.id}`}>
+                          <LastViewItemComponent
+                            key="last-view-material"
+                            title={elem.title}
+                            name={`${elem.user.firstName} ${elem.user.lastName}`}
+                            additionalData={[[<PublishedWithChangesIcon style={{
+                              color: "inherit",
+                              fontSize: "1.3em", 
+                              verticalAlign: "top", 
+                            }}
+                            />, elem.createdAt]]}
+                          />
+                        </Link>
                       )) : (
                         <UserPanelLastViewNoItemsHeader className="block-center">
-                          {isWorking ? "Błąd połączenia. Spróbuj ponownie" : "Brak danych"}
+                          {!isWorking ? "Błąd połączenia. Spróbuj ponownie" : "Brak danych"}
                         </UserPanelLastViewNoItemsHeader>
                       )
                     }
@@ -95,11 +101,11 @@ const UserPanel:React.FC = () => {
                 </UserPanelLastViewHeader>
                 <UserPanelLastViewGallery className="block-center">
                   {
-                      lastPublishedList.length > 0 ? lastViewedList.map((elem, ind) => (
+                      lastPublishedList.length > 0 ? lastPublishedList.map((elem, ind) => (
                         <LastViewItemComponent
                           key="last-published-material"
-                          header={elem.title}
-                          secondHeader={`Autor: ${elem.creatorEmail}`} 
+                          title={elem.title}
+                          name={`Autor: ${" "}`} 
                           additionalData={[]}
                         />
                       )) : (

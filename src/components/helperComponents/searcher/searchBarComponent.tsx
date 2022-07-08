@@ -109,7 +109,8 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> = ({
                       choiceCallback={universityCallback}
                       isBiggerScale={isBiggerScale !== undefined ? isBiggerScale : false}
                     />
-
+                    {
+                    /*
                     <SearchBarOptionsComponent 
                       sectionHeader={searchedFaculty.length === 0 ? "Wydział" : searchedFaculty}
                       options={searchedUniversity.length === 0 
@@ -120,8 +121,7 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> = ({
                       choiceCallback={facultyCallback}
                       isBiggerScale={isBiggerScale !== undefined ? isBiggerScale : false}
                     />
-
-                    <SearchBarOptionsComponent 
+                                        <SearchBarOptionsComponent 
                       sectionHeader={searchedProgramme.length === 0 ? "Kierunek" : searchedProgramme}
                       options={searchedFaculty.length === 0 ? [] : faculties.map((elem: any) => elem.name)}
                       toggleOpening={(newOpeningState: boolean) => { if (searchedFaculty.length > 0) toggleIsProgrammeOpened(newOpeningState); }}
@@ -129,8 +129,11 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> = ({
                       choiceCallback={programmeCallback}
                       isBiggerScale={isBiggerScale !== undefined ? isBiggerScale : false}
                     />
+                    */
+                  }
                   </SearcherCategoriesSubContainer>
-                    
+                  {
+                      /*
                   <SearcherCategoriesSubContainer isOpened={paramsPhase === 1}>
                     <SearchBarOptionsComponent 
                       sectionHeader={searchedSemester === 0 ? "Semestr" : `Semestr ${searchedSemester}`}
@@ -152,6 +155,9 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> = ({
                       isBiggerScale={isBiggerScale !== undefined ? isBiggerScale : false}
                     />
                   </SearcherCategoriesSubContainer>
+                      
+                      */
+                    }
                     
                 </SearcherCategoriesContainer>
                 {

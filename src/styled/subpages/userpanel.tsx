@@ -121,6 +121,7 @@ export const UserPanelLastViewItem = styled.div`
     text-align: center;
     min-height: calc(40vh - 10px);
     height: fit-content;
+    color: ${(props) => props.theme.color} !important;
 
     @media screen and (min-width: 375px){
         width: calc(80% - 20px);
