@@ -17,7 +17,7 @@ import { RootState } from "../../redux/mainReducer";
 import SearchBarComponent from "../helperComponents/searcher/searchBarComponent";
 
 import sendFile from "../../connectionFunctions/documentUpload/sendFile";
-import getProgrammeOrFacultyInfrastructure from "../../connectionFunctions/searcher/getProgrammeOrFacultyInfrastructure";
+import getUniversitySubInfrastructure from "../../connectionFunctions/searcher/getUniversitySubInfrastructure";
 import loadUniversities from "../../connectionFunctions/documentUpload/loadUniversities";
 
 import selectFile from "../auxiliaryFunctions/documentUpload/selectFile";
@@ -57,7 +57,7 @@ const DocumentUpload:React.FC = () => {
 
   useEffect(() => {
     if (searchedFaculty.length > 0) {
-      getProgrammeOrFacultyInfrastructure(
+      getUniversitySubInfrastructure(
         universitiesList, 
         setFacultiesList, 
         searchedFaculty,
@@ -71,7 +71,7 @@ const DocumentUpload:React.FC = () => {
 
   useEffect(() => {
     if (searchedProgramme.length > 0) {
-      getProgrammeOrFacultyInfrastructure(
+      getUniversitySubInfrastructure(
         facultiesList, 
         setProgrammesList, 
         searchedProgramme,

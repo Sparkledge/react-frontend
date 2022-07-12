@@ -35,7 +35,7 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> = ({
   isBiggerScale, 
 }:SearchBarComponentInterface) => {
   const [phase, setPhase] = useState<number>(1); // 1 - research data, 2 - string data
-  const [paramsPhase, setParamsPhase] = useState<number>(0); // 0 - university, fauculty and programme, 1 - semester, course
+  const [paramsPhase, setParamsPhase] = useState<number>(0); // 0 - university, 1 - faculty, 2 - main searcher
   const [isUniversityOpened, toggleIsUniversityOpened] = useState<boolean>(false);
   const [isFacultyOpened, toggleIsFacultyOpened] = useState<boolean>(false);
   const [isProgrammeOpened, toggleIsProgrammeOpened] = useState<boolean>(false);
@@ -54,21 +54,6 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> = ({
     toggleIsFacultyOpened(false);
   };
 
-  const programmeCallback = (proName: string) => {
-    searchedProgramme === proName ? setSearchedProgramme("") : setSearchedProgramme(proName);
-    toggleIsProgrammeOpened(false);
-  };
-
-  const semesterCallback = (semNumber: number) => {
-    searchedSemester === semNumber ? setSearchedSemester(0) : setSearchedSemester(semNumber);
-    toggleIsSemesterOpened(false);
-  };
-
-  const courseCallback = (corName: string) => {
-    searchedCourse === corName ? setSearchedCourse("") : setSearchedCourse(corName);
-    toggleIsCourseOpened(false);
-  };
-
   const generateTheArrayForSemesters = () :string[] => {
     if (searchedProgramme === "" || programmes.length === 0) return [];
     const final:string[] = [];
@@ -76,7 +61,12 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> = ({
     return final;
   };
 
-  useEffect(() => { if (searchedUniversity === "") setSearchedFaculty(""); }, [searchedUniversity]);
+  useEffect(() => {
+    if (searchedUniversity.toString() === "") {
+      setSearchedFaculty("");
+      setParamsPhase(0);
+    } else setParamsPhase(1); 
+  }, [searchedUniversity]);
   useEffect(() => { if (searchedFaculty === "") setSearchedProgramme(""); }, [searchedFaculty]);
   useEffect(() => {
     if (searchedProgramme === "") { 
@@ -99,65 +89,27 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> = ({
             phase === 1 ? (
               <>
                 <SearcherCategoriesContainer className="block-center">
-                
-                  <SearcherCategoriesSubContainer isOpened={paramsPhase === 0}>
-                    <SearchBarOptionsComponent 
-                      sectionHeader={searchedUniversity.length === 0 ? "Uczelnia" : searchedUniversity}
-                      options={universities.map((elem: any) => elem.name)}
-                      toggleOpening={toggleIsUniversityOpened}
-                      opening={isUniversityOpened}
-                      choiceCallback={universityCallback}
-                      isBiggerScale={isBiggerScale !== undefined ? isBiggerScale : false}
-                    />
-                    {
-                    /*
-                    <SearchBarOptionsComponent 
-                      sectionHeader={searchedFaculty.length === 0 ? "Wydział" : searchedFaculty}
-                      options={searchedUniversity.length === 0 
-                        ? [] : universities.filter((elem:any) => elem.name !== undefined 
-                        && elem.name === searchedUniversity)[0].faculties.map((elem: any) => elem.name)}
-                      toggleOpening={(newOpeningState: boolean) => { if (searchedUniversity.length > 0) toggleIsFacultyOpened(newOpeningState); }}
-                      opening={isFacultyOpened}
-                      choiceCallback={facultyCallback}
-                      isBiggerScale={isBiggerScale !== undefined ? isBiggerScale : false}
-                    />
-                                        <SearchBarOptionsComponent 
-                      sectionHeader={searchedProgramme.length === 0 ? "Kierunek" : searchedProgramme}
-                      options={searchedFaculty.length === 0 ? [] : faculties.map((elem: any) => elem.name)}
-                      toggleOpening={(newOpeningState: boolean) => { if (searchedFaculty.length > 0) toggleIsProgrammeOpened(newOpeningState); }}
-                      opening={isProgrammeOpened}
-                      choiceCallback={programmeCallback}
-                      isBiggerScale={isBiggerScale !== undefined ? isBiggerScale : false}
-                    />
-                    */
-                  }
-                  </SearcherCategoriesSubContainer>
                   {
-                      /*
-                  <SearcherCategoriesSubContainer isOpened={paramsPhase === 1}>
-                    <SearchBarOptionsComponent 
-                      sectionHeader={searchedSemester === 0 ? "Semestr" : `Semestr ${searchedSemester}`}
-                      options={helperSemesterArray}
-                      toggleOpening={(newOpeningState: boolean) => { if (searchedProgramme.length > 0) toggleIsSemesterOpened(newOpeningState); }}
-                      opening={isSemesterOpened}
-                      choiceCallback={semesterCallback}
-                      typeOfCallbackValue="index"
-                      isBiggerScale={isBiggerScale !== undefined ? isBiggerScale : false}
-                    />
-
-                    <SearchBarOptionsComponent 
-                      sectionHeader={searchedCourse.length === 0 ? "Przedmiot" : searchedCourse}
-                      options={searchedSemester === 0 
-                        ? [] : programmes.filter((elem:any) => elem.semester === searchedSemester).map((elem:any) => elem.name)}
-                      toggleOpening={(newOpeningState: boolean) => { if (searchedSemester > 0) toggleIsCourseOpened(newOpeningState); }}
-                      opening={isCourseOpened}
-                      choiceCallback={courseCallback}
-                      isBiggerScale={isBiggerScale !== undefined ? isBiggerScale : false}
-                    />
-                  </SearcherCategoriesSubContainer>
-                      
-                      */
-                    }
+                    paramsPhase === 0 
+                      ? (
+                        <SearcherCategoriesSubContainer>
+                          <SearchBarOptionsComponent 
+                            options={universities.map((elem: any) => elem.name)}
+                            choiceCallback={universityCallback}
+                            isBiggerScale={isBiggerScale !== undefined ? isBiggerScale : false}
+                          />
+                        </SearcherCategoriesSubContainer>
+                      ) 
+                      : (
+                        <SearcherCategoriesSubContainer>
+                          <SearchBarOptionsComponent 
+                            options={faculties.map((elem: any) => elem.name)}
+                            choiceCallback={facultyCallback}
+                            isBiggerScale={isBiggerScale !== undefined ? isBiggerScale : false}
+                          />
+                        </SearcherCategoriesSubContainer>
+                      )
+                  }              
                     
                 </SearcherCategoriesContainer>
                 {

@@ -20,8 +20,9 @@ export const LightMode = {
   filterColor: "rgba(0,0,0,.2)",
   color: "#0A77BF",
   landingButtonColor: "rgba(240,240,240,.5)",
-  signingInputBackground: "rgba(240,240,240,.7);",
+  signingInputBackground: "rgba(240,240,240,.7)",
   resultBackground: "rgba(240,240,240,.75)",
+  filtersButtonBackground: "rgba(3,73,119,.9)",
   errorColor: "rgba(240,30,30,.75)",
   fonts: {
     main: "Mohave, sans-serif",
@@ -36,8 +37,9 @@ export const DarkMode = {
   filterColor: "rgba(0,0,0,.7)",
   color: "#0895E6",
   landingButtonColor: "rgba(20,20,20,.5)",
-  signingInputBackground: "rgba(40,40,40,.7);",
+  signingInputBackground: "rgba(40,40,40,.7)",
   resultBackground: "rgba(24,87,255,.15)",
+  filtersButtonBackground: "rgba(3,73,119,.9)",
   errorColor: "rgba(240,30,30,.75)",
   fonts: {
     main: "Mohave, sans-serif",

@@ -29,6 +29,7 @@ const SearchingMainResultComponent:React.FC<SearchingMainResultComponentInterfac
       {publishedOn.substring(0, 10)}
       {" "}
       przez użytkownika
+      {" "}
       {publisher}
     </SearchingResultSubInfo>
     {

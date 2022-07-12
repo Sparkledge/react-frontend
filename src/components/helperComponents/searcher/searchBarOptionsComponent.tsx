@@ -1,45 +1,47 @@
 import React from "react";
-import { SearcherCategorieWrapper, SearcherCategorieChooser } from "../../../styled/subpages/searcher/searcherBar";
+import { SearcherCategorieChooser } from "../../../styled/subpages/searcher/searcherBar";
 
 interface SearchBarOptionsComponentInterface {
-  sectionHeader: string,
   options: string[],
-  toggleOpening: (newState: boolean) => void,
-  opening: boolean,
   choiceCallback: (newNameOfSection: any) => void,
   typeOfCallbackValue?: string,
   isBiggerScale: boolean
 }
 
 const SearchBarOptionsComponent:React.FC<SearchBarOptionsComponentInterface> = ({
-  sectionHeader, options, toggleOpening, opening, choiceCallback,
+  options, choiceCallback,
   typeOfCallbackValue, isBiggerScale, 
 } : SearchBarOptionsComponentInterface) => (
-  <SearcherCategorieWrapper isBiggerScale={isBiggerScale}>
+  <>
     {
             options.map((elem, ind) => (
               <SearcherCategorieChooser
                 className="block-center"
                 isOption
-                isOpened
                 isBiggerScale={isBiggerScale}
                 onClick={() => choiceCallback(typeOfCallbackValue !== undefined ? typeOfCallbackValue === "index" ? ind + 1 : elem : elem)}
               >
-                {elem}
+                <div>
+                  {elem}
+                </div>
               </SearcherCategorieChooser>
             ))
         }
-    <SearcherCategorieChooser
-      className="block-center"
-      isOption
-      isOpened
-      isBiggerScale={isBiggerScale}
-      onClick={() => {}}
-    >
-      Nie ma Twojej uczelni? Skontaktuj się z nami
-    </SearcherCategorieChooser>
+    { options !== undefined && options.length > 0 ? (
+      <SearcherCategorieChooser
+        className="block-center"
+        isOption
+        isInfoCategorie
+        isBiggerScale={isBiggerScale}
+        onClick={() => {}}
+      >
+        <div>
+          Nie ma Twojej uczelni?
+        </div>
+      </SearcherCategorieChooser>
+    ) : null }
         
-  </SearcherCategorieWrapper>
+  </>
 );
 
 SearchBarOptionsComponent.defaultProps = {
