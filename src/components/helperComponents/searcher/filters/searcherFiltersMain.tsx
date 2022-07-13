@@ -11,7 +11,7 @@ import {
   SearchingFilterOptionChoiceCheckbox,
   SearchingFilterOptionLabel,
   SearchingFilterOptionOpenBtn,
-} from "../../../../styled/subpages/searcher/searcherResults";
+} from "../../../../styled/subpages/searcher/searcherFilters";
 
 import SearcherFiltersInterface from "./SearcherFiltersInterface";
 
@@ -71,46 +71,6 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
       </SearchingFiltersOptionWrapper>
       <SearchingFiltersOptionWrapper
         className="block-center"
-        isOpened={openedFilters[1]}
-        elementsNumber={coursesList.length + 1}
-      >
-        <SearchingFilterOptionChoice>
-          <SearchingFilterOptionLabel>
-            Według kursu
-          </SearchingFilterOptionLabel>
-          <SearchingFilterOptionOpenBtn>
-            {!openedFilters[1] ? (
-              <ArrowDropDownIcon
-                style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([openedFilters[0], coursesList.length > 0 ? !openedFilters[1] : openedFilters[1], openedFilters[2]])}
-              />
-            ) : (
-              <ArrowDropUpIcon
-                style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([openedFilters[0], coursesList.length > 0 ? !openedFilters[1] : openedFilters[1], openedFilters[2]])}
-              />
-            )}
-
-          </SearchingFilterOptionOpenBtn>
-        </SearchingFilterOptionChoice>
-        {
-    coursesList.map((elem: any) => (
-      <SearchingFilterOptionChoice>
-        <SearchingFilterOptionChoiceDesc>
-          {elem.name.length > 20 ? `${elem.name.substring(0, 17)}...` : elem.name}
-        </SearchingFilterOptionChoiceDesc>
-        <SearchingFilterOptionChoiceCheckbox
-          className="block-center"
-          isChosen={chosenCourse === elem.id}
-          onClick={() => setChosenCourse(chosenCourse === elem.id ? "" : elem.id)}
-        />
-
-      </SearchingFilterOptionChoice>
-    ))
-  }
-      </SearchingFiltersOptionWrapper>      
-      <SearchingFiltersOptionWrapper
-        className="block-center"
         isOpened={openedFilters[2]}
         elementsNumber={semesters.length + 1}
       >
@@ -151,6 +111,53 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
     ))
   }
       </SearchingFiltersOptionWrapper>
+      <SearchingFiltersOptionWrapper
+        className="block-center"
+        isOpened={openedFilters[1]}
+        elementsNumber={coursesList.filter((elem: any) => elem.semester === chosenSemester).length + 1}
+      >
+        <SearchingFilterOptionChoice>
+          <SearchingFilterOptionLabel>
+            Według kursu
+          </SearchingFilterOptionLabel>
+          <SearchingFilterOptionOpenBtn>
+            {!openedFilters[1] ? (
+              <ArrowDropDownIcon
+                style={{ color: "inherit", fontSize: "1.2em" }}
+                onClick={() => setOpenedFilters([openedFilters[0], coursesList.length > 0 && chosenSemester > 0 ? !openedFilters[1] : openedFilters[1], openedFilters[2]])}
+              />
+            ) : (
+              <ArrowDropUpIcon
+                style={{ color: "inherit", fontSize: "1.2em" }}
+                onClick={() => setOpenedFilters([openedFilters[0], coursesList.length > 0 && chosenSemester > 0 ? !openedFilters[1] : openedFilters[1], openedFilters[2]])}
+              />
+            )}
+
+          </SearchingFilterOptionOpenBtn>
+        </SearchingFilterOptionChoice>
+        {
+          coursesList.filter((elem: any) => elem.semester === chosenSemester).length === 0 ? (
+            <SearchingFilterOptionChoice>
+              <SearchingFilterOptionLabel>
+                Brak kursów
+              </SearchingFilterOptionLabel>
+            </SearchingFilterOptionChoice>
+          ) 
+            : coursesList.map((elem: any) => elem.semester !== chosenSemester ? null : (
+              <SearchingFilterOptionChoice>
+                <SearchingFilterOptionChoiceDesc>
+                  {elem.name.length > 20 ? `${elem.name.substring(0, 17)}...` : elem.name}
+                </SearchingFilterOptionChoiceDesc>
+                <SearchingFilterOptionChoiceCheckbox
+                  className="block-center"
+                  isChosen={chosenCourse === elem.id}
+                  onClick={() => setChosenCourse(chosenCourse === elem.id ? "" : elem.id)}
+                />
+
+              </SearchingFilterOptionChoice>
+            ))
+  }
+      </SearchingFiltersOptionWrapper>      
     </>
   );
 };

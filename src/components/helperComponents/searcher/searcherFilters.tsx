@@ -1,8 +1,11 @@
 import React from "react";
 
+import CloseIcon from "@mui/icons-material/Close";
+
+import { SearchingResultsOpenFiltersBtn } from "src/styled/subpages/searcher/searcherResults";
 import {
   SearchingFiltersPanel,
-} from "../../../styled/subpages/searcher/searcherResults";
+} from "../../../styled/subpages/searcher/searcherFilters";
 
 import SearcherFiltersMain from "./filters/searcherFiltersMain";
 import SearcherFiltersHelperFilters from "./filters/searcherFiltersHelperFilters";
@@ -23,6 +26,8 @@ interface SearcherFiltersExtendedInterface extends SearcherFiltersInterface {
   setChosenSort: (newState: string) => void,
   chosenSortOrder: string,
   setChosenSortOrder: (newState: string) => void,
+  areFiltersOn: boolean,
+  toggleAreFiltersOn: (newState: boolean) => void,
 }
 
 const SearcherFilters:React.FC<SearcherFiltersExtendedInterface> = ({
@@ -33,16 +38,18 @@ const SearcherFilters:React.FC<SearcherFiltersExtendedInterface> = ({
   setChosenCourse, coursesList,
   chosenSort, setChosenSort,
   chosenSortOrder, setChosenSortOrder,
+  areFiltersOn, toggleAreFiltersOn,
 }:SearcherFiltersExtendedInterface) => {
   const semesters:number[] = [1, 2, 3, 4, 5, 6, 7];
 
   return (
-    <SearchingFiltersPanel>
+    <SearchingFiltersPanel isOpened={areFiltersOn}>
       <SearcherFiltersHelperFilters 
         chosenSort={chosenSort}
         setChosenSort={setChosenSort}
         chosenSortOrder={chosenSortOrder}
         setChosenSortOrder={setChosenSortOrder}
+        toggleAreFiltersOn={toggleAreFiltersOn}
       />
       <SearcherFiltersMain 
         openedFilters={openedFilters}

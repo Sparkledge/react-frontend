@@ -9,134 +9,65 @@ interface SearchingSideResultDataInterface {
   width: string
 }
 
-interface SearchingFiltersOptionWrapperInterface {
-  isOpened: boolean,
-  elementsNumber: number
+interface SearchingResultsOpenFiltersBtnInterface {
+  isOnPanel?: boolean
 }
-
-interface SearchingFilterOptionChoiceCheckboxInterface {
-  isChosen: boolean
-}
-
-export const SearchingFiltersPanel = styled.section`
-    width: calc(25% - 30px);
-    height: calc(60vh - 20px);
-    overflow-y: scroll;
-    padding: 10px;
-    display: inline-block;
-    vertical-align: top;
-    margin: 0px 5px;
-    text-align: center;
-    background: ${(props) => props.theme.signingInputBackground};
-    border-radius: 10px;
-    font-family: ${(props) => props.theme.fonts.main};
-    text-shadow: ${(props) => props.theme.fonts.textShadowMain};
-    color: ${(props) => props.theme.color};
-
-    &::-webkit-scrollbar{
-        width: 11px;
-    }
-      
-    &::-webkit-scrollbar-thumb{
-        border-radius: 10px;
-        width: 5px;
-        background: rgba(34,107,255,.9);
-    }
-      
-    &::-webkit-scrollbar-track{
-        width: 10px;
-    }
-`;
 
 export const SearchingResultsWrapper = styled.section`
-    width: calc(75% - 30px);
-    padding: 10px;
-    display: inline-block;
-    vertical-align: top;
-    margin: 0px 5px;
-    text-align: center;
+      width: calc(100% - 30px);
+      padding: 10px;
+      padding-bottom: 2vh;
+      display: inline-block;
+      vertical-align: top;
+      margin: 0px 10px 0px;
+      text-align: center;
+      position: relative;
+      top: 4vh;
+
+      @media screen and (min-width: 425px){
+        width: calc(80% - 30px);
+      }
+  
+      @media screen and (min-width: 768px){
+          width: calc(65% - 30px);
+          margin: 0px 10px 0px 40%;
+      }
+  
+      @media screen and (min-width: 1024px){
+          width: calc(70% - 30px);
+          margin: 0px 10px 0px 25%;
+      }
+  
+      @media screen and (min-width: 1440px){
+          margin: 0px 10px 0px 20%;
+      }
 `;
 
-export const SearchingFiltersHeader = styled.header`
-    width: calc(90% - 10px);
-    padding: 5px;
-    text-align: center;
-    font-size: 1.6em;
-    letter-spacing: 0.06em;
-    position: relative;
-    margin-bottom: 2vh;
-`;
-
-export const SearchingFiltersOptionWrapper = styled.div<SearchingFiltersOptionWrapperInterface>`
-    width: 90%;
-    text-align: center;
-    height: ${(props) => props.isOpened ? `${(props.elementsNumber + 1) * 8}vh` : "8vh"};
-    overflow: hidden;
-    transition: all 0.1s;
-`;
-
-export const SearchingFilterOptionChoice = styled.div`
-    width: calc(100% - 10px);
-    height: calc(8vh - 10px);
-    padding: 5px;
-    text-align: center;
-    margin-bottom: 1vh;
-`;
-
-export const SearchingFilterOptionLabel = styled.div`
-    width: calc(90% - 20px);
-    margin: 0px 5px;
-    padding: 5px;
-    display: inline-block;
-    vertical-align: top;
-    text-align: left;
-    font-size: 1.25em;
-    letter-spacing: 0.05em;
-`;
-
-export const SearchingFilterOptionOpenBtn = styled.div`
-    width: calc(10% - 20px);
-    margin: 0px 5px;
-    padding: 5px;
-    display: inline-block;
-    vertical-align: top;
-    font-size: 1.5em;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.4s;
-
-    &:hover{
-        filter: brightness(70%);
-    }
-`;
-
-export const SearchingFilterOptionChoiceDesc = styled.span`
-    width: calc(80% - 20px);
-    padding: 5px;
-    margin: 0px 5px;
-    text-align: left;
-    font-size: 1.1em;
-    display: inline-block;
-    vertical-align: top;
-`;
-
-export const SearchingFilterOptionChoiceInput = styled.input`
-    display: none;
-`;
-
-export const SearchingFilterOptionChoiceCheckbox = styled.label<SearchingFilterOptionChoiceCheckboxInterface>`
-    width: calc(10% - 10px);
-    height: 1.2em;
-    padding: 10px;
-    background: ${(props) => props.isChosen ? props.theme.filtersButtonBackground : props.theme.signingInputBackground};
+export const SearchingResultsOpenFiltersBtn = styled.button<SearchingResultsOpenFiltersBtnInterface>`
+    padding: ${(props) => props.isOnPanel !== undefined ? "0px" : "10px 40px"};
+    background: ${(props) => props.isOnPanel !== undefined ? "transparent" : props.theme.filtersButtonBackground};
+    border: none;
     border-radius: 10px;
-    display: inline-block;
-    vertical-align: top;
-    cursor: pointer;
-    transition: all 0.4s;
+    color: ${(props) => props.theme.color};
+    font-family: ${(props) => props.theme.fonts.main};
+    text-shadow: ${(props) => props.theme.fonts.textShadowMain};
+    letter-spacing: 0.06em;
+    font-size: 1.4em;
+    margin-bottom: 2vh;
 
-    &:hover{
-        filter: brightness(70%);
+    ${(props) => props.isOnPanel !== undefined ? `
+      position: absolute;
+      top: 2vh;
+      left: 90%;
+      z-index: 2;
+    ` : null}
+
+    @media screen and (min-width: 425px){
+        font-size: 1.6em;
+    }
+
+    @media screen and (min-width: 768px){
+        display: none;
     }
 `;
 

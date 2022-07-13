@@ -7,7 +7,7 @@ import { LandingSectionWrapper, LandingSectionFilter } from "../../styled/subpag
 import { AboutHeader } from "../../styled/subpages/about";
 import { SearchingResultsSection } from "../../styled/subpages/searcher";
 import {
-  SearchingResultsWrapper, SearchingNoResultsContainer, 
+  SearchingResultsWrapper, SearchingNoResultsContainer, SearchingResultsOpenFiltersBtn,
 } from "../../styled/subpages/searcher/searcherResults";
 import { SearcherFailureContainer, SearcherFailureHeader, SearcherFailureButton } from "../../styled/subpages/searcher/searcherFailure";
 import { SearcherBarInputContainer, SearcherInput } from "../../styled/subpages/searcher/searcherBar";
@@ -42,6 +42,7 @@ const Searcher:React.FC = () => {
   const [searchedCourse, setSearchedCourse] = useState<string>("");
   const [searchedPhrase, setSearchedPhrase] = useState<string>("");
   const [searchedResults, setSearchedResults] = useState<any[]>([]);
+  const [areFiltersOn, toggleAreFiltersOn] = useState<boolean>(false);
   const [openedFilters, setOpenedFilters] = useState<boolean[]>([false, false, false]); // 0 - course, 1 - programme, 2 - semester
 
   const [chosenSort, setChosenSort] = useState<string>("viewsNumber");
@@ -173,9 +174,14 @@ const Searcher:React.FC = () => {
         backgroundRepeat="repeat"
       >
         <LandingSectionFilter>
-          <AboutHeader className="block-center">
-            {searcherState === 2 ? "Wyniki wyszukiwania" : searcherState === 1 ? "Ładowanie..." : "Wyszukiwarka"}    
-          </AboutHeader>
+          {
+            searcherState === 2 ? null : (
+              
+              <AboutHeader className="block-center">
+                {searcherState === 1 ? "Ładowanie..." : "Wyszukiwarka"}    
+              </AboutHeader>
+            )
+          }
           {!isLoaded ? <SearchingPreloaderComponent /> : searcherState === 0 ? (
             <Suspense fallback={null}>
               <SearchBarComponent 
@@ -221,6 +227,8 @@ const Searcher:React.FC = () => {
                   setChosenSort={setChosenSort}
                   chosenSortOrder={chosenSortOrder}
                   setChosenSortOrder={setChosenSortOrder}
+                  areFiltersOn={areFiltersOn}
+                  toggleAreFiltersOn={toggleAreFiltersOn}
                 />
                 <SearchingResultsWrapper>
                   <SearcherBarInputContainer className="block-center">
@@ -232,6 +240,12 @@ const Searcher:React.FC = () => {
                       className="block-center"
                     />
                   </SearcherBarInputContainer>
+                  <SearchingResultsOpenFiltersBtn
+                    className="block-center"
+                    onClick={() => toggleAreFiltersOn(!areFiltersOn)}
+                  >
+                    Filtry
+                  </SearchingResultsOpenFiltersBtn>
                   {
                     !isLoaded ? (
                       <SearchingPreloaderComponent />

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import CloseIcon from "@mui/icons-material/Close";
+
+import { SearchingResultsOpenFiltersBtn } from "src/styled/subpages/searcher/searcherResults";
 
 import {
   SearchingFiltersHeader, 
@@ -11,17 +14,18 @@ import {
   SearchingFilterOptionChoiceCheckbox,
   SearchingFilterOptionLabel,
   SearchingFilterOptionOpenBtn,
-} from "../../../../styled/subpages/searcher/searcherResults";
+} from "../../../../styled/subpages/searcher/searcherFilters";
 
 interface SearcherFiltersHelperFiltersInterface {
   chosenSort: string,
   setChosenSort: (newState: string) => void,
   chosenSortOrder: string,
   setChosenSortOrder: (newState: string) => void,
+  toggleAreFiltersOn: (newState: boolean) => void,
 }
 
 const SearcherFiltersHelperFilters:React.FC<SearcherFiltersHelperFiltersInterface> = ({
-  chosenSort, setChosenSort, chosenSortOrder, setChosenSortOrder,
+  chosenSort, setChosenSort, chosenSortOrder, setChosenSortOrder, toggleAreFiltersOn,
 }:SearcherFiltersHelperFiltersInterface) => {
   const [isKindOfSortingOpened, toggleIsKindOfSortingOpened] = useState<boolean>(false);
   const [isOrderOfSortingOpened, toggleIsOrderOfSortingOpened] = useState<boolean>(false);
@@ -33,6 +37,12 @@ const SearcherFiltersHelperFilters:React.FC<SearcherFiltersHelperFiltersInterfac
 
   return (
     <>
+      <SearchingResultsOpenFiltersBtn
+        onClick={() => toggleAreFiltersOn(false)}
+        isOnPanel
+      >
+        <CloseIcon style={{ color: "inherit", fontSize: "1.2em" }} />
+      </SearchingResultsOpenFiltersBtn>
       <SearchingFiltersHeader className="block-center">
         Sortowanie
       </SearchingFiltersHeader>
