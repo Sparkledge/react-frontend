@@ -58,7 +58,7 @@ export const SearchingResultsOpenFiltersBtn = styled.button<SearchingResultsOpen
     ${(props) => props.isOnPanel !== undefined ? `
       position: absolute;
       top: 2vh;
-      left: 90%;
+      left: 85%;
       z-index: 2;
     ` : null}
 

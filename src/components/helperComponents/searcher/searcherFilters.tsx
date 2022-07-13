@@ -22,12 +22,16 @@ interface SearcherFiltersExtendedInterface extends SearcherFiltersInterface {
   chosenCourse: string,
   setChosenCourse: (newState: string) => void,
   coursesList: any[],
+  chosenDegree: string,
+  setChosenDegree: (newState: string) => void,
   chosenSort: string,
   setChosenSort: (newState: string) => void,
   chosenSortOrder: string,
   setChosenSortOrder: (newState: string) => void,
   areFiltersOn: boolean,
   toggleAreFiltersOn: (newState: boolean) => void,
+  chosenType: string,
+  setChosenType: (newState: string) => void,
 }
 
 const SearcherFilters:React.FC<SearcherFiltersExtendedInterface> = ({
@@ -36,6 +40,8 @@ const SearcherFilters:React.FC<SearcherFiltersExtendedInterface> = ({
   chosenProgramme, setChosenProgramme,
   programmesList, chosenCourse, 
   setChosenCourse, coursesList,
+  chosenDegree, setChosenDegree,
+  chosenType, setChosenType,
   chosenSort, setChosenSort,
   chosenSortOrder, setChosenSortOrder,
   areFiltersOn, toggleAreFiltersOn,
@@ -62,6 +68,10 @@ const SearcherFilters:React.FC<SearcherFiltersExtendedInterface> = ({
         chosenCourse={chosenCourse}
         setChosenCourse={setChosenCourse}
         coursesList={coursesList}
+        chosenDegree={chosenDegree}
+        setChosenDegree={setChosenDegree}
+        chosenType={chosenType}
+        setChosenType={setChosenType}
       />
     </SearchingFiltersPanel>
   );

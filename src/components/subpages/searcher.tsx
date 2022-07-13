@@ -40,10 +40,12 @@ const Searcher:React.FC = () => {
   const [searchedProgramme, setSearchedProgramme] = useState<string>("");
   const [searchedSemester, setSearchedSemester] = useState<number>(0); // 0 - nothing chosen
   const [searchedCourse, setSearchedCourse] = useState<string>("");
+  const [searchedDegree, setSearchedDegree] = useState<string>("");
+  const [searchedType, setSearchedType] = useState<string>("");
   const [searchedPhrase, setSearchedPhrase] = useState<string>("");
   const [searchedResults, setSearchedResults] = useState<any[]>([]);
   const [areFiltersOn, toggleAreFiltersOn] = useState<boolean>(false);
-  const [openedFilters, setOpenedFilters] = useState<boolean[]>([false, false, false]); // 0 - course, 1 - programme, 2 - semester
+  const [openedFilters, setOpenedFilters] = useState<boolean[]>([false, false, false, false, false]); // 0 - course, 1 - programme, 2 - semester, 3 - degree, 4 - course type
 
   const [chosenSort, setChosenSort] = useState<string>("viewsNumber");
   const [chosenSortOrder, setChosenSortOrder] = useState<string>("desc");
@@ -127,6 +129,8 @@ const Searcher:React.FC = () => {
         searchedProgramme, 
         searchedSemester.toString(),
         searchedCourse,
+        searchedDegree, 
+        searchedType,
         chosenSort, 
         chosenSortOrder,
         setSearchedResults,
@@ -134,7 +138,9 @@ const Searcher:React.FC = () => {
       toggleIsLoaded(true);
       setSearcherState(2);
     }
-  }, [searchedFaculty, searchedProgramme, searchedSemester, searchedCourse, chosenSort, chosenSortOrder]);
+  }, [searchedFaculty, searchedProgramme, searchedSemester, searchedCourse, 
+    searchedDegree, 
+    searchedType, chosenSort, chosenSortOrder]);
 
   useEffect(() => {
     // if (searchedCourse.length > 0) navigate(`/searcher/${programmesList.filter((elem:any) => elem.name === searchedCourse)[0].id}`);
@@ -223,6 +229,10 @@ const Searcher:React.FC = () => {
                   chosenCourse={searchedCourse}
                   setChosenCourse={setSearchedCourse}
                   coursesList={coursesList}
+                  chosenDegree={searchedDegree}
+                  setChosenDegree={setSearchedDegree}
+                  chosenType={searchedType}
+                  setChosenType={setSearchedType}
                   chosenSort={chosenSort}
                   setChosenSort={setChosenSort}
                   chosenSortOrder={chosenSortOrder}

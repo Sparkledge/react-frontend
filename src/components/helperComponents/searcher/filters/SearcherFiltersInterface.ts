@@ -9,6 +9,10 @@ interface SearcherFiltersInterface {
   chosenCourse: string,
   setChosenCourse: (newState: string) => void,
   coursesList: any[],
+  chosenDegree: string,
+  setChosenDegree: (newState: string) => void,
+  chosenType: string,
+  setChosenType: (newState: string) => void,
 }
 
 export default SearcherFiltersInterface;

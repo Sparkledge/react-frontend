@@ -21,8 +21,12 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
   chosenProgramme, setChosenProgramme,
   programmesList, chosenCourse, 
   setChosenCourse, coursesList,
+  chosenDegree, setChosenDegree,
+  chosenType, setChosenType,
 }:SearcherFiltersInterface) => {
   const semesters:number[] = [1, 2, 3, 4, 5, 6, 7];
+  const degrees:[string, string][] = [["inżynierskie", "BACHELOR"], ["magisterskie", "MASTER"], ["doktorskie", "PHD"]];
+  const types:[string, string][] = [["obligatoryjny", "OBLIGATORY"], ["obieralny", "FACULTATIVE"]];
     
   return (
     <>
@@ -42,12 +46,12 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
             {!openedFilters[0] ? (
               <ArrowDropDownIcon
                 style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([!openedFilters[0], openedFilters[1], openedFilters[2]])}
+                onClick={() => setOpenedFilters([!openedFilters[0], openedFilters[1], openedFilters[2], openedFilters[3], openedFilters[4]])}
               />
             ) : (
               <ArrowDropUpIcon
                 style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([!openedFilters[0], openedFilters[1], openedFilters[2]])}
+                onClick={() => setOpenedFilters([!openedFilters[0], openedFilters[1], openedFilters[2], openedFilters[3], openedFilters[4]])}
               />
             )}
 
@@ -82,19 +86,19 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
             {!openedFilters[2] ? (
               <ArrowDropDownIcon
                 style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], !openedFilters[2]])}
+                onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], !openedFilters[2], openedFilters[3], openedFilters[4]])}
               />
             ) : (
               <ArrowDropUpIcon
                 style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], !openedFilters[2]])}
+                onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], !openedFilters[2], openedFilters[3], openedFilters[4]])}
               />
             )}
 
           </SearchingFilterOptionOpenBtn>
         </SearchingFilterOptionChoice>
         {
-    semesters.map((elem: number) => (
+    semesters.map((elem: number) => chosenDegree === "BACHELOR" && elem > 4 ? null : (
       <SearchingFilterOptionChoice>
         <SearchingFilterOptionChoiceDesc>
           Semestr 
@@ -124,12 +128,14 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
             {!openedFilters[1] ? (
               <ArrowDropDownIcon
                 style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([openedFilters[0], coursesList.length > 0 && chosenSemester > 0 ? !openedFilters[1] : openedFilters[1], openedFilters[2]])}
+                onClick={() => setOpenedFilters([openedFilters[0], coursesList.length > 0 && chosenSemester > 0 ? !openedFilters[1] : openedFilters[1], 
+                  openedFilters[2], openedFilters[3], openedFilters[4]])}
               />
             ) : (
               <ArrowDropUpIcon
                 style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([openedFilters[0], coursesList.length > 0 && chosenSemester > 0 ? !openedFilters[1] : openedFilters[1], openedFilters[2]])}
+                onClick={() => setOpenedFilters([openedFilters[0], coursesList.length > 0 && chosenSemester > 0 ? !openedFilters[1] : openedFilters[1], 
+                  openedFilters[2], openedFilters[3], openedFilters[4]])}
               />
             )}
 
@@ -158,6 +164,86 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
             ))
   }
       </SearchingFiltersOptionWrapper>      
+      <SearchingFiltersOptionWrapper
+        className="block-center"
+        isOpened={openedFilters[3]}
+        elementsNumber={degrees.length + 1}
+      >
+        <SearchingFilterOptionChoice>
+          <SearchingFilterOptionLabel>
+            Według stopnia
+          </SearchingFilterOptionLabel>
+          <SearchingFilterOptionOpenBtn>
+            {!openedFilters[3] ? (
+              <ArrowDropDownIcon
+                style={{ color: "inherit", fontSize: "1.2em" }}
+                onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], openedFilters[2], !openedFilters[3], openedFilters[4]])}
+              />
+            ) : (
+              <ArrowDropUpIcon
+                style={{ color: "inherit", fontSize: "1.2em" }}
+                onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], openedFilters[2], !openedFilters[3], openedFilters[4]])}
+              />
+            )}
+
+          </SearchingFilterOptionOpenBtn>
+        </SearchingFilterOptionChoice>
+        {
+    degrees.map((elem: [string, string]) => (
+      <SearchingFilterOptionChoice>
+        <SearchingFilterOptionChoiceDesc>
+          {elem[0]}
+        </SearchingFilterOptionChoiceDesc>
+        <SearchingFilterOptionChoiceCheckbox
+          className="block-center"
+          isChosen={chosenDegree === elem[1]}
+          onClick={() => setChosenDegree(chosenDegree === elem[1] ? "" : elem[1])}
+        />
+
+      </SearchingFilterOptionChoice>
+    ))
+  }
+      </SearchingFiltersOptionWrapper>
+      <SearchingFiltersOptionWrapper
+        className="block-center"
+        isOpened={openedFilters[4]}
+        elementsNumber={types.length + 1}
+      >
+        <SearchingFilterOptionChoice>
+          <SearchingFilterOptionLabel>
+            Według typu przedmiotu
+          </SearchingFilterOptionLabel>
+          <SearchingFilterOptionOpenBtn>
+            {!openedFilters[4] ? (
+              <ArrowDropDownIcon
+                style={{ color: "inherit", fontSize: "1.2em" }}
+                onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], openedFilters[2], openedFilters[3], !openedFilters[4]])}
+              />
+            ) : (
+              <ArrowDropUpIcon
+                style={{ color: "inherit", fontSize: "1.2em" }}
+                onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], openedFilters[2], openedFilters[3], !openedFilters[4]])}
+              />
+            )}
+
+          </SearchingFilterOptionOpenBtn>
+        </SearchingFilterOptionChoice>
+        {
+    types.map((elem: [string, string]) => (
+      <SearchingFilterOptionChoice>
+        <SearchingFilterOptionChoiceDesc>
+          {elem[0]}
+        </SearchingFilterOptionChoiceDesc>
+        <SearchingFilterOptionChoiceCheckbox
+          className="block-center"
+          isChosen={chosenType === elem[1]}
+          onClick={() => setChosenType(chosenType === elem[1] ? "" : elem[1])}
+        />
+
+      </SearchingFilterOptionChoice>
+    ))
+  }
+      </SearchingFiltersOptionWrapper>
     </>
   );
 };

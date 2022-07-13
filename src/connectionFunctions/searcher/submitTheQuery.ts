@@ -12,6 +12,8 @@ const submitTheQuery = async (
   searchedProgramme: string,
   searchedSemester: string,
   searchedCourse: string,
+  searchedDegree: string,
+  searchedType: string,
   searchingResultsSort: string,
   searchingResultsOrder: string,
   setSearchedResults: (newData: any[]) => void,
@@ -25,6 +27,8 @@ const submitTheQuery = async (
       sortPropety: searchingResultsSort,
       sortValue: searchingResultsOrder,
       semester: searchedSemester,
+      degree: searchedDegree,
+      courseType: searchedType,
       parameters: "",
     },
     headers: {
