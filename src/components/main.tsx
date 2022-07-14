@@ -1,5 +1,7 @@
-import React, {useEffect} from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import {
+  BrowserRouter as Router, Routes, Route, useNavigate, 
+} from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import useLocalStorage from "use-local-storage";
@@ -19,25 +21,28 @@ import Notfound from "./subpages/notfound";
 
 import UserPanel from "./subpages/userPanel";
 
-const Main: React.FC = () => {
+import refreshToken from "../connectionFunctions/main/refreshToken";
 
+const Main: React.FC = () => {
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
+  const [refreshUserId, setRefreshUserId] = useLocalStorage<string>("u_r", "");
 
   const dispatch = useDispatch();
 
   const graphicalMode: number = useSelector(
-    (state: RootState) => state.generalData.graphicalMode
+    (state: RootState) => state.generalData.graphicalMode,
   );
 
   useEffect(() => {
-    if(memoryUserId.length > 0){
+    if (memoryUserId.length > 0 && refreshUserId.length > 0) {
+      refreshToken(refreshUserId, setMemoryUserId, setRefreshUserId);
       dispatch(setNewToken(memoryUserId));
     }
-  }, [])
+  }, []);
 
   return (
     <ThemeProvider theme={graphicalMode === 0 ? LightMode : DarkMode}>
-      <SparkledgeGlobalStyle isLight={graphicalMode === 0 ? true : false}/>
+      <SparkledgeGlobalStyle isLight={graphicalMode === 0} />
       <Router>
         <Navbar />
         <Routes>
@@ -45,12 +50,12 @@ const Main: React.FC = () => {
           <Route path="/about" element={<About />} />
           <Route path="/signin" element={<SigningPanel mode={1} />} />
           <Route path="/signup" element={<SigningPanel mode={2} />} />
-          <Route path="/searcher" element={<Searcher/>}/>
-          <Route path="/searcher/:courseId" element={<Searcher/>}/>
-          <Route path="/document/:docId" element={<DocumentDisplayer/>}/>
-          <Route path="/document/" element={<DocumentDisplayer/>}/>
-          <Route path="/documentUpload" element={<DocumentUpload/>}/>
-          <Route path="/panel" element={<UserPanel/>}/>
+          <Route path="/searcher" element={<Searcher />} />
+          <Route path="/searcher/:courseId" element={<Searcher />} />
+          <Route path="/document/:docId" element={<DocumentDisplayer />} />
+          <Route path="/document/" element={<DocumentDisplayer />} />
+          <Route path="/documentUpload" element={<DocumentUpload />} />
+          <Route path="/panel" element={<UserPanel />} />
           <Route path="*" element={<Notfound />} />
         </Routes>
       </Router>

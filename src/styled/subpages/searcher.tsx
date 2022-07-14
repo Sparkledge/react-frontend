@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-interface SearchingPreloaderInterface{
-    delay: number
+interface SearchingPreloaderInterface {
+  delay: number
 }
 
 export const SearchingPreloader = styled.div`

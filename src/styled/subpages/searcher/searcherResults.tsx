@@ -1,13 +1,75 @@
 import styled from "styled-components";
 
-interface SearchResultInterface{
-    animAlign: number,
-    isMain?: boolean
+interface SearchResultInterface {
+  animAlign: number,
+  isMain?: boolean
 }
 
-interface SearchingSideResultDataInterface{
-    width: string
+interface SearchingSideResultDataInterface {
+  width: string
 }
+
+interface SearchingResultsOpenFiltersBtnInterface {
+  isOnPanel?: boolean
+}
+
+export const SearchingResultsWrapper = styled.section`
+      width: calc(100% - 30px);
+      padding: 10px;
+      padding-bottom: 2vh;
+      display: inline-block;
+      vertical-align: top;
+      margin: 0px 10px 0px;
+      text-align: center;
+      position: relative;
+      top: 4vh;
+
+      @media screen and (min-width: 425px){
+        width: calc(80% - 30px);
+      }
+  
+      @media screen and (min-width: 768px){
+          width: calc(65% - 30px);
+          margin: 0px 10px 0px 40%;
+      }
+  
+      @media screen and (min-width: 1024px){
+          width: calc(70% - 30px);
+          margin: 0px 10px 0px 25%;
+      }
+  
+      @media screen and (min-width: 1440px){
+          margin: 0px 10px 0px 20%;
+      }
+`;
+
+export const SearchingResultsOpenFiltersBtn = styled.button<SearchingResultsOpenFiltersBtnInterface>`
+    padding: ${(props) => props.isOnPanel !== undefined ? "0px" : "10px 40px"};
+    background: ${(props) => props.isOnPanel !== undefined ? "transparent" : props.theme.filtersButtonBackground};
+    border: none;
+    border-radius: 10px;
+    color: ${(props) => props.theme.color};
+    font-family: ${(props) => props.theme.fonts.main};
+    text-shadow: ${(props) => props.theme.fonts.textShadowMain};
+    letter-spacing: 0.06em;
+    font-size: 1.4em;
+    margin-bottom: 2vh;
+
+    ${(props) => props.isOnPanel !== undefined ? `
+      position: absolute;
+      top: 2vh;
+      left: 85%;
+      z-index: 2;
+    ` : null}
+
+    @media screen and (min-width: 425px){
+        font-size: 1.6em;
+    }
+
+    @media screen and (min-width: 768px){
+        display: none;
+    }
+`;
 
 export const SearchingMainResult = styled.div<SearchResultInterface>`
     width: calc(100% - 20px);
@@ -148,7 +210,7 @@ export const SearchingSideResultTitle = styled.header`
     @media screen and (min-width: 1024px){
         font-size: 1.6em;
     }
-`
+`;
 
 export const SearchingSideResultData = styled.div<SearchingSideResultDataInterface>`
     width: calc(33% - 20px);
@@ -170,7 +232,7 @@ export const SearchingSideResultData = styled.div<SearchingSideResultDataInterfa
     @media screen and (min-width: 1024px){
         font-size: 1.6em;
     }
-`
+`;
 
 export const SearchingNoResultsContainer = styled.div`
     width: calc(100% - 20px);

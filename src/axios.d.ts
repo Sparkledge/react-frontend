@@ -1,7 +1,7 @@
-import 'axios';
+import "axios";
 
-declare module 'axios' {   
-    export interface AxiosRequestConfig {
-        body?: string | Object
-    } 
+declare module "axios" {   
+  export interface AxiosRequestConfig {
+    body?: string | Object
+  } 
 }

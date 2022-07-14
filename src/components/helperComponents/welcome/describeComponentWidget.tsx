@@ -1,22 +1,24 @@
 import React from "react";
 
-import { DescribeWidget, DescribeWidgetHeader, 
-    DescribeWidgetSubDesc } from "../../../styled/subpages/welcome/describeComponent";
+import {
+  DescribeWidget, DescribeWidgetHeader, 
+  DescribeWidgetSubDesc, 
+} from "../../../styled/subpages/welcome/describeComponent";
 
 interface WidgetInterface {
-    header: string,
-    content: string
+  header: string,
+  content: string
 }
 
-const DescribeComponentWidget:React.FC<WidgetInterface> = ({header, content}:WidgetInterface) => {
-    return <DescribeWidget>
+const DescribeComponentWidget:React.FC<WidgetInterface> = ({ header, content }:WidgetInterface) => (
+  <DescribeWidget>
     <DescribeWidgetHeader className="block-center">
-        {header}
+      {header}
     </DescribeWidgetHeader>
     <DescribeWidgetSubDesc className="block-center">
-        {content}
+      {content}
     </DescribeWidgetSubDesc>
-</DescribeWidget>
-}
+  </DescribeWidget>
+);
 
 export default DescribeComponentWidget;

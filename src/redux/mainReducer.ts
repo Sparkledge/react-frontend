@@ -1,9 +1,9 @@
-import {combineReducers} from "redux";
+import { combineReducers } from "redux";
 import generalReducer from "./reducers/generalReducer";
 
 const finalReducer = combineReducers({
-    generalData: generalReducer
-})
+  generalData: generalReducer,
+});
 
 export type RootState = ReturnType<typeof finalReducer>;
 

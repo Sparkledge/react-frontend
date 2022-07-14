@@ -1,30 +1,30 @@
 import styled from "styled-components";
 
-interface LandingWrapperInterface{
-    source?: any,
-    reversedShadow?: boolean,
-    bottomPadding?: number,
-    backgroundSize?: string,
-    backgroundRepeat?: string
+interface LandingWrapperInterface {
+  source?: any,
+  reversedShadow?: boolean,
+  bottomPadding?: number,
+  backgroundSize?: string,
+  backgroundRepeat?: string
 }
 
-interface AnimatingInterface{
-    height?: number,
-    leftPos?: number
+interface AnimatingInterface {
+  height?: number,
+  leftPos?: number
 }
 
-interface DownButtonInterface{
-    marginBottom?: number,
-    rightPos?: number
+interface DownButtonInterface {
+  marginBottom?: number,
+  rightPos?: number
 }
 
-interface FilterInterface{
-    minheight?: number
+interface FilterInterface {
+  minheight?: number
 }
 
 export const LandingSectionWrapper = styled.section<LandingWrapperInterface>`
     width: 100%;
-    min-height: ${(props) => props.bottomPadding !== undefined ? `${90 + props.bottomPadding}vh` : `90vh`};
+    min-height: ${(props) => props.bottomPadding !== undefined ? `${90 + props.bottomPadding}vh` : "90vh"};
     height: fit-content;
     background: ${(props) => props.source !== undefined ? `url(${props.source})` : props.theme.bgColor};
     background-size: ${(props) => props.backgroundSize !== undefined ? props.backgroundSize : "cover"};
@@ -32,7 +32,8 @@ export const LandingSectionWrapper = styled.section<LandingWrapperInterface>`
     text-align: center;
     font-family: ${(props) => props.theme.fonts.main};
     overflow: hidden;
-    box-shadow: inset 0px ${(props) => props.reversedShadow !== undefined ? props.reversedShadow === true ? "3px" : "-3px" : "-3px"} 4px rgba(0,0,0,.2);
+    box-shadow: inset 0px ${(props) => props.reversedShadow !== undefined 
+    ? props.reversedShadow === true ? "3px" : "-3px" : "-3px"} 4px rgba(0,0,0,.2);
 
     a{
         text-decoration: none;
@@ -50,7 +51,7 @@ export const LandingSectionFilter = styled.section<FilterInterface>`
 export const EndingBlock = styled.div`
     width: 100%;
     height: 10vh;
-`
+`;
 
 export const LandingSectionHeader = styled.header<AnimatingInterface>`
     width: calc(100% - 20px);
@@ -65,7 +66,7 @@ export const LandingSectionHeader = styled.header<AnimatingInterface>`
     position: relative;
     top: 5vh;
     margin-bottom: 9vh;
-    height: ${(props) => props.height !== undefined ? props.height: "2.5"}em;
+    height: ${(props) => props.height !== undefined ? props.height : "2.5"}em;
 
     @media screen and (min-width: 425px){
         font-size: 2.7em;
@@ -118,7 +119,7 @@ export const LandingButtonWrapper = styled.div<DownButtonInterface>`
     width: fit-content;
     transition: all 0.4s;
     ${(props) => props.rightPos !== undefined ? `position: relative; right: ${props.rightPos}%;` : ""}
-    ${(props) => props.marginBottom !== undefined ? `padding-bottom: ${props.marginBottom}vh;`: ""}
+    ${(props) => props.marginBottom !== undefined ? `padding-bottom: ${props.marginBottom}vh;` : ""}
 `;
 
 export const LandingSectionButton = styled.div<DownButtonInterface>`
@@ -133,7 +134,7 @@ export const LandingSectionButton = styled.div<DownButtonInterface>`
     background: ${(props) => props.theme.landingButtonColor};
     cursor: pointer;
     transition: all 0.4s;
-    ${(props) => props.marginBottom !== undefined ? `margin-bottom: ${props.marginBottom}vh;`: ""}
+    ${(props) => props.marginBottom !== undefined ? `margin-bottom: ${props.marginBottom}vh;` : ""}
 
     &:hover{
         filter: brightness(70%);

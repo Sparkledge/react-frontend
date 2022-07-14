@@ -1,0 +1,242 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Welcome site rendering tests testing if DescribeComponent is rendering 1`] = `
+<styled.section
+  backgroundRepeat="repeat"
+  backgroundSize="initial"
+  bottomPadding={10}
+  className="block-center"
+  reversedShadow={true}
+  source="pattern_background4_1.webp"
+>
+  <styled.section>
+    <styled.header
+      className="block-center"
+    >
+      Co może Tobie dać korzystanie ze Sparkledge?
+    </styled.header>
+    <styled.section
+      className="block-center"
+    >
+      <DescribeComponentWidget
+        content="Na naszej platformie znajdziesz notataki pogrupowane na przedmioty i kierunki studiów. Sa to notataki innych studentów, dzięki temu wiesz ze sa one dokładnie tym czego wymagają wykładowcy. "
+        header="Dostęp do wiedzy"
+      />
+      <DescribeComponentWidget
+        content="Wraz ze znajomymi za pomoca naszej platformy mozecie wymieniać się notataki oraz trzymać je w jednym miejscu. Twoi znajomi oceniają je, a dzięki ich ocenom ty masz dostęp do większej ilości notatek innych użytkowników "
+        header="Kontakt ze społecznością akademicką"
+      />
+      <DescribeComponentWidget
+        content="Dzięki korzystaniu z naszej platformy nie tracisz czas na nauke rzeczy których i tak nikt od ciebie nie będzie wymagał. Są to notatki studentów którzy już zdali ten przedmiot albo sa w trakcie i notują na wykladach. Znajdziesz tutaj dokładnie to czego potrzeba aby zdać."
+        header="Ciekawe benefity na uczelni"
+      />
+    </styled.section>
+    <styled.div
+      className="block-center"
+      marginBottom={4}
+    >
+      <Link
+        to="/searcher"
+      >
+        <styled.div
+          className="block-center"
+        >
+          Sprawdź wyszukiwarkę
+        </styled.div>
+      </Link>
+    </styled.div>
+  </styled.section>
+</styled.section>
+`;
+
+exports[`Welcome site rendering tests testing if FooterComponent is rendering 1`] = `
+<styled.footer
+  className="block-center"
+>
+  <styled.section
+    className="block-center"
+  >
+    <styled.div>
+      <Link
+        key="column-0-elem"
+        to="/"
+      >
+        <styled.div>
+          <styled.img
+            src="sparkledge_logo.webp"
+          />
+        </styled.div>
+      </Link>
+    </styled.div>
+    <styled.div>
+      <Link
+        key="column-1-elem"
+        to="/"
+      >
+        <styled.div>
+          Główna
+        </styled.div>
+      </Link>
+      <Link
+        key="column-1-elem"
+        to="/searcher"
+      >
+        <styled.div>
+          Wyszukiwarka
+        </styled.div>
+      </Link>
+      <Link
+        key="column-1-elem"
+        to="/signin"
+      >
+        <styled.div>
+          Zaloguj się
+        </styled.div>
+      </Link>
+      <Link
+        key="column-1-elem"
+        to="/signup"
+      >
+        <styled.div>
+          Zarejestruj się
+        </styled.div>
+      </Link>
+    </styled.div>
+    <styled.div>
+      <Link
+        key="column-2-elem"
+        to="/about"
+      >
+        <styled.div>
+          O nas
+        </styled.div>
+      </Link>
+      <a
+        href="https://www.vecteezy.com/free-vector/education"
+        key="column-2-elem"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <styled.div>
+          Education Vectors by Vecteezy
+        </styled.div>
+      </a>
+    </styled.div>
+  </styled.section>
+</styled.footer>
+`;
+
+exports[`Welcome site rendering tests testing if LandingComponent is rendering 1`] = `
+<styled.section
+  className="block-center"
+  source="academic_background_edited_2.webp"
+>
+  <styled.section>
+    <styled.header
+      className="block-center"
+      height={0}
+    >
+      <span
+        className="block-center"
+      >
+        Sparkledge
+      </span>
+      <styled.span>
+        Spark of your knowledge
+      </styled.span>
+    </styled.header>
+    <styled.div
+      className="block-center"
+      leftPos={100}
+    >
+      Sparkledge to platforma łącząca studentów, dającą im możliwość rozwoju i osiągania lepszych wyników. Sparklege to platforma stworzona przez studentów dla studentów. Znajdziesz na niej notatki Twoich znajomych oraz absolwentów ocenione przez innych użytkowników. Dzięki niej nauka do kolosów będzie przyjemniejsza. Jedyne co musisz zrobić aby dostać dostęp do skarbnicy wiedzy to załączyć swoje notataki
+    </styled.div>
+    <styled.div
+      className="block-center"
+      rightPos={100}
+    >
+      <Link
+        to="/signup"
+      >
+        <styled.div
+          className="block-center"
+        >
+          Dołącz do nas
+        </styled.div>
+      </Link>
+    </styled.div>
+  </styled.section>
+</styled.section>
+`;
+
+exports[`Welcome site rendering tests testing if Welcome is rendering 1`] = `
+<styled.section
+  className="block-center"
+>
+  <Suspense
+    fallback={
+      <styled.div
+        className="block-center"
+      >
+        Ładowanie...
+      </styled.div>
+    }
+  >
+    <lazy />
+    <lazy />
+    <lazy />
+  </Suspense>
+</styled.section>
+`;
+
+exports[`Welcome site rendering tests testing is DescribeComponentWidget is rendering 1`] = `
+<Component
+  theme={
+    Object {
+      "bgColor": "#111",
+      "color": "#0895E6",
+      "errorColor": "rgba(240,30,30,.75)",
+      "filterColor": "rgba(0,0,0,.7)",
+      "fonts": Object {
+        "main": "Mohave, sans-serif",
+        "textShadowMain": "3px 3px 4px rgba(0,0,0,.05)",
+      },
+      "landingButtonColor": "rgba(20,20,20,.5)",
+      "navBgColor": "#0c0c0c",
+      "navElemBgColor": "rgba(20,20,20,.2)",
+      "resultBackground": "rgba(24,87,255,.15)",
+      "signingInputBackground": "rgba(40,40,40,.7);",
+    }
+  }
+>
+  <DescribeComponentWidget
+    content="test"
+    header="test header'a"
+  >
+    <styled.div>
+      <div
+        className="sc-iqseJM dbncUd"
+      >
+        <styled.header
+          className="block-center"
+        >
+          <header
+            className="sc-crHmcD eabHxR block-center"
+          >
+            test header'a
+          </header>
+        </styled.header>
+        <styled.div
+          className="block-center"
+        >
+          <div
+            className="sc-egiyK faVmmf block-center"
+          >
+            test
+          </div>
+        </styled.div>
+      </div>
+    </styled.div>
+  </DescribeComponentWidget>
+</Component>
+`;

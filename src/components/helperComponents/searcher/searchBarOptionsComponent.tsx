@@ -1,32 +1,51 @@
 import React from "react";
-import { SearcherCategorieWrapper, SearcherCategorieChooser } from "../../../styled/subpages/searcher/searcherBar";
+import { SearcherCategorieChooser } from "../../../styled/subpages/searcher/searcherBar";
 
-interface SearchBarOptionsComponentInterface{
-    sectionHeader: string,
-    options: string[],
-    toggleOpening: (newState: boolean) => void,
-    opening: boolean,
-    choiceCallback: (newNameOfSection: any) => void,
-    typeOfCallbackValue?: string,
-    isBiggerScale: boolean
+interface SearchBarOptionsComponentInterface {
+  options: string[],
+  choiceCallback: (newNameOfSection: any) => void,
+  typeOfCallbackValue?: string,
+  isBiggerScale: boolean
 }
 
-const SearchBarOptionsComponent:React.FC<SearchBarOptionsComponentInterface> = 
-    ({sectionHeader, options, toggleOpening, opening, choiceCallback,
-        typeOfCallbackValue, isBiggerScale} : SearchBarOptionsComponentInterface) => {
-    return <SearcherCategorieWrapper isBiggerScale={isBiggerScale}>
-        <SearcherCategorieChooser className="block-center" isOption={false}
-            onClick={() => toggleOpening(!opening)}>
-            {sectionHeader}
-        </SearcherCategorieChooser>
-        {
-            options.map((elem, ind) => <SearcherCategorieChooser className="block-center" isOption={true}
-            isOpened={opening} onClick={() => choiceCallback(typeOfCallbackValue !== undefined ? typeOfCallbackValue === "index" ? ind+1 : elem: elem)} key={`${sectionHeader}-${elem}-${ind}`}>
-                {elem}
-        </SearcherCategorieChooser>)
+const SearchBarOptionsComponent:React.FC<SearchBarOptionsComponentInterface> = ({
+  options, choiceCallback,
+  typeOfCallbackValue, isBiggerScale, 
+} : SearchBarOptionsComponentInterface) => (
+  <>
+    {
+            options.map((elem, ind) => (
+              <SearcherCategorieChooser
+                className="block-center"
+                isOption
+                isBiggerScale={isBiggerScale}
+                onClick={() => choiceCallback(typeOfCallbackValue !== undefined ? typeOfCallbackValue === "index" ? ind + 1 : elem : elem)}
+              >
+                <div>
+                  {elem}
+                </div>
+              </SearcherCategorieChooser>
+            ))
         }
+    { options !== undefined && options.length > 0 ? (
+      <SearcherCategorieChooser
+        className="block-center"
+        isOption
+        isInfoCategorie
+        isBiggerScale={isBiggerScale}
+        onClick={() => {}}
+      >
+        <div>
+          Nie ma Twojej uczelni?
+        </div>
+      </SearcherCategorieChooser>
+    ) : null }
         
-    </SearcherCategorieWrapper>
+  </>
+);
+
+SearchBarOptionsComponent.defaultProps = {
+  typeOfCallbackValue: "index",
 };
 
 export default SearchBarOptionsComponent;

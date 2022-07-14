@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+interface DocumentDisplayerDownloadBtnInterface {
+  isInline?:boolean
+}
+
 export const DocumentDisplayerErrorHeader = styled.header`
     width: calc(100% - 20px);
     padding: 10px;
@@ -23,6 +27,30 @@ export const DocumentDisplayerErrorHeader = styled.header`
 
     @media screen and (min-width: 768px){
         width: calc(80% - 20px);
+        font-size: 1.9em;
+    }
+`;
+
+export const DocumentDisplayerDownloadBtn = styled.button<DocumentDisplayerDownloadBtnInterface>`
+    width: fit-content;
+    height: fit-content;
+    padding: ${(props) => props.isInline === undefined ? "10px 25px" : "0px"};
+    border: none;
+    border-radius: 10px;
+    background: ${(props) => props.isInline === undefined ? props.theme.resultBackground : "transparent"};
+    color: ${(props) => props.theme.color};
+    font-size: 1.4em;
+    letter-spacing: 0.06em;
+    font-family: ${(props) => props.theme.fonts.main};
+    text-shadow: ${(props) => props.theme.fonts.textShadowMain};
+    cursor: pointer;
+    transition: filter 0.4s;
+
+    &:hover{
+        filter: brightness(70%);
+    }
+
+    @media screen and (min-width: 425px){
         font-size: 1.9em;
     }
 `;

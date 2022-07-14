@@ -21,7 +21,7 @@ export const SearcherFailureContainer = styled.section`
     @media screen and (min-width: 1440px){
         width: calc(50% - 20px);
     }
-`
+`;
 
 export const SearcherFailureHeader = styled.header`
     width: calc(100% - 10px);
@@ -39,7 +39,7 @@ export const SearcherFailureHeader = styled.header`
         width: calc(80% - 10px);
         font-size: 1.7em;
     }
-`
+`;
 
 export const SearcherFailureButton = styled.button`
     width: fit-content;
@@ -65,4 +65,4 @@ export const SearcherFailureButton = styled.button`
     @media screen and (min-width: 1024px){
         font-size: 1.4em;
     }
-`
+`;
