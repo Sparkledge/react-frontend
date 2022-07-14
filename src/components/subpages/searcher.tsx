@@ -59,7 +59,8 @@ const Searcher:React.FC = () => {
 
   useEffect(() => {
     toggleIsLoaded(false);
-    if (previouslySearchedFac !== undefined && previouslySearchedUni !== undefined) {
+    if (previouslySearchedFac !== undefined && previouslySearchedUni !== undefined
+        && previouslySearchedFac.length > 0 && previouslySearchedUni.length > 0) {
       setSearchedUniversity(previouslySearchedUni);
       setSearchedFaculty(previouslySearchedFac);
       submitTheQuery(
@@ -148,16 +149,6 @@ const Searcher:React.FC = () => {
     searchedDegree, 
     searchedType, chosenSort, chosenSortOrder]);
 
-  const getBackToSearch = () => {
-    setSearchedCourse("");
-    setSearchedPhrase("");
-    setSearchedProgramme("");
-    setSearchedSemester(0);
-    setSearchedResults([]);
-    setSearcherState(0);
-    navigate("/searcher/");
-  };
-
   useEffect(() => {
     if (searchedResults.length > 0) {
       const operand = [...searchedResults];
@@ -168,10 +159,6 @@ const Searcher:React.FC = () => {
       setSearchedResults(operand);
     }
   }, [searchedPhrase]);
-
-  useEffect(() => {
-    console.log(searchedResults);
-  }, [searchedResults]);
 
   return (
     <MainContainer className="block-center">
@@ -248,7 +235,7 @@ const Searcher:React.FC = () => {
                       type="text"
                       placeholder="Czego szukamy?"
                       value={searchedPhrase} 
-                      onChange={(e) => setSearchedPhrase(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchedPhrase(e.currentTarget.value)}
                       className="block-center"
                     />
                   </SearcherBarInputContainer>
@@ -268,22 +255,17 @@ const Searcher:React.FC = () => {
                     ) 
                       : searchedResults.map((elem: any, ind: number) => elem.isDisplayed === 0
                         ? null : (
-                          <Suspense
-                            fallback={null}
-                            key="search-result-container"
-                          >
-                            <Link to={`/document/${elem.id}`}>
-                              <SearchingMainResultComponent
-                                title={elem.title}
-                                publishedOn={elem.createdAt}
-                                publisher={`${elem.user.firstName} ${elem.user.lastName}`}
-                                description={elem.description}
-                                likesNum={elem.likesNumber}
-                                viewsNum={elem.viewsNumber}
-                                animAlign={ind % 2 === 0 ? -10 : 10}
-                              />
-                            </Link>
-                          </Suspense>
+                          <Link to={`/document/${elem.id}`}>
+                            <SearchingMainResultComponent
+                              title={elem.title}
+                              publishedOn={elem.createdAt}
+                              publisher={`${elem.user.firstName} ${elem.user.lastName}`}
+                              description={elem.description}
+                              likesNum={elem.likesNumber}
+                              viewsNum={elem.viewsNumber}
+                              animAlign={ind % 2 === 0 ? -10 : 10}
+                            />
+                          </Link>
                         ))
 }
                 </SearchingResultsWrapper>
