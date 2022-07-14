@@ -20,10 +20,11 @@ import getUniversitySubInfrastructure from "../../connectionFunctions/searcher/g
 import submitTheQuery from "../../connectionFunctions/searcher/submitTheQuery";
 
 import checkIfFound from "../auxiliaryFunctions/searcher/checkIfFound";
+import SearchingMainResultComponent from "../helperComponents/searcher/searchingMainResultComponent";
 
 const SearchBarComponent = React.lazy(() => import("../helperComponents/searcher/searchBarComponent"));
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
-const SearchingMainResultComponent = React.lazy(() => import("../helperComponents/searcher/searchingMainResultComponent"));
+// const SearchingMainResultComponent = React.lazy(() => import("../helperComponents/searcher/searchingMainResultComponent"));
 const BackgroundPattern = require("../../assets/pattern_background5.webp");
 
 const Searcher:React.FC = () => {
@@ -64,7 +65,6 @@ const Searcher:React.FC = () => {
       setSearchedUniversity(previouslySearchedUni);
       setSearchedFaculty(previouslySearchedFac);
       submitTheQuery(
-        memoryUserId, 
         previouslySearchedUni, 
         previouslySearchedFac, 
         searchedProgramme, 
@@ -129,8 +129,7 @@ const Searcher:React.FC = () => {
           searchedProgramme,
         );
       }
-      submitTheQuery(
-        memoryUserId, 
+      submitTheQuery( 
         searchedUniversity, 
         searchedFaculty, 
         searchedProgramme, 

@@ -6,7 +6,6 @@
 import axios from "axios";
 
 const submitTheQuery = async (
-  loginUserToken: string,
   searchedUniversity: string,
   searchedFaculty: string,
   searchedProgramme: string,
@@ -35,10 +34,10 @@ const submitTheQuery = async (
     },
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${loginUserToken}`,
     },
   })
     .then((res) => {
+      console.log(res);
       const finalResult = res.data.map((elem:any) => { elem.isDisplayed = 1; return elem; });
       setSearchedResults(finalResult);
       toggleIsLoaded(true);
