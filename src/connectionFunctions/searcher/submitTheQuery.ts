@@ -17,7 +17,9 @@ const submitTheQuery = async (
   searchingResultsSort: string,
   searchingResultsOrder: string,
   setSearchedResults: (newData: any[]) => void,
+  toggleIsLoaded: (newState: boolean) => void,
 ) => {
+  toggleIsLoaded(false);
   await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/filtered`, {
     params: {
       universityId: searchedUniversity,
@@ -37,11 +39,13 @@ const submitTheQuery = async (
     },
   })
     .then((res) => {
-      console.log(res.data);
-      setSearchedResults(res.data.map((elem:any) => { elem.isDisplayed = 1; return elem; }));
+      const finalResult = res.data.map((elem:any) => { elem.isDisplayed = 1; return elem; });
+      setSearchedResults(finalResult);
+      toggleIsLoaded(true);
     })
     .catch((err) => {
       console.log(err);
+      toggleIsLoaded(true);
     });
 };
 

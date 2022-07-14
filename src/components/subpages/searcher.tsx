@@ -59,19 +59,23 @@ const Searcher:React.FC = () => {
 
   useEffect(() => {
     toggleIsLoaded(false);
-    if (courseId !== undefined && courseId.length > 0) {
-      /* submitTheQuery(
-        searchedUniversity, 
-        searchedFaculty, 
-        searchedProgramme,
-        searchedCourse, 
-        programmesList, 
-        courseId,
-        setSearcherState, 
-        setSearchedResults, 
-        setSearchedPhrase,
-      ); 
-      toggleIsLoaded(true); */
+    if (previouslySearchedFac !== undefined && previouslySearchedUni !== undefined) {
+      setSearchedUniversity(previouslySearchedUni);
+      setSearchedFaculty(previouslySearchedFac);
+      submitTheQuery(
+        memoryUserId, 
+        previouslySearchedUni, 
+        previouslySearchedFac, 
+        searchedProgramme, 
+        searchedSemester.toString(),
+        searchedCourse,
+        searchedDegree, 
+        searchedType,
+        chosenSort, 
+        chosenSortOrder,
+        setSearchedResults,
+        toggleIsLoaded,
+      );
     } else {
       getUniversitiesInfrastructure(
         setUniversitiesList, 
@@ -84,7 +88,8 @@ const Searcher:React.FC = () => {
         setSearcherState,
       );
     }
-  }, [courseId]);
+    toggleIsLoaded(true);
+  }, []);
 
   useEffect(() => {
     if (searchedUniversity.toString().length > 0) {
@@ -96,12 +101,13 @@ const Searcher:React.FC = () => {
         setSearcherState, 
         searchedUniversity,
       );
-    } 
+      setPreviouslySearchedUni(searchedUniversity.toString());
+    } else setPreviouslySearchedUni(undefined);
   }, [searchedUniversity]);
 
   useEffect(() => {
     if (searchedFaculty.toString().length > 0) {
-      toggleIsLoaded(false);
+      setPreviouslySearchedFac(searchedFaculty.toString());
       if (programmesList.length === 0) {
         getUniversitySubInfrastructure(
           facultiesList, 
@@ -134,18 +140,13 @@ const Searcher:React.FC = () => {
         chosenSort, 
         chosenSortOrder,
         setSearchedResults,
+        toggleIsLoaded,
       );
-      toggleIsLoaded(true);
       setSearcherState(2);
-    }
+    } else setPreviouslySearchedFac(undefined);
   }, [searchedFaculty, searchedProgramme, searchedSemester, searchedCourse, 
     searchedDegree, 
     searchedType, chosenSort, chosenSortOrder]);
-
-  useEffect(() => {
-    // if (searchedCourse.length > 0) navigate(`/searcher/${programmesList.filter((elem:any) => elem.name === searchedCourse)[0].id}`);
-    // submitTheQuery();
-  }, [searchedCourse]);
 
   const getBackToSearch = () => {
     setSearchedCourse("");
@@ -169,6 +170,7 @@ const Searcher:React.FC = () => {
   }, [searchedPhrase]);
 
   useEffect(() => {
+    console.log(searchedResults);
   }, [searchedResults]);
 
   return (
@@ -259,13 +261,12 @@ const Searcher:React.FC = () => {
                   {
                     !isLoaded ? (
                       <SearchingPreloaderComponent />
-                    ) : searchedResults.length === 0 
-                    || (searchedResults.length > 0 && searchedResults.filter((elem: any) => elem.isDisplayed === 1).length === 0) ? (
+                    ) : searchedResults.filter((elem: any) => elem.isDisplayed === 1).length === 0 ? (
                       <SearchingNoResultsContainer className="block-center">
                         Brak wyników. Spróbuj innych słów kluczowych
                       </SearchingNoResultsContainer>
-                      ) 
-                      : searchedResults.map((elem: any, ind) => elem.isDisplayed === 0
+                    ) 
+                      : searchedResults.map((elem: any, ind: number) => elem.isDisplayed === 0
                         ? null : (
                           <Suspense
                             fallback={null}
