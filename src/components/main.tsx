@@ -34,7 +34,7 @@ const Main: React.FC = () => {
   );
 
   useEffect(() => {
-    if (memoryUserId.length > 0 && refreshUserId.length > 0) {
+    if (refreshUserId.length > 0) {
       refreshToken(refreshUserId, setMemoryUserId, setRefreshUserId);
       dispatch(setNewToken(memoryUserId));
     }

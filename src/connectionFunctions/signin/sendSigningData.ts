@@ -37,8 +37,8 @@ const TriggerTheShot = (
         if (res.status === 200) {
           setPassword("");
           setLogin("");
-          changeTheToken(res.data.accessToken);
           setRefreshToken(res.data.refreshToken);
+          changeTheToken(res.data.accessToken);
           navigate("/panel");
         } else {
           toggleIsSuccess(false); setPassword("Coś poszło nie tak");

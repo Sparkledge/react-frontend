@@ -56,8 +56,8 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
       setPassword, 
       setLogin, 
       (newToken: string) => {
-        dispatch(setNewToken(newToken));
         setMemoryUserId(newToken);
+        dispatch(setNewToken(newToken));
       }, 
       setRefreshUserId, 
       navigate,
@@ -67,10 +67,10 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
   useEffect(() => {
     toggleIsVerificationSuccessful(0);
     toggleIsSuccess(false);
-    if (currentToken.length > 0) navigate("/panel");
+    if (currentToken.length > 0 || memoryUserId.length > 0) navigate("/panel");
     const verifyCode:string = query.get("verifyemail");
     if (verifyCode !== null && verifyCode.length > 0) toggleIsVerificationSuccessful(1);// verifyEmail(verifyCode, toggleIsVerificationSuccessful, toggleIsSuccess);
-  }, []);
+  }, [currentToken]);
 
   return (
     <MainContainer className="block-center">

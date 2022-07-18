@@ -8,9 +8,10 @@ const logout = async (
   currentToken: string,
   deleteToken: () => {},
   eraseTheMemory: (newState: string | any) => void,
+  setRefreshUserId: (newState: string | any) => void,
   toggleIsOpened: (newState: boolean) => void,
 ) => {
-  await axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/user/logout`, {}, {
+  await axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/users/logout`, {}, {
     headers: {
       Authorization: `Bearer ${currentToken}`,
     },
@@ -19,6 +20,7 @@ const logout = async (
       if (res.status === 200 || res.status === 204) {
         deleteToken();
         eraseTheMemory(undefined);
+        setRefreshUserId(undefined);
         toggleIsOpened(false);
       }
     })
