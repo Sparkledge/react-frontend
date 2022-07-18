@@ -16,7 +16,9 @@ const sendFile = async (
   setPhaseNumber: (newState: number) => void,
   setDocumentId: (newId: string) => void,
   toggleIsWorking: (newState: boolean) => void,
+  toggleIsSending: (newState: boolean) => void,
 ) => {
+  toggleIsSending(true);
   const formData = new FormData();
   formData.append("title", materialName);
   formData.append("description", desc);
@@ -37,11 +39,13 @@ const sendFile = async (
         setPhaseNumber(4);
         console.log(res.data.document.fileId);
         setDocumentId(res.data.document.fileId.toString());
+        toggleIsSending(false);
       }
     })
     .catch((err) => {
       console.log(err);
       toggleIsWorking(false);
+      toggleIsSending(false);
     });
 };
 
