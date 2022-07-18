@@ -8,7 +8,6 @@ export const FooterContainer = styled.footer`
     text-align: center;
     box-shadow: 0px -3px 4px rgba(0,0,0,.2);
     background: ${(props) => props.theme.bgColor};
-    z-index: 3;
     position: relative;
 `;
 

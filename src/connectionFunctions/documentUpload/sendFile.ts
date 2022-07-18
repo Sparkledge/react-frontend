@@ -7,9 +7,6 @@ import axios from "axios";
 const sendFile = async (
   materialName: string,
   desc: string,
-  universitiesList: any[],
-  facultiesList: any[],
-  programmesList: any[],
   searchedUniversity: string,
   searchedFaculty: string,
   searchedProgramme: string,
@@ -23,15 +20,10 @@ const sendFile = async (
   const formData = new FormData();
   formData.append("title", materialName);
   formData.append("description", desc);
-  /* formData.append("universityId", universitiesList.filter((elem:any) => elem.name === searchedUniversity)[0]["_id"]);
-    formData.append("facultyId", universitiesList.filter((elem:any) => elem["name"] !== undefined && elem["name"] === searchedUniversity)[0]["faculties"]
-    .filter((elem: any) => elem["name"] !== undefined && elem["name"] === searchedFaculty)[0]["_id"]);
-    formData.append("programmeId", facultiesList.filter((elem:any) => elem["name"] !== undefined && elem["name"] === searchedProgramme)[0]["_id"]);
-    formData.append("courseId", programmesList.filter((elem:any) => elem.name === searchedCourse)[0]["_id"]); */
-  formData.append("universityId", "1");
-  formData.append("facultyId", "1");
-  formData.append("programmeId", "1");
-  formData.append("courseId", "1");
+  formData.append("universityId", searchedUniversity.toString());
+  formData.append("facultyId", searchedFaculty.toString());
+  formData.append("programmeId", searchedProgramme.toString());
+  formData.append("courseId", searchedCourse.toString());
   formData.append("file", file);
   await axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents`, formData, {
     headers: {
