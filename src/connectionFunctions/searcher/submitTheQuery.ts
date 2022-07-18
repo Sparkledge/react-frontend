@@ -37,13 +37,11 @@ const submitTheQuery = async (
     },
   })
     .then((res) => {
-      console.log(res);
       const finalResult = res.data.map((elem:any) => { elem.isDisplayed = 1; return elem; });
       setSearchedResults(finalResult);
       toggleIsLoaded(true);
     })
     .catch((err) => {
-      console.log(err);
       toggleIsLoaded(true);
     });
 };

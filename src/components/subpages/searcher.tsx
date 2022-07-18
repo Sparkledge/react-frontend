@@ -29,6 +29,7 @@ const BackgroundPattern = require("../../assets/pattern_background5.webp");
 
 const Searcher:React.FC = () => {
   const [isLoaded, toggleIsLoaded] = useState<boolean>(false);
+  const [areDocumentsLoaded, toggleAreDocumentsLoaded] = useState<boolean>(false);
 
   const [universitiesList, setUniversitiesList] = useState<any[]>([]);
   const [facultiesList, setFacultiesList] = useState<any[]>([]);
@@ -75,7 +76,7 @@ const Searcher:React.FC = () => {
         chosenSort, 
         chosenSortOrder,
         setSearchedResults,
-        toggleIsLoaded,
+        toggleAreDocumentsLoaded,
       );
     } else {
       getUniversitiesInfrastructure(
@@ -140,11 +141,11 @@ const Searcher:React.FC = () => {
         chosenSort, 
         chosenSortOrder,
         setSearchedResults,
-        toggleIsLoaded,
+        toggleAreDocumentsLoaded,
       );
       setSearcherState(2);
     } else setPreviouslySearchedFac(undefined);
-  }, [searchedFaculty, searchedProgramme, searchedSemester, searchedCourse, 
+  }, [universitiesList, facultiesList, searchedFaculty, searchedProgramme, searchedSemester, searchedCourse, 
     searchedDegree, 
     searchedType, chosenSort, chosenSortOrder]);
 
@@ -245,7 +246,7 @@ const Searcher:React.FC = () => {
                     Filtry
                   </SearchingResultsOpenFiltersBtn>
                   {
-                    !isLoaded ? (
+                    !areDocumentsLoaded ? (
                       <SearchingPreloaderComponent />
                     ) : searchedResults.filter((elem: any) => elem.isDisplayed === 1).length === 0 ? (
                       <SearchingNoResultsContainer className="block-center">

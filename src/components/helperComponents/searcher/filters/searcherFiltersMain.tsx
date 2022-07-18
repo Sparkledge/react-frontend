@@ -11,7 +11,7 @@ import {
   SearchingFilterOptionChoiceCheckbox,
   SearchingFilterOptionLabel,
   SearchingFilterOptionOpenBtn,
-} from "../../../../styled/subpages/searcher/searcherFilters";
+} from "src/styled/subpages/searcher/searcherFilters";
 
 import SearcherFiltersInterface from "./SearcherFiltersInterface";
 

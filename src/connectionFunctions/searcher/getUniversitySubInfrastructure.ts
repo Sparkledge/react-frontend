@@ -35,11 +35,9 @@ const getUniversitySubInfrastructure = async (
     },
   })
     .then((res) => {
-      console.log(res.data);
       setInfrastructureList(res.data);
     })
     .catch((err) => {
-      console.log(err);
       setSearcherState(isSearcherBoolean ? false : 3);
     });    
 };

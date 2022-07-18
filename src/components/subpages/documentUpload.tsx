@@ -3,22 +3,21 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import SwipeRightAltIcon from "@mui/icons-material/SwipeRightAlt";
 
-import { MainContainer } from "../../styled/main";
-import { LandingSectionWrapper, LandingSectionFilter } from "../../styled/subpages/welcome";
+import { MainContainer } from "src/styled/main";
+import { LandingSectionWrapper, LandingSectionFilter } from "src/styled/subpages/welcome";
 import {
   DocumentUploadFormWrapper, DocumentUploadFormHeader,
   DocumentUploadFormDataSection, DocumentUploadNotWorking, DocumentUploadTextInput,
   DocumentUploadNextButton, DocumentUploadDataSubSection, DocumentUploadFileHeader, DocumentUploadFileInput,
   DocumentUploadFileDescription, DocumentUploadFileButton, 
-} from "../../styled/subpages/documentUpload";
+} from "src/styled/subpages/documentUpload";
 
 import { RootState } from "../../redux/mainReducer";
-
-import SearchBarComponent from "../helperComponents/searcher/searchBarComponent";
 
 import sendFile from "../../connectionFunctions/documentUpload/sendFile";
 import getUniversitySubInfrastructure from "../../connectionFunctions/searcher/getUniversitySubInfrastructure";
 import loadUniversities from "../../connectionFunctions/documentUpload/loadUniversities";
+import SearchingParametersPicker from "../helperComponents/documentUpload/searchingParametersPicker";
 
 import selectFile from "../auxiliaryFunctions/documentUpload/selectFile";
 
@@ -40,48 +39,66 @@ const DocumentUpload:React.FC = () => {
   const [universitiesList, setUniversitiesList] = useState<any[]>([]);
   const [facultiesList, setFacultiesList] = useState<any[]>([]);
   const [programmesList, setProgrammesList] = useState<any[]>([]);
+  const [coursesList, setCoursesList] = useState<any[]>([]);
 
   const [searchedUniversity, setSearchedUniversity] = useState<string>("");
   const [searchedFaculty, setSearchedFaculty] = useState<string>("");
+  const [searchedType, setSearchedType] = useState<string>("");
   const [searchedProgramme, setSearchedProgramme] = useState<string>("");
   const [searchedSemester, setSearchedSemester] = useState<number>(0); // 0 - nothing chosen
   const [searchedCourse, setSearchedCourse] = useState<string>("");
+  const [searchedTypeOfSubject, setSearchedTypeOfSubject] = useState<string>("");
 
   const FileRef = createRef<HTMLInputElement>();
 
   useEffect(() => {
-    // loadUniversities(setUniversitiesList, toggleIsWorking);
+    loadUniversities(setUniversitiesList, toggleIsWorking);
     window.addEventListener("offline", () => toggleIsOnline(false));
     window.addEventListener("online", () => toggleIsOnline(true));
   }, []);
 
   useEffect(() => {
-    if (searchedFaculty.length > 0) {
+    if (searchedUniversity.toString().length > 0) { 
       getUniversitySubInfrastructure(
         universitiesList, 
         setFacultiesList, 
         searchedFaculty,
-        "faculty", 
-        toggleIsWorking, 
-        searchedUniversity, 
-        true,
+        "faculties", 
+        (newValue: number) => {}, 
+        searchedUniversity,
       );
     } 
+  }, [searchedUniversity]);
+
+  useEffect(() => {
+    if (searchedFaculty.toString().length > 0) {
+      getUniversitySubInfrastructure(
+        facultiesList,
+        setProgrammesList,
+        searchedProgramme,
+        "programmes",
+        (newValue: number) => {},
+        searchedFaculty,
+      );
+    }
   }, [searchedFaculty]);
 
   useEffect(() => {
-    if (searchedProgramme.length > 0) {
+    if (searchedProgramme.toString().length > 0) {
       getUniversitySubInfrastructure(
-        facultiesList, 
-        setProgrammesList, 
+        programmesList,
+        setCoursesList,
+        searchedCourse,
+        "courses",
+        (newValue: number) => {},
         searchedProgramme,
-        "programme", 
-        toggleIsWorking, 
-        "",
-        true,
       );
     }
   }, [searchedProgramme]);
+
+  useEffect(() => {
+    console.log(coursesList);
+  }, [coursesList]);
 
   useEffect(() => {
     toggleIsWorking(currentToken.length !== 0);
@@ -111,22 +128,25 @@ const DocumentUpload:React.FC = () => {
                               />
                             ) : phaseNumber === 2 ? (
                               <DocumentUploadDataSubSection className="block-center">
-                                <SearchBarComponent
-                                  universities={universitiesList}
-                                  faculties={facultiesList}
-                                  programmes={programmesList}
-                                  searchedUniversity={searchedUniversity}
-                                  setSearchedUniversity={setSearchedUniversity}
-                                  searchedFaculty={searchedFaculty}
-                                  setSearchedFaculty={setSearchedFaculty}
-                                  searchedProgramme={searchedProgramme} 
-                                  setSearchedProgramme={setSearchedProgramme}
-                                  searchedSemester={searchedSemester}
-                                  setSearchedSemester={setSearchedSemester}
-                                  searchedCourse={searchedCourse} 
-                                  setSearchedCourse={setSearchedCourse}
-                                  submitCallback={() => setPhaseNumber(3)}
-                                  isBiggerScale
+                                <SearchingParametersPicker 
+                                  universitiesList={universitiesList}
+                                  chosenUniversity={searchedUniversity}
+                                  setChosenUniversity={setSearchedUniversity}
+                                  facultiesList={facultiesList}
+                                  chosenFaculty={searchedFaculty}
+                                  setChosenFaculty={setSearchedFaculty}
+                                  chosenTypeOfStudies={searchedType}
+                                  setChosenTypeOfStudies={setSearchedType}
+                                  programmesList={programmesList}
+                                  chosenProgramme={searchedProgramme}
+                                  setChosenProgramme={setSearchedProgramme}
+                                  coursesList={coursesList}
+                                  chosenCourse={searchedCourse}
+                                  setChosenCourse={setSearchedCourse}
+                                  chosenTypeOfSubject={searchedTypeOfSubject}
+                                  setChosenTypeOfSubject={setSearchedTypeOfSubject}
+                                  chosenSemester={searchedSemester}
+                                  setChosenSemester={setSearchedSemester}
                                 />
                               </DocumentUploadDataSubSection>
                             ) : phaseNumber === 3 ? (
@@ -160,9 +180,6 @@ const DocumentUpload:React.FC = () => {
                                         onClick={() => sendFile(
                                           materialName, 
                                           desc, 
-                                          universitiesList, 
-                                          facultiesList,
-                                          programmesList, 
                                           searchedUniversity, 
                                           searchedFaculty,
                                           searchedProgramme, 
@@ -202,8 +219,11 @@ const DocumentUpload:React.FC = () => {
             {isOnline ? (
               <DocumentUploadNextButton
                 className="block-center"
-                scale={materialName.length === 0 || phaseNumber !== 1 ? 0 : 1}
-                onClick={() => setPhaseNumber(3)}
+                scale={(materialName.length > 0 && phaseNumber === 1) || (phaseNumber === 2 
+                  && searchedUniversity.toString().length > 0 && searchedFaculty.toString().length > 0
+                  && searchedType.length > 0 && searchedProgramme.toString().length > 0
+                  && searchedCourse.toString().length > 0 && searchedTypeOfSubject.toString().length > 0) ? 1 : 0}
+                onClick={() => setPhaseNumber(phaseNumber + 1)}
               >
                 <SwipeRightAltIcon style={{ color: "inherit", fontSize: "inherit" }} />
               </DocumentUploadNextButton>

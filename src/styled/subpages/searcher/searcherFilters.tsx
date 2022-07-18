@@ -71,7 +71,28 @@ export const SearchingFiltersPanel = styled.section<SearchingFiltersPanelInterfa
       @media screen and (min-width: 1440px){
           width: calc(25% - 30px);
       }
-  `;
+`;
+
+export const SearchingFiltersUploadWrapper = styled.section`
+  width: calc(90% - 10px);
+  height: calc(50vh - 10px);
+  padding: 5px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar{
+    width: 6px;
+  }
+    
+  &::-webkit-scrollbar-thumb{
+      border-radius: 10px;
+      width: 3px;
+      background: rgba(34,107,255,.9);
+  }
+    
+  &::-webkit-scrollbar-track{
+      width: 5px;
+  }
+`;
   
 export const SearchingFiltersHeader = styled.header`
       width: calc(100% - 10px);
