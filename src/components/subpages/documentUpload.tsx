@@ -64,7 +64,6 @@ const DocumentUpload:React.FC = () => {
       getUniversitySubInfrastructure(
         universitiesList, 
         setFacultiesList, 
-        searchedFaculty,
         "faculties", 
         (newValue: number) => {}, 
         searchedUniversity,
@@ -77,7 +76,6 @@ const DocumentUpload:React.FC = () => {
       getUniversitySubInfrastructure(
         facultiesList,
         setProgrammesList,
-        searchedProgramme,
         "programmes",
         (newValue: number) => {},
         searchedFaculty,
@@ -90,18 +88,13 @@ const DocumentUpload:React.FC = () => {
       getUniversitySubInfrastructure(
         programmesList,
         setCoursesList,
-        searchedCourse,
         "courses",
         (newValue: number) => {},
         searchedProgramme,
       );
     }
   }, [searchedProgramme]);
-
-  useEffect(() => {
-    console.log(coursesList);
-  }, [coursesList]);
-
+  
   useEffect(() => {
     toggleIsWorking(currentToken.length !== 0);
   }, [currentToken]);
