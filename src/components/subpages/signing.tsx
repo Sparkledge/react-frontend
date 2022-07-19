@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import useLocalStorage from "use-local-storage";
 
@@ -9,6 +9,7 @@ import { AboutHeader } from "../../styled/subpages/about";
 import {
   SigningPanelWrapper, SigningPanelInput, SigningPanelButton,
   ErrorLabel, 
+  ForgotPasswordButton,
 } from "../../styled/subpages/signing";
 
 import TriggerTheShot from "../../connectionFunctions/signin/sendSigningData";
@@ -157,6 +158,15 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
                               {" "}
                               się    
                             </SigningPanelButton>
+                            {
+                              mode === 1 ? (
+                                <Link to="/forgotPassword">
+                                  <ForgotPasswordButton className="block-center">
+                                    Nie pamiętam hasła
+                                  </ForgotPasswordButton>
+                                </Link>
+                              ) : null
+                            }
                             {
                             error.length > 0 ? (
                               <ErrorLabel className="block-center">

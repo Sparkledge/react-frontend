@@ -108,3 +108,19 @@ export const ErrorLabel = styled.div`
         width: calc(80% - 10px);
     }
 `;
+
+export const ForgotPasswordButton = styled.div`
+    width: fit-content;
+    font-size: 0.9em;
+    letter-spacing: 0.04em;
+    color: ${(props) => props.theme.color};
+    text-shadow: ${(props) => props.theme.fonts.textShadowMain};
+    text-align: center;
+    text-decoration: none !important;
+    transition: all 0.4s;
+    cursor: pointer;
+
+    &:hover{
+        filter: brightness(70%);
+    }
+`;
