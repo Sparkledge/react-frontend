@@ -117,3 +117,41 @@ export const ForgotPasswordSubmitBtn = styled.button`
         font-size: 1.4em;
     }
 `;
+
+export const ForgotPasswordSuccessDescription = styled.div`
+    width: calc(90% - 20px);
+    padding: 10px;
+    text-align: center;
+    font-size: 1.2em;
+    letter-spacing: 0.04em; 
+    position: relative;
+    top: 25vh;
+
+    @media screen and (min-width: 1024px){
+        width: calc(70% - 20px);
+        font-size: 1.4em;
+    }
+`;
+
+export const ForgotPasswordErrorHeader = styled.header`
+    width: calc(100% - 10px);
+    padding: 5px;
+    text-align: center;
+    font-size: 1.35em;
+    letter-spacing: 0.06em;
+    position: relative;
+    top: 20vh;
+
+    @media screen and (min-width: 425px){
+        font-size: 1.5em;
+    }
+
+    @media screen and (min-width: 1024px){
+        font-size: 1.9em;
+    }
+
+    @media screen and (min-width: 1440px){
+        width: calc(90% - 10px);
+        font-size: 2.1em;
+    }
+`;
