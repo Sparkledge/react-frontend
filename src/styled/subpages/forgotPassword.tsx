@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+interface ForgotPasswordEmailInputInterface {
+  isSecondPhase? : boolean
+}
+
 export const ForgotPasswordContainer = styled.section`
     width: calc(95% - 20px);
     height: calc(75vh - 20px);
@@ -64,7 +68,7 @@ export const ForgotPasswordDescription = styled.div`
     }
 `;
 
-export const ForgotPasswordEmailInput = styled.input`
+export const ForgotPasswordEmailInput = styled.input<ForgotPasswordEmailInputInterface>`
     width: calc(90% - 20px);
     padding: 10px;
     border: none;
@@ -78,7 +82,7 @@ export const ForgotPasswordEmailInput = styled.input`
     box-shadow: ${(props) => props.theme.fonts.textShadowMain};
     background: ${(props) => props.theme.signingInputBackground};
     position: relative;
-    top: 14vh;
+    top: ${(props) => props.isSecondPhase !== undefined ? "16vh" : "14vh"};
 
     @media screen and (min-width: 425px){
         width: calc(85% - 20px);

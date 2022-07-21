@@ -4,6 +4,10 @@ interface InputInterface {
   marginBottom?: number
 }
 
+interface ErrorLabelInterface {
+  isUsedForReset?: boolean
+}
+
 export const SigningPanelWrapper = styled.section`
     width: calc(95% - 40px);
     min-height: calc(60vh - 40px);
@@ -93,12 +97,16 @@ export const SigningPanelButton = styled.button`
     }
 `;
 
-export const ErrorLabel = styled.div`
+export const ErrorLabel = styled.div<ErrorLabelInterface>`
     width: calc(100% - 10px);
     text-align: center;
     font-size: 0.95em;
     text-shadow: ${(props) => props.theme.fonts.textShadowMain};
     color: ${(props) => props.theme.errorColor};
+    ${(props) => props.isUsedForReset !== undefined ? `
+        position: relative;
+        top: 26vh;
+    ` : null}
 
     @media screen and (min-width: 425px){
         font-size: 1.1em;
