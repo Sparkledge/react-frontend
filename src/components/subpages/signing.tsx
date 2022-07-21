@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import useLocalStorage from "use-local-storage";
 
@@ -9,6 +9,7 @@ import { AboutHeader } from "../../styled/subpages/about";
 import {
   SigningPanelWrapper, SigningPanelInput, SigningPanelButton,
   ErrorLabel, 
+  ForgotPasswordButton,
 } from "../../styled/subpages/signing";
 
 import TriggerTheShot from "../../connectionFunctions/signin/sendSigningData";
@@ -56,8 +57,8 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
       setPassword, 
       setLogin, 
       (newToken: string) => {
-        dispatch(setNewToken(newToken));
         setMemoryUserId(newToken);
+        dispatch(setNewToken(newToken));
       }, 
       setRefreshUserId, 
       navigate,
@@ -67,10 +68,10 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
   useEffect(() => {
     toggleIsVerificationSuccessful(0);
     toggleIsSuccess(false);
-    if (currentToken.length > 0) navigate("/panel");
+    if (currentToken.length > 0 || memoryUserId.length > 0) navigate("/panel");
     const verifyCode:string = query.get("verifyemail");
     if (verifyCode !== null && verifyCode.length > 0) toggleIsVerificationSuccessful(1);// verifyEmail(verifyCode, toggleIsVerificationSuccessful, toggleIsSuccess);
-  }, []);
+  }, [currentToken]);
 
   return (
     <MainContainer className="block-center">
@@ -157,6 +158,15 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
                               {" "}
                               się    
                             </SigningPanelButton>
+                            {
+                              mode === 1 ? (
+                                <Link to="/forgotPassword">
+                                  <ForgotPasswordButton className="block-center">
+                                    Nie pamiętam hasła
+                                  </ForgotPasswordButton>
+                                </Link>
+                              ) : null
+                            }
                             {
                             error.length > 0 ? (
                               <ErrorLabel className="block-center">

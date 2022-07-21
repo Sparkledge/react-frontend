@@ -9,14 +9,15 @@ const refreshToken = async (
   changeAccessToken: (newToken: string) => void,
   changeRefreshToken: (newToken: string) => void,
 ) => {
+  console.log(userRefreshToken);
   await axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/users/refresh`, {}, {
     headers: {
       Authorization: `Bearer ${userRefreshToken}`,
     },
   })
     .then((res) => {
-      changeAccessToken(res.data.accessToken);
       changeRefreshToken(res.data.refreshToken);
+      changeAccessToken(res.data.accessToken);
     })
     .catch((err) => {
       console.log(err);

@@ -18,6 +18,8 @@ import Searcher from "./subpages/searcher";
 import DocumentDisplayer from "./subpages/documentDisplayer";
 import DocumentUpload from "./subpages/documentUpload";
 import Notfound from "./subpages/notfound";
+import ForgotPassword from "./subpages/forgotPassword";
+import ResetPassword from "./subpages/resetPassword";
 
 import UserPanel from "./subpages/userPanel";
 
@@ -34,7 +36,7 @@ const Main: React.FC = () => {
   );
 
   useEffect(() => {
-    if (memoryUserId.length > 0 && refreshUserId.length > 0) {
+    if (refreshUserId.length > 0) {
       refreshToken(refreshUserId, setMemoryUserId, setRefreshUserId);
       dispatch(setNewToken(memoryUserId));
     }
@@ -56,6 +58,8 @@ const Main: React.FC = () => {
           <Route path="/document/" element={<DocumentDisplayer />} />
           <Route path="/documentUpload" element={<DocumentUpload />} />
           <Route path="/panel" element={<UserPanel />} />
+          <Route path="/forgotPassword" element={<ForgotPassword />} />
+          <Route path="/resetPassword/:email/:token" element={<ResetPassword />} /> 
           <Route path="*" element={<Notfound />} />
         </Routes>
       </Router>

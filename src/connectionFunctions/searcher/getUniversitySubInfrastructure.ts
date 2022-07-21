@@ -9,7 +9,6 @@ import axios from "axios";
 const getUniversitySubInfrastructure = async (
   infrastructureList: any[],
   setInfrastructureList: (newData: any[]) => void,
-  searchedInfrastructure: string,
   destination: string,
   setSearcherState: (newState: any) => void,
   oldInfrastructure?: string,
@@ -19,15 +18,18 @@ const getUniversitySubInfrastructure = async (
     
   let infrastructureId:string = "";
 
-  const uniData: { id: string, name: string } = infrastructureList.filter((elem: { id: string, name: string }) => elem.id === oldInfrastructure)[0];
-
-  if (destination === "faculties" && oldInfrastructure !== undefined && uniData.name.length > 0) {
-    infrastructureId = uniData.id;
-  } else {
-    infrastructureId = uniData.id;
+  if (oldInfrastructure !== undefined && parseInt(oldInfrastructure, 10).toString() === oldInfrastructure) infrastructureId = oldInfrastructure;
+  else {
+    const uniData: { id: string, name: string } = infrastructureList.filter((elem: { id: string, name: string }) => elem.id === oldInfrastructure)[0];
+  
+    if (destination === "faculties" && oldInfrastructure !== undefined && uniData.name.length > 0) {
+      infrastructureId = uniData.id;
+    } else {
+      infrastructureId = uniData.id;
+    }
   }
 
-  const path = `${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/${destination}/${uniData.id}`;
+  const path = `${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/${destination}/${infrastructureId}`;
 
   await axios.get(path, {
     headers: {
@@ -35,6 +37,7 @@ const getUniversitySubInfrastructure = async (
     },
   })
     .then((res) => {
+      console.log(res);
       setInfrastructureList(res.data);
     })
     .catch((err) => {

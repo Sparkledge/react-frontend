@@ -18,6 +18,7 @@ import sendFile from "../../connectionFunctions/documentUpload/sendFile";
 import getUniversitySubInfrastructure from "../../connectionFunctions/searcher/getUniversitySubInfrastructure";
 import loadUniversities from "../../connectionFunctions/documentUpload/loadUniversities";
 import SearchingParametersPicker from "../helperComponents/documentUpload/searchingParametersPicker";
+import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
 
 import selectFile from "../auxiliaryFunctions/documentUpload/selectFile";
 
@@ -27,6 +28,7 @@ const DocumentUpload:React.FC = () => {
   const currentToken:string = useSelector((state: RootState) => state.generalData.currentToken);
 
   const [isWorking, toggleIsWorking] = useState<boolean>(true);
+  const [isSending, toggleIsSending] = useState<boolean>(false);
   const [isOnline, toggleIsOnline] = useState<boolean>(window.navigator.onLine);
   const [phaseNumber, setPhaseNumber] = useState<number>(1); // 1 - name, 2 - category 3- file & upload, 4 - file uploaded
   const [materialName, setMaterialName] = useState<string>("");
@@ -62,7 +64,6 @@ const DocumentUpload:React.FC = () => {
       getUniversitySubInfrastructure(
         universitiesList, 
         setFacultiesList, 
-        searchedFaculty,
         "faculties", 
         (newValue: number) => {}, 
         searchedUniversity,
@@ -75,7 +76,6 @@ const DocumentUpload:React.FC = () => {
       getUniversitySubInfrastructure(
         facultiesList,
         setProgrammesList,
-        searchedProgramme,
         "programmes",
         (newValue: number) => {},
         searchedFaculty,
@@ -88,18 +88,13 @@ const DocumentUpload:React.FC = () => {
       getUniversitySubInfrastructure(
         programmesList,
         setCoursesList,
-        searchedCourse,
         "courses",
         (newValue: number) => {},
         searchedProgramme,
       );
     }
   }, [searchedProgramme]);
-
-  useEffect(() => {
-    console.log(coursesList);
-  }, [coursesList]);
-
+  
   useEffect(() => {
     toggleIsWorking(currentToken.length !== 0);
   }, [currentToken]);
@@ -149,31 +144,33 @@ const DocumentUpload:React.FC = () => {
                                   setChosenSemester={setSearchedSemester}
                                 />
                               </DocumentUploadDataSubSection>
-                            ) : phaseNumber === 3 ? (
-                              <>
-                                <DocumentUploadDataSubSection className="block-center">
-                                  <DocumentUploadFileHeader className="block-center">
-                                    {warning.length === 0 ? "Zamieść materiał" : warning}
-                                  </DocumentUploadFileHeader>
-                                  <DocumentUploadFileButton
-                                    className="block-center" 
-                                    onClick={() => FileRef !== undefined && FileRef.current !== null 
-                                      ? FileRef.current.click() : null}
-                                  >
-                                    Wybierz
-                                  </DocumentUploadFileButton>
-                                  <DocumentUploadFileInput
-                                    type="file"
-                                    ref={FileRef}
-                                    onChange={async (e:any) => selectFile(e, setFile, setWarning, setIsFileLoaded)}
-                                  />
-                                  <DocumentUploadFileDescription
-                                    className="block-center"
-                                    onChange={(e:any) => setDesc(e.target.value)}
-                                  />
-                                </DocumentUploadDataSubSection>
-                                {
-                                    isFileLoaded === 1 /* && programmesList.filter((elem:any) => elem.name === searchedCourse).length > 0 */? (
+                            ) : phaseNumber === 3 ? isSending 
+                              ? <SearchingPreloaderComponent />
+                              : (
+                                <>
+                                  <DocumentUploadDataSubSection className="block-center">
+                                    <DocumentUploadFileHeader className="block-center">
+                                      {warning.length === 0 ? "Zamieść materiał" : warning}
+                                    </DocumentUploadFileHeader>
+                                    <DocumentUploadFileButton
+                                      className="block-center" 
+                                      onClick={() => FileRef !== undefined && FileRef.current !== null 
+                                        ? FileRef.current.click() : null}
+                                    >
+                                      Wybierz
+                                    </DocumentUploadFileButton>
+                                    <DocumentUploadFileInput
+                                      type="file"
+                                      ref={FileRef}
+                                      onChange={async (e:any) => selectFile(e, setFile, setWarning, setIsFileLoaded)}
+                                    />
+                                    <DocumentUploadFileDescription
+                                      className="block-center"
+                                      onChange={(e:any) => setDesc(e.target.value)}
+                                    />
+                                  </DocumentUploadDataSubSection>
+                                  {
+                                    isFileLoaded === 1 && !isSending ? (
                                       <DocumentUploadFileButton
                                         className="block-center"
                                         top={5}
@@ -189,26 +186,27 @@ const DocumentUpload:React.FC = () => {
                                           setPhaseNumber, 
                                           setDocumentId, 
                                           toggleIsWorking,
+                                          toggleIsSending,
                                         )}
                                       >
                                         Wyślij
                                       </DocumentUploadFileButton>
                                     ) : null
                                 }
-                              </>
-                            ) : (
-                              <>
-                                <DocumentUploadNotWorking className="block-center">
-                                  Dokument został opublikowany.
-                                </DocumentUploadNotWorking>
-                                {documentId !== undefined && documentId.length > 0 ? (
-                                  <Link to={`/document/${documentId}`}>
-                                    <DocumentUploadNotWorking className="block-center">
-                                      Link do dokumentu
-                                    </DocumentUploadNotWorking>
-                                  </Link>
-                                ) : null}
-                              </>
+                                </>
+                              ) : (
+                                <>
+                                  <DocumentUploadNotWorking className="block-center">
+                                    Dokument został opublikowany.
+                                  </DocumentUploadNotWorking>
+                                  {documentId !== undefined && documentId.length > 0 ? (
+                                    <Link to={`/document/${documentId}`}>
+                                      <DocumentUploadNotWorking className="block-center">
+                                        Link do dokumentu
+                                      </DocumentUploadNotWorking>
+                                    </Link>
+                                  ) : null}
+                                </>
                             ) : (
                               <DocumentUploadNotWorking className="block-center">
                                 {!isOnline ? "Brak połączenia z siecią" : currentToken.length === 0 ? "Zaloguj się, żeby wrzucić materiał" : "Coś poszło nie tak. Spróbuj ponownie"}

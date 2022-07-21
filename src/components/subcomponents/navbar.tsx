@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useLocalStorage from "use-local-storage";
 
@@ -25,6 +25,7 @@ const Navbar:React.FC = () => {
   const currentToken:string = useSelector((state: RootState) => state.generalData.currentToken);
 
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
+  const [refreshUserId, setRefreshUserId] = useLocalStorage<string>("u_r", "");
   const dispatch = useDispatch();
 
   const NavbarData:{ isLink: boolean, to: string, isImage: boolean, content: any, callback: () => void }[][] = [
@@ -65,9 +66,9 @@ const Navbar:React.FC = () => {
         isImage: false,
         content: currentToken.length === 0 ? "Zarejestruj się" : "Wyloguj",
         callback: () => {
-          memoryUserId === undefined && currentToken.length === 0 
+          currentToken.length === 0 
             ? toggleIsOpened(false) 
-            : logout(currentToken, () => dispatch(setNewToken("")), setMemoryUserId, toggleIsOpened);
+            : logout(currentToken, () => dispatch(setNewToken("")), setMemoryUserId, setRefreshUserId, toggleIsOpened);
         },
       },
       {

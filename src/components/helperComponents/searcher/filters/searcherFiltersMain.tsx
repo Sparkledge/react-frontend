@@ -35,6 +35,46 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
       </SearchingFiltersHeader>
       <SearchingFiltersOptionWrapper
         className="block-center"
+        isOpened={openedFilters[3]}
+        elementsNumber={degrees.length + 1}
+      >
+        <SearchingFilterOptionChoice>
+          <SearchingFilterOptionLabel>
+            Według stopnia
+          </SearchingFilterOptionLabel>
+          <SearchingFilterOptionOpenBtn>
+            {!openedFilters[3] ? (
+              <ArrowDropDownIcon
+                style={{ color: "inherit", fontSize: "1.2em" }}
+                onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], openedFilters[2], !openedFilters[3], openedFilters[4]])}
+              />
+            ) : (
+              <ArrowDropUpIcon
+                style={{ color: "inherit", fontSize: "1.2em" }}
+                onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], openedFilters[2], !openedFilters[3], openedFilters[4]])}
+              />
+            )}
+
+          </SearchingFilterOptionOpenBtn>
+        </SearchingFilterOptionChoice>
+        {
+    degrees.map((elem: [string, string]) => (
+      <SearchingFilterOptionChoice>
+        <SearchingFilterOptionChoiceDesc>
+          {elem[0]}
+        </SearchingFilterOptionChoiceDesc>
+        <SearchingFilterOptionChoiceCheckbox
+          className="block-center"
+          isChosen={chosenDegree === elem[1]}
+          onClick={() => setChosenDegree(chosenDegree === elem[1] ? "" : elem[1])}
+        />
+
+      </SearchingFilterOptionChoice>
+    ))
+  }
+      </SearchingFiltersOptionWrapper>
+      <SearchingFiltersOptionWrapper
+        className="block-center"
         isOpened={openedFilters[0]}
         elementsNumber={programmesList.length + 1}
       >
@@ -164,46 +204,6 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
             ))
   }
       </SearchingFiltersOptionWrapper>      
-      <SearchingFiltersOptionWrapper
-        className="block-center"
-        isOpened={openedFilters[3]}
-        elementsNumber={degrees.length + 1}
-      >
-        <SearchingFilterOptionChoice>
-          <SearchingFilterOptionLabel>
-            Według stopnia
-          </SearchingFilterOptionLabel>
-          <SearchingFilterOptionOpenBtn>
-            {!openedFilters[3] ? (
-              <ArrowDropDownIcon
-                style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], openedFilters[2], !openedFilters[3], openedFilters[4]])}
-              />
-            ) : (
-              <ArrowDropUpIcon
-                style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], openedFilters[2], !openedFilters[3], openedFilters[4]])}
-              />
-            )}
-
-          </SearchingFilterOptionOpenBtn>
-        </SearchingFilterOptionChoice>
-        {
-    degrees.map((elem: [string, string]) => (
-      <SearchingFilterOptionChoice>
-        <SearchingFilterOptionChoiceDesc>
-          {elem[0]}
-        </SearchingFilterOptionChoiceDesc>
-        <SearchingFilterOptionChoiceCheckbox
-          className="block-center"
-          isChosen={chosenDegree === elem[1]}
-          onClick={() => setChosenDegree(chosenDegree === elem[1] ? "" : elem[1])}
-        />
-
-      </SearchingFilterOptionChoice>
-    ))
-  }
-      </SearchingFiltersOptionWrapper>
       <SearchingFiltersOptionWrapper
         className="block-center"
         isOpened={openedFilters[4]}

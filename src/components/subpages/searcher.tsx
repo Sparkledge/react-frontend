@@ -98,7 +98,6 @@ const Searcher:React.FC = () => {
       getUniversitySubInfrastructure(
         universitiesList, 
         setFacultiesList, 
-        searchedFaculty,
         "faculties", 
         setSearcherState, 
         searchedUniversity,
@@ -114,7 +113,6 @@ const Searcher:React.FC = () => {
         getUniversitySubInfrastructure(
           facultiesList, 
           setProgrammesList, 
-          searchedProgramme,
           "programmes", 
           setSearcherState, 
           searchedFaculty,
@@ -124,7 +122,6 @@ const Searcher:React.FC = () => {
         getUniversitySubInfrastructure(
           programmesList, 
           setCoursesList, 
-          searchedCourse,
           "courses", 
           setSearcherState, 
           searchedProgramme,
@@ -144,8 +141,8 @@ const Searcher:React.FC = () => {
         toggleAreDocumentsLoaded,
       );
       setSearcherState(2);
-    } else setPreviouslySearchedFac(undefined);
-  }, [universitiesList, facultiesList, searchedFaculty, searchedProgramme, searchedSemester, searchedCourse, 
+    }
+  }, [universitiesList, facultiesList, searchedUniversity, searchedFaculty, searchedProgramme, searchedSemester, searchedCourse, 
     searchedDegree, 
     searchedType, chosenSort, chosenSortOrder]);
 
