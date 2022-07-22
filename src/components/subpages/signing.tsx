@@ -13,7 +13,6 @@ import {
 } from "../../styled/subpages/signing";
 
 import TriggerTheShot from "../../connectionFunctions/signin/sendSigningData";
-import verifyEmail from "../../connectionFunctions/signin/verifyEmail";
 
 import { setNewToken } from "../../redux/actions/generalActions";
 import { RootState } from "../../redux/mainReducer";
@@ -31,7 +30,7 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
   const [userName, setUserName] = useState<string>("");
   const [userSurname, setUserSurname] = useState<string>("");
   const [isSuccess, toggleIsSuccess] = useState<boolean>(false);
-  const [isVerificationSuccessful, toggleIsVerificationSuccessful] = useState<number>(0); // 0 - status unknown, 1 - verified, 2 - verification failed
+  // const [isVerificationSuccessful, toggleIsVerificationSuccessful] = useState<number>(0); // 0 - status unknown, 1 - verified, 2 - verification failed
   const [Password, setPassword] = useState<string>("");
   const [RepeatedPassword, setRepeatedPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -66,11 +65,11 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
   };
 
   useEffect(() => {
-    toggleIsVerificationSuccessful(0);
+    // toggleIsVerificationSuccessful(0);
     toggleIsSuccess(false);
     if (currentToken.length > 0 || memoryUserId.length > 0) navigate("/panel");
-    const verifyCode:string = query.get("verifyemail");
-    if (verifyCode !== null && verifyCode.length > 0) toggleIsVerificationSuccessful(1);// verifyEmail(verifyCode, toggleIsVerificationSuccessful, toggleIsSuccess);
+    // const verifyCode:string = query.get("verifyemail");
+    // if (verifyCode !== null && verifyCode.length > 0) toggleIsVerificationSuccessful(1);// verifyEmail(verifyCode, toggleIsVerificationSuccessful, toggleIsSuccess);
   }, [currentToken]);
 
   return (
@@ -85,14 +84,12 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
         >
           <LandingSectionFilter>
             <AboutHeader className="block-center">
-              {isVerificationSuccessful === 2 ? "Błąd weryfikacji. Spróbuj ponownie."
-                : isVerificationSuccessful === 1 
-                  ? "Profil zweryfikowany. Zaloguj się" : mode === 1 
-                    ? "Panel logowania" : isSuccess === false 
-                      ? "Panel rejestracji" : "Potwierdź rejestrację klikając w link wysłany na podany adres e-mail"}    
+              { mode === 1 
+                ? "Panel logowania" : isSuccess === false 
+                  ? "Panel rejestracji" : "Potwierdź rejestrację klikając w link wysłany na podany adres e-mail"}    
             </AboutHeader>
             {
-                        (mode === 2 && isSuccess) || isVerificationSuccessful === 2 ? null : (
+                        (mode === 2 && isSuccess) ? null : (
                           <SigningPanelWrapper className="block-center">
                             <SigningPanelInput
                               className="block-center"

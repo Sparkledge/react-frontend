@@ -1,17 +1,15 @@
 import axios from "axios";
 
 const verifyEmail = async (
-  verifyCode: string, 
-  toggleIsVerificationSuccessful: (newState: number) => void,
-  toggleIsSuccess: (newState: boolean) => void,
+  verifyToken: string, 
+  toggleIsSuccess: (newState: number) => void,
 ) => {
-  await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/register/verify/${verifyCode}`)
+  await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/authentication/${verifyToken}`)
     .then((res) => {
-      toggleIsVerificationSuccessful(1);
+      toggleIsSuccess(1);
     })
     .catch((err) => {
-      toggleIsVerificationSuccessful(2);
-      toggleIsSuccess(true);
+      toggleIsSuccess(2);
     });
 };
 

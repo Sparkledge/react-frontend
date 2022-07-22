@@ -20,6 +20,7 @@ import DocumentUpload from "./subpages/documentUpload";
 import Notfound from "./subpages/notfound";
 import ForgotPassword from "./subpages/forgotPassword";
 import ResetPassword from "./subpages/resetPassword";
+import AuthenticationPanel from "./subpages/authentication";
 
 import UserPanel from "./subpages/userPanel";
 
@@ -60,6 +61,7 @@ const Main: React.FC = () => {
           <Route path="/panel" element={<UserPanel />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/resetPassword/:email/:token" element={<ResetPassword />} /> 
+          <Route path="/authentication/:token" element={<AuthenticationPanel />} />
           <Route path="*" element={<Notfound />} />
         </Routes>
       </Router>
