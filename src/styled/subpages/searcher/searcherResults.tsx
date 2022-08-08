@@ -10,7 +10,8 @@ interface SearchingSideResultDataInterface {
 }
 
 interface SearchingResultsOpenFiltersBtnInterface {
-  isOnPanel?: boolean
+  isOnPanel?: boolean,
+  isAlwaysVisible?: boolean
 }
 
 export const SearchingResultsWrapper = styled.section`
@@ -54,6 +55,12 @@ export const SearchingResultsOpenFiltersBtn = styled.button<SearchingResultsOpen
     letter-spacing: 0.06em;
     font-size: 1.4em;
     margin-bottom: 2vh;
+    cursor: pointer;
+    transition: all 0.4s;
+
+    &:hover{
+        filter: brightness(70%);
+    }
 
     ${(props) => props.isOnPanel !== undefined ? `
       position: absolute;
@@ -67,7 +74,7 @@ export const SearchingResultsOpenFiltersBtn = styled.button<SearchingResultsOpen
     }
 
     @media screen and (min-width: 768px){
-        display: none;
+        ${(props) => props.isAlwaysVisible !== undefined ? "" : "display: none;"}
     }
 `;
 
