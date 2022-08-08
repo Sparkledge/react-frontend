@@ -8,14 +8,8 @@ interface LandingWrapperInterface {
   backgroundRepeat?: string
 }
 
-interface AnimatingInterface {
-  height?: number,
-  leftPos?: number
-}
-
 interface DownButtonInterface {
-  marginBottom?: number,
-  rightPos?: number
+  marginBottom?: number
 }
 
 interface FilterInterface {
@@ -53,7 +47,7 @@ export const EndingBlock = styled.div`
     height: 10vh;
 `;
 
-export const LandingSectionHeader = styled.header<AnimatingInterface>`
+export const LandingSectionHeader = styled.header`
     width: calc(100% - 20px);
     overflow-y: hidden;
     padding: 0px 10px;
@@ -66,7 +60,6 @@ export const LandingSectionHeader = styled.header<AnimatingInterface>`
     position: relative;
     top: 5vh;
     margin-bottom: 9vh;
-    height: ${(props) => props.height !== undefined ? props.height : "2.5"}em;
 
     @media screen and (min-width: 425px){
         font-size: 2.7em;
@@ -85,7 +78,7 @@ export const LandingSectionSpan = styled.span`
     font-size: 0.35em;
 `;
 
-export const LandingSectionDesc = styled.div<AnimatingInterface>`
+export const LandingSectionDesc = styled.div`
     width: calc(90% - 20px);
     padding: 10px;
     text-align: center;
@@ -96,7 +89,6 @@ export const LandingSectionDesc = styled.div<AnimatingInterface>`
     line-height: 1.2em;
     position: relative;
     margin-bottom: 15vh;
-    left: ${(props) => props.leftPos !== undefined ? props.leftPos : "0"}%;
     transition: all 0.4s;
 
     @media screen and (min-width: 425px){
@@ -118,7 +110,6 @@ export const LandingSectionDesc = styled.div<AnimatingInterface>`
 export const LandingButtonWrapper = styled.div<DownButtonInterface>`
     width: fit-content;
     transition: all 0.4s;
-    ${(props) => props.rightPos !== undefined ? `position: relative; right: ${props.rightPos}%;` : ""}
     ${(props) => props.marginBottom !== undefined ? `padding-bottom: ${props.marginBottom}vh;` : ""}
 `;
 
