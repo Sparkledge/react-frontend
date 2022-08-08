@@ -19,17 +19,20 @@ exports[`Welcome site rendering tests testing if DescribeComponent is rendering 
       className="block-center"
     >
       <DescribeComponentWidget
-        content="Na naszej platformie znajdziesz notataki pogrupowane na przedmioty i kierunki studiów. Sa to notataki innych studentów, dzięki temu wiesz ze sa one dokładnie tym czego wymagają wykładowcy. "
         header="Dostęp do wiedzy"
-      />
+      >
+        Na naszej platformie znajdziesz notataki pogrupowane na przedmioty i kierunki studiów. Sa to notataki innych studentów, dzięki temu wiesz ze sa one dokładnie tym czego wymagają wykładowcy. 
+      </DescribeComponentWidget>
       <DescribeComponentWidget
-        content="Wraz ze znajomymi za pomoca naszej platformy mozecie wymieniać się notataki oraz trzymać je w jednym miejscu. Twoi znajomi oceniają je, a dzięki ich ocenom ty masz dostęp do większej ilości notatek innych użytkowników "
         header="Kontakt ze społecznością akademicką"
-      />
+      >
+        Wraz ze znajomymi za pomoca naszej platformy mozecie wymieniać się notataki oraz trzymać je w jednym miejscu. Twoi znajomi oceniają je, a dzięki ich ocenom ty masz dostęp do większej ilości notatek innych użytkowników 
+      </DescribeComponentWidget>
       <DescribeComponentWidget
-        content="Dzięki korzystaniu z naszej platformy nie tracisz czas na nauke rzeczy których i tak nikt od ciebie nie będzie wymagał. Są to notatki studentów którzy już zdali ten przedmiot albo sa w trakcie i notują na wykladach. Znajdziesz tutaj dokładnie to czego potrzeba aby zdać."
         header="Ciekawe benefity na uczelni"
-      />
+      >
+        Dzięki korzystaniu z naszej platformy nie tracisz czas na nauke rzeczy których i tak nikt od ciebie nie będzie wymagał. Są to notatki studentów którzy już zdali ten przedmiot albo sa w trakcie i notują na wykladach. Znajdziesz tutaj dokładnie to czego potrzeba aby zdać.
+      </DescribeComponentWidget>
     </styled.section>
     <styled.div
       className="block-center"
@@ -197,6 +200,9 @@ exports[`Welcome site rendering tests testing is DescribeComponentWidget is rend
       "color": "#0895E6",
       "errorColor": "rgba(240,30,30,.75)",
       "filterColor": "rgba(0,0,0,.7)",
+      "filtersButtonBackground": "rgba(3,73,119,.9)",
+      "filtersButtonResponsiveBackground": "rgba(10,10,10,.9)",
+      "filtersResponsiveBackground": "rgba(40,40,40,.9)",
       "fonts": Object {
         "main": "Mohave, sans-serif",
         "textShadowMain": "3px 3px 4px rgba(0,0,0,.05)",
@@ -205,7 +211,7 @@ exports[`Welcome site rendering tests testing is DescribeComponentWidget is rend
       "navBgColor": "#0c0c0c",
       "navElemBgColor": "rgba(20,20,20,.2)",
       "resultBackground": "rgba(24,87,255,.15)",
-      "signingInputBackground": "rgba(40,40,40,.7);",
+      "signingInputBackground": "rgba(40,40,40,.7)",
     }
   }
 >
@@ -231,9 +237,7 @@ exports[`Welcome site rendering tests testing is DescribeComponentWidget is rend
         >
           <div
             className="sc-egiyK faVmmf block-center"
-          >
-            test
-          </div>
+          />
         </styled.div>
       </div>
     </styled.div>

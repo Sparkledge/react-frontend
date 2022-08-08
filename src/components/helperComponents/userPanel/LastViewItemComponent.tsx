@@ -1,5 +1,5 @@
 import React from "react";
-import { UserPanelLastViewItem, UserPanelLastViewTitle, UserPanelLastViewAuthor } from "../../../styled/subpages/userpanel";
+import { UserPanelLastViewItem, UserPanelLastViewTitle, UserPanelLastViewAuthor } from "src/styled/subpages/userpanel";
 
 interface LastViewItemComponentInterface {
   title: string,

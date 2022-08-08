@@ -5,7 +5,7 @@ import SwipeRightAltIcon from "@mui/icons-material/SwipeRightAlt";
 import {
   SearcherCategoriesSubContainer, SearcherCategoriesContainer, GoToSearchBarBtn, 
   SearcherBar, 
-} from "../../../styled/subpages/searcher/searcherBar";
+} from "src/styled/subpages/searcher/searcherBar";
 
 import SearchBarOptionsComponent from "./searchBarOptionsComponent";
 
@@ -36,29 +36,13 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> = ({
 }:SearchBarComponentInterface) => {
   const [phase, setPhase] = useState<number>(1); // 1 - research data, 2 - string data
   const [paramsPhase, setParamsPhase] = useState<number>(0); // 0 - university, 1 - faculty, 2 - main searcher
-  const [isUniversityOpened, toggleIsUniversityOpened] = useState<boolean>(false);
-  const [isFacultyOpened, toggleIsFacultyOpened] = useState<boolean>(false);
-  const [isProgrammeOpened, toggleIsProgrammeOpened] = useState<boolean>(false);
-  const [isSemesterOpened, toggleIsSemesterOpened] = useState<boolean>(false);
-  const [isCourseOpened, toggleIsCourseOpened] = useState<boolean>(false);
-
-  const [helperSemesterArray, setHelperSemesterArray] = useState<string[]>([]);
 
   const universityCallback = (uniName: string) => {
     searchedUniversity === uniName ? setSearchedUniversity("") : setSearchedUniversity(uniName);
-    toggleIsUniversityOpened(false);
   };
 
   const facultyCallback = (facName: string) => {
     searchedFaculty === facName ? setSearchedFaculty("") : setSearchedFaculty(facName);
-    toggleIsFacultyOpened(false);
-  };
-
-  const generateTheArrayForSemesters = () :string[] => {
-    if (searchedProgramme === "" || programmes.length === 0) return [];
-    const final:string[] = [];
-    for (let i = 0; i < programmes[programmes.length - 1].semester; i++) final.push(`Semestr ${i + 1}`);
-    return final;
   };
 
   useEffect(() => {
@@ -73,15 +57,10 @@ const SearchBarComponent:React.FC<SearchBarComponentInterface> = ({
       setSearchedSemester(0); 
       setParamsPhase(0);
     } else {
-      setHelperSemesterArray(generateTheArrayForSemesters());
       setParamsPhase(1);
     }
   }, [searchedProgramme]);
-  useEffect(() => { if (searchedSemester === 0) { setSearchedCourse(""); toggleIsCourseOpened(false); } }, [searchedSemester]);
-
-  useEffect(() => {
-    setHelperSemesterArray(generateTheArrayForSemesters());
-  }, [programmes]);
+  useEffect(() => { if (searchedSemester === 0) { setSearchedCourse(""); } }, [searchedSemester]);
 
   return (
     <SearcherBar className="block-center">

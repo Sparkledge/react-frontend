@@ -59,6 +59,30 @@ const Searcher:React.FC = () => {
   const { courseId } = useParams();
   const navigate = useNavigate();
 
+  const goBackToTheBeginning = () => {
+    setPreviouslySearchedFac(undefined); 
+    setPreviouslySearchedUni(undefined); 
+    setSearchedUniversity("");
+    setSearchedFaculty("");
+    setSearchedProgramme("");
+    setSearchedCourse("");
+    setSearchedDegree("");
+    setSearchedPhrase("");
+    setSearchedResults([]);
+    setSearchedSemester(0);
+    setSearcherState(0); 
+    getUniversitiesInfrastructure(
+      setUniversitiesList, 
+      previouslySearchedUni, 
+      previouslySearchedFac,
+      setSearchedUniversity, 
+      setSearchedFaculty, 
+      setPreviouslySearchedFac, 
+      toggleIsLoaded,
+      setSearcherState,
+    );
+  };
+
   useEffect(() => {
     toggleIsLoaded(false);
     if (previouslySearchedFac !== undefined && previouslySearchedUni !== undefined
@@ -236,6 +260,13 @@ const Searcher:React.FC = () => {
                       className="block-center"
                     />
                   </SearcherBarInputContainer>
+                  <SearchingResultsOpenFiltersBtn
+                    className="block-center"
+                    isAlwaysVisible
+                    onClick={() => goBackToTheBeginning()}
+                  >
+                    Wróć
+                  </SearchingResultsOpenFiltersBtn>
                   <SearchingResultsOpenFiltersBtn
                     className="block-center"
                     onClick={() => toggleAreFiltersOn(!areFiltersOn)}

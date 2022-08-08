@@ -1,53 +1,66 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 import {
   LandingSectionWrapper, LandingSectionFilter,
   LandingSectionHeader, LandingSectionSpan,
   LandingSectionDesc, LandingButtonWrapper, LandingSectionButton, 
-} from "../../../styled/subpages/welcome";
+} from "src/styled/subpages/welcome";
 
-const Background = require("../../../assets/academic_background_edited_2.webp");
+import Background from "src/assets/academic_background_edited_2.webp";
 
-const LandingComponent:React.FC = () => {
-  const [headerHeight, setHeaderHeight] = useState<number>(0);
-  const [textPosition, setTextPosition] = useState<number>(100);
-  const [buttonPosition, setButtonPosition] = useState<number>(100);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setHeaderHeight(2.5);
-      setTimeout(() => {
-        setTextPosition(0);
-        setTimeout(() => setButtonPosition(0), 200);
-      }, 200);
-    }, 200);
-  }, []);
-
-  return (
-    <LandingSectionWrapper className="block-center" source={Background}>
-      <LandingSectionFilter>
-        <LandingSectionHeader className="block-center" height={headerHeight}>
+const LandingComponent:React.FC = () => (
+  <LandingSectionWrapper className="block-center" source={Background}>
+    <LandingSectionFilter>
+      <LandingSectionHeader className="block-center">
+            
+        <motion.div
+          layout
+          animate={{ height: ["0", "2.5em"] }}
+          transition={{
+            duration: 0.2, delay: 0.2, type: "spring", stiffness: 100, 
+          }}
+        >
           <span className="block-center">Sparkledge</span>
           <LandingSectionSpan>Spark of your knowledge</LandingSectionSpan>
-        </LandingSectionHeader>
-        <LandingSectionDesc className="block-center" leftPos={textPosition}>
+
+        </motion.div>
+          
+      </LandingSectionHeader>
+      <motion.div 
+        layout
+        animate={{ x: ["-100%", "0%"] }}
+        transition={{
+          duration: 0.3, delay: 0.4, type: "spring", stiffness: 100, 
+        }}
+      >
+        <LandingSectionDesc className="block-center">
           Sparkledge to platforma łącząca studentów, dającą im możliwość rozwoju i osiągania lepszych wyników. 
           Sparklege to platforma stworzona przez studentów dla studentów. 
           Znajdziesz na niej notatki Twoich znajomych oraz absolwentów ocenione przez innych użytkowników. 
           Dzięki niej nauka do kolosów będzie przyjemniejsza.
           Jedyne co musisz zrobić aby dostać dostęp do skarbnicy wiedzy to załączyć swoje notataki
         </LandingSectionDesc>
-        <LandingButtonWrapper className="block-center" rightPos={buttonPosition}>
+      </motion.div>
+      <motion.div 
+        layout
+        animate={{ x: ["100%", "0%"] }}
+        transition={{
+          duration: 0.3, delay: 0.6, type: "spring", stiffness: 100, 
+        }}
+      >
+        <LandingButtonWrapper className="block-center">
           <Link to="/signup">
             <LandingSectionButton className="block-center">
               Dołącz do nas
             </LandingSectionButton>
           </Link>
         </LandingButtonWrapper>
-      </LandingSectionFilter>
-    </LandingSectionWrapper>
-  );
-};
+
+      </motion.div>
+    </LandingSectionFilter>
+  </LandingSectionWrapper>
+);
 
 export default LandingComponent;

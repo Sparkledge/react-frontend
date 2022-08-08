@@ -29,7 +29,7 @@ describe("Welcome site rendering tests", () => {
 
   it("testing is DescribeComponentWidget is rendering", () => {
     const wrapper = mount(<ThemeProvider theme={DarkMode}>
-      <DescribeComponentWidget header="test header'a" content="test" />
+      <DescribeComponentWidget header="test header'a">test</DescribeComponentWidget>
     </ThemeProvider>);
 
     expect(toJson(wrapper)).toMatchSnapshot();
