@@ -113,14 +113,14 @@ const DocumentDisplayer:React.FC = () => {
     }
   };
 
-  const insertStylesToPDF = () : void => {
+  /* const insertStylesToPDF = () : void => {
     if (fileContentRef !== undefined && fileContentRef.contentWindow !== undefined
                 && fileContentRef.contentWindow.document !== undefined 
                 && fileContentRef.contentWindow.document.body !== undefined) {
       console.log(fileContentRef.contentWindow.document.body.querySelector("embed").contentDocument);
       fileContentRef.contentWindow.document.body.style.background = "transparent";
     }
-  };
+  }; */
 
   return (
     <MainContainer className="block-center">

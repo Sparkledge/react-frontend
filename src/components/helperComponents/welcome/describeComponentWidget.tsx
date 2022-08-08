@@ -7,16 +7,16 @@ import {
 
 interface WidgetInterface {
   header: string,
-  content: string
+  children: JSX.Element | string
 }
 
-const DescribeComponentWidget:React.FC<WidgetInterface> = ({ header, content }:WidgetInterface) => (
+const DescribeComponentWidget:React.FC<WidgetInterface> = ({ header, children }:WidgetInterface) => (
   <DescribeWidget>
     <DescribeWidgetHeader className="block-center">
       {header}
     </DescribeWidgetHeader>
     <DescribeWidgetSubDesc className="block-center">
-      {content}
+      {children}
     </DescribeWidgetSubDesc>
   </DescribeWidget>
 );

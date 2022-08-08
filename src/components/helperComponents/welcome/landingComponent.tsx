@@ -5,9 +5,9 @@ import {
   LandingSectionWrapper, LandingSectionFilter,
   LandingSectionHeader, LandingSectionSpan,
   LandingSectionDesc, LandingButtonWrapper, LandingSectionButton, 
-} from "../../../styled/subpages/welcome";
+} from "src/styled/subpages/welcome";
 
-const Background = require("../../../assets/academic_background_edited_2.webp");
+import Background from "src/assets/academic_background_edited_2.webp";
 
 const LandingComponent:React.FC = () => {
   const [headerHeight, setHeaderHeight] = useState<number>(0);

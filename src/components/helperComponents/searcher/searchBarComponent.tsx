@@ -5,7 +5,7 @@ import SwipeRightAltIcon from "@mui/icons-material/SwipeRightAlt";
 import {
   SearcherCategoriesSubContainer, SearcherCategoriesContainer, GoToSearchBarBtn, 
   SearcherBar, 
-} from "../../../styled/subpages/searcher/searcherBar";
+} from "src/styled/subpages/searcher/searcherBar";
 
 import SearchBarOptionsComponent from "./searchBarOptionsComponent";
 

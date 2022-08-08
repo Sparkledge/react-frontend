@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import BackgroundPattern from "src/assets/pattern_background4_1.webp";
+
 import {
   LandingSectionWrapper, LandingSectionFilter, LandingSectionButton, LandingButtonWrapper, 
-} from "../../../styled/subpages/welcome";
-import { DescribeHeader, DescribeWidgetsSection } from "../../../styled/subpages/welcome/describeComponent";
+} from "src/styled/subpages/welcome";
+import { DescribeHeader, DescribeWidgetsSection } from "src/styled/subpages/welcome/describeComponent";
 
 import DescribeComponentWidget from "./describeComponentWidget";
-
-const BackgroundPattern = require("../../../assets/pattern_background4_1.webp");
 
 const DescribeComponent:React.FC = () => (
   <LandingSectionWrapper
@@ -26,16 +26,19 @@ const DescribeComponent:React.FC = () => (
       <DescribeWidgetsSection className="block-center">
         <DescribeComponentWidget 
           header="Dostęp do wiedzy" 
-          content="Na naszej platformie znajdziesz notataki pogrupowane na przedmioty i kierunki studiów. Sa to notataki innych studentów, dzięki temu wiesz ze sa one dokładnie tym czego wymagają wykładowcy. " 
-        />
+        >
+          Na naszej platformie znajdziesz notataki pogrupowane na przedmioty i kierunki studiów. Sa to notataki innych studentów, dzięki temu wiesz ze sa one dokładnie tym czego wymagają wykładowcy.
+        </DescribeComponentWidget>
         <DescribeComponentWidget 
           header="Kontakt ze społecznością akademicką" 
-          content="Wraz ze znajomymi za pomoca naszej platformy mozecie wymieniać się notataki oraz trzymać je w jednym miejscu. Twoi znajomi oceniają je, a dzięki ich ocenom ty masz dostęp do większej ilości notatek innych użytkowników " 
-        />
+        >
+          Wraz ze znajomymi za pomoca naszej platformy mozecie wymieniać się notataki oraz trzymać je w jednym miejscu. Twoi znajomi oceniają je, a dzięki ich ocenom ty masz dostęp do większej ilości notatek innych użytkowników
+        </DescribeComponentWidget>
         <DescribeComponentWidget 
           header="Ciekawe benefity na uczelni" 
-          content="Dzięki korzystaniu z naszej platformy nie tracisz czas na nauke rzeczy których i tak nikt od ciebie nie będzie wymagał. Są to notatki studentów którzy już zdali ten przedmiot albo sa w trakcie i notują na wykladach. Znajdziesz tutaj dokładnie to czego potrzeba aby zdać."
-        />
+        >
+          Dzięki korzystaniu z naszej platformy nie tracisz czas na nauke rzeczy których i tak nikt od ciebie nie będzie wymagał. Są to notatki studentów którzy już zdali ten przedmiot albo sa w trakcie i notują na wykladach. Znajdziesz tutaj dokładnie to czego potrzeba aby zdać.
+        </DescribeComponentWidget>
       </DescribeWidgetsSection>
             
       <LandingButtonWrapper className="block-center" marginBottom={4}>
