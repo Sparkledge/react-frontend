@@ -132,3 +132,38 @@ export const ForgotPasswordButton = styled.div`
         filter: brightness(70%);
     }
 `;
+
+export const TermsAndConditionsSection = styled.div`
+    width: calc(90% - 10px);
+    padding: 5px;
+    text-align: center;
+`;
+
+export const TermsAndConditionsCheckBox = styled.input`
+    border: none;
+    border-radius: 20px;
+    background: ${(props) => props.theme.background};
+    color: ${(props) => props.theme.color};
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0px 5px;
+`;
+
+export const TermsAndConditionsLabel = styled.div`
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0px 5px;
+    color: ${(props) => props.theme.color};
+    font-size: 1em;
+    letter-spacing: 0.04em;
+
+    &>a{
+        text-decoration: underline;
+        color: inherit;
+        transition: all 0.4s;
+    }
+
+    &>a:hover{
+        filter: brightness(70%);
+    }
+`;

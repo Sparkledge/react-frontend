@@ -10,6 +10,9 @@ import {
   SigningPanelWrapper, SigningPanelInput, SigningPanelButton,
   ErrorLabel, 
   ForgotPasswordButton,
+  TermsAndConditionsSection,
+  TermsAndConditionsCheckBox,
+  TermsAndConditionsLabel,
 } from "../../styled/subpages/signing";
 
 import TriggerTheShot from "../../connectionFunctions/signin/sendSigningData";
@@ -33,6 +36,7 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
   // const [isVerificationSuccessful, toggleIsVerificationSuccessful] = useState<number>(0); // 0 - status unknown, 1 - verified, 2 - verification failed
   const [Password, setPassword] = useState<string>("");
   const [RepeatedPassword, setRepeatedPassword] = useState<string>("");
+  const [rulesAccepted, toggleRulesAccepted] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
   const [refreshUserId, setRefreshUserId] = useLocalStorage<string>("u_r", "");
@@ -138,23 +142,36 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
                             {
                             
                             mode === 2 ? (
-                              <SigningPanelInput
-                                className="block-center"
-                                type="password"
-                                placeholder="Powtórz hasło..."
-                                marginBottom={10}
-                                value={RepeatedPassword} 
-                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRepeatedPassword(e.target.value)}
-                                onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && mode === 2 ? sendTheData() : null}
-                                required
-                              />
+                              <>
+                                <SigningPanelInput
+                                  className="block-center"
+                                  type="password"
+                                  placeholder="Powtórz hasło..."
+                                  marginBottom={10}
+                                  value={RepeatedPassword} 
+                                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRepeatedPassword(e.target.value)}
+                                  onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && mode === 2 ? sendTheData() : null}
+                                  required
+                                />
+                                <TermsAndConditionsSection className="block-center">
+                                  <TermsAndConditionsCheckBox type="checkbox" checked={rulesAccepted} onClick={() => toggleRulesAccepted(!rulesAccepted)} />
+                                  <TermsAndConditionsLabel>
+                                    Akceptuję 
+                                    {" "}
+                                    <Link to="/terms">regulamin serwisu</Link>
+                                  </TermsAndConditionsLabel>
+                                </TermsAndConditionsSection>
+                              </>
                             ) : null
                         }
-                            <SigningPanelButton className="block-center" onClick={() => sendTheData()}>
-                              {mode === 1 ? "Zaloguj" : "Zarejestruj"}
-                              {" "}
-                              się    
-                            </SigningPanelButton>
+                            {mode === 2 && (Login.length === 0 || Password.length === 0 || RepeatedPassword.length === 0 
+                            || userName.length === 0 || userSurname.length === 0 || !rulesAccepted) ? null : (
+                              <SigningPanelButton className="block-center" onClick={() => sendTheData()}>
+                                {mode === 1 ? "Zaloguj" : "Zarejestruj"}
+                                {" "}
+                                się    
+                              </SigningPanelButton>
+                              )}
                             {
                               mode === 1 ? (
                                 <Link to="/forgotPassword">
