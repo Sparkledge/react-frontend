@@ -5,7 +5,6 @@ import {
 import { ThemeProvider } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import useLocalStorage from "use-local-storage";
-import axios from "axios";
 
 import { LightMode, DarkMode, SparkledgeGlobalStyle } from "../styled/main";
 import { setNewToken } from "../redux/actions/generalActions";
@@ -21,6 +20,7 @@ import Notfound from "./subpages/notfound";
 import ForgotPassword from "./subpages/forgotPassword";
 import ResetPassword from "./subpages/resetPassword";
 import AuthenticationPanel from "./subpages/authentication";
+import TermsAndConditions from "./subpages/termsAndConditions";
 
 import UserPanel from "./subpages/userPanel";
 
@@ -62,6 +62,7 @@ const Main: React.FC = () => {
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/resetPassword/:email/:token" element={<ResetPassword />} /> 
           <Route path="/authentication/:token" element={<AuthenticationPanel />} />
+          <Route path="/terms" element={<TermsAndConditions />} />
           <Route path="*" element={<Notfound />} />
         </Routes>
       </Router>
