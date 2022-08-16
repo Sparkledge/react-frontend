@@ -3,9 +3,9 @@ import React from "react";
 import {
   AboutTeamSection, AboutTeamWidget, AboutTeamWidgetPhotoContainer, AboutTeamWidgetPhoto,
   AboutTeamWidgetTextSection, AboutTeamWidgetName, AboutTeamWidgetPosition, AboutTeamWidgetDesc, 
-} from "../../../styled/subpages/about";
+} from "src/styled/subpages/about/AboutTeamSection";
 
-import TeamData from "../../../data/about";
+import TeamData from "src/data/about";
 
 const TeamWidgetsSection:React.FC = () => (
   <AboutTeamSection className="block-center">
