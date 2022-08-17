@@ -11,24 +11,38 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import {
   CommentingWrapper, CommentingFormTextarea, 
   CommentingFormButton, 
-} from "../../../styled/subpages/documentDisplayer/commentingSectionForm";
+} from "src/styled/subpages/documentDisplayer/commentingSectionForm";
 
-const CommentingForm: React.FC = () => {
+import addComment from "src/connectionFunctions/documentDisplayer/addComment";
+
+interface CommentingFormInterface {
+  docId: string | undefined,
+  loginUserSelector: string,
+  putCommentToTheList: (newComment: any) => void,
+}
+
+const CommentingForm: React.FC<CommentingFormInterface> = ({
+  docId,
+  loginUserSelector,
+  putCommentToTheList,
+}:CommentingFormInterface) => {
   const [commentText, setCommentText] = useState<string>("");
   const isDeviceSmallerThanLaptop = useMediaQuery("(min-width: 1024px)");
 
   const SendTheComment = () : void => {
-    /*
-            TODO: implement the connection with the backend after backend is ready
-        */
+    if (docId !== undefined) {
+      addComment(docId, loginUserSelector, commentText, putCommentToTheList);
+      setCommentText("");
+    }
   };
 
   return (
     <CommentingWrapper className="block-center">
       <CommentingFormTextarea
+        type="text"
         placeholder="Napisz komentarz..." 
-        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setCommentText(e.currentTarget.value)}
-        onKeyPress={(e: React.KeyboardEvent<HTMLTextAreaElement>) => e.key === "Enter" && commentText.length > 0 && !isDeviceSmallerThanLaptop 
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCommentText(e.currentTarget.value)}
+        onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && commentText.length > 0 && isDeviceSmallerThanLaptop 
           ? SendTheComment() : {}}
         value={commentText}
       />

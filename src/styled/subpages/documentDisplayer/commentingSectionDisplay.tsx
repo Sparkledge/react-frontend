@@ -71,12 +71,12 @@ export const CommentContainerContent = styled.div`
 export const CommentContainerInteractivePart = styled.div`
     width: calc(100% - 20px);
     padding: 10px;
-    text-align: left;
+    text-align: center;
     color: ${(props) => props.theme.color};
 `;
 
 export const CommentContainerInteractiveInfo = styled.div<CommentContainerInteractiveInfoInterface>`
-    width: ${(props) => props.isSendingButton !== undefined ? props.isSendingButton ? "fit-content" : "calc(25% - 20px)" : "calc(25% - 20px)"};
+    width: ${(props) => props.isSendingButton !== undefined ? props.isSendingButton ? "fit-content" : "calc(17% - 20px)" : "calc(17% - 20px)"};
     padding: 5px;
     text-align: ${(props) => props.isSendingButton !== undefined ? props.isSendingButton ? "left" : "center" : "center"};
     display: inline-block;
@@ -86,13 +86,12 @@ export const CommentContainerInteractiveInfo = styled.div<CommentContainerIntera
     font-size: 0.8em;
 
     @media screen and (min-width: 768px){
-        width: ${(props) => props.isSendingButton !== undefined ? props.isSendingButton ? "fit-content" : "calc(20% - 20px)" : "calc(20% - 20px)"};
+        width: ${(props) => props.isSendingButton !== undefined ? props.isSendingButton ? "fit-content" : "calc(15% - 20px)" : "calc(15% - 20px)"};
         font-size: 1em;
     }
 
     @media screen and (min-width: 1024px){
         display: ${(props) => props.isSendingButton !== undefined ? props.isSendingButton ? "none" : "inline-block" : "inline-block"};
-        width: ${(props) => props.isSendingButton !== undefined ? props.isSendingButton ? "fit-content" : "calc(15% - 20px)" : "calc(15% - 20px)"};
     }
 `;
 
@@ -111,7 +110,7 @@ export const CommentContainerInteractiveInfoLabel = styled.label<CommentContaine
 `;
 
 export const CommentContainerInteractiveCommentInput = styled.input`
-    width: calc(55% - 20px);
+    width: calc(45% - 20px);
     padding: 5px;
     display: inline-block;
     vertical-align: top;
@@ -132,8 +131,8 @@ export const CommentContainerInteractiveCommentInput = styled.input`
     }
 
     @media screen and (min-width: 768px){
-        width: calc(65% - 20px);
         font-size: 1.05em;
+        width: calc(55% - 20px);
     }
 
     @media screen and (min-width: 1024px){

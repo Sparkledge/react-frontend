@@ -25,7 +25,7 @@ export const CommentingWrapper = styled.section<CommentingFormWrapperInterface>`
     }
 `;
 
-export const CommentingFormTextarea = styled.textarea`
+export const CommentingFormTextarea = styled.input`
     min-width: calc(80% - 30px);
     max-width: calc(80% - 30px);
     min-height: calc(6vh - 20px);
@@ -68,8 +68,8 @@ export const CommentingFormTextarea = styled.textarea`
     }
 
     @media screen and (min-width: 375px){
-        min-width: calc(90% - 30px);
-        max-width: calc(90% - 30px);
+        min-width: calc(80% - 30px);
+        max-width: calc(80% - 30px);
     }
 
     @media screen and (min-width: 425px){
@@ -101,16 +101,13 @@ export const CommentingFormButton = styled.button`
     }
 
     @media screen and (min-width: 320px){
-        height: calc(7vh - 20px);
+        height: calc(10vh - 20px);
         font-size: 1.5em;
     }
 
     @media screen and (min-width: 425px){
-        font-size: 2.5em;
+        font-size: 3.3em;
         height: calc(10vh - 20px);
     }
 
-    @media screen and (min-width: 1024px){
-        display: none;
-    }
 `;

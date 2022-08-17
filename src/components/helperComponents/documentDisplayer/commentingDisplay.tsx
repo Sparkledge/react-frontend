@@ -4,66 +4,55 @@
     NOTE: currently it's a template, so it doesn't have the entire logic implemented
 */
 
-import React, { useState, useEffect } from "react";
+import React from "react";
+import jwt_decode from "jwt-decode";
 
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import SendIcon from "@mui/icons-material/Send";
-import {
-  CommentContainer, CommentContainerAuthor, 
-  CommentContainerContent, CommentContainerInteractivePart, 
-  CommentContainerInteractiveInfo, CommentContainerInteractiveInfoLabel,
-  CommentContainerInteractiveCommentInput, 
-} from "../../../styled/subpages/documentDisplayer/commentingSectionDisplay";
-import { CommentingWrapper } from "../../../styled/subpages/documentDisplayer/commentingSectionForm";
+import { CommentingWrapper } from "src/styled/subpages/documentDisplayer/commentingSectionForm";
+import { DescriptionDataHeader } from "src/styled/subpages/documentDisplayer";
 
-const CommentingSectionDisplay:React.FC = () => {
-  const [likesNumber, setLikesNumber] = useState<number>(192);
-  const [isLiked, toggleIsLiked] = useState<boolean>(false);
-  const [currentComment, setCurrentComment] = useState<string>("");
+import CommentComponent from "./commentComponent";
 
-  const SendASubcomment = () => {
+interface CommentingSectionDisplayInterface {
+  docId: string | undefined,
+  loginUserSelector: string,
+  commentsList: any[],
+  isError: boolean,
+  successCallback: (idToDelete: number) => void,
+}
 
-  };
-
-  useEffect(() => {
-    isLiked ? setLikesNumber(likesNumber + 1) : setLikesNumber(likesNumber - 1);
-  }, [isLiked]);
+const CommentingSectionDisplay:React.FC<CommentingSectionDisplayInterface> = ({
+  docId, 
+  loginUserSelector, 
+  commentsList, 
+  isError, 
+  successCallback,
+}:CommentingSectionDisplayInterface) => {
+  const userData:any = jwt_decode(loginUserSelector);
 
   return (
     <CommentingWrapper className="block-center">
-      <CommentContainer className="block-center">
-        <CommentContainerAuthor>
-          Autor
-        </CommentContainerAuthor>
-        <CommentContainerContent>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. 
-          Dignissimos laborum et laudantium, aliquid optio modi tempora accusamus quae enim, possimus blanditiis assumenda autem numquam repellendus. 
-          Voluptate, id laboriosam. Provident, recusandae?
-        </CommentContainerContent>
-        <CommentContainerInteractivePart>
-                
-          <CommentContainerInteractiveInfo>
-            <CommentContainerInteractiveInfoLabel onClick={() => toggleIsLiked(!isLiked)} isClickable>
-              <ThumbUpIcon style={{ color: "inherit", fontSize: "1.2em", verticalAlign: "center" }} />
-            </CommentContainerInteractiveInfoLabel>
-            <CommentContainerInteractiveInfoLabel>{likesNumber}</CommentContainerInteractiveInfoLabel>
-          </CommentContainerInteractiveInfo>
+      {
+        commentsList.length > 0 ? commentsList.map((elem: any, ind: number) => (
+          <CommentComponent
+            commentId={elem.id}
+            author={(`${elem.author.firstName} ${elem.author.lastName}`).length > 30 ? `${(`${elem.author.firstName} ${elem.author.lastName}`).substring(0, 27)}...` : (`${elem.author.firstName} ${elem.author.lastName}`)}
+            content={elem.content}
+            documentLikesNumber={elem.likesNumber}
+            loginUserSelector={loginUserSelector}
+            isUserTheAuthorOfComment={elem.userId === parseInt(userData.id, 10)}
+            successCallback={successCallback}
 
-          <CommentContainerInteractiveCommentInput
-            type="text"
-            placeholder="Napisz komentarz..."
-            value={currentComment}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCurrentComment(e.currentTarget.value)}
-            onKeyPress={(e : React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && currentComment.length > 0 ? SendASubcomment() : null}
           />
-          <CommentContainerInteractiveInfo isSendingButton>
-            <CommentContainerInteractiveInfoLabel onClick={() => SendASubcomment()} isClickable>
-              <SendIcon style={{ color: "inherit", fontSize: "1.5em" }} />
-            </CommentContainerInteractiveInfoLabel>
-          </CommentContainerInteractiveInfo>
-        </CommentContainerInteractivePart>
-      </CommentContainer>
+        )) : !isError ? (
+          <DescriptionDataHeader className="block-center">
+            Bądź pierwszym użytkownikiem, który doda komentarz
+          </DescriptionDataHeader>
+        ) : (
+          <DescriptionDataHeader className="block-center">
+            Coś poszło nie tak. Zajrzyj tu później
+          </DescriptionDataHeader>
+        )
+      }
     </CommentingWrapper>
   );
 };

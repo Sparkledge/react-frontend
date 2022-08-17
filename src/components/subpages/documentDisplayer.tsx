@@ -5,6 +5,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import { useParams, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useWindowSize } from "react-use";
+import useLocalStorage from "use-local-storage";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 /* import SwipeLeftAltIcon from '@mui/icons-material/SwipeLeftAlt';
@@ -17,23 +18,23 @@ import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 
-import { MainContainer } from "../../styled/main";
-import { LandingSectionWrapper, LandingSectionFilter, LandingSectionHeader } from "../../styled/subpages/welcome";
+import { MainContainer } from "src/styled/main";
+import { LandingSectionWrapper, LandingSectionFilter, LandingSectionHeader } from "src/styled/subpages/welcome";
 import {
   DocumentDisplayerErrorHeader, DocumentDisplayerWrapper,
   DocumentDataWrapper, SwipperBtn, InfoContainer, DescriptionDataContainer,
   DescriptionDataHeader, DescriptionDataContent, DocumentDisplayerIframe, 
   DocumentDisplayerDownloadBtn,
-} from "../../styled/subpages/documentDisplayer";
+} from "src/styled/subpages/documentDisplayer";
 
-import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
+import { getTheData, loadTheDownloadLink, loadTheFile } from "src/connectionFunctions/documentDisplayer/getTheData";
+import addLike from "src/connectionFunctions/documentDisplayer/addLikeFunction";
+import checkIfLiked from "src/connectionFunctions/documentDisplayer/checkIfLiked";
+import getCommentData from "src/connectionFunctions/documentDisplayer/getCommentsData";
 
+import { RootState } from "src/redux/mainReducer";
 import blobToBase64 from "../auxiliaryFunctions/documentDisplayer/decodingToBase64";
-import { getTheData, loadTheDownloadLink, loadTheFile } from "../../connectionFunctions/documentDisplayer/getTheData";
-import addLike from "../../connectionFunctions/documentDisplayer/addLikeFunction";
-import checkIfLiked from "../../connectionFunctions/documentDisplayer/checkIfLiked";
-
-import { RootState } from "../../redux/mainReducer";
+import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
 
 const CommentingForm = React.lazy(() => import("../helperComponents/documentDisplayer/commentingForm"));
 const CommentingSectionDisplay = React.lazy(() => import("../helperComponents/documentDisplayer/commentingDisplay"));
@@ -54,6 +55,8 @@ const DocumentDisplayer:React.FC = () => {
   const [descriptionOfFile, setDescriptionOfFile] = useState<string>("");
   const [fileAuthor, setFileAuthor] = useState<string>("");
   const [fileId, setFileId] = useState<string>("");
+  const [commentsList, setCommentsList] = useState<any[]>([]);
+  const [isCommentsError, toggleIsCommentsError] = useState<boolean>(false);
 
   const [isFile, toggleIsFile] = useState<boolean>(false);
   const [file, setFile] = useState<any>(null);
@@ -63,6 +66,8 @@ const DocumentDisplayer:React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pagesNumber, setPagesNumber] = useState<number>(1);
   const [currentlyRendered, setCurrentlyRendered] = useState<number>(10);
+  
+  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
 
   const loginUserSelector = useSelector((state: RootState) => state.generalData.currentToken);
 
@@ -79,6 +84,16 @@ const DocumentDisplayer:React.FC = () => {
   const onDocumentLoad = ({ numPages }:{ numPages: number }) => {
     setPagesNumber(numPages);
     setCurrentPage(1);
+  };
+
+  const pushNewComment = (newComment: any) => {
+    const operand = [newComment, ...commentsList];
+    setCommentsList(operand);
+  };
+
+  const deleteAComment = (commentId: number) => {
+    const operand = [...commentsList].filter((elem: any) => elem.id !== commentId);
+    setCommentsList(operand);
   };
 
   useEffect(() => {
@@ -102,8 +117,9 @@ const DocumentDisplayer:React.FC = () => {
         smallDevicesWidthChecker, 
         setFileId,
       );
+      if (memoryUserId.length > 0) getCommentData(docId, memoryUserId, setCommentsList, toggleIsCommentsError);
     }
-  }, [docId, loginUserSelector]);
+  }, [docId, loginUserSelector, memoryUserId]);
 
   const handleScrolling = (e:any) => {
     if ((changeDimensionsOfDocumentChecker && e.currentTarget.scrollTop / e.currentTarget.scrollHeight > 0.9)
@@ -266,8 +282,21 @@ const DocumentDisplayer:React.FC = () => {
                     </DescriptionDataContent>
                   </DescriptionDataContainer>
                   <Suspense fallback={null}>
-                    <CommentingForm />
-                    <CommentingSectionDisplay />
+                    <CommentingForm
+                      docId={docId}
+                      loginUserSelector={loginUserSelector}
+                      putCommentToTheList={pushNewComment}
+                    />
+                  </Suspense>
+                    
+                  <Suspense fallback={null}>
+                    <CommentingSectionDisplay
+                      docId={docId}
+                      loginUserSelector={loginUserSelector}
+                      commentsList={commentsList}
+                      isError={isCommentsError}
+                      successCallback={deleteAComment}
+                    />
                   </Suspense>
                 </>
               ) : null

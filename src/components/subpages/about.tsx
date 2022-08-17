@@ -5,6 +5,7 @@ import { LandingSectionWrapper, LandingSectionFilter } from "../../styled/subpag
 import { AboutHeader, AboutDesc } from "../../styled/subpages/about";
 
 const TeamWidgetsSection = React.lazy(() => import("../helperComponents/about/TeamWidgetsSection"));
+const SpecialThanksSection = React.lazy(() => import("../helperComponents/about/SpecialThanksSection"));
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
 const BackgroundPattern = require("../../assets/pattern_background4_1.webp");
 
@@ -29,6 +30,7 @@ const About:React.FC = () => (
             Cała nasza ekipa studiuje na kierunku Computer Science na wydziale MiNI PW. Tam tez się poznaliśmy.
           </AboutDesc>
           <TeamWidgetsSection />
+          <SpecialThanksSection />
         </LandingSectionFilter>
       </LandingSectionWrapper>
       <FooterComponent />

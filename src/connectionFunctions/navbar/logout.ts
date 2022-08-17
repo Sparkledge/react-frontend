@@ -24,7 +24,7 @@ const logout = async (
         toggleIsOpened(false);
       }
     })
-    .catch(() => {});
+    .catch(() => { deleteToken(); });
 };
 
 export default logout;
