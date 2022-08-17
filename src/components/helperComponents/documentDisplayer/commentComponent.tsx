@@ -59,19 +59,6 @@ const CommentComponent:React.FC<CommentComponentInterface> = ({
         {content}
       </CommentContainerContent>
       <CommentContainerInteractivePart>
-        <CommentContainerInteractiveCommentInput
-          type="text"
-          placeholder="Napisz komentarz..."
-          value={currentComment}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCurrentComment(e.currentTarget.value)}
-          onKeyPress={(e : React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && currentComment.length > 0 ? SendASubcomment() : null}
-        />
-            
-        <CommentContainerInteractiveInfo isSendingButton>
-          <CommentContainerInteractiveInfoLabel onClick={() => SendASubcomment()} isClickable>
-            <SendIcon style={{ color: "inherit", fontSize: "1.5em" }} />
-          </CommentContainerInteractiveInfoLabel>
-        </CommentContainerInteractiveInfo>
         <CommentContainerInteractiveInfo>
           <CommentContainerInteractiveInfoLabel onClick={() => toggleIsLiked(!isLiked)} isClickable>
             <ThumbUpIcon style={{ color: "inherit", fontSize: "1.2em", verticalAlign: "center" }} />
@@ -89,5 +76,23 @@ const CommentComponent:React.FC<CommentComponentInterface> = ({
     </CommentContainer>
   );
 };
+
+/* 
+
+        <CommentContainerInteractiveCommentInput
+          type="text"
+          placeholder="Napisz komentarz..."
+          value={currentComment}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCurrentComment(e.currentTarget.value)}
+          onKeyPress={(e : React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && currentComment.length > 0 ? SendASubcomment() : null}
+        />
+            
+        <CommentContainerInteractiveInfo isSendingButton>
+          <CommentContainerInteractiveInfoLabel onClick={() => SendASubcomment()} isClickable>
+            <SendIcon style={{ color: "inherit", fontSize: "1.5em" }} />
+          </CommentContainerInteractiveInfoLabel>
+        </CommentContainerInteractiveInfo>
+
+*/
 
 export default CommentComponent;

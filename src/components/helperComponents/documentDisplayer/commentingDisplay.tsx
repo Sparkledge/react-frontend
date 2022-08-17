@@ -29,15 +29,13 @@ const CommentingSectionDisplay:React.FC<CommentingSectionDisplayInterface> = ({
 }:CommentingSectionDisplayInterface) => {
   const userData:any = jwt_decode(loginUserSelector);
 
-  console.log(userData, commentsList);
-
   return (
     <CommentingWrapper className="block-center">
       {
         commentsList.length > 0 ? commentsList.map((elem: any, ind: number) => (
           <CommentComponent
             commentId={elem.id}
-            author="test author"
+            author={(`${elem.author.firstName} ${elem.author.lastName}`).length > 30 ? `${(`${elem.author.firstName} ${elem.author.lastName}`).substring(0, 27)}...` : (`${elem.author.firstName} ${elem.author.lastName}`)}
             content={elem.content}
             documentLikesNumber={elem.likesNumber}
             loginUserSelector={loginUserSelector}

@@ -71,7 +71,7 @@ export const CommentContainerContent = styled.div`
 export const CommentContainerInteractivePart = styled.div`
     width: calc(100% - 20px);
     padding: 10px;
-    text-align: left;
+    text-align: center;
     color: ${(props) => props.theme.color};
 `;
 
