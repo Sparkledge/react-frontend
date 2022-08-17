@@ -56,6 +56,7 @@ const DocumentDisplayer:React.FC = () => {
   const [fileAuthor, setFileAuthor] = useState<string>("");
   const [fileId, setFileId] = useState<string>("");
   const [commentsList, setCommentsList] = useState<any[]>([]);
+  const [isCommentsError, toggleIsCommentsError] = useState<boolean>(false);
 
   const [isFile, toggleIsFile] = useState<boolean>(false);
   const [file, setFile] = useState<any>(null);
@@ -90,6 +91,11 @@ const DocumentDisplayer:React.FC = () => {
     setCommentsList(operand);
   };
 
+  const deleteAComment = (commentId: number) => {
+    const operand = [...commentsList].filter((elem: any) => elem.id !== commentId);
+    setCommentsList(operand);
+  };
+
   useEffect(() => {
     toggleIsError(false);
     if (docId === undefined || docId.length === 0) {
@@ -111,7 +117,7 @@ const DocumentDisplayer:React.FC = () => {
         smallDevicesWidthChecker, 
         setFileId,
       );
-      if (memoryUserId.length > 0) getCommentData(docId, memoryUserId, setCommentsList);
+      if (memoryUserId.length > 0) getCommentData(docId, memoryUserId, setCommentsList, toggleIsCommentsError);
     }
   }, [docId, loginUserSelector, memoryUserId]);
 
@@ -288,6 +294,8 @@ const DocumentDisplayer:React.FC = () => {
                       docId={docId}
                       loginUserSelector={loginUserSelector}
                       commentsList={commentsList}
+                      isError={isCommentsError}
+                      successCallback={deleteAComment}
                     />
                   </Suspense>
                 </>

@@ -5,6 +5,8 @@
 */
 
 import React from "react";
+import jwt_decode from "jwt-decode";
+
 import { CommentingWrapper } from "src/styled/subpages/documentDisplayer/commentingSectionForm";
 import { DescriptionDataHeader } from "src/styled/subpages/documentDisplayer";
 
@@ -14,26 +16,47 @@ interface CommentingSectionDisplayInterface {
   docId: string | undefined,
   loginUserSelector: string,
   commentsList: any[],
-
+  isError: boolean,
+  successCallback: (idToDelete: number) => void,
 }
 
-const CommentingSectionDisplay:React.FC<CommentingSectionDisplayInterface> = ({ docId, loginUserSelector, commentsList }:CommentingSectionDisplayInterface) => (
-  <CommentingWrapper className="block-center">
-    {
+const CommentingSectionDisplay:React.FC<CommentingSectionDisplayInterface> = ({
+  docId, 
+  loginUserSelector, 
+  commentsList, 
+  isError, 
+  successCallback,
+}:CommentingSectionDisplayInterface) => {
+  const userData:any = jwt_decode(loginUserSelector);
+
+  console.log(userData, commentsList);
+
+  return (
+    <CommentingWrapper className="block-center">
+      {
         commentsList.length > 0 ? commentsList.map((elem: any, ind: number) => (
           <CommentComponent
             commentId={elem.id}
             author="test author"
             content={elem.content}
             documentLikesNumber={elem.likesNumber}
+            loginUserSelector={loginUserSelector}
+            isUserTheAuthorOfComment={elem.userId === parseInt(userData.id, 10)}
+            successCallback={successCallback}
+
           />
-        )) : (
+        )) : !isError ? (
           <DescriptionDataHeader className="block-center">
             Bądź pierwszym użytkownikiem, który doda komentarz
           </DescriptionDataHeader>
+        ) : (
+          <DescriptionDataHeader className="block-center">
+            Coś poszło nie tak. Zajrzyj tu później
+          </DescriptionDataHeader>
         )
       }
-  </CommentingWrapper>
-);
+    </CommentingWrapper>
+  );
+};
 
 export default CommentingSectionDisplay;

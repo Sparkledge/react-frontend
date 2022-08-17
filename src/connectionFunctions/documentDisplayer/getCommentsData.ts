@@ -10,6 +10,7 @@ const getCommentData = async (
   docId: string,
   loginUserSelector: string,
   setCommentsList: (newComments: any[]) => void,
+  toggleIsCommentsError: (newState: boolean) => void,
 ) => {
   await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/comments/get-comments/${docId}`, {
     headers: {
@@ -18,11 +19,11 @@ const getCommentData = async (
     },
   })
     .then((res) => {
-      // console.log(res);
       setCommentsList(res.data);
     })
     .catch((err) => {
       console.log(err);
+      toggleIsCommentsError(true);
     });
 };
 
