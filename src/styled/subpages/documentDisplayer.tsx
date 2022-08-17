@@ -194,6 +194,7 @@ export const DescriptionDataHeader = styled.header`
     padding: 5px;
     font-size: 1.3em;
     margin-bottom: 2vh;
+    color: ${(props) => props.theme.color};
 
     @media screen and (min-width: 425px){
         font-size: 1.6em;

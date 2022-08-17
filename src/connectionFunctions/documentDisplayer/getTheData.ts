@@ -28,7 +28,6 @@ export const getTheData = async (
     })
       .then(async (res) => {
         let id:any = jwt(loginUserSelector);
-        console.log(res.data, id);
         setTitle(res.data.title);
         setLikesNumber(res.data.likesNumber);
         toggleIsLiked(res.data.likesList.find((elem: string) => elem === id.id) !== undefined);
@@ -39,7 +38,6 @@ export const getTheData = async (
         id = null;
       })
       .catch((err) => {
-        console.log(err);
         toggleIsError(true);
       });
   }
@@ -73,7 +71,6 @@ export const loadTheDownloadLink = async (
           URL.revokeObjectURL(tmp_path); */
   })
     .catch((err) => {
-      console.log(err);
       toggleIsError(true);
     });
 };
@@ -107,7 +104,6 @@ export const loadTheFile = async (
           URL.revokeObjectURL(tmp_path); */
   })
     .catch((err) => {
-      console.log(err);
       toggleIsFile(false);
       toggleIsError(true);
     });
