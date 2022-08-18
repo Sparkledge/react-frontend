@@ -21,7 +21,7 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { MainContainer } from "src/styled/main";
 import { LandingSectionWrapper, LandingSectionFilter, LandingSectionHeader } from "src/styled/subpages/welcome";
 import {
-  DocumentDisplayerErrorHeader, DocumentDisplayerWrapper,
+  DocumentDisplayerErrorHeader, DocumentDisplayerDataWrapper, DocumentDisplayerWrapper,
   DocumentDataWrapper, SwipperBtn, InfoContainer, DescriptionDataContainer,
   DescriptionDataHeader, DescriptionDataContent, DocumentDisplayerIframe, 
   DocumentDisplayerDownloadBtn,
@@ -226,9 +226,10 @@ const DocumentDisplayer:React.FC = () => {
           {
               loginUserSelector.length > 0 && !isError && title.length > 0 ? (
                 <>
-              
-                  <DocumentDataWrapper className="block-center">
-                    {/* <SwipperBtn onClick={() => setCurrentPage(1)}>
+                  <DocumentDisplayerDataWrapper className="block-center">
+                  
+                    <DocumentDataWrapper className="block-center">
+                      {/* <SwipperBtn onClick={() => setCurrentPage(1)}>
                         <FastRewindIcon style={{color: "inherit", fontSize: "inherit"}}/>
                     </SwipperBtn>
                     <SwipperBtn onClick={() => setCurrentPage(currentPage-1 < 1 ? 1 : currentPage-1)}>
@@ -240,47 +241,48 @@ const DocumentDisplayer:React.FC = () => {
                     <SwipperBtn onClick={() => setCurrentPage(pagesNumber)}>
                         <FastForwardIcon style={{color: "inherit", fontSize: "inherit"}}/>
             </SwipperBtn> */}
-                    <InfoContainer>
-                      <RemoveRedEyeIcon style={{ color: "inherit", fontSize: "1.6em", verticalAlign: "middle" }} /> 
-                      {" "}
-                      {viewsNumber}
-                    </InfoContainer>
-                    {/* <InfoContainer>
+                      <InfoContainer>
+                        <RemoveRedEyeIcon style={{ color: "inherit", fontSize: "1.6em", verticalAlign: "middle" }} /> 
+                        {" "}
+                        {viewsNumber}
+                      </InfoContainer>
+                      {/* <InfoContainer>
                       {`${currentPage}/${pagesNumber}`}
           </InfoContainer> */}
-                    <InfoContainer className="hoverClass">
-                      <ThumbUpIcon
-                        style={{ color: "inherit", fontSize: "1.6em", verticalAlign: "middle" }}
-                        onClick={() => addLike(docId, loginUserSelector, isLiked, likesNumber, setLikesNumber, toggleIsLiked)}
-                      /> 
-                      {" "}
-                      {likesNumber}
-                    </InfoContainer>
-                    {isFileRequested ? (
-                      <InfoContainer>
-                        <a href={fileSrc} download={fileSrc.length > 0}>
-                          <DocumentDisplayerDownloadBtn
-                            className="block-center"
-                            isInline
-                          >
-                            {fileSrc.length === 0 ? <AccessTimeFilledIcon style={{ color: "inherit", fontSize: "1em" }} />
-                              : <DownloadIcon style={{ color: "inherit", fontSize: "1em" }} />}
-                          </DocumentDisplayerDownloadBtn>
-                        </a>
-                        
+                      <InfoContainer className="hoverClass">
+                        <ThumbUpIcon
+                          style={{ color: "inherit", fontSize: "1.6em", verticalAlign: "middle" }}
+                          onClick={() => addLike(docId, loginUserSelector, isLiked, likesNumber, setLikesNumber, toggleIsLiked)}
+                        /> 
+                        {" "}
+                        {likesNumber}
                       </InfoContainer>
-                    ) : null}
-                  </DocumentDataWrapper>
-                  <DescriptionDataContainer className="block-center">
-                    <DescriptionDataHeader className="block-center">
-                      Autor: 
-                      {" "}
-                      {fileAuthor}
-                    </DescriptionDataHeader>
-                    <DescriptionDataContent className="block-center">
-                      {descriptionOfFile}
-                    </DescriptionDataContent>
-                  </DescriptionDataContainer>
+                      {isFileRequested ? (
+                        <InfoContainer>
+                          <a href={fileSrc} download={fileSrc.length > 0}>
+                            <DocumentDisplayerDownloadBtn
+                              className="block-center"
+                              isInline
+                            >
+                              {fileSrc.length === 0 ? <AccessTimeFilledIcon style={{ color: "inherit", fontSize: "1em" }} />
+                                : <DownloadIcon style={{ color: "inherit", fontSize: "1em" }} />}
+                            </DocumentDisplayerDownloadBtn>
+                          </a>
+                        
+                        </InfoContainer>
+                      ) : null}
+                    </DocumentDataWrapper>
+                    <DescriptionDataContainer className="block-center">
+                      <DescriptionDataHeader className="block-center">
+                        Autor: 
+                        {" "}
+                        {fileAuthor}
+                      </DescriptionDataHeader>
+                      <DescriptionDataContent className="block-center">
+                        {descriptionOfFile}
+                      </DescriptionDataContent>
+                    </DescriptionDataContainer>
+                  </DocumentDisplayerDataWrapper>
                   <Suspense fallback={null}>
                     <CommentingForm
                       docId={docId}

@@ -55,6 +55,18 @@ export const DocumentDisplayerDownloadBtn = styled.button<DocumentDisplayerDownl
     }
 `;
 
+export const DocumentDisplayerDataWrapper = styled.section`
+    
+    width: 100%;
+
+    @media screen and (min-width: 1024px){
+        width: calc(40% - 10px);
+        display: inline-block !important;
+        vertical-align: top;
+        margin: 0px 5px !important;
+    }
+`;
+
 export const DocumentDisplayerWrapper = styled.section`
     width: 100%;
     height: 70vh;
@@ -81,6 +93,13 @@ export const DocumentDisplayerWrapper = styled.section`
 
     @media screen and (min-width: 460px){
         width: fit-content;
+    }
+    
+    @media screen and (min-width: 1024px){
+        width: calc(50% - 10px);
+        display: inline-block !important;
+        vertical-align: top;
+        margin: 0px 5px 4vh 0px !important;
     }
 `;
 
@@ -167,6 +186,10 @@ export const InfoContainer = styled.div`
         width: calc(20% - 20px);
         font-size: 1.2em;
     }
+
+    @media screen and (min-width: 1024px){
+        width: calc(30% - 20px);
+    }
 `;
 
 export const DescriptionDataContainer = styled.section`
@@ -187,6 +210,10 @@ export const DescriptionDataContainer = styled.section`
     @media screen and (min-width: 768px){
         width: calc(60% - 20px);
     }
+
+    @media screen and (min-width: 1024px){
+        width: calc(100% - 20px);
+    }
 `;
 
 export const DescriptionDataHeader = styled.header`
@@ -203,6 +230,11 @@ export const DescriptionDataHeader = styled.header`
     @media screen and (min-width: 768px){
         width: calc(90% - 10px);
         font-size: 1.9em;
+    }
+
+    @media screen and (min-width: 1024px){
+        width: calc(100% - 10px);
+        font-size: 1.6em;
     }
 `;
 
