@@ -71,7 +71,11 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
   useEffect(() => {
     // toggleIsVerificationSuccessful(0);
     toggleIsSuccess(false);
-    if (currentToken.length > 0 || memoryUserId.length > 0) navigate("/panel");
+    if (currentToken.length > 0 && memoryUserId.length > 0) navigate("/panel");
+    else {
+      dispatch(setNewToken(""));
+      setMemoryUserId(undefined);
+    }
     // const verifyCode:string = query.get("verifyemail");
     // if (verifyCode !== null && verifyCode.length > 0) toggleIsVerificationSuccessful(1);// verifyEmail(verifyCode, toggleIsVerificationSuccessful, toggleIsSuccess);
   }, [currentToken]);
