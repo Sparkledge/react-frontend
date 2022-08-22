@@ -17,6 +17,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import ReportIcon from "@mui/icons-material/Report";
 
 import { MainContainer } from "src/styled/main";
 import { LandingSectionWrapper, LandingSectionFilter, LandingSectionHeader } from "src/styled/subpages/welcome";
@@ -35,6 +36,8 @@ import getCommentData from "src/connectionFunctions/documentDisplayer/getComment
 import { RootState } from "src/redux/mainReducer";
 import blobToBase64 from "../auxiliaryFunctions/documentDisplayer/decodingToBase64";
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
+
+const ReportingPanel = React.lazy(() => import("../helperComponents/documentDisplayer/reportingPanel"));
 
 const CommentingForm = React.lazy(() => import("../helperComponents/documentDisplayer/commentingForm"));
 const CommentingSectionDisplay = React.lazy(() => import("../helperComponents/documentDisplayer/commentingDisplay"));
@@ -57,6 +60,7 @@ const DocumentDisplayer:React.FC = () => {
   const [fileId, setFileId] = useState<string>("");
   const [commentsList, setCommentsList] = useState<any[]>([]);
   const [isCommentsError, toggleIsCommentsError] = useState<boolean>(false);
+  const [isReportingOn, toggleIsReportingOn] = useState<boolean>(false);
 
   const [isFile, toggleIsFile] = useState<boolean>(false);
   const [file, setFile] = useState<any>(null);
@@ -148,6 +152,14 @@ const DocumentDisplayer:React.FC = () => {
         backgroundRepeat="repeat"
       >
         <LandingSectionFilter>
+
+          {
+            isReportingOn ? (
+              <Suspense fallback={null}>
+                <ReportingPanel loginUserSelector={loginUserSelector} documentId={docId} closeThePanel={toggleIsReportingOn} />
+              </Suspense>
+            ) : null
+          }
 
           <LandingSectionHeader className="block-center">
             {title}
@@ -271,6 +283,12 @@ const DocumentDisplayer:React.FC = () => {
                         
                         </InfoContainer>
                       ) : null}
+                      <InfoContainer className="hoverClass">
+                        <ReportIcon
+                          style={{ color: "inherit", fontSize: "1.6em", verticalAlign: "middle" }}
+                          onClick={() => toggleIsReportingOn(true)}
+                        /> 
+                      </InfoContainer>
                     </DocumentDataWrapper>
                     <DescriptionDataContainer className="block-center">
                       <DescriptionDataHeader className="block-center">
