@@ -37,8 +37,8 @@ const sendFile = async (
       console.log(res);
       if (res.status === 200 || res.status === 201 || res.status === 204) {
         setPhaseNumber(4);
-        console.log(res.data.document.fileId);
-        setDocumentId(res.data.document.fileId.toString());
+        console.log(res.data.document.id);
+        setDocumentId(res.data.document.id.toString());
         toggleIsSending(false);
       }
     })
