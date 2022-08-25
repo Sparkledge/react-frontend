@@ -2,10 +2,12 @@ import React, { Suspense, useEffect, useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import useLocalStorage from "use-local-storage";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { useMediaQuery } from "@mui/material";
 
-import { MainContainer, Preloader } from "../../styled/main";
-import { LandingSectionWrapper, LandingSectionFilter } from "../../styled/subpages/welcome";
-import { AboutHeader } from "../../styled/subpages/about";
+import { MainContainer, Preloader } from "src/styled/main";
+import { LandingSectionWrapper, LandingSectionFilter } from "src/styled/subpages/welcome";
+import { AboutHeader } from "src/styled/subpages/about";
 import {
   SigningPanelWrapper, SigningPanelInput, SigningPanelButton,
   ErrorLabel, 
@@ -13,12 +15,14 @@ import {
   TermsAndConditionsSection,
   TermsAndConditionsCheckBox,
   TermsAndConditionsLabel,
-} from "../../styled/subpages/signing";
+  SigningGoogleButtonWrapper,
+} from "src/styled/subpages/signing";
 
-import TriggerTheShot from "../../connectionFunctions/signin/sendSigningData";
+import TriggerTheShot from "src/connectionFunctions/signin/sendSigningData";
+import VerifyByGoogleData from "src/connectionFunctions/signin/verifyByGoogleData";
 
-import { setNewToken } from "../../redux/actions/generalActions";
-import { RootState } from "../../redux/mainReducer";
+import { setNewToken } from "src/redux/actions/generalActions";
+import { RootState } from "src/redux/mainReducer";
 
 interface SigningInterface {
   mode: number
@@ -47,6 +51,12 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
     
   const useQuery:any = () => new URLSearchParams(useLocation().search);
   const query = useQuery();
+
+  const graphicalMode: number = useSelector(
+    (state: RootState) => state.generalData.graphicalMode,
+  );
+
+  const isVerySmallDevice = useMediaQuery("(min-width: 320px)");
 
   const sendTheData = () => {
     TriggerTheShot(
@@ -137,7 +147,7 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
                               className="block-center"
                               type="password"
                               placeholder="Hasło..."
-                              marginBottom={mode === 1 ? 20 : 1}
+                              marginBottom={mode === 1 ? 8 : 1}
                               value={Password} 
                               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.currentTarget.value)} 
                               onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && mode === 1 ? sendTheData() : null}
@@ -151,7 +161,7 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
                                   className="block-center"
                                   type="password"
                                   placeholder="Powtórz hasło..."
-                                  marginBottom={10}
+                                  marginBottom={4}
                                   value={RepeatedPassword} 
                                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRepeatedPassword(e.target.value)}
                                   onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === "Enter" && mode === 2 ? sendTheData() : null}
@@ -167,6 +177,36 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
                                 </TermsAndConditionsSection>
                               </>
                             ) : null
+                        }
+                            {
+                          mode === 1 ? (
+                            <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+                              <SigningGoogleButtonWrapper className="block-center">
+                                <GoogleLogin
+                                  onSuccess={(credentialResponse: any) => {
+                                    VerifyByGoogleData(
+                                      credentialResponse.credential, 
+                                      toggleIsSuccess,
+                                      (newToken: string) => {
+                                        setMemoryUserId(newToken);
+                                        dispatch(setNewToken(newToken));
+                                      }, 
+                                      (newToken: string) => setRefreshUserId(newToken), 
+                                      setError,
+                                    );
+                                    console.log(credentialResponse);
+                                  }}
+                                  onError={() => {
+                                    setError("Coś poszło nie tak. Spróbuj ponownie");
+                                  }}
+                                  useOneTap
+                                  theme={graphicalMode === 0 ? "filled_blue" : "filled_black"}
+                                  size={isVerySmallDevice ? "large" : "small"}
+                                  logo_alignment="center"
+                                />
+                              </SigningGoogleButtonWrapper>
+                            </GoogleOAuthProvider>
+                          ) : null
                         }
                             {mode === 2 && (Login.length === 0 || Password.length === 0 || RepeatedPassword.length === 0 
                             || userName.length === 0 || userSurname.length === 0 || !rulesAccepted) ? null : (

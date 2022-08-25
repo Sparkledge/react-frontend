@@ -21,6 +21,7 @@ const getLastViews = async (
       toggleIsWorking(true);
     })
     .catch((err) => {
+      console.log(err);
       toggleIsWorking(false);
     });
 };
