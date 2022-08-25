@@ -87,6 +87,8 @@ export const SigningPanelButton = styled.button`
     cursor: pointer;
     transition: all 0.4s;
     margin-bottom: 5vh;
+    position: relative;
+    top: 3vh;
     
     &:hover{
         filter: brightness(70%);
@@ -165,5 +167,13 @@ export const TermsAndConditionsLabel = styled.div`
 
     &>a:hover{
         filter: brightness(70%);
+    }
+`;
+
+export const SigningGoogleButtonWrapper = styled.div`
+    width: fit-content;
+
+    & > div > div > iframe{
+        margin: 0px auto 1vh !important;
     }
 `;

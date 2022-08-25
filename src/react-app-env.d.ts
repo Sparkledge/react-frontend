@@ -6,6 +6,7 @@ declare namespace NodeJS {
     REACT_APP_HASH: string
     REACT_APP_API_URI: string
     REACT_APP_WS_URI: string,
-    REACT_APP_CONNECTION_TO_SERVER: string
+    REACT_APP_CONNECTION_TO_SERVER: string,
+    REACT_APP_GOOGLE_CLIENT_ID: string,
   }
 }
