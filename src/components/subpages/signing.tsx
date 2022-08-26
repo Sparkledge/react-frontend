@@ -18,6 +18,8 @@ import {
   SigningGoogleButtonWrapper,
 } from "src/styled/subpages/signing";
 
+import SearchingPreloaderComponent from "src/components/helperComponents/searcher/searchingPreloaderComponent";
+
 import TriggerTheShot from "src/connectionFunctions/signin/sendSigningData";
 import VerifyByGoogleData from "src/connectionFunctions/signin/verifyByGoogleData";
 
@@ -40,6 +42,7 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
   // const [isVerificationSuccessful, toggleIsVerificationSuccessful] = useState<number>(0); // 0 - status unknown, 1 - verified, 2 - verification failed
   const [Password, setPassword] = useState<string>("");
   const [RepeatedPassword, setRepeatedPassword] = useState<string>("");
+  const [isLoading, toggleIsLoading] = useState<boolean>(false);
   const [rulesAccepted, toggleRulesAccepted] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
@@ -59,6 +62,7 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
   const isVerySmallDevice = useMediaQuery("(min-width: 320px)");
 
   const sendTheData = () => {
+    toggleIsLoading(true);
     TriggerTheShot(
       mode, 
       toggleIsSuccess, 
@@ -179,11 +183,12 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
                             ) : null
                         }
                             {
-                          mode === 1 ? (
+                          isLoading ? <SearchingPreloaderComponent /> : mode === 1 ? (
                             <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
                               <SigningGoogleButtonWrapper className="block-center">
                                 <GoogleLogin
                                   onSuccess={(credentialResponse: any) => {
+                                    toggleIsLoading(true);
                                     VerifyByGoogleData(
                                       credentialResponse.credential, 
                                       toggleIsSuccess,
@@ -208,8 +213,8 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
                             </GoogleOAuthProvider>
                           ) : null
                         }
-                            {mode === 2 && (Login.length === 0 || Password.length === 0 || RepeatedPassword.length === 0 
-                            || userName.length === 0 || userSurname.length === 0 || !rulesAccepted) ? null : (
+                            {isLoading || (mode === 2 && (Login.length === 0 || Password.length === 0 || RepeatedPassword.length === 0 
+                            || userName.length === 0 || userSurname.length === 0 || !rulesAccepted)) ? null : (
                               <SigningPanelButton className="block-center" onClick={() => sendTheData()}>
                                 {mode === 1 ? "Zaloguj" : "Zarejestruj"}
                                 {" "}
