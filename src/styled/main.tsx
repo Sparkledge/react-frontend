@@ -17,7 +17,7 @@ export const LightMode = {
   navBgColor: LightNavBgColor,
   navElemBgColor: "rgba(240,240,240,.2)",
   bgColor: "#f0f0f0",
-  filterColor: "rgba(0,0,0,.2)",
+  filterColor: "rgba(200,200,200,.8)",
   color: "#0A77BF",
   landingButtonColor: "rgba(240,240,240,.5)",
   signingInputBackground: "rgba(240,240,240,.7)",

@@ -39,13 +39,13 @@ export const DescribeWidgetsSection = styled.section`
 `;
 
 export const DescribeWidget = styled.div`
-    width: calc(90% - 40px);
+    width: calc(100% - 40px);
     height: fit-content;
     min-height: calc(45vh - 40px);
     padding: 20px 10px;
     border-radius: 20px;
     box-shadow: 3px 3px 4px rgba(0,0,0,.07);
-    background: rgba(34,107,255,.5);
+    background: rgba(34,107,255,.15);
     text-align: center;
     transition: all 0.4s;
     display: block;
@@ -56,14 +56,14 @@ export const DescribeWidget = styled.div`
     }
 
     @media screen and (min-width: 375px){
-        width: calc(80% - 40px);
+        width: calc(90% - 40px);
     }
 
     @media screen and (min-width: 425px){
-        width: calc(60% - 40px);
+        width: calc(70% - 40px);
     }
 
-    @media screen and (min-width: 768px){
+    @media screen and (min-width: 1024px){
         width: calc(33% - 40px);
         min-height: calc(55vh - 40px);
         display: inline-block;
@@ -84,6 +84,10 @@ export const DescribeWidgetHeader = styled.header`
     position: relative;
     top: 1vh;
 
+    @media screen and (min-width: 768px){
+        font-size: 1.3em;
+    }
+
     @media screen and (min-width: 1024px){
         font-size: 1.4em;
     }
@@ -102,9 +106,19 @@ export const DescribeWidgetSubDesc = styled.div`
     text-shadow: ${(props) => props.theme.fonts.textShadowMain};
     line-height: 1.05em;
 
+    @media screen and (min-width: 425px){
+        line-height: 1.1em;
+        font-size: 1.1em;
+    }
+
+    @media screen and (min-width: 768px){
+        font-size: 1.2em;
+        line-height: 1.2em;
+    }
+
     @media screen and (min-width: 1024px){
         width: calc(85% - 10px);
-        line-height: 1.1em;
+        line-height: 1.4em;
         font-size: 1em;
     }
 

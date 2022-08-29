@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import BackgroundPattern from "src/assets/pattern_background4_1.webp";
+import BackgroundPattern from "src/assets/pattern_background5.webp";
 
 import {
   LandingSectionWrapper, LandingSectionFilter, LandingSectionButton, LandingButtonWrapper, 

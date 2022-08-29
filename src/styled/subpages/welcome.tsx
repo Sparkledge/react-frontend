@@ -23,6 +23,7 @@ export const LandingSectionWrapper = styled.section<LandingWrapperInterface>`
     background: ${(props) => props.source !== undefined ? `url(${props.source})` : props.theme.bgColor};
     background-size: ${(props) => props.backgroundSize !== undefined ? props.backgroundSize : "cover"};
     background-repeat: ${(props) => props.backgroundRepeat !== undefined ? props.backgroundRepeat : "auto"};
+    background-position: center;
     text-align: center;
     font-family: ${(props) => props.theme.fonts.main};
     overflow: hidden;
@@ -92,18 +93,20 @@ export const LandingSectionDesc = styled.div`
     transition: all 0.4s;
 
     @media screen and (min-width: 425px){
-        width: calc(70% - 20px);
+        width: calc(90% - 20px);
         font-size: 1em;
-        line-height: 1.1em;
     }
 
     @media screen and (min-width: 768px){
-        width: calc(60% - 20px);
+        width: calc(80% - 20px);
+        line-height: 1.2em;
+        font-size: 1.2em;
     }
 
     @media screen and (min-width: 1024px){
-        width: calc(50% - 20px);
-        font-size: 1.2em;
+        width: calc(60% - 20px);
+        line-height: 1.3em;
+        font-size: 1.4em;
     }
 `;
 
