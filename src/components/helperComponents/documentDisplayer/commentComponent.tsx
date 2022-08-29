@@ -6,14 +6,12 @@
 
 import React, { useState, useEffect } from "react";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import SendIcon from "@mui/icons-material/Send";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 import {
   CommentContainer, CommentContainerAuthor, 
   CommentContainerContent, CommentContainerInteractivePart, 
   CommentContainerInteractiveInfo, CommentContainerInteractiveInfoLabel,
-  CommentContainerInteractiveCommentInput, 
 } from "src/styled/subpages/documentDisplayer/commentingSectionDisplay";
 
 import deleteComment from "src/connectionFunctions/documentDisplayer/deleteComment";
@@ -40,11 +38,6 @@ const CommentComponent:React.FC<CommentComponentInterface> = ({
   const [isLiked, toggleIsLiked] = useState<boolean>(false);
   const [isDeleteingFailing, toggleIsDeletingFailing] = useState<boolean>(false);
   const [likesNumber, setLikesNumber] = useState<number>(documentLikesNumber + 1);
-  const [currentComment, setCurrentComment] = useState<string>("");
-    
-  const SendASubcomment = () => {
-
-  };
     
   useEffect(() => {
     isLiked ? setLikesNumber(likesNumber + 1) : setLikesNumber(likesNumber - 1);

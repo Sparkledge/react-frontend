@@ -311,7 +311,6 @@ const DocumentDisplayer:React.FC = () => {
                     
                   <Suspense fallback={null}>
                     <CommentingSectionDisplay
-                      docId={docId}
                       loginUserSelector={loginUserSelector}
                       commentsList={commentsList}
                       isError={isCommentsError}

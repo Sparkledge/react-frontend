@@ -30,7 +30,7 @@ interface SigningInterface {
   mode: number
 }
 
-const BackgroundPattern = require("../../assets/pattern_background4_1.webp");
+const BackgroundPattern = require("../../assets/pattern_background5.webp");
 
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
 
