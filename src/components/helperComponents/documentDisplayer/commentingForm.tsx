@@ -4,7 +4,7 @@
     NOTE: currently it's a template, so it doesn't have the entire logic implemented
 */
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
 import useMediaQuery from "@mui/material/useMediaQuery";
 

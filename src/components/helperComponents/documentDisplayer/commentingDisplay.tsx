@@ -13,7 +13,6 @@ import { DescriptionDataHeader } from "src/styled/subpages/documentDisplayer";
 import CommentComponent from "./commentComponent";
 
 interface CommentingSectionDisplayInterface {
-  docId: string | undefined,
   loginUserSelector: string,
   commentsList: any[],
   isError: boolean,
@@ -21,7 +20,6 @@ interface CommentingSectionDisplayInterface {
 }
 
 const CommentingSectionDisplay:React.FC<CommentingSectionDisplayInterface> = ({
-  docId, 
   loginUserSelector, 
   commentsList, 
   isError, 

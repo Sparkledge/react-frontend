@@ -14,7 +14,7 @@ import {
 
 import { ForgotPasswordButton, ErrorLabel } from "src/styled/subpages/signing";
 
-import BackgroundPattern from "src/assets/pattern_background4_1.webp";
+import BackgroundPattern from "src/assets/pattern_background5.webp";
 import resetPassword from "src/connectionFunctions/forgotPassword/resetPassword";
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
 

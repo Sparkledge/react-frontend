@@ -7,17 +7,8 @@
 
 import React, { useState } from "react";
 
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-
 import {
   SearchingFiltersHeader, 
-  SearchingFiltersOptionWrapper,
-  SearchingFilterOptionChoice,
-  SearchingFilterOptionChoiceDesc,
-  SearchingFilterOptionChoiceCheckbox,
-  SearchingFilterOptionLabel,
-  SearchingFilterOptionOpenBtn,
   SearchingFiltersUploadWrapper, 
 } from "src/styled/subpages/searcher/searcherFilters";
 

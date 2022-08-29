@@ -4,14 +4,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import { MainContainer } from "src/styled/main";
 import { LandingSectionWrapper, LandingSectionFilter } from "src/styled/subpages/welcome";
 import {
-  ForgotPasswordContainer, ForgotPasswordHeader, ForgotPasswordDescription,
-  ForgotPasswordEmailInput, 
-  ForgotPasswordSubmitBtn,
+  ForgotPasswordContainer,
   ForgotPasswordErrorHeader,
-  ForgotPasswordSuccessDescription,
 } from "src/styled/subpages/forgotPassword";
 
-import BackgroundPattern from "src/assets/pattern_background4_1.webp";
+import BackgroundPattern from "src/assets/pattern_background5.webp";
 
 import verifyEmail from "src/connectionFunctions/signin/verifyEmail";
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";

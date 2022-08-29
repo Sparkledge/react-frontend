@@ -7,7 +7,7 @@ import { AboutHeader, AboutDesc } from "../../styled/subpages/about";
 const TeamWidgetsSection = React.lazy(() => import("../helperComponents/about/TeamWidgetsSection"));
 const SpecialThanksSection = React.lazy(() => import("../helperComponents/about/SpecialThanksSection"));
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
-const BackgroundPattern = require("../../assets/pattern_background4_1.webp");
+const BackgroundPattern = require("../../assets/pattern_background5.webp");
 
 const About:React.FC = () => (
   <MainContainer className="block-center">

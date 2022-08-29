@@ -12,7 +12,7 @@ import {
   ForgotPasswordSuccessDescription,
 } from "src/styled/subpages/forgotPassword";
 
-import BackgroundPattern from "src/assets/pattern_background4_1.webp";
+import BackgroundPattern from "src/assets/pattern_background5.webp";
 import startTheProcedure from "src/connectionFunctions/forgotPassword/startTheProcedure";
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
 
