@@ -8,7 +8,7 @@ import {
   LandingSectionDesc, LandingButtonWrapper, LandingSectionButton, 
 } from "src/styled/subpages/welcome";
 
-import Background from "src/assets/academic_background_edited_2.webp";
+import Background from "src/assets/academic_background3_1.webp";
 
 const LandingComponent:React.FC = () => (
   <LandingSectionWrapper className="block-center" source={Background}>
