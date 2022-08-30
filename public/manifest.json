@@ -20,6 +20,10 @@
   ],
   "start_url": ".",
   "display": "standalone",
+  "orientation": "portrait-primary",
+  "lang": "pl",
+  "description": "Chcesz łatwiej przyswajać studencką wiedzę, ale nie wiesz, gdzie jej szukać? Przedstawiamy Sparkledge - platformę do materiałów naukowych stworzoną przez studentów dla studentów",
+  "categories": ["education"],
   "theme_color": "#000000",
   "background_color": "#ffffff"
 }
