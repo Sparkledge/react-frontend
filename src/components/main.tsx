@@ -10,6 +10,7 @@ import { LightMode, DarkMode, SparkledgeGlobalStyle } from "../styled/main";
 import { setNewToken } from "../redux/actions/generalActions";
 import { RootState } from "../redux/mainReducer";
 import Navbar from "./subcomponents/navbar";
+import MemoryUsingBanner from "./subcomponents/memoryUsingBanner";
 import Welcome from "./subpages/welcome";
 import About from "./subpages/about";
 import SigningPanel from "./subpages/signing";
@@ -29,6 +30,7 @@ import refreshToken from "../connectionFunctions/main/refreshToken";
 const Main: React.FC = () => {
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
   const [refreshUserId, setRefreshUserId] = useLocalStorage<string>("u_r", "");
+  const [isUserConsent, toggleIsUserConsent] = useLocalStorage<boolean>("u_a", false);
 
   const dispatch = useDispatch();
 
@@ -66,6 +68,7 @@ const Main: React.FC = () => {
           <Route path="/terms" element={<TermsAndConditions />} />
           <Route path="*" element={<Notfound />} />
         </Routes>
+        {!isUserConsent ? <MemoryUsingBanner toggleIsUserConsent={toggleIsUserConsent} /> : null}
       </Router>
     </ThemeProvider>
   );
