@@ -4,6 +4,7 @@ import {
 } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
+import ReactGA from "react-ga";
 import useLocalStorage from "use-local-storage";
 
 import { LightMode, DarkMode, SparkledgeGlobalStyle } from "../styled/main";
@@ -27,6 +28,8 @@ import UserPanel from "./subpages/userPanel";
 
 import refreshToken from "../connectionFunctions/main/refreshToken";
 
+ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_ID);
+
 const Main: React.FC = () => {
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
   const [refreshUserId, setRefreshUserId] = useLocalStorage<string>("u_r", "");
@@ -40,11 +43,14 @@ const Main: React.FC = () => {
 
   useEffect(() => {
     if (refreshUserId.length > 0) {
-      console.log(memoryUserId);
       refreshToken(refreshUserId, setMemoryUserId, setRefreshUserId);
       dispatch(setNewToken(memoryUserId));
     }
   }, []);
+
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, [window.location.pathname, window.location.search]);
 
   return (
     <ThemeProvider theme={graphicalMode === 0 ? LightMode : DarkMode}>
