@@ -39,7 +39,6 @@ const TriggerTheShot = (
           setLogin("");
           setRefreshToken(res.data.refreshToken);
           changeTheToken(res.data.accessToken);
-          navigate("/panel");
         } else {
           toggleIsSuccess(false); setPassword("Coś poszło nie tak");
         }

@@ -46,6 +46,7 @@ const UserPanel:React.FC = () => {
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
 
   useEffect(() => {
+    console.log(memoryUserId);
     if (memoryUserId.length === 0 || memoryUserId === undefined) navigate("/");
     else {
       getLastViews(memoryUserId, setLastViewedList, toggleIsWorking);

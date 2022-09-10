@@ -15,10 +15,6 @@ const SpecialThanksData: SpecialThanksType[] = [
   },
   {
     subjectType: SpecialThanksSubjectType.PERSON,
-    name: "Hani Pleszyńskiej",
-  },
-  {
-    subjectType: SpecialThanksSubjectType.PERSON,
     name: "Jakuba Żuchowskiego",
   },
   {

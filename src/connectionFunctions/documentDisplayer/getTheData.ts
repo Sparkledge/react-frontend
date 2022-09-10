@@ -45,66 +45,70 @@ export const getTheData = async (
 
 export const loadTheDownloadLink = async (
   loginUserSelector: string,
-  fileId: string,
+  fileId: string | undefined,
   toggleIsError: (newState: boolean) => void,
   setFileSrc: (newState: any) => void, 
   toggleIsFileRequested: (newState: boolean) => void,
 ) => {
-  toggleIsFileRequested(true);
-  await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/files/url/${fileId}`, {
-    headers: {
-      Authorization: `Bearer ${loginUserSelector}`,
-      Accept: "application/pdf",
-    },
-  }).then((res) => {
-    setFileSrc(res.data);
-    /* const tmp_path = (window.URL ? URL : webkitURL).createObjectURL(new Blob([res.data], {
-              type: "application/pdf",
-          }))
-          setFileSrc(tmp_path)
-          if(!smallDevicesWidthChecker){
-              const pdfWindow = window.open();
-              if(pdfWindow !== null){
-                  pdfWindow.location.href = tmp_path;
-              }
-          }
-          URL.revokeObjectURL(tmp_path); */
-  })
-    .catch((err) => {
-      toggleIsError(true);
-    });
+  if (fileId !== undefined) {
+    toggleIsFileRequested(true);
+    await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/files/url/${fileId}`, {
+      headers: {
+        Authorization: `Bearer ${loginUserSelector}`,
+        Accept: "application/pdf",
+      },
+    }).then((res) => {
+      setFileSrc(res.data);
+      /* const tmp_path = (window.URL ? URL : webkitURL).createObjectURL(new Blob([res.data], {
+                type: "application/pdf",
+            }))
+            setFileSrc(tmp_path)
+            if(!smallDevicesWidthChecker){
+                const pdfWindow = window.open();
+                if(pdfWindow !== null){
+                    pdfWindow.location.href = tmp_path;
+                }
+            }
+            URL.revokeObjectURL(tmp_path); */
+    })
+      .catch((err) => {
+        toggleIsError(true);
+      });
+  }
 };
 
 export const loadTheFile = async (
   loginUserSelector: string,
-  fileId: string,
+  fileId: string | undefined,
   toggleIsFile: (newState: boolean) => void,
   toggleIsError: (newState: boolean) => void,
   setFile: (newState: any) => void,
 ) => {
-  await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/files/stream/${fileId}`, {
-    headers: {
-      Authorization: `Bearer ${loginUserSelector}`,
-      Accept: "application/pdf",
-    },
-    responseType: "arraybuffer",
-  }).then((res) => {
-    toggleIsFile(true);
-    setFile(base64ArrayBuffer(res.data)); 
-    /* const tmp_path = (window.URL ? URL : webkitURL).createObjectURL(new Blob([res.data], {
-              type: "application/pdf",
-          }))
-          setFileSrc(tmp_path)
-          if(!smallDevicesWidthChecker){
-              const pdfWindow = window.open();
-              if(pdfWindow !== null){
-                  pdfWindow.location.href = tmp_path;
-              }
-          }
-          URL.revokeObjectURL(tmp_path); */
-  })
-    .catch((err) => {
-      toggleIsFile(false);
-      toggleIsError(true);
-    });
+  if (fileId !== undefined) {
+    await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/files/stream/${fileId}`, {
+      headers: {
+        Authorization: `Bearer ${loginUserSelector}`,
+        Accept: "application/pdf",
+      },
+      responseType: "arraybuffer",
+    }).then((res) => {
+      toggleIsFile(true);
+      setFile(base64ArrayBuffer(res.data)); 
+      /* const tmp_path = (window.URL ? URL : webkitURL).createObjectURL(new Blob([res.data], {
+                type: "application/pdf",
+            }))
+            setFileSrc(tmp_path)
+            if(!smallDevicesWidthChecker){
+                const pdfWindow = window.open();
+                if(pdfWindow !== null){
+                    pdfWindow.location.href = tmp_path;
+                }
+            }
+            URL.revokeObjectURL(tmp_path); */
+    })
+      .catch((err) => {
+        toggleIsFile(false);
+        toggleIsError(true);
+      });
+  }
 };
