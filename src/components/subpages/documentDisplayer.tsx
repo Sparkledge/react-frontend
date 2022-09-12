@@ -183,13 +183,13 @@ const DocumentDisplayer:React.FC = () => {
                   onClick={() => {
                     loadTheDownloadLink(
                       loginUserSelector, 
-                      fileId,  
+                      docId,  
                       toggleIsError,
                       setFileSrc,
                       toggleIsFileRequested,
                     ); loadTheFile(
                       loginUserSelector,
-                      fileId,
+                      docId,
                       toggleIsFile,
                       toggleIsError,
                       setFile,

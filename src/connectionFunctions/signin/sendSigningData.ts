@@ -39,7 +39,6 @@ const TriggerTheShot = (
           setLogin("");
           setRefreshToken(res.data.refreshToken);
           changeTheToken(res.data.accessToken);
-          navigate("/panel");
         } else {
           toggleIsSuccess(false); setPassword("Coś poszło nie tak");
         }
@@ -58,7 +57,8 @@ const TriggerTheShot = (
           toggleIsSuccess(false); setPassword("Coś poszło nie tak");
         }
       })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err);
           setError("Coś poszło nie tak. Spróbuj ponownie");
         });
     }

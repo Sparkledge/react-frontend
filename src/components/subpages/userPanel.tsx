@@ -18,7 +18,7 @@ import getLastViews from "../../connectionFunctions/userPanel/loadLastViews";
 
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
 
-const Background = require("../../assets/pattern_background4_1.webp");
+const Background = require("../../assets/pattern_background5.webp");
 
 type LastViewItemType = {
   id: string,
@@ -46,6 +46,7 @@ const UserPanel:React.FC = () => {
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
 
   useEffect(() => {
+    console.log(memoryUserId);
     if (memoryUserId.length === 0 || memoryUserId === undefined) navigate("/");
     else {
       getLastViews(memoryUserId, setLastViewedList, toggleIsWorking);
