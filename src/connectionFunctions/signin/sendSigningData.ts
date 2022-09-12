@@ -57,7 +57,8 @@ const TriggerTheShot = (
           toggleIsSuccess(false); setPassword("Coś poszło nie tak");
         }
       })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err);
           setError("Coś poszło nie tak. Spróbuj ponownie");
         });
     }
