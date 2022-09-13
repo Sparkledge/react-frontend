@@ -36,6 +36,7 @@ import getCommentData from "src/connectionFunctions/documentDisplayer/getComment
 import { RootState } from "src/redux/mainReducer";
 import blobToBase64 from "../auxiliaryFunctions/documentDisplayer/decodingToBase64";
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
+import HeadTags from "../subcomponents/headTags";
 
 const ReportingPanel = React.lazy(() => import("../helperComponents/documentDisplayer/reportingPanel"));
 
@@ -151,6 +152,7 @@ const DocumentDisplayer:React.FC = () => {
         bottomPadding={10}
         backgroundRepeat="repeat"
       >
+        <HeadTags areAdsOn title={`${title} - Sparkledge`} description="" />
         <LandingSectionFilter>
 
           {
