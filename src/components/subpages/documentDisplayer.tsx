@@ -6,6 +6,7 @@ import { useParams, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useWindowSize } from "react-use";
 import useLocalStorage from "use-local-storage";
+import { Adsense } from "@ctrl/react-adsense";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 /* import SwipeLeftAltIcon from '@mui/icons-material/SwipeLeftAlt';
@@ -152,7 +153,7 @@ const DocumentDisplayer:React.FC = () => {
         bottomPadding={10}
         backgroundRepeat="repeat"
       >
-        <HeadTags areAdsOn title={`${title} - Sparkledge`} description="" />
+        <HeadTags areAdsOn title={`${title !== "" ? title : "Error"} - Sparkledge`} description="" />
         <LandingSectionFilter>
 
           {
@@ -310,7 +311,13 @@ const DocumentDisplayer:React.FC = () => {
                       putCommentToTheList={pushNewComment}
                     />
                   </Suspense>
-                    
+                  <Adsense 
+                    client={process.env.REACT_APP_GOOGLE_ADSENSE}
+                    slot={process.env.REACT_APP_GOOGLE_ADSENSE_SLOT}
+                    style={{ display: "block" }}
+                    layout="in-article"
+                    format="fluid"
+                  />
                   <Suspense fallback={null}>
                     <CommentingSectionDisplay
                       loginUserSelector={loginUserSelector}

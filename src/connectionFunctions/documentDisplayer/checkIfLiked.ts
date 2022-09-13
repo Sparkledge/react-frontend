@@ -6,8 +6,8 @@ const checkIfLiked = async (
   toggleIsLiked: (newState: boolean) => void,
 ) => {
   if (docId !== undefined && loginUserSelector.length > 0) {
-    console.log(loginUserSelector);
-    console.log(docId);
+    // console.log(loginUserSelector);
+    // console.log(docId);
     await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/check-if-liked/${docId}`, {
       headers: {
         "Content-Type": "application/json",
