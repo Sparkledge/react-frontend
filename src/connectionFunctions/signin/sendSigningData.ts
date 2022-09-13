@@ -44,7 +44,7 @@ const TriggerTheShot = (
         }
       })
         .catch((err) => {
-          err.response.status === 403 ? setError("Dokończ proces rejestracji") : setError("Coś poszło nie tak. Spróbuj ponownie");
+          err.response.status !== undefined && err.response.status === 403 ? setError("Dokończ proces rejestracji") : setError("Coś poszło nie tak. Spróbuj ponownie");
         });
     } else {
       axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/users/signup`, objectToSend, {

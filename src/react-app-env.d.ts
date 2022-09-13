@@ -9,5 +9,7 @@ declare namespace NodeJS {
     REACT_APP_CONNECTION_TO_SERVER: string,
     REACT_APP_GOOGLE_CLIENT_ID: string,
     REACT_APP_GOOGLE_ANALYTICS_ID: string,
+    REACT_APP_GOOGLE_ADSENSE: string,
+    REACT_APP_GOOGLE_ADSENSE_SLOT: string,
   }
 }
