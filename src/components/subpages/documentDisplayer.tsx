@@ -94,6 +94,7 @@ const DocumentDisplayer:React.FC = () => {
 
   const pushNewComment = (newComment: any) => {
     const operand = [newComment, ...commentsList];
+    console.log(operand);
     setCommentsList(operand);
   };
 
