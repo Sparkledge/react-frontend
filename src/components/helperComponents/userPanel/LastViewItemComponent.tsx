@@ -4,15 +4,17 @@ import { UserPanelLastViewItem, UserPanelLastViewTitle, UserPanelLastViewAuthor 
 interface LastViewItemComponentInterface {
   title: string,
   name: string,
-  additionalData: [any, string][]
+  additionalData: [any, string][],
+  isPublishedByUser: boolean,
 }
 
 const LastViewItemComponent:React.FC<LastViewItemComponentInterface> = ({
   title,
   name,
   additionalData, 
+  isPublishedByUser,
 } : LastViewItemComponentInterface) => (
-  <UserPanelLastViewItem>
+  <UserPanelLastViewItem isPublishedByUser={isPublishedByUser}>
     <UserPanelLastViewTitle className="block-center">
       {title.length > 30 ? `${title.substring(0, 27)}...` : title}
     </UserPanelLastViewTitle>

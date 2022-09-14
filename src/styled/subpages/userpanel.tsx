@@ -8,6 +8,10 @@ interface UserPanelLastViewAuthorInterface {
   marginBottom?: number
 }
 
+interface UserPanelLastViewItemInterface {
+  isPublishedByUser: boolean
+}
+
 export const UserPanelHeader = styled.header`
     width: calc(90% - 20px);
     padding: 10px;
@@ -110,7 +114,7 @@ export const UserPanelLastViewNoItemsHeader = styled.header`
     }
 `;
 
-export const UserPanelLastViewItem = styled.div`
+export const UserPanelLastViewItem = styled.div<UserPanelLastViewItemInterface>`
     width: calc(90% - 20px);
     padding: 5px;
     margin: 0px 5px;
@@ -132,7 +136,11 @@ export const UserPanelLastViewItem = styled.div`
     }
 
     @media screen and (min-width: 768px){
-        width: calc(40% - 20px);
+        width: ${(props) => props.isPublishedByUser ? "calc(60% - 20px)" : "calc(45% - 20px)"};
+    }
+
+    @media screen and (min-width: 1024px){
+        ${(props) => props.isPublishedByUser ? "width: calc(75% - 20px);" : null}
     }
 `;
 

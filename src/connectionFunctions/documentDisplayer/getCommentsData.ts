@@ -19,6 +19,7 @@ const getCommentData = async (
     },
   })
     .then((res) => {
+      console.log(res.data);
       setCommentsList(res.data);
     })
     .catch((err) => {

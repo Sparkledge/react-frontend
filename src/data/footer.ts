@@ -37,11 +37,6 @@ const footerData:{ type: string, addr: string, content: any }[][] = [
       addr: "/about",
       content: "O nas",
     },
-    {
-      type: "text",
-      addr: "https://www.vecteezy.com/free-vector/education",
-      content: "Education Vectors by Vecteezy",
-    },
   ],
 ];
 

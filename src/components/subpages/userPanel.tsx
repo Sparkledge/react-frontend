@@ -12,6 +12,7 @@ import {
 } from "../../styled/subpages/userpanel";
 
 import LastViewItemComponent from "../helperComponents/userPanel/LastViewItemComponent";
+import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
 import { RootState } from "../../redux/mainReducer";
 
 import getLastViews from "../../connectionFunctions/userPanel/loadLastViews";
@@ -34,13 +35,16 @@ type LastPublishedItemType = {
   title: string,
   publishedOn: string,
   likes: number,
-  views: number
+  views: number,
+  createdAt: string,
 };
 
 const UserPanel:React.FC = () => {
   const [lastViewedList, setLastViewedList] = useState<LastViewItemType[]>([]);
   const [lastPublishedList, setLastPublishedList] = useState<LastPublishedItemType[]>([]);
   const [isWorking, toggleIsWorking] = useState<boolean>(true);
+  const [isViewsLoading, toggleIsViewsLoading] = useState<boolean>(false);
+  const [isPublishedLoading, toggleIsPublishedLoading] = useState<boolean>(false);
   const currentToken:string = useSelector((state: RootState) => state.generalData.currentToken);
   const navigate = useNavigate();
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
@@ -49,7 +53,10 @@ const UserPanel:React.FC = () => {
     console.log(memoryUserId);
     if (memoryUserId.length === 0 || memoryUserId === undefined) navigate("/");
     else {
-      getLastViews(memoryUserId, setLastViewedList, toggleIsWorking);
+      toggleIsViewsLoading(true);
+      toggleIsPublishedLoading(true);
+      getLastViews(memoryUserId, "viewedDocuments", setLastViewedList, toggleIsWorking, toggleIsViewsLoading);
+      getLastViews(memoryUserId, "publishedDocuments", setLastPublishedList, toggleIsWorking, toggleIsPublishedLoading);
     }
   }, [currentToken, memoryUserId]);
 
@@ -74,7 +81,7 @@ const UserPanel:React.FC = () => {
                 </UserPanelLastViewHeader>
                 <UserPanelLastViewGallery className="block-center">
                   {
-                      lastViewedList.length > 0 && isWorking ? lastViewedList.map((elem, ind) => (
+                      lastViewedList.length > 0 && isWorking && !isViewsLoading ? lastViewedList.map((elem, ind) => (
                         <Link to={`/document/${elem.id}`}>
                           <LastViewItemComponent
                             key="last-view-material"
@@ -86,9 +93,12 @@ const UserPanel:React.FC = () => {
                               verticalAlign: "top", 
                             }}
                             />, elem.createdAt]]}
+                            isPublishedByUser={false}
                           />
                         </Link>
-                      )) : (
+                      )) : isViewsLoading ? (
+                        <SearchingPreloaderComponent />
+                      ) : (
                         <UserPanelLastViewNoItemsHeader className="block-center">
                           {!isWorking ? "Błąd połączenia. Spróbuj ponownie" : "Brak danych"}
                         </UserPanelLastViewNoItemsHeader>
@@ -102,14 +112,22 @@ const UserPanel:React.FC = () => {
                 </UserPanelLastViewHeader>
                 <UserPanelLastViewGallery className="block-center">
                   {
-                      lastPublishedList.length > 0 ? lastPublishedList.map((elem, ind) => (
+                      lastPublishedList.length > 0 && !isPublishedLoading ? lastPublishedList.map((elem, ind) => (
                         <LastViewItemComponent
                           key="last-published-material"
                           title={elem.title}
-                          name={`Autor: ${" "}`} 
-                          additionalData={[]}
+                          name={" "} 
+                          additionalData={[[<PublishedWithChangesIcon style={{
+                            color: "inherit",
+                            fontSize: "1.3em", 
+                            verticalAlign: "top", 
+                          }}
+                          />, elem.createdAt]]}
+                          isPublishedByUser
                         />
-                      )) : (
+                      )) : isPublishedLoading ? (
+                        <SearchingPreloaderComponent />
+                      ) : (
                         <UserPanelLastViewNoItemsHeader className="block-center">
                           Brak danych
                         </UserPanelLastViewNoItemsHeader>
