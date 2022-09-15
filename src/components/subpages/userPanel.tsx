@@ -32,6 +32,7 @@ type LastViewItemType = {
 };
 
 type LastPublishedItemType = {
+  id: string,
   title: string,
   publishedOn: string,
   likes: number,
@@ -113,18 +114,20 @@ const UserPanel:React.FC = () => {
                 <UserPanelLastViewGallery className="block-center">
                   {
                       lastPublishedList.length > 0 && !isPublishedLoading ? lastPublishedList.map((elem, ind) => (
-                        <LastViewItemComponent
-                          key="last-published-material"
-                          title={elem.title}
-                          name={" "} 
-                          additionalData={[[<PublishedWithChangesIcon style={{
-                            color: "inherit",
-                            fontSize: "1.3em", 
-                            verticalAlign: "top", 
-                          }}
-                          />, elem.createdAt]]}
-                          isPublishedByUser
-                        />
+                        <Link to={`/document/${elem.id}`}>
+                          <LastViewItemComponent
+                            key="last-published-material"
+                            title={elem.title}
+                            name={" "} 
+                            additionalData={[[<PublishedWithChangesIcon style={{
+                              color: "inherit",
+                              fontSize: "1.3em", 
+                              verticalAlign: "top", 
+                            }}
+                            />, elem.createdAt]]}
+                            isPublishedByUser
+                          />
+                        </Link>
                       )) : isPublishedLoading ? (
                         <SearchingPreloaderComponent />
                       ) : (
