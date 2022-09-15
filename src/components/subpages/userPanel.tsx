@@ -2,6 +2,8 @@ import React, { Suspense, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import useLocalStorage from "use-local-storage";
 
 import { MainContainer, Preloader } from "src/styled/main";
@@ -32,6 +34,18 @@ type LastViewItemType = {
   }
 };
 
+type MostPopularItemType = {
+  id: string,
+  title: string,
+  createdAt: string,
+  viewsNumber: number,
+  likesNumber: number,
+  user: {
+    firstName: string,
+    lastName: string
+  }
+};
+
 type LastPublishedItemType = {
   id: string,
   title: string,
@@ -44,7 +58,7 @@ type LastPublishedItemType = {
 const UserPanel:React.FC = () => {
   const [lastViewedList, setLastViewedList] = useState<LastViewItemType[]>([]);
   const [lastPublishedList, setLastPublishedList] = useState<LastPublishedItemType[]>([]);
-  const [mostPopularList, setMostPopularList] = useState<LastViewItemType[]>([]);
+  const [mostPopularList, setMostPopularList] = useState<MostPopularItemType[]>([]);
   const [isWorking, toggleIsWorking] = useState<boolean>(true);
   const [isViewsLoading, toggleIsViewsLoading] = useState<boolean>(false);
   const [isPublishedLoading, toggleIsPublishedLoading] = useState<boolean>(false);
@@ -98,7 +112,18 @@ const UserPanel:React.FC = () => {
                             fontSize: "1.3em", 
                             verticalAlign: "top", 
                           }}
-                          />, elem.createdAt]]}
+                          />, elem.createdAt], [<VisibilityIcon style={{
+                            color: "inherit",
+                            fontSize: "1.3em", 
+                            verticalAlign: "top", 
+                          }}
+                          />, elem.viewsNumber,
+                          ], [<ThumbUpIcon style={{
+                            color: "inherit",
+                            fontSize: "1.3em", 
+                            verticalAlign: "top", 
+                          }}
+                          />, elem.likesNumber]]}
                           isPublishedByUser={false}
                         />
                       </Link>
