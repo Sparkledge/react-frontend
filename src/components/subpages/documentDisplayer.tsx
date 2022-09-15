@@ -154,7 +154,7 @@ const DocumentDisplayer:React.FC = () => {
         bottomPadding={10}
         backgroundRepeat="repeat"
       >
-        <HeadTags areAdsOn title={`${title !== "" ? title : "Error"} - Sparkledge`} description="" />
+        <HeadTags areAdsOn title={`${title !== "" ? title : isError ? "Error" : "Dokument"} - Sparkledge`} description="" />
         <LandingSectionFilter>
 
           {
