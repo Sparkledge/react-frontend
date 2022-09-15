@@ -4,18 +4,19 @@ import { useNavigate, Link } from "react-router-dom";
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import useLocalStorage from "use-local-storage";
 
-import { MainContainer, Preloader } from "../../styled/main";
-import { LandingSectionWrapper, LandingSectionFilter, EndingBlock } from "../../styled/subpages/welcome";
+import { MainContainer, Preloader } from "src/styled/main";
+import { LandingSectionWrapper, LandingSectionFilter, EndingBlock } from "src/styled/subpages/welcome";
 import {
   UserPanelHeader, UserPanelWelcomeSection, UserPanelLastView,
   UserPanelLastViewHeader, UserPanelLastViewGallery, UserPanelLastViewNoItemsHeader, 
-} from "../../styled/subpages/userpanel";
+} from "src/styled/subpages/userpanel";
 
-import LastViewItemComponent from "../helperComponents/userPanel/LastViewItemComponent";
-import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
-import { RootState } from "../../redux/mainReducer";
+import LastViewItemComponent from "src/components/helperComponents/userPanel/LastViewItemComponent";
+import SearchingPreloaderComponent from "src/components/helperComponents/searcher/searchingPreloaderComponent";
+import HeadTags from "src/components/subcomponents/headTags";
+import { RootState } from "src/redux/mainReducer";
 
-import getLastViews from "../../connectionFunctions/userPanel/loadLastViews";
+import getLastViews from "src/connectionFunctions/userPanel/loadLastViews";
 
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
 
@@ -43,26 +44,30 @@ type LastPublishedItemType = {
 const UserPanel:React.FC = () => {
   const [lastViewedList, setLastViewedList] = useState<LastViewItemType[]>([]);
   const [lastPublishedList, setLastPublishedList] = useState<LastPublishedItemType[]>([]);
+  const [mostPopularList, setMostPopularList] = useState<LastViewItemType[]>([]);
   const [isWorking, toggleIsWorking] = useState<boolean>(true);
   const [isViewsLoading, toggleIsViewsLoading] = useState<boolean>(false);
   const [isPublishedLoading, toggleIsPublishedLoading] = useState<boolean>(false);
+  const [isMostPopularLoading, toggleIsMostPopularLoading] = useState<boolean>(false);
   const currentToken:string = useSelector((state: RootState) => state.generalData.currentToken);
   const navigate = useNavigate();
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
 
   useEffect(() => {
-    console.log(memoryUserId);
     if (memoryUserId.length === 0 || memoryUserId === undefined) navigate("/");
     else {
       toggleIsViewsLoading(true);
       toggleIsPublishedLoading(true);
-      getLastViews(memoryUserId, "viewedDocuments", setLastViewedList, toggleIsWorking, toggleIsViewsLoading);
-      getLastViews(memoryUserId, "publishedDocuments", setLastPublishedList, toggleIsWorking, toggleIsPublishedLoading);
+      toggleIsMostPopularLoading(true);
+      getLastViews(memoryUserId, "users/viewedDocuments", setLastViewedList, toggleIsWorking, toggleIsViewsLoading);
+      getLastViews(memoryUserId, "users/publishedDocuments", setLastPublishedList, toggleIsWorking, toggleIsPublishedLoading);
+      getLastViews(memoryUserId, "documents/most-popular", setMostPopularList, toggleIsWorking, toggleIsMostPopularLoading);
     }
   }, [currentToken, memoryUserId]);
 
   return (
     <MainContainer className="block-center">
+      <HeadTags areAdsOn={false} title="User Panel - Sparkledge" description="" />
       <Suspense fallback={<Preloader className="block-center">Ładowanie...</Preloader>}>
         <LandingSectionWrapper
           className="block-center"
@@ -75,6 +80,39 @@ const UserPanel:React.FC = () => {
             <UserPanelHeader className="block-center">
               Panel użytkownika
             </UserPanelHeader>
+            <UserPanelWelcomeSection className="block-center">
+              <UserPanelLastView width={100}>
+                <UserPanelLastViewHeader className="block-center">
+                  Ostatnio przeglądane
+                </UserPanelLastViewHeader>
+                <UserPanelLastViewGallery className="block-center">
+                  {
+                    mostPopularList.length > 0 && isWorking && !isMostPopularLoading ? mostPopularList.map((elem, ind) => (
+                      <Link to={`/document/${elem.id}`}>
+                        <LastViewItemComponent
+                          key="last-view-material"
+                          title={elem.title}
+                          name={`${elem.user.firstName} ${elem.user.lastName}`}
+                          additionalData={[[<PublishedWithChangesIcon style={{
+                            color: "inherit",
+                            fontSize: "1.3em", 
+                            verticalAlign: "top", 
+                          }}
+                          />, elem.createdAt]]}
+                          isPublishedByUser={false}
+                        />
+                      </Link>
+                    )) : isMostPopularLoading ? (
+                      <SearchingPreloaderComponent />
+                    ) : (
+                      <UserPanelLastViewNoItemsHeader className="block-center">
+                        {!isWorking ? "Błąd połączenia. Spróbuj ponownie" : "Brak danych"}
+                      </UserPanelLastViewNoItemsHeader>
+                    )
+                  }
+                </UserPanelLastViewGallery>
+              </UserPanelLastView>
+            </UserPanelWelcomeSection>
             <UserPanelWelcomeSection className="block-center">
               <UserPanelLastView width={60}>
                 <UserPanelLastViewHeader className="block-center">

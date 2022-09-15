@@ -11,7 +11,7 @@ const getLastViews = async (
   toggleIsWorking: (newState: boolean) => void,
   toggleLoading: (newState: boolean) => void,
 ) => {
-  await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/users/${route}`, {
+  await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/${route}`, {
     headers: {
       "Content-type": "application/json",
       Authorization: `Bearer ${currentToken}`,

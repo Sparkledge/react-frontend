@@ -11,7 +11,8 @@ import {
 import BackgroundPattern from "src/assets/pattern_background5.webp";
 
 import verifyEmail from "src/connectionFunctions/signin/verifyEmail";
-import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
+import SearchingPreloaderComponent from "src/components/helperComponents/searcher/searchingPreloaderComponent";
+import HeadTags from "src/components/subcomponents/headTags";
 
 const FooterComponent = React.lazy(() => import("src/components/helperComponents/welcome/footerComponent"));
 
@@ -35,6 +36,7 @@ const AuthenticationPanel:React.FC = () => {
 
   return (
     <MainContainer className="block-center">
+      <HeadTags areAdsOn={false} title="Weryfikacja - Sparkledge" description="" />
       <Suspense fallback={<SearchingPreloaderComponent />}>
         <LandingSectionWrapper
           className="block-center"

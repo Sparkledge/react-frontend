@@ -2,25 +2,26 @@ import React, { useState, useEffect, Suspense } from "react";
 import useLocalStorage from "use-local-storage";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
-import { MainContainer } from "../../styled/main";
-import { LandingSectionWrapper, LandingSectionFilter } from "../../styled/subpages/welcome";
-import { AboutHeader } from "../../styled/subpages/about";
-import { SearchingResultsSection } from "../../styled/subpages/searcher";
+import { MainContainer } from "src/styled/main";
+import { LandingSectionWrapper, LandingSectionFilter } from "src/styled/subpages/welcome";
+import { AboutHeader } from "src/styled/subpages/about";
+import { SearchingResultsSection } from "src/styled/subpages/searcher";
 import {
   SearchingResultsWrapper, SearchingNoResultsContainer, SearchingResultsOpenFiltersBtn,
-} from "../../styled/subpages/searcher/searcherResults";
-import { SearcherFailureContainer, SearcherFailureHeader, SearcherFailureButton } from "../../styled/subpages/searcher/searcherFailure";
-import { SearcherBarInputContainer, SearcherInput } from "../../styled/subpages/searcher/searcherBar";
+} from "src/styled/subpages/searcher/searcherResults";
+import { SearcherFailureContainer, SearcherFailureHeader, SearcherFailureButton } from "src/styled/subpages/searcher/searcherFailure";
+import { SearcherBarInputContainer, SearcherInput } from "src/styled/subpages/searcher/searcherBar";
 
-import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
-import SearcherFilters from "../helperComponents/searcher/searcherFilters";
+import SearchingPreloaderComponent from "src/components/helperComponents/searcher/searchingPreloaderComponent";
+import SearcherFilters from "src/components/helperComponents/searcher/searcherFilters";
 
-import getUniversitiesInfrastructure from "../../connectionFunctions/searcher/getUniversitiesInfrastructure";
-import getUniversitySubInfrastructure from "../../connectionFunctions/searcher/getUniversitySubInfrastructure";
-import submitTheQuery from "../../connectionFunctions/searcher/submitTheQuery";
+import getUniversitiesInfrastructure from "src/connectionFunctions/searcher/getUniversitiesInfrastructure";
+import getUniversitySubInfrastructure from "src/connectionFunctions/searcher/getUniversitySubInfrastructure";
+import submitTheQuery from "src/connectionFunctions/searcher/submitTheQuery";
 
-import checkIfFound from "../auxiliaryFunctions/searcher/checkIfFound";
-import SearchingMainResultComponent from "../helperComponents/searcher/searchingMainResultComponent";
+import checkIfFound from "src/components/auxiliaryFunctions/searcher/checkIfFound";
+import SearchingMainResultComponent from "src/components/helperComponents/searcher/searchingMainResultComponent";
+import HeadTags from "src/components/subcomponents/headTags";
 
 const SearchBarComponent = React.lazy(() => import("../helperComponents/searcher/searchBarComponent"));
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
@@ -183,6 +184,7 @@ const Searcher:React.FC = () => {
 
   return (
     <MainContainer className="block-center">
+      <HeadTags areAdsOn={false} title="Wyszukiwarka - Sparkledge" description="" />
       <LandingSectionWrapper
         className="block-center"
         source={BackgroundPattern}

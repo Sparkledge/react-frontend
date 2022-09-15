@@ -29,6 +29,7 @@ export const UserPanelWelcomeSection = styled.section`
     text-align: center;
     position: relative;
     top: 3vh;
+    margin-bottom: 3vh;
 
     @media screen and (min-width: 1440px){
         width: calc(95% - 10px);
@@ -126,6 +127,12 @@ export const UserPanelLastViewItem = styled.div<UserPanelLastViewItemInterface>`
     min-height: calc(40vh - 10px);
     height: fit-content;
     color: ${(props) => props.theme.color} !important;
+    transition: filter 0.4s;
+    cursor: pointer;
+
+    &:hover{
+        filter: brightness(70%);
+    }
 
     @media screen and (min-width: 375px){
         width: calc(80% - 20px);

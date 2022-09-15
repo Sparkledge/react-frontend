@@ -14,9 +14,10 @@ import {
 
 import BackgroundPattern from "src/assets/pattern_background5.webp";
 import startTheProcedure from "src/connectionFunctions/forgotPassword/startTheProcedure";
-import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
+import SearchingPreloaderComponent from "src/components/helperComponents/searcher/searchingPreloaderComponent";
+import HeadTags from "src/components/subcomponents/headTags";
 
-import validateIfEmail from "../auxiliaryFunctions/forgotPassword/validateIfEmail";
+import validateIfEmail from "src/components/auxiliaryFunctions/forgotPassword/validateIfEmail";
 
 const FooterComponent = React.lazy(() => import("src/components/helperComponents/welcome/footerComponent"));
 
@@ -34,6 +35,7 @@ const ForgotPassword:React.FC = () => {
 
   return (
     <MainContainer className="block-center">
+      <HeadTags areAdsOn={false} title="Reset hasła - Sparkledge" description="" />
       <Suspense fallback={<SearchingPreloaderComponent />}>
         <LandingSectionWrapper
           className="block-center"
