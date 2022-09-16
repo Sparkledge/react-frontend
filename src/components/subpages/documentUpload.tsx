@@ -12,15 +12,16 @@ import {
   DocumentUploadFileDescription, DocumentUploadFileButton, 
 } from "src/styled/subpages/documentUpload";
 
-import { RootState } from "../../redux/mainReducer";
+import { RootState } from "src/redux/mainReducer";
 
-import sendFile from "../../connectionFunctions/documentUpload/sendFile";
-import getUniversitySubInfrastructure from "../../connectionFunctions/searcher/getUniversitySubInfrastructure";
-import loadUniversities from "../../connectionFunctions/documentUpload/loadUniversities";
-import SearchingParametersPicker from "../helperComponents/documentUpload/searchingParametersPicker";
-import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
+import sendFile from "src/connectionFunctions/documentUpload/sendFile";
+import getUniversitySubInfrastructure from "src/connectionFunctions/searcher/getUniversitySubInfrastructure";
+import loadUniversities from "src/connectionFunctions/documentUpload/loadUniversities";
+import SearchingParametersPicker from "src/components/helperComponents/documentUpload/searchingParametersPicker";
+import SearchingPreloaderComponent from "src/components/helperComponents/searcher/searchingPreloaderComponent";
+import HeadTags from "src/components/subcomponents/headTags";
 
-import selectFile from "../auxiliaryFunctions/documentUpload/selectFile";
+import selectFile from "src/components/auxiliaryFunctions/documentUpload/selectFile";
 
 const BackgroundPattern = require("../../assets/pattern_background5.webp");
 
@@ -101,6 +102,7 @@ const DocumentUpload:React.FC = () => {
 
   return (
     <MainContainer className="block-center">
+      <HeadTags areAdsOn={false} title="Upload dokumentu - Sparkledge" description="" />
       <LandingSectionWrapper
         className="block-center"
         backgroundSize="initial"

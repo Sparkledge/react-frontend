@@ -7,11 +7,13 @@ import {
 } from "src/styled/subpages/termsAndConditions";
 
 import BackgroundPattern from "src/assets/pattern_background5.webp";
+import HeadTags from "src/components/subcomponents/headTags";
 
 const FooterComponent = React.lazy(() => import("src/components/helperComponents/welcome/footerComponent"));
 
 const TermsAndConditions:React.FC = () => (
   <MainContainer className="block-center">
+    <HeadTags areAdsOn={false} title="Regulamin - Sparkledge" description="" />
     <LandingSectionWrapper
       className="block-center"
       source={BackgroundPattern}

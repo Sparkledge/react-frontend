@@ -20,7 +20,8 @@ const refreshToken = async (
       changeAccessToken(res.data.accessToken);
     })
     .catch((err) => {
-      // console.log(err);
+      changeAccessToken("");
+      changeRefreshToken("");
     });
 };
 

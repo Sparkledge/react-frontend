@@ -19,6 +19,7 @@ import {
 } from "src/styled/subpages/signing";
 
 import SearchingPreloaderComponent from "src/components/helperComponents/searcher/searchingPreloaderComponent";
+import HeadTags from "src/components/subcomponents/headTags";
 
 import TriggerTheShot from "src/connectionFunctions/signin/sendSigningData";
 import VerifyByGoogleData from "src/connectionFunctions/signin/verifyByGoogleData";
@@ -92,6 +93,7 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
 
   return (
     <MainContainer className="block-center">
+      <HeadTags areAdsOn={false} title={`${mode === 1 ? "Logowanie - " : "Rejestracja - "}Sparkledge`} description="" />
       <Suspense fallback={<Preloader className="block-center">Ładowanie...</Preloader>}>
         <LandingSectionWrapper
           className="block-center"

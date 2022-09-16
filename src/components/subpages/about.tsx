@@ -1,8 +1,9 @@
 import React, { Suspense } from "react";
 
-import { MainContainer, Preloader } from "../../styled/main";
-import { LandingSectionWrapper, LandingSectionFilter } from "../../styled/subpages/welcome";
-import { AboutHeader, AboutDesc } from "../../styled/subpages/about";
+import { MainContainer, Preloader } from "src/styled/main";
+import { LandingSectionWrapper, LandingSectionFilter } from "src/styled/subpages/welcome";
+import { AboutHeader, AboutDesc } from "src/styled/subpages/about";
+import HeadTags from "src/components/subcomponents/headTags";
 
 const TeamWidgetsSection = React.lazy(() => import("../helperComponents/about/TeamWidgetsSection"));
 const SpecialThanksSection = React.lazy(() => import("../helperComponents/about/SpecialThanksSection"));
@@ -11,6 +12,7 @@ const BackgroundPattern = require("../../assets/pattern_background5.webp");
 
 const About:React.FC = () => (
   <MainContainer className="block-center">
+    <HeadTags areAdsOn={false} title="O nas - Sparkledge" description="" />
     <Suspense fallback={<Preloader className="block-center">Ładowanie...</Preloader>}>
       <LandingSectionWrapper
         className="block-center"
