@@ -31,7 +31,7 @@ import refreshToken from "../connectionFunctions/main/refreshToken";
 ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_ID);
 
 const Main: React.FC = () => {
-  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
+  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "", { syncData: true });
   const [refreshUserId, setRefreshUserId] = useLocalStorage<string>("u_r", "");
   const [isUserConsent, toggleIsUserConsent] = useLocalStorage<boolean>("u_a", false);
 
@@ -45,8 +45,11 @@ const Main: React.FC = () => {
     if (refreshUserId.length > 0) {
       refreshToken(refreshUserId, setMemoryUserId, setRefreshUserId);
       dispatch(setNewToken(memoryUserId));
+    } else {
+      setMemoryUserId(undefined);
+      dispatch(setNewToken(memoryUserId));
     }
-  }, []);
+  }, [refreshUserId]);
 
   useEffect(() => {
     ReactGA.pageview(window.location.pathname + window.location.search);

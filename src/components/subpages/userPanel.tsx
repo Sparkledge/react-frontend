@@ -65,10 +65,10 @@ const UserPanel:React.FC = () => {
   const [isMostPopularLoading, toggleIsMostPopularLoading] = useState<boolean>(false);
   const currentToken:string = useSelector((state: RootState) => state.generalData.currentToken);
   const navigate = useNavigate();
-  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
+  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "", { syncData: true });
 
   useEffect(() => {
-    if (memoryUserId.length === 0 || memoryUserId === undefined) navigate("/");
+    if (memoryUserId === undefined || memoryUserId.length === 0 || currentToken.length === 0) navigate("/");
     else {
       toggleIsViewsLoading(true);
       toggleIsPublishedLoading(true);
