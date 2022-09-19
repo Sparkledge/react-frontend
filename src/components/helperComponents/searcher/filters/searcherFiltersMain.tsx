@@ -38,7 +38,7 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
         isOpened={openedFilters[3]}
         elementsNumber={degrees.length + 1}
       >
-        <SearchingFilterOptionChoice>
+        <SearchingFilterOptionChoice isInterfaceButton onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], openedFilters[2], !openedFilters[3], openedFilters[4]])}>
           <SearchingFilterOptionLabel>
             Według stopnia
           </SearchingFilterOptionLabel>
@@ -46,12 +46,10 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
             {!openedFilters[3] ? (
               <ArrowDropDownIcon
                 style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], openedFilters[2], !openedFilters[3], openedFilters[4]])}
               />
             ) : (
               <ArrowDropUpIcon
                 style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], openedFilters[2], !openedFilters[3], openedFilters[4]])}
               />
             )}
 
@@ -78,7 +76,7 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
         isOpened={openedFilters[0]}
         elementsNumber={programmesList.length + 1}
       >
-        <SearchingFilterOptionChoice>
+        <SearchingFilterOptionChoice isInterfaceButton onClick={() => setOpenedFilters([!openedFilters[0], openedFilters[1], openedFilters[2], openedFilters[3], openedFilters[4]])}>
           <SearchingFilterOptionLabel>
             Według kierunku
           </SearchingFilterOptionLabel>
@@ -86,12 +84,10 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
             {!openedFilters[0] ? (
               <ArrowDropDownIcon
                 style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([!openedFilters[0], openedFilters[1], openedFilters[2], openedFilters[3], openedFilters[4]])}
               />
             ) : (
               <ArrowDropUpIcon
                 style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([!openedFilters[0], openedFilters[1], openedFilters[2], openedFilters[3], openedFilters[4]])}
               />
             )}
 
@@ -118,7 +114,7 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
         isOpened={openedFilters[2]}
         elementsNumber={semesters.length + 1}
       >
-        <SearchingFilterOptionChoice>
+        <SearchingFilterOptionChoice isInterfaceButton onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], !openedFilters[2], openedFilters[3], openedFilters[4]])}>
           <SearchingFilterOptionLabel>
             Według semestru
           </SearchingFilterOptionLabel>
@@ -126,12 +122,10 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
             {!openedFilters[2] ? (
               <ArrowDropDownIcon
                 style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], !openedFilters[2], openedFilters[3], openedFilters[4]])}
               />
             ) : (
               <ArrowDropUpIcon
                 style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], !openedFilters[2], openedFilters[3], openedFilters[4]])}
               />
             )}
 
@@ -160,7 +154,11 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
         isOpened={openedFilters[1]}
         elementsNumber={coursesList.filter((elem: any) => elem.semester === chosenSemester).length + 1}
       >
-        <SearchingFilterOptionChoice>
+        <SearchingFilterOptionChoice
+          isInterfaceButton 
+          onClick={() => setOpenedFilters([openedFilters[0], coursesList.length > 0 && chosenSemester > 0 ? !openedFilters[1] : openedFilters[1], 
+            openedFilters[2], openedFilters[3], openedFilters[4]])}
+        >
           <SearchingFilterOptionLabel>
             Według kursu
           </SearchingFilterOptionLabel>
@@ -168,14 +166,10 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
             {!openedFilters[1] ? (
               <ArrowDropDownIcon
                 style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([openedFilters[0], coursesList.length > 0 && chosenSemester > 0 ? !openedFilters[1] : openedFilters[1], 
-                  openedFilters[2], openedFilters[3], openedFilters[4]])}
               />
             ) : (
               <ArrowDropUpIcon
                 style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([openedFilters[0], coursesList.length > 0 && chosenSemester > 0 ? !openedFilters[1] : openedFilters[1], 
-                  openedFilters[2], openedFilters[3], openedFilters[4]])}
               />
             )}
 
@@ -209,7 +203,7 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
         isOpened={openedFilters[4]}
         elementsNumber={types.length + 1}
       >
-        <SearchingFilterOptionChoice>
+        <SearchingFilterOptionChoice isInterfaceButton onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], openedFilters[2], openedFilters[3], !openedFilters[4]])}>
           <SearchingFilterOptionLabel>
             Według typu przedmiotu
           </SearchingFilterOptionLabel>
@@ -217,12 +211,10 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
             {!openedFilters[4] ? (
               <ArrowDropDownIcon
                 style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], openedFilters[2], openedFilters[3], !openedFilters[4]])}
               />
             ) : (
               <ArrowDropUpIcon
                 style={{ color: "inherit", fontSize: "1.2em" }}
-                onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], openedFilters[2], openedFilters[3], !openedFilters[4]])}
               />
             )}
 
