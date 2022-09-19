@@ -4,6 +4,10 @@ interface SearchingFiltersOptionWrapperInterface {
   isOpened: boolean,
   elementsNumber: number
 }
+
+interface SearchingFilterOptionChoiceInterface {
+  isInterfaceButton?: boolean
+}
   
 interface SearchingFilterOptionChoiceCheckboxInterface {
   isChosen: boolean
@@ -125,12 +129,21 @@ export const SearchingFiltersOptionWrapper = styled.div<SearchingFiltersOptionWr
       }
   `;
   
-export const SearchingFilterOptionChoice = styled.div`
+export const SearchingFilterOptionChoice = styled.div<SearchingFilterOptionChoiceInterface>`
       width: calc(100% - 10px);
       height: calc(8vh - 10px);
       padding: 5px;
       text-align: center;
       margin-bottom: 1vh;
+
+      ${(props) => props.isInterfaceButton !== undefined && props.isInterfaceButton ? `
+        cursor: pointer;
+        transition: all 0.4s;
+
+        &:hover{
+          filter: brightness(70%);
+        }
+      ` : null}
   `;
   
 export const SearchingFilterOptionLabel = styled.div`
