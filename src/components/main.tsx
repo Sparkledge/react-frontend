@@ -23,6 +23,7 @@ import ForgotPassword from "./subpages/forgotPassword";
 import ResetPassword from "./subpages/resetPassword";
 import AuthenticationPanel from "./subpages/authentication";
 import TermsAndConditions from "./subpages/termsAndConditions";
+import FAQ from "./subpages/faq";
 
 import UserPanel from "./subpages/userPanel";
 
@@ -75,6 +76,7 @@ const Main: React.FC = () => {
           <Route path="/resetPassword/:email/:token" element={<ResetPassword />} /> 
           <Route path="/authentication/:token" element={<AuthenticationPanel />} />
           <Route path="/terms" element={<TermsAndConditions />} />
+          <Route path="/faq" element={<FAQ />} />
           <Route path="*" element={<Notfound />} />
         </Routes>
         {!isUserConsent ? <MemoryUsingBanner toggleIsUserConsent={toggleIsUserConsent} /> : null}
