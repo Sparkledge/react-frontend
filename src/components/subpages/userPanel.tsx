@@ -97,7 +97,7 @@ const UserPanel:React.FC = () => {
             <UserPanelWelcomeSection className="block-center">
               <UserPanelLastView width={100}>
                 <UserPanelLastViewHeader className="block-center">
-                  Ostatnio przeglądane
+                  Najbardziej popularne
                 </UserPanelLastViewHeader>
                 <UserPanelLastViewGallery className="block-center">
                   {
