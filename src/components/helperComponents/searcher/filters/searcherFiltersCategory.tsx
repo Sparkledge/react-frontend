@@ -44,7 +44,7 @@ const SearcherFiltersCategory:React.FC<SearcherFiltersCategoryInterface> = ({
     elementsNumber={elementsNumber}
   >
 
-    <SearchingFilterOptionChoice>
+    <SearchingFilterOptionChoice onClick={() => openingFunction(!isChoosingOpened)}>
       <SearchingFilterOptionLabel>
         {header}
       </SearchingFilterOptionLabel>
@@ -52,12 +52,10 @@ const SearcherFiltersCategory:React.FC<SearcherFiltersCategoryInterface> = ({
         {!isChoosingOpened ? (
           <ArrowDropDownIcon
             style={{ color: "inherit", fontSize: "1.2em" }}
-            onClick={() => openingFunction(!isChoosingOpened)}
           />
         ) : (
           <ArrowDropUpIcon
             style={{ color: "inherit", fontSize: "1.2em" }}
-            onClick={() => openingFunction(!isChoosingOpened)}
           />
         )}
 
