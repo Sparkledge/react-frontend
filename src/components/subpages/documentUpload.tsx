@@ -9,7 +9,7 @@ import {
   DocumentUploadFormWrapper, DocumentUploadFormHeader,
   DocumentUploadFormDataSection, DocumentUploadNotWorking, DocumentUploadTextInput,
   DocumentUploadNextButton, DocumentUploadDataSubSection, DocumentUploadFileHeader, DocumentUploadFileInput,
-  DocumentUploadFileDescription, DocumentUploadFileButton, 
+  DocumentUploadFileDescription, DocumentUploadFileButton, DocumentUploadResetButton,
 } from "src/styled/subpages/documentUpload";
 
 import { RootState } from "src/redux/mainReducer";
@@ -31,7 +31,7 @@ const DocumentUpload:React.FC = () => {
   const [isWorking, toggleIsWorking] = useState<boolean>(true);
   const [isSending, toggleIsSending] = useState<boolean>(false);
   const [isOnline, toggleIsOnline] = useState<boolean>(window.navigator.onLine);
-  const [phaseNumber, setPhaseNumber] = useState<number>(1); // 1 - name, 2 - category 3- file & upload, 4 - file uploaded
+  const [phaseNumber, setPhaseNumber] = useState<number>(4); // 1 - name, 2 - category 3- file & upload, 4 - file uploaded
   const [materialName, setMaterialName] = useState<string>("");
   const [file, setFile] = useState<any>(null);
   const [isFileLoaded, setIsFileLoaded] = useState<number>(0); // 0 - status unknown, 1 - loaded, 2 - problems occured
@@ -53,6 +53,28 @@ const DocumentUpload:React.FC = () => {
   const [searchedTypeOfSubject, setSearchedTypeOfSubject] = useState<string>("");
 
   const FileRef = createRef<HTMLInputElement>();
+
+  const resetUploading = () => {
+    toggleIsSending(false);
+    toggleIsWorking(true);
+    setPhaseNumber(1);
+    setMaterialName("");
+    setFile(null);
+    setIsFileLoaded(0);
+    setDesc("");
+    setWarning("");
+    setDocumentId("");
+    setSearchedTypeOfSubject("");
+    setSearchedCourse("");
+    setSearchedSemester(0);
+    setSearchedProgramme("");
+    setSearchedType("");
+    setSearchedFaculty("");
+    setSearchedUniversity("");
+    setCoursesList([]);
+    setProgrammesList([]);
+    setFacultiesList([]);
+  };
 
   useEffect(() => {
     loadUniversities(setUniversitiesList, toggleIsWorking);
@@ -208,6 +230,9 @@ const DocumentUpload:React.FC = () => {
                                       </DocumentUploadNotWorking>
                                     </Link>
                                   ) : null}
+                                  <DocumentUploadResetButton className="block-center" onClick={() => resetUploading()}>
+                                    Reset
+                                  </DocumentUploadResetButton>
                                 </>
                             ) : (
                               <DocumentUploadNotWorking className="block-center">

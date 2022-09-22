@@ -234,3 +234,26 @@ export const DocumentUploadFileDescription = styled.textarea`
         font-size: 1.2em;
     }
 `;
+
+export const DocumentUploadResetButton = styled.button`
+    padding: 15px 40px;
+    width: fit-content;
+    text-align: center;
+    font-size: 1.9em;
+    letter-spacing: 0.05em;
+    position: relative;
+    top: 30vh;
+    color: inherit;
+    font-family: inherit;
+    text-shadow: ${(props) => props.theme.fonts.textShadowMain};
+    border: none;
+    border-radius: 10px;
+    box-shadow: ${(props) => props.theme.fonts.textShadowMain};
+    background: ${(props) => props.theme.signingInputBackground};
+    cursor: pointer;
+    transition: all 0.4s;
+
+    &:hover{
+        filter: brightness(70%);
+    }
+`;
