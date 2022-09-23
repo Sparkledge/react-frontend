@@ -196,3 +196,29 @@ export const ReportingPanelSubmitBtn = styled.button`
         font-size: 1.4em;
     }
 `;
+
+export const ReportingPanelCloseBtn = styled.div`
+    width: fit-content;
+    height: fit-content;
+    padding: 10px;
+    border-radius: 10px;
+    color: ${(props) => props.theme.color};
+    font-size: 1.25em;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    transition: all 0.4s;
+
+    &:hover{
+        filter: brightness(70%);
+    }
+
+    @media screen and (min-width: 320px){
+        font-size: 1.5em;
+    }
+
+    @media screen and (min-width: 425px){
+        font-size: 1.8em;
+    }
+`;

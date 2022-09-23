@@ -4,13 +4,16 @@
 
 import React, { useState, useEffect } from "react";
 
+import CloseIcon from "@mui/icons-material/Close";
+
 import {
   ReportingPanelWrapper, ReportingPanelContainer,
   ReportingPanelHeader, ReportingPanelSubHeader, 
   ReportingPanelReportKindContainer,
   ReportingPanelReportKindBtn,
   ReportingPanelSubmitBtn,
-  ReportingPanelInput,
+  ReportingPanelInput, 
+  ReportingPanelCloseBtn,
 } from "src/styled/subpages/documentDisplayer/reportingPanel";
 
 import reportMaterial, { ReportType } from "src/connectionFunctions/documentDisplayer/reportMaterial";
@@ -72,6 +75,9 @@ const ReportingPanel:React.FC<ReportingPanelInterface> = ({ documentId, loginUse
         {
             reportResult !== 1 ? (
               <> 
+                <ReportingPanelCloseBtn onClick={() => closeThePanel(false)}>
+                  <CloseIcon style={{ color: "inherit", fontSize: "inherit" }} />
+                </ReportingPanelCloseBtn>
                 {" "}
                 <ReportingPanelSubHeader className="block-center">
                   Podaj rodzaj zgłoszenia
