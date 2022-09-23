@@ -11,6 +11,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker build --tag frontend .
+
+    - name: Authenticate to GCP
+      uses: google-github-actions/auth@v0
+      with:
+        credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v0
+
+    - name: Push the docker image
+      run: |
+        docker tag frontend gcr.io/${{ secrets.GOOGLE_PROJECT_NAME }}/frontend:latest
+        docker push gcr.io/${{ secrets.GOOGLE_PROJECT_NAME }}/frontend:latest
