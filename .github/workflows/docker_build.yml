@@ -7,7 +7,7 @@ on:
 jobs:
 
   build:
-
+    name: Build and Push
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +24,10 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v0
 
+    - name: Set up registry connection
+      run: gcloud auth configure-docker --quiet
+
     - name: Push the docker image
       run: |
-        docker tag frontend gcr.io/${{ secrets.GOOGLE_PROJECT_NAME }}/frontend:latest
-        docker push gcr.io/${{ secrets.GOOGLE_PROJECT_NAME }}/frontend:latest
+        docker tag frontend gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/frontend
+        docker push gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/frontend
