@@ -4,7 +4,8 @@
 
 */
 
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation, Link } from "react-router-dom";
 
 import {
   MemoryUsingBannerContainer, MemoryUsingBannerHeader,
@@ -15,18 +16,26 @@ interface MemoryUsingBannerInterface {
   toggleIsUserConsent: (newState: boolean) => void,
 }
 
-const MemoryUsingBanner:React.FC<MemoryUsingBannerInterface> = ({ toggleIsUserConsent }:MemoryUsingBannerInterface) => (
-  <MemoryUsingBannerContainer className="block-center">
-    <MemoryUsingBannerHeader className="block-center">
-      Memory alert
-    </MemoryUsingBannerHeader>
-    <MemoryUsingBannerContent className="block-center">
-      Pragniemy poinformować, że nasza strona używa local storage Twojego urządzenia celem zapisu preferencji wyszukiwania oraz danych logowania.
-    </MemoryUsingBannerContent>
-    <MemoryUsingBannerButton className="block-center" onClick={() => toggleIsUserConsent(true)}>
-      Akceptuję warunki serwisu
-    </MemoryUsingBannerButton>
-  </MemoryUsingBannerContainer>
-);
+const MemoryUsingBanner:React.FC<MemoryUsingBannerInterface> = ({ toggleIsUserConsent }:MemoryUsingBannerInterface) => {
+  const location = useLocation();
+  
+  return location.pathname === "/terms" ? null : (
+    <MemoryUsingBannerContainer className="block-center">
+      <MemoryUsingBannerHeader className="block-center">
+        Memory alert
+      </MemoryUsingBannerHeader>
+      <MemoryUsingBannerContent className="block-center">
+        Pragniemy poinformować, że nasza strona używa local storage Twojego urządzenia celem zapisu preferencji wyszukiwania oraz danych logowania. 
+        <br />
+        W celu dokładniejszego zapoznania się z zasadzami obowiązującymi w serwisie Sparkledge, 
+        {" "}
+        <Link to="/terms"> Otwórz stronę z regulaminem </Link>
+      </MemoryUsingBannerContent>
+      <MemoryUsingBannerButton className="block-center" onClick={() => toggleIsUserConsent(true)}>
+        Akceptuję warunki serwisu
+      </MemoryUsingBannerButton>
+    </MemoryUsingBannerContainer>
+  );
+};
 
 export default MemoryUsingBanner;
