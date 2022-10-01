@@ -66,16 +66,21 @@ const UserPanel:React.FC = () => {
   const currentToken:string = useSelector((state: RootState) => state.generalData.currentToken);
   const navigate = useNavigate();
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "", { syncData: true });
+  const [isLoading, toggleIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (memoryUserId === undefined || memoryUserId.length === 0 || currentToken.length === 0) navigate("/");
+    if (memoryUserId === undefined) toggleIsLoading(true);
     else {
-      toggleIsViewsLoading(true);
-      toggleIsPublishedLoading(true);
-      toggleIsMostPopularLoading(true);
-      getLastViews(memoryUserId, "users/viewedDocuments", setLastViewedList, toggleIsWorking, toggleIsViewsLoading);
-      getLastViews(memoryUserId, "users/publishedDocuments", setLastPublishedList, toggleIsWorking, toggleIsPublishedLoading);
-      getLastViews(memoryUserId, "documents/most-popular", setMostPopularList, toggleIsWorking, toggleIsMostPopularLoading);
+      toggleIsLoading(false);
+      if (memoryUserId.length === 0) navigate("/");
+      else {
+        toggleIsViewsLoading(true);
+        toggleIsPublishedLoading(true);
+        toggleIsMostPopularLoading(true);
+        getLastViews(memoryUserId, "users/viewedDocuments", setLastViewedList, toggleIsWorking, toggleIsViewsLoading);
+        getLastViews(memoryUserId, "users/publishedDocuments", setLastPublishedList, toggleIsWorking, toggleIsPublishedLoading);
+        getLastViews(memoryUserId, "documents/most-popular", setMostPopularList, toggleIsWorking, toggleIsMostPopularLoading);
+      }
     }
   }, [currentToken, memoryUserId]);
 
@@ -94,13 +99,15 @@ const UserPanel:React.FC = () => {
             <UserPanelHeader className="block-center">
               Panel użytkownika
             </UserPanelHeader>
-            <UserPanelWelcomeSection className="block-center">
-              <UserPanelLastView width={100}>
-                <UserPanelLastViewHeader className="block-center">
-                  Najbardziej popularne
-                </UserPanelLastViewHeader>
-                <UserPanelLastViewGallery className="block-center">
-                  {
+            {isLoading ? <SearchingPreloaderComponent /> : (
+              <>
+                <UserPanelWelcomeSection className="block-center">
+                  <UserPanelLastView width={100}>
+                    <UserPanelLastViewHeader className="block-center">
+                      Najbardziej popularne
+                    </UserPanelLastViewHeader>
+                    <UserPanelLastViewGallery className="block-center">
+                      {
                     mostPopularList.length > 0 && isWorking && !isMostPopularLoading ? mostPopularList.map((elem, ind) => (
                       <Link to={`/document/${elem.id}`}>
                         <LastViewItemComponent
@@ -135,16 +142,16 @@ const UserPanel:React.FC = () => {
                       </UserPanelLastViewNoItemsHeader>
                     )
                   }
-                </UserPanelLastViewGallery>
-              </UserPanelLastView>
-            </UserPanelWelcomeSection>
-            <UserPanelWelcomeSection className="block-center">
-              <UserPanelLastView width={60}>
-                <UserPanelLastViewHeader className="block-center">
-                  Ostatnio przeglądane
-                </UserPanelLastViewHeader>
-                <UserPanelLastViewGallery className="block-center">
-                  {
+                    </UserPanelLastViewGallery>
+                  </UserPanelLastView>
+                </UserPanelWelcomeSection>
+                <UserPanelWelcomeSection className="block-center">
+                  <UserPanelLastView width={60}>
+                    <UserPanelLastViewHeader className="block-center">
+                      Ostatnio przeglądane
+                    </UserPanelLastViewHeader>
+                    <UserPanelLastViewGallery className="block-center">
+                      {
                       lastViewedList.length > 0 && isWorking && !isViewsLoading ? lastViewedList.map((elem, ind) => (
                         <Link to={`/document/${elem.id}`}>
                           <LastViewItemComponent
@@ -168,14 +175,14 @@ const UserPanel:React.FC = () => {
                         </UserPanelLastViewNoItemsHeader>
                       )
                     }
-                </UserPanelLastViewGallery>
-              </UserPanelLastView>
-              <UserPanelLastView width={40}>
-                <UserPanelLastViewHeader className="block-center">
-                  Ostatnio publikowane
-                </UserPanelLastViewHeader>
-                <UserPanelLastViewGallery className="block-center">
-                  {
+                    </UserPanelLastViewGallery>
+                  </UserPanelLastView>
+                  <UserPanelLastView width={40}>
+                    <UserPanelLastViewHeader className="block-center">
+                      Ostatnio publikowane
+                    </UserPanelLastViewHeader>
+                    <UserPanelLastViewGallery className="block-center">
+                      {
                       lastPublishedList.length > 0 && !isPublishedLoading ? lastPublishedList.map((elem, ind) => (
                         <Link to={`/document/${elem.id}`}>
                           <LastViewItemComponent
@@ -199,9 +206,11 @@ const UserPanel:React.FC = () => {
                         </UserPanelLastViewNoItemsHeader>
                       )
                     }
-                </UserPanelLastViewGallery>
-              </UserPanelLastView>
-            </UserPanelWelcomeSection>
+                    </UserPanelLastViewGallery>
+                  </UserPanelLastView>
+                </UserPanelWelcomeSection>
+              </>
+            )}
             <EndingBlock />
           </LandingSectionFilter>
         </LandingSectionWrapper>
