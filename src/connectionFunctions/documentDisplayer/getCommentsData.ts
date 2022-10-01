@@ -19,11 +19,11 @@ const getCommentData = async (
     },
   })
     .then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       setCommentsList(res.data);
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       toggleIsCommentsError(true);
     });
 };

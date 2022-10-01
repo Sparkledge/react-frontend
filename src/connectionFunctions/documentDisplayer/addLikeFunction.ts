@@ -22,7 +22,7 @@ const addLike = async (
         toggleIsLiked(!isLiked);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   }
 };

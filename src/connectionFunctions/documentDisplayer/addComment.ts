@@ -22,11 +22,11 @@ const addComment = async (
     },
   })
     .then((res) => {
-      console.log(res);
+      // console.log(res);
       putCommentToTheList(res.data);
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
     });
 };
 

@@ -34,16 +34,16 @@ const sendFile = async (
     },
   })
     .then((res) => {
-      console.log(res);
+      // console.log(res);
       if (res.status === 200 || res.status === 201 || res.status === 204) {
         setPhaseNumber(4);
-        console.log(res.data.id);
+        // console.log(res.data.id);
         setDocumentId(res.data.id.toString());
         toggleIsSending(false);
       }
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       toggleIsWorking(false);
       toggleIsSending(false);
     });

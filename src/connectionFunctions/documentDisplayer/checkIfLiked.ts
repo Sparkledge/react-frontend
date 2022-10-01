@@ -18,7 +18,7 @@ const checkIfLiked = async (
         toggleIsLiked(res.data.status);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   }  
 };

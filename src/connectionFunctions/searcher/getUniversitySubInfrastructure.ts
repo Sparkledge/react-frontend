@@ -37,7 +37,7 @@ const getUniversitySubInfrastructure = async (
     },
   })
     .then((res) => {
-      console.log(res);
+      // console.log(res);
       setInfrastructureList(res.data);
     })
     .catch((err) => {
