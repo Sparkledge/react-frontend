@@ -15,11 +15,11 @@ const startTheProcedure = async (userEmail: string, changeTheReseterState: (newS
     },
   })
     .then((res) => {
-      console.log(res);
+      // console.log(res);
       changeTheReseterState(1);
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       changeTheReseterState(2);
     });
 };

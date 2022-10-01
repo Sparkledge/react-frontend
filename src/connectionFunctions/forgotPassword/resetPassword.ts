@@ -9,11 +9,11 @@ const resetPassword = async (email: string, token: string, newPassword: string, 
     newPassword,
   })
     .then((res) => {
-      console.log(res);
+      // console.log(res);
       callbackState(1);
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       callbackState(2);
     });
 };

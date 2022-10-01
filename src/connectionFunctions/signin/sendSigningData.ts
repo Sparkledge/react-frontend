@@ -58,7 +58,7 @@ const TriggerTheShot = (
         }
       })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           setError("Coś poszło nie tak. Spróbuj ponownie");
         });
     }
