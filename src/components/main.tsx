@@ -15,6 +15,7 @@ import MemoryUsingBanner from "./subcomponents/memoryUsingBanner";
 import Welcome from "./subpages/welcome";
 import About from "./subpages/about";
 import SigningPanel from "./subpages/signing";
+import Profile from "./subpages/profile";
 import Searcher from "./subpages/searcher";
 import DocumentDisplayer from "./subpages/documentDisplayer";
 import DocumentUpload from "./subpages/documentUpload";
