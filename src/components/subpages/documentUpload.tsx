@@ -31,7 +31,7 @@ const DocumentUpload:React.FC = () => {
   const [isWorking, toggleIsWorking] = useState<boolean>(true);
   const [isSending, toggleIsSending] = useState<boolean>(false);
   const [isOnline, toggleIsOnline] = useState<boolean>(window.navigator.onLine);
-  const [phaseNumber, setPhaseNumber] = useState<number>(4); // 1 - name, 2 - category 3- file & upload, 4 - file uploaded
+  const [phaseNumber, setPhaseNumber] = useState<number>(1); // 1 - name, 2 - category 3- file & upload, 4 - file uploaded
   const [materialName, setMaterialName] = useState<string>("");
   const [file, setFile] = useState<any>(null);
   const [isFileLoaded, setIsFileLoaded] = useState<number>(0); // 0 - status unknown, 1 - loaded, 2 - problems occured
