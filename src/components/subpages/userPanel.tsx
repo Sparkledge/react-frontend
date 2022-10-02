@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import DeleteIcon from "@mui/icons-material/Delete";
 import useLocalStorage from "use-local-storage";
 
 import { MainContainer, Preloader } from "src/styled/main";
@@ -19,6 +20,7 @@ import HeadTags from "src/components/subcomponents/headTags";
 import { RootState } from "src/redux/mainReducer";
 
 import getLastViews from "src/connectionFunctions/userPanel/loadLastViews";
+import deleteMaterial, { LastPublishedItemType } from "src/connectionFunctions/userPanel/deleteMaterial";
 
 const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
 
@@ -44,15 +46,6 @@ type MostPopularItemType = {
     firstName: string,
     lastName: string
   }
-};
-
-type LastPublishedItemType = {
-  id: string,
-  title: string,
-  publishedOn: string,
-  likes: number,
-  views: number,
-  createdAt: string,
 };
 
 const UserPanel:React.FC = () => {
@@ -184,20 +177,27 @@ const UserPanel:React.FC = () => {
                     <UserPanelLastViewGallery className="block-center">
                       {
                       lastPublishedList.length > 0 && !isPublishedLoading ? lastPublishedList.map((elem, ind) => (
-                        <Link to={`/document/${elem.id}`}>
-                          <LastViewItemComponent
-                            key="last-published-material"
-                            title={elem.title}
-                            name={" "} 
-                            additionalData={[[<PublishedWithChangesIcon style={{
-                              color: "inherit",
-                              fontSize: "1.3em", 
-                              verticalAlign: "top", 
-                            }}
-                            />, elem.createdAt]]}
-                            isPublishedByUser
-                          />
-                        </Link>
+                        <LastViewItemComponent
+                          key="last-published-material"
+                          title={elem.title}
+                          name={" "} 
+                          additionalData={[[
+                            <DeleteIcon
+                              style={{
+                                color: "inherit",
+                                fontSize: "1.3em",
+                                verticalAlign: "top",
+                                zIndex: 2,
+                              }}
+                              onClick={() => deleteMaterial(memoryUserId, elem.id, lastPublishedList, setLastPublishedList)}
+                            />, "",
+                          ], [
+                            <Link to={`/document/${elem.id}`} style={{ color: "inherit" }}>
+                              Przejdź do dokumentu
+                            </Link>, "",
+                          ]]}
+                          isPublishedByUser
+                        />
                       )) : isPublishedLoading ? (
                         <SearchingPreloaderComponent />
                       ) : (
