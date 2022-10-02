@@ -78,8 +78,6 @@ const Main: React.FC = () => {
           <Route path="/authentication/:token" element={<AuthenticationPanel />} />
           <Route path="/terms" element={<TermsAndConditions />} />
           <Route path="/faq" element={<FAQ />} />
-          <Route path="/profile/:id" element={<Profile />} />
-          <Route path="/profile/" element={<Profile />} />
           <Route path="*" element={<Notfound />} />
         </Routes>
         {!isUserConsent ? <MemoryUsingBanner toggleIsUserConsent={toggleIsUserConsent} /> : null}
