@@ -14,32 +14,70 @@ export const ProfileHeader = styled.header`
 `;
 
 export const ProfileContainer = styled.section`
-    width: calc(80% - 20px);
+    width: calc(100% - 20px);
     padding: 10px;
     text-align: center;
     color: ${(props) => props.theme.color};
+
+    @media screen and (min-width: 425px){
+        width: calc(90% - 20px);
+    }
+
+    @media screen and (min-width: 1024px){
+        width: calc(80% - 20px);
+    }
 `;
 
 export const ProfileUserData = styled.div`
-    width: calc(60% - 30px);
+    width: calc(100% - 30px);
     padding: 10px;
     display: inline-block;
     vertical-align: top;
-    margin: 0px 5px;
+    margin: 5px;
+
+    @media screen and (min-width: 375px){
+        width: calc(90% - 30px);
+    }
+
+    @media screen and (min-width: 425px){
+        width: calc(80% - 30px);
+    }
+
+    @media screen and (min-width: 768px){
+        width: calc(60% - 30px);
+        margin: 0px 5px;
+    }
 `;
 
 export const ProfilePublishingData = styled.div`
-    width: calc(40% - 30px);
+    width: calc(100% - 30px);
     padding: 10px;
     display: inline-block;
     vertical-align: top;
-    margin: 0px 5px;
+    margin: 5px;
+
+    @media screen and (min-width: 375px){
+        width: calc(90% - 30px);
+    }
+
+    @media screen and (min-width: 425px){
+        width: calc(80% - 30px);
+    }
+
+    @media screen and (min-width: 768px){
+        width: calc(40% - 30px);
+        margin: 0px 5px;
+    }
 `;
 
 export const ProfileUserDataContainer = styled.div`
-    width: calc(95% - 10px);
+    width: calc(100% - 10px);
     padding: 5px;
     text-align: center;
+
+    @media screen and (min-width: 1024px){
+        width: calc(95% - 10px);
+    }
 `;
 
 export const ProfileUserSubData = styled.div`
@@ -47,12 +85,20 @@ export const ProfileUserSubData = styled.div`
     height: fit-content;
     padding: 20px 40px;
     border-radius: 10px;
-    font-size: 1.15em;
+    font-size: 0.95em;
     letter-spacing: 0.04em;
     background: ${(props) => props.theme.signingInputBackground};
     display: inline-block;
     vertical-align: top;
     margin: 5px;
+
+    @media screen and (min-width: 425px){
+        font-size: 1.05em;
+    }
+
+    @media screen and (min-width: 1024px){
+        font-size: 1.15em;
+    }
 `;
 
 export const ProfileUserSubDataIconContainer = styled.span`
@@ -66,6 +112,30 @@ export const ProfileUserSubDataTextContainer = styled.span`
     display: inline-block;
     vertical-align: bottom;
     margin: 0px 0px 5px 0px;
+`;
+
+export const ProfileUserDescriptionContainer = styled.div`
+    width: calc(100% - 40px);
+    padding: 20px;
+    text-align: center;
+    font-size: 0.9em;
+    background: ${(props) => props.theme.signingInputBackground};
+    border-radius: 10px;
+    text-align: center;
+    margin: 5px auto;
+
+    @media screen and (min-width: 425px){
+        font-size: 1em;
+    }
+
+    @media screen and (min-width: 768px){
+        font-size: 1.1em;
+    }
+
+    @media screen and (min-width: 1024px){
+        width: calc(90% - 40px);
+        font-size: 1.15em;
+    }
 `;
 
 export const ProfileDataHeader = styled.header`

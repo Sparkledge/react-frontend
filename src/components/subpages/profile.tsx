@@ -12,6 +12,7 @@ import { LandingSectionWrapper, LandingSectionFilter } from "src/styled/subpages
 import {
   ProfileHeader, ProfileContainer, ProfileUserData, ProfilePublishingData, 
   ProfileDataHeader, ProfileUserDataContainer,
+  ProfileUserDescriptionContainer,
 } from "src/styled/subpages/profile";
 
 import HeadTags from "src/components/subcomponents/headTags";
@@ -42,7 +43,11 @@ const Profile:React.FC = () => (
                 Informacje
               </ProfileDataHeader>
               <ProfileUserDataContainer className="block-center">
+                <ProfileUserDescriptionContainer className="block-center">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam suscipit culpa itaque iste nulla, ullam similique modi recusandae consectetur voluptates ipsam omnis eveniet impedit at, dolor expedita neque, sapiente vel.
+                </ProfileUserDescriptionContainer>
                 <ProfileUserDataTile Icon={FlareIcon} content="24.04.2022" />
+                <ProfileUserDataTile Icon={LocalPostOfficeIcon} content="test@test.pl" />
               </ProfileUserDataContainer>
             </ProfileUserData>
             <ProfilePublishingData className="block-center">
