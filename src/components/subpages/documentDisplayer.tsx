@@ -19,6 +19,7 @@ import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import ReportIcon from "@mui/icons-material/Report";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import { MainContainer } from "src/styled/main";
 import { LandingSectionWrapper, LandingSectionFilter, LandingSectionHeader } from "src/styled/subpages/welcome";
@@ -33,6 +34,8 @@ import { getTheData, loadTheDownloadLink, loadTheFile } from "src/connectionFunc
 import addLike from "src/connectionFunctions/documentDisplayer/addLikeFunction";
 import checkIfLiked from "src/connectionFunctions/documentDisplayer/checkIfLiked";
 import getCommentData from "src/connectionFunctions/documentDisplayer/getCommentsData";
+import checkTheOwnership from "src/connectionFunctions/documentDisplayer/checkTheOwnership";
+import deleteMaterial from "src/connectionFunctions/userPanel/deleteMaterial";
 
 import { RootState } from "src/redux/mainReducer";
 import blobToBase64 from "../auxiliaryFunctions/documentDisplayer/decodingToBase64";
@@ -63,6 +66,8 @@ const DocumentDisplayer:React.FC = () => {
   const [commentsList, setCommentsList] = useState<any[]>([]);
   const [isCommentsError, toggleIsCommentsError] = useState<boolean>(false);
   const [isReportingOn, toggleIsReportingOn] = useState<boolean>(false);
+  const [isTheOwner, toggleIsTheOwner] = useState<boolean>(false);
+  const [isDeleted, toggleIsDeleted] = useState<boolean>(false);
 
   const [isFile, toggleIsFile] = useState<boolean>(false);
   const [file, setFile] = useState<any>(null);
@@ -104,29 +109,34 @@ const DocumentDisplayer:React.FC = () => {
   };
 
   useEffect(() => {
-    toggleIsError(false);
-    if (docId === undefined || docId.length === 0) {
-      toggleIsError(true);
-    } else {
-      checkIfLiked(docId, loginUserSelector, toggleIsLiked);
-      getTheData(
-        loginUserSelector, 
-        toggleIsFile, 
-        docId, 
-        setTitle, 
-        setLikesNumber,
-        toggleIsLiked, 
-        setViewsNumber, 
-        setFileAuthor,
-        setDescriptionOfFile, 
-        toggleIsError, 
-        setFileSrc, 
-        smallDevicesWidthChecker, 
-        setFileId,
-      );
-      if (memoryUserId.length > 0) getCommentData(docId, memoryUserId, setCommentsList, toggleIsCommentsError);
+    if (!isError) {
+      toggleIsError(false);
+      if (docId === undefined || docId.length === 0) {
+        toggleIsError(true);
+      } else {
+        checkIfLiked(docId, loginUserSelector, toggleIsLiked);
+        getTheData(
+          loginUserSelector, 
+          toggleIsFile, 
+          docId, 
+          setTitle, 
+          setLikesNumber,
+          toggleIsLiked, 
+          setViewsNumber, 
+          setFileAuthor,
+          setDescriptionOfFile, 
+          toggleIsError, 
+          setFileSrc, 
+          smallDevicesWidthChecker, 
+          setFileId,
+        );
+        if (memoryUserId.length > 0) {
+          checkTheOwnership(memoryUserId, docId, toggleIsError, toggleIsTheOwner);
+          getCommentData(docId, memoryUserId, setCommentsList, toggleIsCommentsError);
+        }
+      }
     }
-  }, [docId, loginUserSelector, memoryUserId]);
+  }, [docId, loginUserSelector, memoryUserId, isError]);
 
   const handleScrolling = (e:any) => {
     if ((changeDimensionsOfDocumentChecker && e.currentTarget.scrollTop / e.currentTarget.scrollHeight > 0.9)
@@ -166,10 +176,10 @@ const DocumentDisplayer:React.FC = () => {
           }
 
           <LandingSectionHeader className="block-center">
-            {title}
+            {isDeleted ? "Dokument został usunięty" : title}
           </LandingSectionHeader>
 
-          {loginUserSelector.length === 0 || isError 
+          {isDeleted ? null : loginUserSelector.length === 0 || isError 
             ? (
               <DocumentDisplayerErrorHeader className="block-center">
                 {isError ? "Coś poszło nie tak. Spróbuj ponownie" : (
@@ -285,6 +295,14 @@ const DocumentDisplayer:React.FC = () => {
                             </DocumentDisplayerDownloadBtn>
                           </a>
                         
+                        </InfoContainer>
+                      ) : null}
+                      {isTheOwner ? (
+                        <InfoContainer className="hoverClass">
+                          <DeleteIcon 
+                            style={{ color: "inherit", fontSize: "1.6em", verticalAlign: "middle" }}
+                            onClick={() => deleteMaterial(memoryUserId, docId, undefined, undefined, toggleIsDeleted)}
+                          />
                         </InfoContainer>
                       ) : null}
                       <InfoContainer className="hoverClass">
