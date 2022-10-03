@@ -15,9 +15,10 @@ export type LastPublishedItemType = {
 
 const deleteMaterial = async (
   userToken: string, 
-  id: string,
+  id: string | undefined,
   dataToTransform?: LastPublishedItemType[],
   transformUserData?: (newState: LastPublishedItemType[]) => void,
+  booleanCallback?: (newState: boolean) => void,
 ) => {
   await axios.delete(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/documents/${id}`, {
     headers: {
@@ -29,6 +30,9 @@ const deleteMaterial = async (
       if (dataToTransform !== undefined && transformUserData !== undefined) {
         const operand = [...dataToTransform];
         transformUserData(operand.filter((elem: LastPublishedItemType) => elem.id !== id));
+      }
+      if (booleanCallback !== undefined) {
+        booleanCallback(true);
       }
     })
     .catch((err) => {
