@@ -36,10 +36,8 @@ const LandingComponent:React.FC = () => (
         }}
       >
         <LandingSectionDesc className="block-center">
-          Sparkledge to platforma łącząca studentów, dającą im możliwość rozwoju i osiągania lepszych wyników. 
-          Sparklege to platforma stworzona przez studentów dla studentów. 
+          Sparkledge to platforma łącząca studentów, dającą im możliwość rozwoju i osiągania lepszych wyników.
           Znajdziesz na niej notatki Twoich znajomych oraz absolwentów ocenione przez innych użytkowników. 
-          Dzięki niej nauka do kolosów będzie przyjemniejsza.
           Jedyne co musisz zrobić aby dostać dostęp do skarbnicy wiedzy to załączyć swoje notataki
         </LandingSectionDesc>
       </motion.div>
