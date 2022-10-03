@@ -11,7 +11,7 @@ import {
 import Background from "src/assets/academic_background3_1.webp";
 
 const LandingComponent:React.FC = () => (
-  <LandingSectionWrapper className="block-center" source={Background}>
+  <LandingSectionWrapper className="block-center" source={null}>
     <LandingSectionFilter>
       <LandingSectionHeader className="block-center">
             

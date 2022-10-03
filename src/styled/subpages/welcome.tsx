@@ -59,7 +59,8 @@ export const LandingSectionHeader = styled.header`
     line-height: 1em;
     transition: all 0.4s;
     position: relative;
-    top: 5vh;
+    font-weight: 700;
+    top: 10vh;
     margin-bottom: 9vh;
 
     @media screen and (min-width: 425px){
@@ -72,12 +73,13 @@ export const LandingSectionHeader = styled.header`
     }
 
     @media screen and (min-width: 1024px){
-        font-size: 5.1em;
+        font-size: 7em;
     }
 `;
 
 export const LandingSectionSpan = styled.span`
     font-size: 0.3em;
+    font-weight: 500;
 `;
 
 export const LandingSectionDesc = styled.div`
