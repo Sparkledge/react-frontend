@@ -16,6 +16,10 @@ interface FilterInterface {
   minheight?: number
 }
 
+interface LandingSectionHeaderInterface {
+  isSmaller?: boolean,
+}
+
 export const LandingSectionWrapper = styled.section<LandingWrapperInterface>`
     width: 100%;
     min-height: ${(props) => props.bottomPadding !== undefined ? `${90 + props.bottomPadding}vh` : "90vh"};
@@ -48,12 +52,12 @@ export const EndingBlock = styled.div`
     height: 10vh;
 `;
 
-export const LandingSectionHeader = styled.header`
+export const LandingSectionHeader = styled.header<LandingSectionHeaderInterface>`
     width: calc(100% - 20px);
     overflow-y: hidden;
     padding: 0px 10px;
     color: ${(props) => props.theme.color};
-    font-size: 3.1em;
+    font-size: ${(props) => props.isSmaller !== undefined ? "2.4em" : "3.1em"};
     letter-spacing: 0.06em;
     text-shadow: ${(props) => props.theme.fonts.textShadowMain};
     line-height: 1em;
@@ -61,19 +65,19 @@ export const LandingSectionHeader = styled.header`
     position: relative;
     font-weight: 700;
     top: 10vh;
-    margin-bottom: 9vh;
+    margin-bottom: ${(props) => props.isSmaller !== undefined ? "15vh" : "9vh"};
 
     @media screen and (min-width: 425px){
-        font-size: 3.7em;
+        font-size: ${(props) => props.isSmaller !== undefined ? "2.9em" : "3.7em"};
     }
 
     @media screen and (min-width: 768px){
         width: calc(80% - 20px);
-        font-size: 4.3em;
+        font-size: ${(props) => props.isSmaller !== undefined ? "3.6em" : "4.3em"};
     }
 
     @media screen and (min-width: 1024px){
-        font-size: 7em;
+        font-size: ${(props) => props.isSmaller !== undefined ? "4.1em" : "7em"};
     }
 `;
 

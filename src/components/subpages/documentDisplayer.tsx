@@ -41,6 +41,7 @@ import { RootState } from "src/redux/mainReducer";
 import blobToBase64 from "../auxiliaryFunctions/documentDisplayer/decodingToBase64";
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
 import HeadTags from "../subcomponents/headTags";
+import DeletingMaterialPopup from "../helperComponents/documentDisplayer/deletingMaterialPopup";
 
 const ReportingPanel = React.lazy(() => import("../helperComponents/documentDisplayer/reportingPanel"));
 
@@ -68,6 +69,7 @@ const DocumentDisplayer:React.FC = () => {
   const [isReportingOn, toggleIsReportingOn] = useState<boolean>(false);
   const [isTheOwner, toggleIsTheOwner] = useState<boolean>(false);
   const [isDeleted, toggleIsDeleted] = useState<boolean>(false);
+  const [isConsentWindowOpened, toggleIsConsetWindowOpened] = useState<boolean>(false);
 
   const [isFile, toggleIsFile] = useState<boolean>(false);
   const [file, setFile] = useState<any>(null);
@@ -175,9 +177,19 @@ const DocumentDisplayer:React.FC = () => {
             ) : null
           }
 
-          <LandingSectionHeader className="block-center">
+          <LandingSectionHeader className="block-center" isSmaller>
             {isDeleted ? "Dokument został usunięty" : title}
           </LandingSectionHeader>
+
+          {isConsentWindowOpened ? (
+            <DeletingMaterialPopup 
+              consentCallback={() => {
+                deleteMaterial(memoryUserId, docId, undefined, undefined, toggleIsDeleted); 
+                toggleIsConsetWindowOpened(false);
+              }} 
+              denyingCallback={() => toggleIsConsetWindowOpened(false)}
+            />
+          ) : null}
 
           {isDeleted ? null : loginUserSelector.length === 0 || isError 
             ? (
@@ -301,7 +313,7 @@ const DocumentDisplayer:React.FC = () => {
                         <InfoContainer className="hoverClass">
                           <DeleteIcon 
                             style={{ color: "inherit", fontSize: "1.6em", verticalAlign: "middle" }}
-                            onClick={() => deleteMaterial(memoryUserId, docId, undefined, undefined, toggleIsDeleted)}
+                            onClick={() => toggleIsConsetWindowOpened(true)}
                           />
                         </InfoContainer>
                       ) : null}

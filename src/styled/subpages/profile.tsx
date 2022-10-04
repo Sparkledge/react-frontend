@@ -80,40 +80,6 @@ export const ProfileUserDataContainer = styled.div`
     }
 `;
 
-export const ProfileUserSubData = styled.div`
-    width: fit-content;
-    height: fit-content;
-    padding: 20px 40px;
-    border-radius: 10px;
-    font-size: 0.95em;
-    letter-spacing: 0.04em;
-    background: ${(props) => props.theme.signingInputBackground};
-    display: inline-block;
-    vertical-align: top;
-    margin: 5px;
-
-    @media screen and (min-width: 425px){
-        font-size: 1.05em;
-    }
-
-    @media screen and (min-width: 1024px){
-        font-size: 1.15em;
-    }
-`;
-
-export const ProfileUserSubDataIconContainer = styled.span`
-    display: inline-block;
-    vertical-align: center;
-    margin: 0px 5px 0px 0px;
-    font-size: 1.2em;
-`;
-
-export const ProfileUserSubDataTextContainer = styled.span`
-    display: inline-block;
-    vertical-align: bottom;
-    margin: 0px 0px 5px 0px;
-`;
-
 export const ProfileUserDescriptionContainer = styled.div`
     width: calc(100% - 40px);
     padding: 20px;
@@ -147,4 +113,31 @@ export const ProfileDataHeader = styled.header`
     top: 2vh;
     font-size: 1.6em;
     letter-spacing: 0.06em;
+`;
+
+export const ProfilePublishingInfoContainer = styled.div`
+    width: fit-content;
+    padding: 20px 40px;
+    text-align: center;
+    font-size: 1.35em;
+    letter-spacing: 0.05em;
+    color: ${(props) => props.theme.color};
+    text-indent: 0em;
+    text-shadow: ${(props) => props.theme.fonts.textShadowMain};
+    margin-bottom: 2vh;
+    border-radius: 10px;
+    background: ${(props) => props.theme.signingInputBackground};
+
+    @media screen and (min-width: 768px){
+        width: calc(100% - 20px);
+        padding: 10px;
+        text-align: left;
+        text-indent: 0.3em;
+        margin-bottom: 3vh;
+    }
+
+    @media screen and (min-width: 1440px){
+        text-indent: 0.7em;
+        font-size: 1.5em;
+    }
 `;

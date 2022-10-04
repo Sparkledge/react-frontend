@@ -6,13 +6,17 @@
 import React, { Suspense } from "react";
 import FlareIcon from "@mui/icons-material/Flare";
 import LocalPostOfficeIcon from "@mui/icons-material/LocalPostOffice";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import PinterestIcon from "@mui/icons-material/Pinterest";
 
 import { MainContainer } from "src/styled/main";
 import { LandingSectionWrapper, LandingSectionFilter } from "src/styled/subpages/welcome";
 import {
   ProfileHeader, ProfileContainer, ProfileUserData, ProfilePublishingData, 
   ProfileDataHeader, ProfileUserDataContainer,
-  ProfileUserDescriptionContainer,
+  ProfileUserDescriptionContainer, ProfilePublishingInfoContainer,
 } from "src/styled/subpages/profile";
 
 import HeadTags from "src/components/subcomponents/headTags";
@@ -48,12 +52,24 @@ const Profile:React.FC = () => (
                 </ProfileUserDescriptionContainer>
                 <ProfileUserDataTile Icon={FlareIcon} content="24.04.2022" />
                 <ProfileUserDataTile Icon={LocalPostOfficeIcon} content="test@test.pl" />
+                <ProfileUserDataTile Icon={FacebookIcon} content="Facebook" isClickable linkToTheSource="https://facebook.com/" />
+                <ProfileUserDataTile Icon={InstagramIcon} content="Instagram" isClickable linkToTheSource="https://instagram.com/" />
+                <ProfileUserDataTile Icon={LinkedInIcon} content="Linkedin" isClickable linkToTheSource="https://linkedin.com/" />
+                <ProfileUserDataTile Icon={PinterestIcon} content="Pinterest" isClickable linkToTheSource="https://pinterest.com/" />
               </ProfileUserDataContainer>
             </ProfileUserData>
             <ProfilePublishingData className="block-center">
               <ProfileDataHeader className="block-center">
                 Aktywność
               </ProfileDataHeader>
+              <ProfileUserDataContainer className="block-center">
+                <ProfilePublishingInfoContainer className="block-center">
+                  Publikacje: 23
+                </ProfilePublishingInfoContainer>
+                <ProfilePublishingInfoContainer className="block-center">
+                  Polubienia: 46
+                </ProfilePublishingInfoContainer>
+              </ProfileUserDataContainer>
             </ProfilePublishingData>
           </ProfileContainer>
         </LandingSectionFilter>
