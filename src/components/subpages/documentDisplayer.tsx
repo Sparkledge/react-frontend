@@ -177,7 +177,7 @@ const DocumentDisplayer:React.FC = () => {
             ) : null
           }
 
-          <LandingSectionHeader className="block-center">
+          <LandingSectionHeader className="block-center" isSmaller>
             {isDeleted ? "Dokument został usunięty" : title}
           </LandingSectionHeader>
 
