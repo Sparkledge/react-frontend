@@ -2,6 +2,7 @@ import WojtekBasinski from "../assets/staff/Wojtek_Basiński.webp";
 import SzymonKupisz from "../assets/staff/Szymon_Kupisz.webp";
 import OlaKlos from "../assets/staff/Ola_Kłos.webp";
 import OlaWieczorek from "../assets/staff/Ola_Wieczorek.webp";
+import OlekKlepka from "../assets/staff/Olek_Klepka.webp";
 
 export type TeamDataType = { name: string, position: string, describe: string, photo: any };
 
@@ -30,6 +31,12 @@ const TeamData:TeamDataType[] = [
     position: "Head of Social Media",
     describe: "Odpowiedzialna za Social Media. Uwielbia tańczyć i podróżować. Lubi żeglować i chodzić po górach.",
     photo: OlaWieczorek,
+  },
+  {
+    name: "Olek Klepka",
+    position: "Head of Marketing",
+    describe: "Nasz spec od marketingu i promowania działań portalu. Amator boksu i dobrej zabawy.",
+    photo: OlekKlepka,
   },
 ];
 
