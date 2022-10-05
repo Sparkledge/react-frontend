@@ -12,6 +12,10 @@ interface UserPanelLastViewItemInterface {
   isPublishedByUser: boolean
 }
 
+interface UserPanelDeleteNotificationInterface {
+  isOpened: boolean
+}
+
 export const UserPanelHeader = styled.header`
     width: calc(90% - 20px);
     padding: 10px;
@@ -180,5 +184,53 @@ export const UserPanelLastViewAuthor = styled.div<UserPanelLastViewAuthorInterfa
     @media screen and (min-width: 768px){
         width: calc(70% - 20px);
         font-size: 1.2em;
+    }
+`;
+
+export const UserPanelDeleteNotification = styled.div<UserPanelDeleteNotificationInterface>`
+    width: calc(100% - 40px);
+    height: fit-content;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    text-shadow: ${(props) => props.theme.fonts.textShadowMain};
+    color: ${(props) => props.theme.color};
+    font-size: 1.2em;
+    letter-spacing: 0.06em;
+    box-shadow: ${(props) => props.theme.fonts.textShadowMain};
+    background: ${(props) => props.theme.signingInputBackground};
+    position: fixed;
+    top: 80vh;
+    left: ${(props) => props.isOpened ? "0%" : "100%"};
+    z-index: 20;
+    transition: left 0.4s;
+
+    @media screen and (min-width: 375px){
+        width: calc(100% - 80px);
+        padding: 20px 40px;
+        font-size: 1.4em;
+    }
+
+    @media screen and (min-width: 425px){
+        width: calc(80% - 80px);
+        font-size: 1.6em;
+        left: ${(props) => props.isOpened ? "10%" : "100%"};
+    }
+
+    @media screen and (min-width: 768px){
+        width: calc(50% - 80px);
+        left: ${(props) => props.isOpened ? "45%" : "100%"};
+    }
+
+    @media screen and (min-width: 1024px){
+        width: calc(40% - 80px);
+        font-size: 1.8em;
+        left: ${(props) => props.isOpened ? "55%" : "100%"};
+    }
+
+    @media screen and (min-width: 1440px){
+        width: calc(30% - 80px);
+        left: ${(props) => props.isOpened ? "65%" : "100%"};
+        font-size: 2.1em;
     }
 `;

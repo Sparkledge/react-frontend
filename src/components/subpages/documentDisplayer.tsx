@@ -334,8 +334,6 @@ const DocumentDisplayer:React.FC = () => {
                       </DescriptionDataHeader>
                       {fileCourse.length > 0 ? (
                         <DescriptionDataHeader className="block-center" isSmaller>
-                          Kurs:
-                          {" "}
                           {fileCourse}
                         </DescriptionDataHeader>
                       ) : null}
