@@ -12,6 +12,7 @@ import { LandingSectionWrapper, LandingSectionFilter, EndingBlock } from "src/st
 import {
   UserPanelHeader, UserPanelWelcomeSection, UserPanelLastView,
   UserPanelLastViewHeader, UserPanelLastViewGallery, UserPanelLastViewNoItemsHeader, 
+  UserPanelDeleteNotification,
 } from "src/styled/subpages/userpanel";
 
 import LastViewItemComponent from "src/components/helperComponents/userPanel/LastViewItemComponent";
@@ -60,6 +61,7 @@ const UserPanel:React.FC = () => {
   const navigate = useNavigate();
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "", { syncData: true });
   const [isLoading, toggleIsLoading] = useState<boolean>(false);
+  const [isNotificationShown, toggleIsNotificationShown] = useState<boolean>(false);
 
   useEffect(() => {
     if (memoryUserId === undefined) toggleIsLoading(true);
@@ -76,6 +78,10 @@ const UserPanel:React.FC = () => {
       }
     }
   }, [currentToken, memoryUserId]);
+
+  useEffect(() => {
+    if (isNotificationShown) setTimeout(() => toggleIsNotificationShown(false), 2000);
+  }, [isNotificationShown]);
 
   return (
     <MainContainer className="block-center">
@@ -189,7 +195,7 @@ const UserPanel:React.FC = () => {
                                 verticalAlign: "top",
                                 zIndex: 2,
                               }}
-                              onClick={() => deleteMaterial(memoryUserId, elem.id, lastPublishedList, setLastPublishedList)}
+                              onClick={() => { deleteMaterial(memoryUserId, elem.id, lastPublishedList, setLastPublishedList); toggleIsNotificationShown(true); }}
                             />, "",
                           ], [
                             <Link to={`/document/${elem.id}`} style={{ color: "inherit" }}>
@@ -211,6 +217,9 @@ const UserPanel:React.FC = () => {
                 </UserPanelWelcomeSection>
               </>
             )}
+            <UserPanelDeleteNotification className="block-center" isOpened={isNotificationShown}>
+              Dokument został usunięty
+            </UserPanelDeleteNotification>
             <EndingBlock />
           </LandingSectionFilter>
         </LandingSectionWrapper>

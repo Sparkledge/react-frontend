@@ -4,6 +4,10 @@ interface DocumentDisplayerDownloadBtnInterface {
   isInline?:boolean
 }
 
+interface DescriptionDataHeaderInterface {
+  isSmaller?: boolean
+}
+
 export const DocumentDisplayerErrorHeader = styled.header`
     width: calc(100% - 20px);
     padding: 10px;
@@ -216,25 +220,25 @@ export const DescriptionDataContainer = styled.section`
     }
 `;
 
-export const DescriptionDataHeader = styled.header`
+export const DescriptionDataHeader = styled.header<DescriptionDataHeaderInterface>`
     width: calc(100% - 10px);
     padding: 5px;
-    font-size: 1.3em;
+    font-size: ${(props) => props.isSmaller !== undefined ? "1.1em" : "1.3em"};
     margin-bottom: 2vh;
     color: ${(props) => props.theme.color};
 
     @media screen and (min-width: 425px){
-        font-size: 1.6em;
+        font-size: ${(props) => props.isSmaller !== undefined ? "1.4em" : "1.6em"};
     }
 
     @media screen and (min-width: 768px){
         width: calc(90% - 10px);
-        font-size: 1.9em;
+        font-size: ${(props) => props.isSmaller !== undefined ? "1.6em" : "1.9em"};
     }
 
     @media screen and (min-width: 1024px){
         width: calc(100% - 10px);
-        font-size: 1.6em;
+        font-size: ${(props) => props.isSmaller !== undefined ? "1.4em" : "1.6em"};
     }
 `;
 

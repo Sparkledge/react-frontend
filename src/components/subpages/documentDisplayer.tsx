@@ -62,6 +62,7 @@ const DocumentDisplayer:React.FC = () => {
   const [isLiked, toggleIsLiked] = useState<boolean>(false);
   const [viewsNumber, setViewsNumber] = useState<number>(0);
   const [descriptionOfFile, setDescriptionOfFile] = useState<string>("");
+  const [fileCourse, setFileCourse] = useState<string>("");
   const [fileAuthor, setFileAuthor] = useState<string>("");
   const [fileId, setFileId] = useState<string>("");
   const [commentsList, setCommentsList] = useState<any[]>([]);
@@ -131,6 +132,7 @@ const DocumentDisplayer:React.FC = () => {
           setFileSrc, 
           smallDevicesWidthChecker, 
           setFileId,
+          setFileCourse,
         );
         if (memoryUserId.length > 0) {
           checkTheOwnership(memoryUserId, docId, toggleIsError, toggleIsTheOwner);
@@ -330,6 +332,11 @@ const DocumentDisplayer:React.FC = () => {
                         {" "}
                         {fileAuthor}
                       </DescriptionDataHeader>
+                      {fileCourse.length > 0 ? (
+                        <DescriptionDataHeader className="block-center" isSmaller>
+                          {fileCourse}
+                        </DescriptionDataHeader>
+                      ) : null}
                       <DescriptionDataContent className="block-center">
                         {descriptionOfFile}
                       </DescriptionDataContent>

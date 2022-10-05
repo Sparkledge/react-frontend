@@ -17,6 +17,7 @@ export const getTheData = async (
   setFileSrc: (newState: any) => void, 
   smallDevicesWidthChecker: boolean, 
   setFileId: (newState: string) => void,
+  setFileCourse: (newState: string) => void,
 ) => {
   if (loginUserSelector.length > 0) {
     toggleIsFile(false);
@@ -27,6 +28,7 @@ export const getTheData = async (
       },
     })
       .then(async (res) => {
+        console.log(res.data);
         let id:any = jwt(loginUserSelector);
         setTitle(res.data.title);
         setLikesNumber(res.data.likesNumber);
@@ -35,6 +37,7 @@ export const getTheData = async (
         setFileAuthor(`${res.data.user.firstName} ${res.data.user.lastName}`);
         setDescriptionOfFile(res.data.description);
         setFileId(res.data.fileId);
+        setFileCourse(`${res.data.faculty.name}, ${res.data.course.name}` || "");
         id = null;
       })
       .catch((err) => {
