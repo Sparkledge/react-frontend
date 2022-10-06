@@ -5,6 +5,7 @@
 
 import React, { Suspense, useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import FlareIcon from "@mui/icons-material/Flare";
 import LocalPostOfficeIcon from "@mui/icons-material/LocalPostOffice";
 import FacebookIcon from "@mui/icons-material/Facebook";
@@ -15,6 +16,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 import { MainContainer } from "src/styled/main";
 import { LandingSectionWrapper, LandingSectionFilter, EndingBlock } from "src/styled/subpages/welcome";
@@ -22,6 +24,7 @@ import {
   ProfileHeader, ProfileContainer, ProfileUserData, ProfilePublishingData, 
   ProfileDataHeader, ProfileUserDataContainer,
   ProfileUserDescriptionContainer, ProfilePublishingInfoContainer,
+  ProfileUserSwitchModeBtn,
 } from "src/styled/subpages/profile";
 import {
   UserPanelWelcomeSection, UserPanelLastView,
@@ -32,6 +35,8 @@ import HeadTags from "src/components/subcomponents/headTags";
 import SearchingPreloaderComponent from "src/components/helperComponents/searcher/searchingPreloaderComponent";
 import ProfileUserDataTile from "src/components/helperComponents/profile/profileUserDataTile";
 import LastViewItemComponent from "src/components/helperComponents/userPanel/LastViewItemComponent";
+import ProfileUserDataEdit from "src/components/helperComponents/profile/profileUserDataEdit";
+
 import { LastPublishedItemType } from "src/connectionFunctions/userPanel/deleteMaterial";
 
 import BackgroundPattern from "src/assets/pattern_background5.webp";
@@ -39,6 +44,8 @@ import BackgroundPattern from "src/assets/pattern_background5.webp";
 const FooterComponent = React.lazy(() => import("src/components/helperComponents/welcome/footerComponent"));
 
 const Profile:React.FC = () => {
+  const [isUserProfile, toggleIsUserProgile] = useState<boolean>(true);
+  const [areUserSettingsOpened, toggleAreUserSettingsOpened] = useState<boolean>(false);
   const [lastPublishedList, setLastPublishedList] = useState<LastPublishedItemType[]>([]);
   const [isPublishedLoading, toggleIsPublishedLoading] = useState<boolean>(false);
 
@@ -56,8 +63,30 @@ const Profile:React.FC = () => {
             <ProfileHeader className="block-center">
               Test user
             </ProfileHeader>
+            <ProfileUserDataEdit isOpened={areUserSettingsOpened} closeCallback={toggleAreUserSettingsOpened} />
             <ProfileContainer className="block-center">
               <ProfileUserData className="block-center">
+                {
+                  isUserProfile ? (
+                    <ProfileUserSwitchModeBtn>
+                      <motion.div
+                        layout
+                        animate={{
+                          rotateZ: areUserSettingsOpened ? "70deg" : "0deg",
+                        }}
+                        transition={{
+                          duration: 0.4, stiffness: 100, type: "spring",
+                        }}
+                      >
+                        <SettingsIcon
+                          style={{ color: "inherit", fontSize: "inherit" }}
+                          onClick={() => toggleAreUserSettingsOpened(!areUserSettingsOpened)}
+                        />
+                      </motion.div>
+                      
+                    </ProfileUserSwitchModeBtn>
+                  ) : null
+                }
                 <ProfileDataHeader className="block-center">
                   Informacje
                 </ProfileDataHeader>

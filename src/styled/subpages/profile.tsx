@@ -141,3 +141,30 @@ export const ProfilePublishingInfoContainer = styled.div`
         font-size: 1.5em;
     }
 `;
+
+export const ProfileUserSwitchModeBtn = styled.div`
+    width: fit-content;
+    height: fit-content;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: ${(props) => props.theme.fonts.textShadowMain};
+    color: ${(props) => props.theme.color};
+    font-size: 1.6em;
+    position: absolute;
+    left: 80%;
+    cursor: pointer;
+    transition: all 0.4s;
+    z-index: 5;
+
+    &:hover{
+        filter: brightness(70%);
+    }
+
+    @media screen and (min-width: 375px){
+        left: 70%;
+    }
+
+    @media screen and (min-width: 768px){
+        left: 50%;
+    }
+`;
