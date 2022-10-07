@@ -196,6 +196,7 @@ export const ProfileUserDataEditSocialMediaClosings = styled.div<ProfileUserData
     ${(props) => props.alignment}: 1px;
     cursor: pointer;
     transition: all 0.4s;
+    z-index: 3;
 
     &:hover{
         filter: brigtness(70%);
