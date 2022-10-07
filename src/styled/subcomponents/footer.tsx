@@ -9,6 +9,7 @@ export const FooterContainer = styled.footer`
     box-shadow: 0px -3px 4px rgba(0,0,0,.2);
     background: ${(props) => props.theme.bgColor};
     position: relative;
+    z-index: 7;
 `;
 
 export const FooterColumnsWrapper = styled.section`
