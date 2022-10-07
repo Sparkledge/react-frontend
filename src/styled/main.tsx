@@ -26,6 +26,7 @@ export const LightMode = {
   filtersResponsiveBackground: "rgba(240,240,240,.9)",
   filtersButtonResponsiveBackground: "rgba(200,200,200,.9)",
   filtersButtonBackground: "rgba(3,73,119,.9)",
+  userDescriptionLengthCounterBackground: "rgba(3,73,119,.9)",
   errorColor: "rgba(240,30,30,.75)",
   fonts: {
     main: "Mohave, sans-serif",
@@ -46,6 +47,7 @@ export const DarkMode = {
   filtersResponsiveBackground: "rgba(40,40,40,.9)",
   filtersButtonResponsiveBackground: "rgba(10,10,10,.9)",
   filtersButtonBackground: "rgba(3,73,119,.9)",
+  userDescriptionLengthCounterBackground: "rgba(10,10,10,.9)",
   errorColor: "rgba(240,30,30,.75)",
   fonts: {
     main: "Mohave, sans-serif",

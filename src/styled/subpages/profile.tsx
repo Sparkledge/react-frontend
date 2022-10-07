@@ -147,7 +147,7 @@ export const ProfileUserSwitchModeBtn = styled.div`
     height: fit-content;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: ${(props) => props.theme.fonts.textShadowMain};
+    text-shadow: ${(props) => props.theme.fonts.textShadowMain};
     color: ${(props) => props.theme.color};
     font-size: 1.6em;
     position: absolute;

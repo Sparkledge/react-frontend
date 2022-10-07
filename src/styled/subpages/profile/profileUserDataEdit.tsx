@@ -108,7 +108,7 @@ export const ProfileUserDataEditDescribe = styled.textarea`
     letter-spacing: 0.05em;
     text-shadow: ${(props) => props.theme.fonts.textShadowMain};
     font-family: ${(props) => props.theme.fonts.main};
-    margin-bottom: 3vh;
+    margin-bottom: 1vh;
 
     @media screen and (min-width: 425px){
         font-size: 1.2em;
@@ -120,6 +120,21 @@ export const ProfileUserDataEditDescribe = styled.textarea`
     @media screen and (min-width: 768px){
         min-width: calc(80% - 20px);
         max-width: calc(90% - 20px);        
+    }
+`;
+
+export const ProfileUserDataEditDescribeCounterContainer = styled.div`
+    width: fit-content;
+    padding: 10px;
+    font-size: 0.85em;
+    letter-spacing: 0.04em;
+    margin-bottom: 4vh;
+    border-radius: 10px;
+    background: ${(props) => props.theme.userDescriptionLengthCounterBackground};
+    text-shadow: ${(props) => props.theme.fonts.textShadowMain};
+
+    @media screen and (min-width: 768px){
+        font-size: 1em;
     }
 `;
 

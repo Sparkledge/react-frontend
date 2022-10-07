@@ -19,6 +19,7 @@ import {
   ProfileUserDataEditSubHeader,
   ProfileUserDataEditDescribe,
   ProfileUserDataEditSocialMediaClosings,
+  ProfileUserDataEditDescribeCounterContainer,
 } from "src/styled/subpages/profile/profileUserDataEdit";
 
 import ProfileUserDataEditSocialMedia from "src/components/helperComponents/profile/profileUserDataEditSocialMedia";
@@ -38,6 +39,8 @@ const ProfileUserDataEdit:React.FC<ProfileUserDataEditInterface> = ({
   const [currentLkProfile, setCurrentLkProfile] = useState<string>("");
   const [currentPtProfile, setCurrentPtProfile] = useState<string>("");
 
+  const MAX_DESC_LENGTH:number = 500;
+
   return (
     <ProfileUserDataEditContainer className="block-center" isOpened={isOpened}>
       <ProfileUserDataEditSocialMediaClosings alignment="left" onClick={() => closeCallback(!isOpened)}>
@@ -54,10 +57,17 @@ const ProfileUserDataEdit:React.FC<ProfileUserDataEditInterface> = ({
       </ProfileUserDataEditSubHeader>
       <ProfileUserDataEditDescribe
         className="block-center"
-        placeholder="Opis może mieć do 300 znaków długości..." 
+        placeholder={`Opis może mieć do ${MAX_DESC_LENGTH} znaków długości...`} 
         value={currentDescription}
-        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setCurrentDescription(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setCurrentDescription(e.target.value.length > MAX_DESC_LENGTH ? currentDescription : e.target.value)}
       />
+      <ProfileUserDataEditDescribeCounterContainer className="block-center">
+        <span style={{ color: `rgba(${(255 * currentDescription.length) / MAX_DESC_LENGTH},${(255 * (MAX_DESC_LENGTH - currentDescription.length)) / MAX_DESC_LENGTH},0,1)` }}>
+          {currentDescription.length}
+          /
+          {MAX_DESC_LENGTH}
+        </span>
+      </ProfileUserDataEditDescribeCounterContainer>
       <ProfileUserDataEditSubHeader className="block-center">
         Linki do social mediów
       </ProfileUserDataEditSubHeader>
