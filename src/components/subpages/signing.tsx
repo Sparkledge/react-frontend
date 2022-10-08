@@ -181,7 +181,7 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
                             ) : null
                         }
                             {
-                          isLoading ? <SearchingPreloaderComponent /> : mode === 1 ? (
+                          isLoading ? <SearchingPreloaderComponent /> : (
                             <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
                               <SigningGoogleButtonWrapper className="block-center">
                                 <GoogleLogin
@@ -209,7 +209,7 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
                                 />
                               </SigningGoogleButtonWrapper>
                             </GoogleOAuthProvider>
-                          ) : null
+                          )
                         }
                             {isLoading || (mode === 2 && (Login.length === 0 || Password.length === 0 || RepeatedPassword.length === 0 
                             || userName.length === 0 || userSurname.length === 0 || !rulesAccepted)) ? null : (
