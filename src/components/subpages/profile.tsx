@@ -33,9 +33,9 @@ import {
 
 import HeadTags from "src/components/subcomponents/headTags";
 import SearchingPreloaderComponent from "src/components/helperComponents/searcher/searchingPreloaderComponent";
-import ProfileUserDataTile from "src/components/helperComponents/profile/profileUserDataTile";
 import LastViewItemComponent from "src/components/helperComponents/userPanel/LastViewItemComponent";
 import ProfileUserDataEdit from "src/components/helperComponents/profile/profileUserDataEdit";
+import ProfileUserDataComponent from "src/components/helperComponents/profile/profileUserDataComponent";
 
 import { LastPublishedItemType } from "src/connectionFunctions/userPanel/deleteMaterial";
 
@@ -44,6 +44,11 @@ import BackgroundPattern from "src/assets/pattern_background5.webp";
 const FooterComponent = React.lazy(() => import("src/components/helperComponents/welcome/footerComponent"));
 
 const Profile:React.FC = () => {
+  const [userJoiningDate, setUserJoiningDate] = useState<string>("24.02.2022");
+  const [userEmail, setUserEmail] = useState<string>("test@test.pl");
+  const [userDescription, setUserDescription] = useState<string>("Lorem ipsum dolor sit amet");
+  const [totalPublications, setTotalPublications] = useState<number>(23);
+  const [totalLikes, setTotalLikes] = useState<number>(29);
   const [isUserProfile, toggleIsUserProgile] = useState<boolean>(true);
   const [areUserSettingsOpened, toggleAreUserSettingsOpened] = useState<boolean>(false);
   const [lastPublishedList, setLastPublishedList] = useState<LastPublishedItemType[]>([]);
@@ -65,53 +70,32 @@ const Profile:React.FC = () => {
             </ProfileHeader>
             <ProfileUserDataEdit isOpened={areUserSettingsOpened} closeCallback={toggleAreUserSettingsOpened} />
             <ProfileContainer className="block-center">
-              <ProfileUserData className="block-center">
-                {
-                  isUserProfile ? (
-                    <ProfileUserSwitchModeBtn>
-                      <motion.div
-                        layout
-                        animate={{
-                          rotateZ: areUserSettingsOpened ? "70deg" : "0deg",
-                        }}
-                        transition={{
-                          duration: 0.4, stiffness: 100, type: "spring",
-                        }}
-                      >
-                        <SettingsIcon
-                          style={{ color: "inherit", fontSize: "inherit" }}
-                          onClick={() => toggleAreUserSettingsOpened(!areUserSettingsOpened)}
-                        />
-                      </motion.div>
-                      
-                    </ProfileUserSwitchModeBtn>
-                  ) : null
-                }
-                <ProfileDataHeader className="block-center">
-                  Informacje
-                </ProfileDataHeader>
-                <ProfileUserDataContainer className="block-center">
-                  <ProfileUserDescriptionContainer className="block-center">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam suscipit culpa itaque iste nulla, ullam similique modi recusandae consectetur voluptates ipsam omnis eveniet impedit at, dolor expedita neque, sapiente vel.
-                  </ProfileUserDescriptionContainer>
-                  <ProfileUserDataTile Icon={FlareIcon} content="24.04.2022" />
-                  <ProfileUserDataTile Icon={LocalPostOfficeIcon} content="test@test.pl" />
-                  <ProfileUserDataTile Icon={FacebookIcon} content="Facebook" isClickable linkToTheSource="https://facebook.com/" />
-                  <ProfileUserDataTile Icon={InstagramIcon} content="Instagram" isClickable linkToTheSource="https://instagram.com/" />
-                  <ProfileUserDataTile Icon={LinkedInIcon} content="Linkedin" isClickable linkToTheSource="https://linkedin.com/" />
-                  <ProfileUserDataTile Icon={PinterestIcon} content="Pinterest" isClickable linkToTheSource="https://pinterest.com/" />
-                </ProfileUserDataContainer>
-              </ProfileUserData>
+              <ProfileUserDataComponent 
+                isUserProfile={isUserProfile}
+                areUserSettingsOpened={areUserSettingsOpened}
+                toggleAreUserSettingsOpened={toggleAreUserSettingsOpened}
+                userDescription={userDescription}
+                userJoiningDate={userJoiningDate}
+                userEmail={userEmail}
+                facebookLink="https://www.facebook.com"
+                instagramLink="https://www.instagram.com"
+                linkedinLink="https://www.linkedin.com"
+                pinterestLink="https://www.pinterest.com/"
+              />
               <ProfilePublishingData className="block-center">
                 <ProfileDataHeader className="block-center">
                   Aktywność
                 </ProfileDataHeader>
                 <ProfileUserDataContainer className="block-center">
                   <ProfilePublishingInfoContainer className="block-center">
-                    Publikacje: 23
+                    Publikacje: 
+                    {" "}
+                    {totalPublications}
                   </ProfilePublishingInfoContainer>
                   <ProfilePublishingInfoContainer className="block-center">
-                    Polubienia: 46
+                    Polubienia: 
+                    {" "}
+                    {totalLikes}
                   </ProfilePublishingInfoContainer>
                 </ProfileUserDataContainer>
               </ProfilePublishingData>
