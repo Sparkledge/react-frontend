@@ -5,26 +5,16 @@
 
 import React, { Suspense, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import FlareIcon from "@mui/icons-material/Flare";
-import LocalPostOfficeIcon from "@mui/icons-material/LocalPostOffice";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import PinterestIcon from "@mui/icons-material/Pinterest";
-import DeleteIcon from "@mui/icons-material/Delete";
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import SettingsIcon from "@mui/icons-material/Settings";
 
 import { MainContainer } from "src/styled/main";
 import { LandingSectionWrapper, LandingSectionFilter, EndingBlock } from "src/styled/subpages/welcome";
 import {
-  ProfileHeader, ProfileContainer, ProfileUserData, ProfilePublishingData, 
+  ProfileHeader, ProfileContainer, ProfilePublishingData, 
   ProfileDataHeader, ProfileUserDataContainer,
-  ProfileUserDescriptionContainer, ProfilePublishingInfoContainer,
-  ProfileUserSwitchModeBtn,
+  ProfilePublishingInfoContainer,
 } from "src/styled/subpages/profile";
 import {
   UserPanelWelcomeSection, UserPanelLastView,
@@ -44,6 +34,7 @@ import BackgroundPattern from "src/assets/pattern_background5.webp";
 const FooterComponent = React.lazy(() => import("src/components/helperComponents/welcome/footerComponent"));
 
 const Profile:React.FC = () => {
+  const [userName, setUserName] = useState<string>("Test user");
   const [userJoiningDate, setUserJoiningDate] = useState<string>("24.02.2022");
   const [userEmail, setUserEmail] = useState<string>("test@test.pl");
   const [userDescription, setUserDescription] = useState<string>("Lorem ipsum dolor sit amet");
@@ -66,7 +57,7 @@ const Profile:React.FC = () => {
         >
           <LandingSectionFilter>
             <ProfileHeader className="block-center">
-              Test user
+              {userName}
             </ProfileHeader>
             <ProfileUserDataEdit isOpened={areUserSettingsOpened} closeCallback={toggleAreUserSettingsOpened} />
             <ProfileContainer className="block-center">

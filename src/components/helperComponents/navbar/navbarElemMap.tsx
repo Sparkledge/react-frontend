@@ -1,27 +1,29 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { NavbarElem, NavbarElemImg } from "../../../styled/subcomponents/navbar";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+
+import { NavbarElem, NavbarElemImg } from "src/styled/subcomponents/navbar";
+import NavbarElemComponent from "./navbarElemComponent";
 
 interface NavbarElemMapInterface {
-  data: { isLink: boolean, to: string, isImage: boolean, content: any, callback: () => void }[],
+  data: { isDropDown: boolean, 
+    dropDownElems: {
+      to: string,
+      content: any,
+      callback: () => void,
+    }[], isLink: boolean, to: string, isImage: boolean, content: any, callback: () => void }[],
   groupName: string
 }
 
-const NavbarElemMap:React.FC<NavbarElemMapInterface> = ({ data, groupName } : NavbarElemMapInterface) => (
-  <>
-    {data.map((elem, ind) => elem.content === "noRender" ? null : elem.isLink ? (
-      <Link to={elem.to === "none" ? "" : elem.to}>
-        <NavbarElem onClick={elem.callback !== undefined ? elem.callback : () => {}}>
-          {elem.isImage === true ? <NavbarElemImg src={elem.content} /> : elem.content}
-        </NavbarElem>
-      </Link>
-    ) : (
-      <NavbarElem onClick={elem.callback !== undefined ? elem.callback : () => {}}>
-        {elem.isImage === true ? <NavbarElemImg src={elem.content} /> : elem.content}
-      </NavbarElem>
-    ))}
-  </>
-);
+const NavbarElemMap:React.FC<NavbarElemMapInterface> = ({ data, groupName } : NavbarElemMapInterface) => {
+  console.log(data);
+  return (
+    <>
+      {data.map((elem, ind) => <NavbarElemComponent {...elem} />)}
+    </>
+  );
+};
 
 export default NavbarElemMap;

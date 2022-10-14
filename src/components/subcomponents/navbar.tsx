@@ -28,9 +28,17 @@ const Navbar:React.FC = () => {
   const [refreshUserId, setRefreshUserId] = useLocalStorage<string>("u_r", "");
   const dispatch = useDispatch();
 
-  const NavbarData:{ isLink: boolean, to: string, isImage: boolean, content: any, callback: () => void }[][] = [
+  const NavbarData:{ isDropDown: boolean, 
+    dropDownElems: {
+      to: string,
+      content: any,
+      callback: () => void,
+    }[],
+    isLink: boolean, to: string, isImage: boolean, content: any, callback: () => void }[][] = [
     [
       {
+        isDropDown: false,
+        dropDownElems: [],
         isLink: true,
         to: currentToken.length === 0 ? "/" : "/panel",
         isImage: true,
@@ -38,6 +46,8 @@ const Navbar:React.FC = () => {
         callback: () => toggleIsOpened(false),
       },
       {
+        isDropDown: false,
+        dropDownElems: [],
         isLink: true,
         to: "/searcher",
         isImage: false,
@@ -47,6 +57,8 @@ const Navbar:React.FC = () => {
     ],
     [
       {
+        isDropDown: false,
+        dropDownElems: [],
         isLink: true,
         to: "/about",
         isImage: false,
@@ -54,13 +66,17 @@ const Navbar:React.FC = () => {
         callback: () => toggleIsOpened(false),
       },
       {
-        isLink: true,
+        isDropDown: !(currentToken.length === 0),
+        dropDownElems: [],
+        isLink: currentToken.length === 0,
         to: currentToken.length === 0 ? "/signin" : "/documentUpload",
         isImage: false,
         content: currentToken.length === 0 ? "Zaloguj się" : "Opublikuj",
         callback: () => toggleIsOpened(false),
       },
       {
+        isDropDown: false,
+        dropDownElems: [],
         isLink: currentToken.length === 0,
         to: currentToken.length === 0 ? "/signup" : "/",
         isImage: false,
@@ -72,6 +88,8 @@ const Navbar:React.FC = () => {
         },
       },
       {
+        isDropDown: false,
+        dropDownElems: [],
         isLink: false,
         to: "/",
         isImage: false,
