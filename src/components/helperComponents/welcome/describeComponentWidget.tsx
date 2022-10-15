@@ -3,7 +3,7 @@ import React from "react";
 import {
   DescribeWidget, DescribeWidgetHeader, 
   DescribeWidgetSubDesc, 
-} from "../../../styled/subpages/welcome/describeComponent";
+} from "src/styled/subpages/welcome/describeComponent";
 
 interface WidgetInterface {
   header: string,

@@ -12,7 +12,7 @@ const TriggerTheShot = (
   setLogin: (newState: string) => void,
   changeTheToken: (newState: string) => void,
   setRefreshToken: (newState: string) => void,
-  navigate: any,
+  toggleIsLoading: (newState: boolean) => void,
 ) : void => {
   toggleIsSuccess(false);
   if ((mode === 1 && Login.length !== 0 && Password.length !== 0) 
@@ -42,9 +42,11 @@ const TriggerTheShot = (
         } else {
           toggleIsSuccess(false); setPassword("Coś poszło nie tak");
         }
+        toggleIsLoading(false);
       })
         .catch((err) => {
           err.response.status !== undefined && err.response.status === 403 ? setError("Dokończ proces rejestracji") : setError("Coś poszło nie tak. Spróbuj ponownie");
+          toggleIsLoading(false);
         });
     } else {
       axios.post(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/users/signup`, objectToSend, {
@@ -55,11 +57,13 @@ const TriggerTheShot = (
         if (res.status === 201) toggleIsSuccess(true); 
         else {
           toggleIsSuccess(false); setPassword("Coś poszło nie tak");
+          toggleIsLoading(false);
         }
       })
         .catch((err) => {
           // console.log(err);
           setError("Coś poszło nie tak. Spróbuj ponownie");
+          toggleIsLoading(false);
         });
     }
   }

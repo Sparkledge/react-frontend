@@ -6,6 +6,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import BackupIcon from "@mui/icons-material/Backup";
+import DescriptionIcon from "@mui/icons-material/Description";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 import {
   NavbarContainer, NavbarAlignGroup, RespOpeningCloseBtn, RotatingBtnElem, 
@@ -66,12 +70,17 @@ const Navbar:React.FC = () => {
         callback: () => toggleIsOpened(false),
       },
       {
-        isDropDown: !(currentToken.length === 0),
+        isDropDown: false,
         dropDownElems: [],
-        isLink: currentToken.length === 0,
+        isLink: true,
         to: currentToken.length === 0 ? "/signin" : "/documentUpload",
         isImage: false,
-        content: currentToken.length === 0 ? "Zaloguj się" : "Opublikuj",
+        content: currentToken.length === 0 ? "Zaloguj się" : (
+          <DescriptionIcon style={{
+            color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
+          }}
+          />
+        ),
         callback: () => toggleIsOpened(false),
       },
       {
@@ -80,7 +89,12 @@ const Navbar:React.FC = () => {
         isLink: currentToken.length === 0,
         to: currentToken.length === 0 ? "/signup" : "/",
         isImage: false,
-        content: currentToken.length === 0 ? "Zarejestruj się" : "Wyloguj",
+        content: currentToken.length === 0 ? "Zarejestruj się" : (
+          <ExitToAppIcon style={{
+            color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
+          }}
+          />
+        ),
         callback: () => {
           currentToken.length === 0 
             ? toggleIsOpened(false) 

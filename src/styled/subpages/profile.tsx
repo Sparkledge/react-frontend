@@ -154,7 +154,7 @@ export const ProfileUserSwitchModeBtn = styled.div`
     left: 80%;
     cursor: pointer;
     transition: all 0.4s;
-    z-index: 5;
+    z-index: 4;
 
     &:hover{
         filter: brightness(70%);
