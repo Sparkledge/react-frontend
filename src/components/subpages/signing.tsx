@@ -79,7 +79,7 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
         dispatch(setNewToken(newToken));
       }, 
       setRefreshUserId, 
-      navigate,
+      toggleIsLoading,
     );
   };
 

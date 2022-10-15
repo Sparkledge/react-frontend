@@ -25,8 +25,8 @@ import ResetPassword from "./subpages/resetPassword";
 import AuthenticationPanel from "./subpages/authentication";
 import TermsAndConditions from "./subpages/termsAndConditions";
 import FAQ from "./subpages/faq";
-
 import UserPanel from "./subpages/userPanel";
+import Settings from "./subpages/settings";
 
 import refreshToken from "../connectionFunctions/main/refreshToken";
 
@@ -80,6 +80,7 @@ const Main: React.FC = () => {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/profile/" element={<Profile />} />
+          <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<Notfound />} />
         </Routes>
         {!isUserConsent ? <MemoryUsingBanner toggleIsUserConsent={toggleIsUserConsent} /> : null}

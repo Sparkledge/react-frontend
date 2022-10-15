@@ -42,6 +42,22 @@ export const NavbarAlignGroup = styled.div<NavbarAlignGroupInterface>`
     }
 `;
 
+export const NavbarElemColumn = styled.div`
+    height: fit-content;
+    z-index: 9;
+    display: block;
+    margin: 0px auto 1vh;
+    
+
+    @media screen and (min-width: 1200px){
+        width: fit-content;
+        top: 0.5vh;
+        display: inline-block;
+        vertical-align: top;
+        margin: 0px 5px;
+    }
+`;
+
 export const NavbarElem = styled.div`
     width: calc(80% - 40px);
     padding: 10px 20px;

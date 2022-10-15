@@ -18,7 +18,7 @@ export const LightMode = {
   navElemBgColor: "rgba(240,240,240,.2)",
   bgColor: "#f0f0f0",
   filterColor: "rgba(200,200,200,.8)",
-  color: "#0A77BF",
+  color: "#0895E6",
   landingButtonColor: "rgba(240,240,240,.5)",
   signingInputBackground: "rgba(240,240,240,.7)",
   memoryBannerBackground: "rgba(240,240,240,.9)",
@@ -30,7 +30,7 @@ export const LightMode = {
   errorColor: "rgba(240,30,30,.75)",
   fonts: {
     main: "Mohave, sans-serif",
-    textShadowMain: "3px 3px 4px rgba(0,0,0,.05)",
+    textShadowMain: "3px 3px 4px rgba(0,0,0,.1)",
   },
 };
 
@@ -51,7 +51,7 @@ export const DarkMode = {
   errorColor: "rgba(240,30,30,.75)",
   fonts: {
     main: "Mohave, sans-serif",
-    textShadowMain: "3px 3px 4px rgba(0,0,0,.05)",
+    textShadowMain: "3px 3px 4px rgba(0,0,0,.2)",
   },
 };
 

@@ -51,7 +51,7 @@ export const UserPanelLastView = styled.section<UserPanelWelcomeViewInterface>`
     font-family: ${(props) => props.theme.fonts.main};
     color: ${(props) => props.theme.color};
     border-radius: 10px;
-    background: rgba(34,107,255,.35);
+    background: rgba(34,107,255,.1);
 
     @media screen and (min-width: 375px){
         width: calc(90% - 20px);
