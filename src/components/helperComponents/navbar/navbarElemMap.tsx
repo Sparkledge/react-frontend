@@ -17,13 +17,10 @@ interface NavbarElemMapInterface {
   groupName: string
 }
 
-const NavbarElemMap:React.FC<NavbarElemMapInterface> = ({ data, groupName } : NavbarElemMapInterface) => {
-  console.log(data);
-  return (
-    <>
-      {data.map((elem, ind) => <NavbarElemComponent {...elem} />)}
-    </>
-  );
-};
+const NavbarElemMap:React.FC<NavbarElemMapInterface> = ({ data, groupName } : NavbarElemMapInterface) => (
+  <>
+    {data.map((elem, ind) => <NavbarElemComponent {...elem} />)}
+  </>
+);
 
 export default NavbarElemMap;
