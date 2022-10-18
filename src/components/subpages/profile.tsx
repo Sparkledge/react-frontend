@@ -85,12 +85,12 @@ const Profile:React.FC = () => {
         >
           <LandingSectionFilter>
             <ProfileHeader className="block-center">
-              {userName}
+              {userName.length === 0 ? "Profil użytkownika" : userName}
             </ProfileHeader>
             <ProfileUserDataEdit isOpened={areUserSettingsOpened} closeCallback={toggleAreUserSettingsOpened} />
             <ProfileContainer className="block-center">
               <ProfileUserDataComponent 
-                isUserProfile={isUserProfile}
+                isUserProfile={isUserProfile && isWorking}
                 areUserSettingsOpened={areUserSettingsOpened}
                 toggleAreUserSettingsOpened={toggleAreUserSettingsOpened}
                 userDescription={userDescription}
@@ -146,13 +146,13 @@ const Profile:React.FC = () => {
                         fontSize: "1.3em", 
                         verticalAlign: "top", 
                       }}
-                      />, elem.views,
+                      />, elem.viewsNumber !== undefined ? elem.viewsNumber : elem.views,
                       ], [<ThumbUpIcon style={{
                         color: "inherit",
                         fontSize: "1.3em", 
                         verticalAlign: "top", 
                       }}
-                      />, elem.likes]]}
+                      />, elem.likesNumber !== undefined ? elem.likesNumber : elem.likes]]}
                       isPublishedByUser={false}
                     />
                   </Link>

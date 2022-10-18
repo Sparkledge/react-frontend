@@ -11,6 +11,8 @@ export type LastPublishedItemType = {
   likes: number,
   views: number,
   createdAt: string,
+  viewsNumber?: number,
+  likesNumber?: number,
 };
 
 const deleteMaterial = async (

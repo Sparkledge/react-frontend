@@ -20,7 +20,9 @@ const getUserDetails = async (
       setUserName(`${res.data.firstName} ${res.data.lastName}`);
       setUserEmail(res.data.email);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      setUserEmail("undefined");
+    });
 };
 
 export default getUserDetails;
