@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import useLocalStorage from "use-local-storage";
+import jwtDecode from "jwt-decode";
 
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -25,6 +26,7 @@ import {
   UserPanelLastViewHeader, UserPanelLastViewGallery, UserPanelLastViewNoItemsHeader, 
 } from "src/styled/subpages/userpanel";
 
+import validateIfEmail from "src/components/auxiliaryFunctions/forgotPassword/validateIfEmail";
 import HeadTags from "src/components/subcomponents/headTags";
 import SearchingPreloaderComponent from "src/components/helperComponents/searcher/searchingPreloaderComponent";
 import LastViewItemComponent from "src/components/helperComponents/userPanel/LastViewItemComponent";
@@ -43,14 +45,15 @@ import BackgroundPattern from "src/assets/pattern_background5.webp";
 const FooterComponent = React.lazy(() => import("src/components/helperComponents/welcome/footerComponent"));
 
 const Profile:React.FC = () => {
+  const [helperUserId, setHelperUserId] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
   const [userJoiningDate, setUserJoiningDate] = useState<string>("24.02.2022");
   const [userEmail, setUserEmail] = useState<string>("");
   const [userDescription, setUserDescription] = useState<string>("Lorem ipsum dolor sit amet");
   const [isActivityWorking, toggleIsActivityWorking] = useState<boolean>(true);
   const [totalPublications, setTotalPublications] = useState<number>(-1);
-  const [totalLikes, setTotalLikes] = useState<number>(29);
-  const [isUserProfile, toggleIsUserProfile] = useState<boolean>(true);
+  const [totalLikes, setTotalLikes] = useState<number>(0);
+  const [isUserProfile, toggleIsUserProfile] = useState<boolean>(false);
   const [isWorking, toggleIsWorking] = useState<boolean>(true);
   const [areUserSettingsOpened, toggleAreUserSettingsOpened] = useState<boolean>(false);
   const [lastPublishedList, setLastPublishedList] = useState<LastPublishedItemType[]>([]);
@@ -61,17 +64,35 @@ const Profile:React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(userId);
     if (userId !== undefined) {
-      loadRecentlyPublished(userId, setLastPublishedList, toggleIsWorking, toggleIsPublishedLoading);
-      getNumberOfPublishedMaterials(userId, setTotalPublications, toggleIsActivityWorking);
-      getUserDetails(userId, setUserName, setUserEmail);
+      toggleIsUserProfile(false);
+      getUserDetails(userId, validateIfEmail(userId) ? "Email" : "Id", setUserName, setUserEmail, setHelperUserId);
+      if (!validateIfEmail(userId)) {
+        loadRecentlyPublished(userId, setLastPublishedList, toggleIsWorking, toggleIsPublishedLoading);
+        getNumberOfPublishedMaterials(userId, setTotalPublications, toggleIsActivityWorking);
+      }
     } else if (memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0)) {
-      // navigate("/");
+      navigate("/");
     } else {
+      toggleIsUserProfile(true);
       getLastViews(memoryUserId, "users/publishedDocuments", setLastPublishedList, toggleIsWorking, toggleIsPublishedLoading);
+      const decodedToken:{
+        email: string,
+        exp: number,
+        iat: number,
+        id: string,
+        isVerified: boolean,
+      } = jwtDecode(memoryUserId);
+      getUserDetails(decodedToken.id, "Id", setUserName, setUserEmail, setHelperUserId);
     }
   }, [memoryUserId, userId]);
+
+  useEffect(() => {
+    if (helperUserId.length > 0 && ((userId !== undefined && validateIfEmail(userId)) || memoryUserId !== undefined)) {
+      if (memoryUserId !== undefined) loadRecentlyPublished(helperUserId, setLastPublishedList, toggleIsWorking, toggleIsPublishedLoading);
+      getNumberOfPublishedMaterials(helperUserId, setTotalPublications, toggleIsActivityWorking);
+    }
+  }, [helperUserId]);
 
   return (
     <MainContainer className="block-center">
