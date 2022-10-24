@@ -134,7 +134,22 @@ const Profile:React.FC = () => {
             <ProfileHeader className="block-center">
               {userName.length === 0 ? "Profil użytkownika" : userName}
             </ProfileHeader>
-            <ProfileUserDataEdit isOpened={areUserSettingsOpened} closeCallback={toggleAreUserSettingsOpened} />
+            {isUserProfile ? (
+              <ProfileUserDataEdit
+                isOpened={areUserSettingsOpened}
+                userDescription={userDescription}
+                setUserDescription={setUserDescription}
+                userFb={userFacebook}
+                setUserFacebook={setUserFacebook}
+                userIg={userInstagram}
+                setUserInstagram={setUserInstagram}
+                userLk={userLinkedin}
+                setUserLinkedin={setUserLinkedin}
+                userPt={userPinterest}
+                setUserPinterest={setUserPinterest}
+                closeCallback={toggleAreUserSettingsOpened}
+              />
+            ) : null}
             <ProfileContainer className="block-center">
               <ProfileUserDataComponent 
                 isUserProfile={isUserProfile && isWorking}

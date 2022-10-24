@@ -4,7 +4,8 @@
 
 */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import useLocalStorage from "use-local-storage";
 
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
@@ -23,30 +24,82 @@ import {
 } from "src/styled/subpages/profile/profileUserDataEdit";
 
 import ProfileUserDataEditSocialMedia from "src/components/helperComponents/profile/profileUserDataEditSocialMedia";
+import updateUserProfile from "src/connectionFunctions/profile/updateUserProfile";
 
 interface ProfileUserDataEditInterface {
   isOpened: boolean,
+  userDescription: string,
+  setUserDescription: (newState: string) => void,
+  userFb: string,
+  setUserFacebook: (newState: string) => void,
+  userIg: string,
+  setUserInstagram: (newState: string) => void,
+  userLk: string,
+  setUserLinkedin: (newState: string) => void,
+  userPt: string,
+  setUserPinterest: (newState: string) => void,
   closeCallback: (newState: boolean) => void,
 }
 
 const ProfileUserDataEdit:React.FC<ProfileUserDataEditInterface> = ({
   isOpened,
+  userDescription,
+  setUserDescription,
+  userFb,
+  setUserFacebook,
+  userIg,
+  setUserInstagram,
+  userLk,
+  setUserLinkedin,
+  userPt,
+  setUserPinterest,
   closeCallback,
 }:ProfileUserDataEditInterface) => {
-  const [currentDescription, setCurrentDescription] = useState<string>("");
-  const [currentFbProfile, setCurrentFbProfile] = useState<string>("");
-  const [currentIgProfile, setCurrentIgProfile] = useState<string>("");
-  const [currentLkProfile, setCurrentLkProfile] = useState<string>("");
-  const [currentPtProfile, setCurrentPtProfile] = useState<string>("");
+  const [currentDescription, setCurrentDescription] = useState<string>(userDescription);
+  const [currentFbProfile, setCurrentFbProfile] = useState<string>(userFb);
+  const [currentIgProfile, setCurrentIgProfile] = useState<string>(userIg);
+  const [currentLkProfile, setCurrentLkProfile] = useState<string>(userLk);
+  const [currentPtProfile, setCurrentPtProfile] = useState<string>(userPt);
+
+  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "", { syncData: true });
 
   const MAX_DESC_LENGTH:number = 500;
+
+  useEffect(() => {
+    setCurrentDescription(userDescription);
+    setCurrentFbProfile(userFb);
+    setCurrentIgProfile(userIg);
+    setCurrentLkProfile(userLk);
+    setCurrentPtProfile(userPt);
+  }, [userDescription, userFb, userIg, userLk, userPt]);
 
   return (
     <ProfileUserDataEditContainer className="block-center" isOpened={isOpened}>
       <ProfileUserDataEditSocialMediaClosings alignment="left" onClick={() => closeCallback(!isOpened)}>
         <BackspaceIcon style={{ color: "inherit", fontSize: "inherit" }} />
       </ProfileUserDataEditSocialMediaClosings>
-      <ProfileUserDataEditSocialMediaClosings alignment="right" onClick={() => closeCallback(!isOpened)}>
+      <ProfileUserDataEditSocialMediaClosings
+        alignment="right"
+        onClick={() => {
+          updateUserProfile(
+            memoryUserId, 
+            currentFbProfile, 
+            currentIgProfile, 
+            currentLkProfile, 
+            currentPtProfile, 
+            currentDescription,
+            setUserDescription, 
+            currentFbProfile,
+            setUserFacebook, 
+            currentIgProfile,
+            setUserInstagram,
+            currentLkProfile, 
+            setUserLinkedin, 
+            currentPtProfile,
+            setUserPinterest,
+          ); closeCallback(!isOpened); 
+        }}
+      >
         <CheckBoxIcon style={{ color: "rgba(10,210,10,.9)", fontSize: "inherit" }} />
       </ProfileUserDataEditSocialMediaClosings>
       <ProfileUserDataEditHeader className="block-center">
