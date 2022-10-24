@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
-  BrowserRouter as Router, Routes, Route, useNavigate,
+  BrowserRouter as Router, Routes, Route,
 } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
@@ -44,10 +44,10 @@ const Main: React.FC = () => {
   );
 
   useEffect(() => {
-    if (refreshUserId.length > 0) {
+    if (refreshUserId !== undefined && refreshUserId.length > 0) {
       refreshToken(refreshUserId, setMemoryUserId, setRefreshUserId);
       dispatch(setNewToken(memoryUserId));
-    } else {
+    } else if (refreshToken !== undefined) {
       setMemoryUserId(undefined);
       dispatch(setNewToken(memoryUserId));
     }
@@ -78,7 +78,7 @@ const Main: React.FC = () => {
           <Route path="/authentication/:token" element={<AuthenticationPanel />} />
           <Route path="/terms" element={<TermsAndConditions />} />
           <Route path="/faq" element={<FAQ />} />
-          <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/profile/" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<Notfound />} />

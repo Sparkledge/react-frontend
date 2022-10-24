@@ -1,6 +1,6 @@
 import LogoImage from "src/assets/sparkledge_logo.webp";
 
-const footerData:{ type: string, addr: string, content: any }[][] = [
+const footerData:{ type: string, addr: string, content: any, displayIfSignedIn?: boolean, }[][] = [
   [
     {
       type: "image",
@@ -18,16 +18,6 @@ const footerData:{ type: string, addr: string, content: any }[][] = [
       type: "text",
       addr: "/searcher",
       content: "Wyszukiwarka",
-    },
-    {
-      type: "text",
-      addr: "/signin",
-      content: "Zaloguj się",
-    },
-    {
-      type: "text",
-      addr: "/signup",
-      content: "Zarejestruj się",
     },
   ],
   [

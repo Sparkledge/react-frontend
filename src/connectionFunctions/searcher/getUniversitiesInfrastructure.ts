@@ -19,9 +19,9 @@ const getUniversitiesInfrastructure = async (
   await axios.get(`${process.env.REACT_APP_CONNECTION_TO_SERVER}/infrastructure/universities`)
     .then((res) => {
       setUniversitiesList(res.data);
-      if (previouslySearchedUni.length > 0 && res.data.filter((elem: any) => elem.name === previouslySearchedUni).length > 0) {
+      if (previouslySearchedUni !== undefined && previouslySearchedUni.length > 0 && res.data.filter((elem: any) => elem.name === previouslySearchedUni).length > 0) {
         setSearchedUniversity(previouslySearchedUni);
-        if (previouslySearchedFac.length > 0 && res.data.filter((elem: any) => elem.name === previouslySearchedUni)[0].faculties
+        if (previouslySearchedFac !== undefined && previouslySearchedFac.length > 0 && res.data.filter((elem: any) => elem.name === previouslySearchedUni)[0].faculties
           .filter((elem:any) => elem.name === previouslySearchedFac).length > 0) { setSearchedFaculty(previouslySearchedFac); } else setPreviouslySearchedFac(undefined);
       }
       toggleIsLoaded(true);

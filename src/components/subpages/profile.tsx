@@ -3,8 +3,13 @@
     their own profile, this subpage also works as the settings one
 */
 
-import React, { Suspense, useState } from "react";
-import { Link } from "react-router-dom";
+import React, {
+  Suspense, useState, useEffect, memo, 
+} from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import useLocalStorage from "use-local-storage";
+import jwtDecode from "jwt-decode";
+
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
@@ -21,6 +26,7 @@ import {
   UserPanelLastViewHeader, UserPanelLastViewGallery, UserPanelLastViewNoItemsHeader, 
 } from "src/styled/subpages/userpanel";
 
+import validateIfEmail from "src/components/auxiliaryFunctions/forgotPassword/validateIfEmail";
 import HeadTags from "src/components/subcomponents/headTags";
 import SearchingPreloaderComponent from "src/components/helperComponents/searcher/searchingPreloaderComponent";
 import LastViewItemComponent from "src/components/helperComponents/userPanel/LastViewItemComponent";
@@ -29,21 +35,90 @@ import ProfileUserDataComponent from "src/components/helperComponents/profile/pr
 
 import { LastPublishedItemType } from "src/connectionFunctions/userPanel/deleteMaterial";
 
+import loadRecentlyPublished from "src/connectionFunctions/profile/loadRecentlyPublished";
+import getNumberOfPublishedMaterials from "src/connectionFunctions/profile/getNumberOfPublishedMaterials";
+import getUserDetails from "src/connectionFunctions/profile/getUserDetails";
+import getLastViews from "src/connectionFunctions/userPanel/loadLastViews";
+
 import BackgroundPattern from "src/assets/pattern_background5.webp";
 
 const FooterComponent = React.lazy(() => import("src/components/helperComponents/welcome/footerComponent"));
 
 const Profile:React.FC = () => {
-  const [userName, setUserName] = useState<string>("Test user");
-  const [userJoiningDate, setUserJoiningDate] = useState<string>("24.02.2022");
-  const [userEmail, setUserEmail] = useState<string>("test@test.pl");
-  const [userDescription, setUserDescription] = useState<string>("Lorem ipsum dolor sit amet");
-  const [totalPublications, setTotalPublications] = useState<number>(23);
-  const [totalLikes, setTotalLikes] = useState<number>(29);
-  const [isUserProfile, toggleIsUserProgile] = useState<boolean>(true);
+  const [helperUserId, setHelperUserId] = useState<string>("");
+  const [userName, setUserName] = useState<string>("");
+  const [userJoiningDate, setUserJoiningDate] = useState<string>("");
+  const [userEmail, setUserEmail] = useState<string>("");
+  const [userDescription, setUserDescription] = useState<string>("");
+  const [userFacebook, setUserFacebook] = useState<string>("");
+  const [userInstagram, setUserInstagram] = useState<string>("");
+  const [userLinkedin, setUserLinkedin] = useState<string>("");
+  const [userPinterest, setUserPinterest] = useState<string>("");
+  const [isActivityWorking, toggleIsActivityWorking] = useState<boolean>(true);
+  const [totalPublications, setTotalPublications] = useState<number>(-1);
+  const [totalLikes, setTotalLikes] = useState<number>(0);
+  const [isUserProfile, toggleIsUserProfile] = useState<boolean>(false);
+  const [isWorking, toggleIsWorking] = useState<boolean>(true);
   const [areUserSettingsOpened, toggleAreUserSettingsOpened] = useState<boolean>(false);
   const [lastPublishedList, setLastPublishedList] = useState<LastPublishedItemType[]>([]);
   const [isPublishedLoading, toggleIsPublishedLoading] = useState<boolean>(false);
+  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "", { syncData: true });
+
+  const { userId } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userId !== undefined) {
+      toggleIsUserProfile(false);
+      getUserDetails(
+        userId, 
+        validateIfEmail(userId) ? "Email" : "Id", 
+        setUserName, 
+        setUserEmail, 
+        setUserDescription,
+        setUserFacebook, 
+        setUserInstagram, 
+        setUserLinkedin, 
+        setUserPinterest, 
+        setHelperUserId,
+      );
+      if (!validateIfEmail(userId)) {
+        loadRecentlyPublished(userId, setLastPublishedList, toggleIsWorking, toggleIsPublishedLoading);
+        getNumberOfPublishedMaterials(userId, setTotalPublications, toggleIsActivityWorking);
+      }
+    } else if (memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0)) {
+      navigate("/");
+    } else {
+      toggleIsUserProfile(true);
+      getLastViews(memoryUserId, "users/publishedDocuments", setLastPublishedList, toggleIsWorking, toggleIsPublishedLoading);
+      const decodedToken:{
+        email: string,
+        exp: number,
+        iat: number,
+        id: string,
+        isVerified: boolean,
+      } = jwtDecode(memoryUserId);
+      getUserDetails(
+        decodedToken.id, 
+        "Id", 
+        setUserName, 
+        setUserEmail, 
+        setUserDescription,
+        setUserFacebook, 
+        setUserInstagram, 
+        setUserLinkedin, 
+        setUserPinterest, 
+        setHelperUserId,
+      );
+    }
+  }, [memoryUserId, userId]);
+
+  useEffect(() => {
+    if (helperUserId.length > 0 && ((userId !== undefined && validateIfEmail(userId)) || memoryUserId !== undefined)) {
+      if (memoryUserId !== undefined) loadRecentlyPublished(helperUserId, setLastPublishedList, toggleIsWorking, toggleIsPublishedLoading);
+      getNumberOfPublishedMaterials(helperUserId, setTotalPublications, toggleIsActivityWorking);
+    }
+  }, [helperUserId]);
 
   return (
     <MainContainer className="block-center">
@@ -57,38 +132,57 @@ const Profile:React.FC = () => {
         >
           <LandingSectionFilter>
             <ProfileHeader className="block-center">
-              {userName}
+              {userName.length === 0 ? "Profil użytkownika" : userName}
             </ProfileHeader>
-            <ProfileUserDataEdit isOpened={areUserSettingsOpened} closeCallback={toggleAreUserSettingsOpened} />
+            {isUserProfile ? (
+              <ProfileUserDataEdit
+                isOpened={areUserSettingsOpened}
+                userDescription={userDescription}
+                setUserDescription={setUserDescription}
+                userFb={userFacebook}
+                setUserFacebook={setUserFacebook}
+                userIg={userInstagram}
+                setUserInstagram={setUserInstagram}
+                userLk={userLinkedin}
+                setUserLinkedin={setUserLinkedin}
+                userPt={userPinterest}
+                setUserPinterest={setUserPinterest}
+                closeCallback={toggleAreUserSettingsOpened}
+              />
+            ) : null}
             <ProfileContainer className="block-center">
               <ProfileUserDataComponent 
-                isUserProfile={isUserProfile}
+                isUserProfile={isUserProfile && isWorking}
                 areUserSettingsOpened={areUserSettingsOpened}
                 toggleAreUserSettingsOpened={toggleAreUserSettingsOpened}
                 userDescription={userDescription}
                 userJoiningDate={userJoiningDate}
                 userEmail={userEmail}
-                facebookLink="https://www.facebook.com"
-                instagramLink="https://www.instagram.com"
-                linkedinLink="https://www.linkedin.com"
-                pinterestLink="https://www.pinterest.com/"
+                facebookLink={userFacebook}
+                instagramLink={userInstagram}
+                linkedinLink={userLinkedin}
+                pinterestLink={userPinterest}
               />
               <ProfilePublishingData className="block-center">
                 <ProfileDataHeader className="block-center">
-                  Aktywność
+                  {isActivityWorking ? "Aktywność" : "Błąd połączenia"}
                 </ProfileDataHeader>
-                <ProfileUserDataContainer className="block-center">
-                  <ProfilePublishingInfoContainer className="block-center">
-                    Publikacje: 
-                    {" "}
-                    {totalPublications}
-                  </ProfilePublishingInfoContainer>
-                  <ProfilePublishingInfoContainer className="block-center">
-                    Polubienia: 
-                    {" "}
-                    {totalLikes}
-                  </ProfilePublishingInfoContainer>
-                </ProfileUserDataContainer>
+                {
+                isActivityWorking ? totalPublications === -1 ? <SearchingPreloaderComponent /> : (
+                  <ProfileUserDataContainer className="block-center">
+                    <ProfilePublishingInfoContainer className="block-center">
+                      Publikacje: 
+                      {" "}
+                      {totalPublications}
+                    </ProfilePublishingInfoContainer>
+                    <ProfilePublishingInfoContainer className="block-center">
+                      Polubienia: 
+                      {" "}
+                      {totalLikes}
+                    </ProfilePublishingInfoContainer>
+                  </ProfileUserDataContainer>
+                ) : null
+}
               </ProfilePublishingData>
             </ProfileContainer>
             <UserPanelWelcomeSection className="block-center">
@@ -114,13 +208,13 @@ const Profile:React.FC = () => {
                         fontSize: "1.3em", 
                         verticalAlign: "top", 
                       }}
-                      />, elem.views,
+                      />, elem.viewsNumber !== undefined ? elem.viewsNumber : elem.views,
                       ], [<ThumbUpIcon style={{
                         color: "inherit",
                         fontSize: "1.3em", 
                         verticalAlign: "top", 
                       }}
-                      />, elem.likes]]}
+                      />, elem.likesNumber !== undefined ? elem.likesNumber : elem.likes]]}
                       isPublishedByUser={false}
                     />
                   </Link>

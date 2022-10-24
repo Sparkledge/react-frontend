@@ -21,6 +21,7 @@ import {
   ProfileUserSwitchModeBtn,
 } from "src/styled/subpages/profile";
 
+import SearchingPreloaderComponent from "src/components/helperComponents/searcher/searchingPreloaderComponent";
 import ProfileUserDataTile from "./profileUserDataTile";
 
 interface ProfileUserDataComponentInterface {
@@ -71,20 +72,35 @@ const ProfileUserDataComponent:React.FC<ProfileUserDataComponentInterface> = ({
       ) : null
     }
     <ProfileDataHeader className="block-center">
-      Informacje
+      {userEmail === "undefined" ? "Błąd połączenia" : "Informacje"}
     </ProfileDataHeader>
     <ProfileUserDataContainer className="block-center">
-      {userDescription.length > 0 ? (
-        <ProfileUserDescriptionContainer className="block-center">
-          {userDescription}
-        </ProfileUserDescriptionContainer>
-      ) : null}
-      <ProfileUserDataTile Icon={FlareIcon} content={userJoiningDate} />
-      <ProfileUserDataTile Icon={LocalPostOfficeIcon} content={userEmail} />
-      <ProfileUserDataTile Icon={FacebookIcon} content="Facebook" isClickable linkToTheSource={facebookLink} />
-      <ProfileUserDataTile Icon={InstagramIcon} content="Instagram" isClickable linkToTheSource={instagramLink} />
-      <ProfileUserDataTile Icon={LinkedInIcon} content="Linkedin" isClickable linkToTheSource={linkedinLink} />
-      <ProfileUserDataTile Icon={PinterestIcon} content="Pinterest" isClickable linkToTheSource={pinterestLink} />
+      {userEmail.length === 0 ? <SearchingPreloaderComponent /> 
+        : userEmail === "undefined" ? null : (
+          <>
+            {userDescription.length > 0 ? (
+              <ProfileUserDescriptionContainer className="block-center">
+                {userDescription}
+              </ProfileUserDescriptionContainer>
+            ) : null}
+            {
+              userJoiningDate.length > 0 ? <ProfileUserDataTile Icon={FlareIcon} content={userJoiningDate} /> : null
+            }
+            <ProfileUserDataTile Icon={LocalPostOfficeIcon} content={userEmail} />
+            {
+              facebookLink.length > 0 ? <ProfileUserDataTile Icon={FacebookIcon} content="Facebook" isClickable linkToTheSource={facebookLink} /> : null
+            }
+            {
+              instagramLink.length > 0 ? <ProfileUserDataTile Icon={InstagramIcon} content="Instagram" isClickable linkToTheSource={instagramLink} /> : null
+            }
+            {
+              linkedinLink.length > 0 ? <ProfileUserDataTile Icon={LinkedInIcon} content="Linkedin" isClickable linkToTheSource={linkedinLink} /> : null
+            }
+            {
+              pinterestLink.length > 0 ? <ProfileUserDataTile Icon={PinterestIcon} content="Pinterest" isClickable linkToTheSource={pinterestLink} /> : null
+            }
+          </>
+        )}
     </ProfileUserDataContainer>
   </ProfileUserData>
 );
