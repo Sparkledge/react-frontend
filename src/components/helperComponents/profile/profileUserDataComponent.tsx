@@ -83,12 +83,22 @@ const ProfileUserDataComponent:React.FC<ProfileUserDataComponentInterface> = ({
                 {userDescription}
               </ProfileUserDescriptionContainer>
             ) : null}
-            <ProfileUserDataTile Icon={FlareIcon} content={userJoiningDate} />
+            {
+              userJoiningDate.length > 0 ? <ProfileUserDataTile Icon={FlareIcon} content={userJoiningDate} /> : null
+            }
             <ProfileUserDataTile Icon={LocalPostOfficeIcon} content={userEmail} />
-            <ProfileUserDataTile Icon={FacebookIcon} content="Facebook" isClickable linkToTheSource={facebookLink} />
-            <ProfileUserDataTile Icon={InstagramIcon} content="Instagram" isClickable linkToTheSource={instagramLink} />
-            <ProfileUserDataTile Icon={LinkedInIcon} content="Linkedin" isClickable linkToTheSource={linkedinLink} />
-            <ProfileUserDataTile Icon={PinterestIcon} content="Pinterest" isClickable linkToTheSource={pinterestLink} />
+            {
+              facebookLink.length > 0 ? <ProfileUserDataTile Icon={FacebookIcon} content="Facebook" isClickable linkToTheSource={facebookLink} /> : null
+            }
+            {
+              instagramLink.length > 0 ? <ProfileUserDataTile Icon={InstagramIcon} content="Instagram" isClickable linkToTheSource={instagramLink} /> : null
+            }
+            {
+              linkedinLink.length > 0 ? <ProfileUserDataTile Icon={LinkedInIcon} content="Linkedin" isClickable linkToTheSource={linkedinLink} /> : null
+            }
+            {
+              pinterestLink.length > 0 ? <ProfileUserDataTile Icon={PinterestIcon} content="Pinterest" isClickable linkToTheSource={pinterestLink} /> : null
+            }
           </>
         )}
     </ProfileUserDataContainer>

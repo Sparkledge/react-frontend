@@ -47,9 +47,13 @@ const FooterComponent = React.lazy(() => import("src/components/helperComponents
 const Profile:React.FC = () => {
   const [helperUserId, setHelperUserId] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
-  const [userJoiningDate, setUserJoiningDate] = useState<string>("24.02.2022");
+  const [userJoiningDate, setUserJoiningDate] = useState<string>("");
   const [userEmail, setUserEmail] = useState<string>("");
-  const [userDescription, setUserDescription] = useState<string>("Lorem ipsum dolor sit amet");
+  const [userDescription, setUserDescription] = useState<string>("");
+  const [userFacebook, setUserFacebook] = useState<string>("");
+  const [userInstagram, setUserInstagram] = useState<string>("");
+  const [userLinkedin, setUserLinkedin] = useState<string>("");
+  const [userPinterest, setUserPinterest] = useState<string>("");
   const [isActivityWorking, toggleIsActivityWorking] = useState<boolean>(true);
   const [totalPublications, setTotalPublications] = useState<number>(-1);
   const [totalLikes, setTotalLikes] = useState<number>(0);
@@ -66,7 +70,18 @@ const Profile:React.FC = () => {
   useEffect(() => {
     if (userId !== undefined) {
       toggleIsUserProfile(false);
-      getUserDetails(userId, validateIfEmail(userId) ? "Email" : "Id", setUserName, setUserEmail, setHelperUserId);
+      getUserDetails(
+        userId, 
+        validateIfEmail(userId) ? "Email" : "Id", 
+        setUserName, 
+        setUserEmail, 
+        setUserDescription,
+        setUserFacebook, 
+        setUserInstagram, 
+        setUserLinkedin, 
+        setUserPinterest, 
+        setHelperUserId,
+      );
       if (!validateIfEmail(userId)) {
         loadRecentlyPublished(userId, setLastPublishedList, toggleIsWorking, toggleIsPublishedLoading);
         getNumberOfPublishedMaterials(userId, setTotalPublications, toggleIsActivityWorking);
@@ -83,7 +98,18 @@ const Profile:React.FC = () => {
         id: string,
         isVerified: boolean,
       } = jwtDecode(memoryUserId);
-      getUserDetails(decodedToken.id, "Id", setUserName, setUserEmail, setHelperUserId);
+      getUserDetails(
+        decodedToken.id, 
+        "Id", 
+        setUserName, 
+        setUserEmail, 
+        setUserDescription,
+        setUserFacebook, 
+        setUserInstagram, 
+        setUserLinkedin, 
+        setUserPinterest, 
+        setHelperUserId,
+      );
     }
   }, [memoryUserId, userId]);
 
@@ -117,10 +143,10 @@ const Profile:React.FC = () => {
                 userDescription={userDescription}
                 userJoiningDate={userJoiningDate}
                 userEmail={userEmail}
-                facebookLink="https://www.facebook.com"
-                instagramLink="https://www.instagram.com"
-                linkedinLink="https://www.linkedin.com"
-                pinterestLink="https://www.pinterest.com/"
+                facebookLink={userFacebook}
+                instagramLink={userInstagram}
+                linkedinLink={userLinkedin}
+                pinterestLink={userPinterest}
               />
               <ProfilePublishingData className="block-center">
                 <ProfileDataHeader className="block-center">
