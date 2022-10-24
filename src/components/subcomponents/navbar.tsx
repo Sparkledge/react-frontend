@@ -6,8 +6,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import BackupIcon from "@mui/icons-material/Backup";
+import GroupIcon from "@mui/icons-material/Group";
+import LiveHelpIcon from "@mui/icons-material/LiveHelp";
 import DescriptionIcon from "@mui/icons-material/Description";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
@@ -64,9 +64,24 @@ const Navbar:React.FC = () => {
         isDropDown: false,
         dropDownElems: [],
         isLink: true,
+        to: "/faq",
+        isImage: false,
+        content: <LiveHelpIcon style={{
+          color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
+        }}
+        />,
+        callback: () => toggleIsOpened(false),
+      },
+      {
+        isDropDown: false,
+        dropDownElems: [],
+        isLink: true,
         to: "/about",
         isImage: false,
-        content: "O nas",
+        content: <GroupIcon style={{
+          color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
+        }}
+        />,
         callback: () => toggleIsOpened(false),
       },
       {

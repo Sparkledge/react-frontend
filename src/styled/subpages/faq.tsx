@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-interface QuestionWrapperInterface {
+interface QuestionAnswerContentInterface {
   isOpened: boolean
 }
 
@@ -55,12 +55,12 @@ export const QuestionsContainer = styled.section`
     }
 `;
 
-export const QuestionWrapper = styled.div<QuestionWrapperInterface>`
+export const QuestionWrapper = styled.div`
     width: calc(100% - 20px);
-    min-height: calc(10vh - 20px);
+    min-height: calc(8vh - 20px);
     max-height: calc(60vh - 20px);
-    height: ${(props) => props.isOpened ? "fit-content" : "calc(10vh - 20px)"};
-    overflow-y: ${(props) => props.isOpened ? "auto" : "hidden"};
+    height: fit-content;
+    overflow-y: hidden;
     border-radius: 10px;
     box-shadow: ${(props) => props.theme.fonts.textShadowMain};
     padding: 10px;
@@ -136,9 +136,11 @@ export const QuestionArrow = styled.div`
     }
 `;
 
-export const QuestionAnswerContent = styled.div`
+export const QuestionAnswerContent = styled.div<QuestionAnswerContentInterface>`
     width: calc(100% - 10px);
-    padding: 5px;
+    height: ${(props) => props.isOpened ? "fit-content" : "0"};
+    overflow-y: hidden;
+    padding: 0px 5px;
     text-align: center;
     font-size: 1em;
     letter-spacing: 0.06em;

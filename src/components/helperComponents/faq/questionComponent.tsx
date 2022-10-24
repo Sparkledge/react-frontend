@@ -24,7 +24,7 @@ const QuestionComponent:React.FC<QuestionComponentInterface> = ({
   const [isOpened, toggleIsOpened] = useState<boolean>(false);
 
   return (
-    <QuestionWrapper className="block-center" isOpened={isOpened}>
+    <QuestionWrapper className="block-center">
       <QuestionUpperPart className="block-center" onClick={() => toggleIsOpened(!isOpened)}>
         <QuestionContent>
           {header}
@@ -36,7 +36,7 @@ const QuestionComponent:React.FC<QuestionComponentInterface> = ({
             }
         </QuestionArrow>
       </QuestionUpperPart>
-      <QuestionAnswerContent className="block-center">
+      <QuestionAnswerContent className="block-center" isOpened={isOpened}>
         {children}
       </QuestionAnswerContent>
     </QuestionWrapper>

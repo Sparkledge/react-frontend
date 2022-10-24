@@ -31,6 +31,7 @@ const BackgroundPattern = require("../../assets/pattern_background5.webp");
 const Searcher:React.FC = () => {
   const [isLoaded, toggleIsLoaded] = useState<boolean>(false);
   const [areDocumentsLoaded, toggleAreDocumentsLoaded] = useState<boolean>(false);
+  const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
 
   const [universitiesList, setUniversitiesList] = useState<any[]>([]);
   const [facultiesList, setFacultiesList] = useState<any[]>([]);
@@ -55,7 +56,7 @@ const Searcher:React.FC = () => {
 
   const [previouslySearchedUni, setPreviouslySearchedUni] = useLocalStorage<string>("uni", "");
   const [previouslySearchedFac, setPreviouslySearchedFac] = useLocalStorage<string>("fac", "");
-  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
+  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "", { syncData: true });
     
   const { courseId } = useParams();
   const navigate = useNavigate();
@@ -85,89 +86,105 @@ const Searcher:React.FC = () => {
   };
 
   useEffect(() => {
-    toggleIsLoaded(false);
-    if (previouslySearchedFac !== undefined && previouslySearchedUni !== undefined
+    window.addEventListener("online", () => setIsOnline(navigator.onLine));
+    window.addEventListener("offline", () => setIsOnline(navigator.onLine));
+
+    return () => {
+      window.removeEventListener("online", () => setIsOnline(navigator.onLine));
+      window.removeEventListener("offline", () => setIsOnline(navigator.onLine));
+    };
+  }, [isOnline]);
+
+  useEffect(() => {
+    if (isOnline) {
+      toggleIsLoaded(false);
+      if (previouslySearchedFac !== undefined && previouslySearchedUni !== undefined
         && previouslySearchedFac.length > 0 && previouslySearchedUni.length > 0) {
-      setSearchedUniversity(previouslySearchedUni);
-      setSearchedFaculty(previouslySearchedFac);
-      submitTheQuery(
-        previouslySearchedUni, 
-        previouslySearchedFac, 
-        searchedProgramme, 
-        searchedSemester.toString(),
-        searchedCourse,
-        searchedDegree, 
-        searchedType,
-        chosenSort, 
-        chosenSortOrder,
-        setSearchedResults,
-        toggleAreDocumentsLoaded,
-      );
-    } else {
-      getUniversitiesInfrastructure(
-        setUniversitiesList, 
-        previouslySearchedUni, 
-        previouslySearchedFac,
-        setSearchedUniversity, 
-        setSearchedFaculty, 
-        setPreviouslySearchedFac, 
-        toggleIsLoaded,
-        setSearcherState,
-      );
-    }
-    toggleIsLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    if (searchedUniversity.toString().length > 0) {
-      getUniversitySubInfrastructure(
-        universitiesList, 
-        setFacultiesList, 
-        "faculties", 
-        setSearcherState, 
-        searchedUniversity,
-      );
-      setPreviouslySearchedUni(searchedUniversity.toString());
-    } else setPreviouslySearchedUni(undefined);
-  }, [searchedUniversity]);
-
-  useEffect(() => {
-    if (searchedFaculty.toString().length > 0) {
-      setPreviouslySearchedFac(searchedFaculty.toString());
-      if (programmesList.length === 0) {
-        getUniversitySubInfrastructure(
-          facultiesList, 
-          setProgrammesList, 
-          "programmes", 
-          setSearcherState, 
-          searchedFaculty,
+        setSearchedUniversity(previouslySearchedUni);
+        setSearchedFaculty(previouslySearchedFac);
+        submitTheQuery(
+          previouslySearchedUni, 
+          previouslySearchedFac, 
+          searchedProgramme, 
+          searchedSemester.toString(),
+          searchedCourse,
+          searchedDegree, 
+          searchedType,
+          chosenSort, 
+          chosenSortOrder,
+          setSearchedResults,
+          toggleAreDocumentsLoaded,
+        );
+      } else {
+        getUniversitiesInfrastructure(
+          setUniversitiesList, 
+          previouslySearchedUni, 
+          previouslySearchedFac,
+          setSearchedUniversity, 
+          setSearchedFaculty, 
+          setPreviouslySearchedFac, 
+          toggleIsLoaded,
+          setSearcherState,
         );
       }
-      if (searchedProgramme.length !== 0 && coursesList.length === 0) {
+      toggleIsLoaded(true);
+    } else goBackToTheBeginning();
+  }, [isOnline]);
+
+  useEffect(() => {
+    if (isOnline) {
+      if (searchedUniversity.toString().length > 0) {
         getUniversitySubInfrastructure(
-          programmesList, 
-          setCoursesList, 
-          "courses", 
+          universitiesList, 
+          setFacultiesList, 
+          "faculties", 
           setSearcherState, 
-          searchedProgramme,
+          searchedUniversity,
         );
+        setPreviouslySearchedUni(searchedUniversity.toString());
+      } else setPreviouslySearchedUni(undefined);
+    } else goBackToTheBeginning();
+  }, [isOnline, searchedUniversity]);
+
+  useEffect(() => {
+    if (isOnline) {
+      if (searchedFaculty.toString().length > 0) {
+        setPreviouslySearchedFac(searchedFaculty.toString());
+        if (programmesList.length === 0) {
+          getUniversitySubInfrastructure(
+            facultiesList, 
+            setProgrammesList, 
+            "programmes", 
+            setSearcherState, 
+            searchedFaculty,
+          );
+        }
+        if (searchedProgramme.length !== 0 && coursesList.length === 0) {
+          getUniversitySubInfrastructure(
+            programmesList, 
+            setCoursesList, 
+            "courses", 
+            setSearcherState, 
+            searchedProgramme,
+          );
+        }
+        submitTheQuery( 
+          searchedUniversity, 
+          searchedFaculty, 
+          searchedProgramme, 
+          searchedSemester.toString(),
+          searchedCourse,
+          searchedDegree, 
+          searchedType,
+          chosenSort, 
+          chosenSortOrder,
+          setSearchedResults,
+          toggleAreDocumentsLoaded,
+        );
+        setSearcherState(2);
       }
-      submitTheQuery( 
-        searchedUniversity, 
-        searchedFaculty, 
-        searchedProgramme, 
-        searchedSemester.toString(),
-        searchedCourse,
-        searchedDegree, 
-        searchedType,
-        chosenSort, 
-        chosenSortOrder,
-        setSearchedResults,
-        toggleAreDocumentsLoaded,
-      );
-      setSearcherState(2);
     }
-  }, [universitiesList, facultiesList, searchedUniversity, searchedFaculty, searchedProgramme, searchedSemester, searchedCourse, 
+  }, [isOnline, universitiesList, facultiesList, searchedUniversity, searchedFaculty, searchedProgramme, searchedSemester, searchedCourse, 
     searchedDegree, 
     searchedType, chosenSort, chosenSortOrder]);
 
@@ -200,7 +217,21 @@ const Searcher:React.FC = () => {
               </AboutHeader>
             )
           }
-          {!isLoaded ? <SearchingPreloaderComponent /> : searcherState === 0 ? (
+          {!isOnline || (searcherState < 0 || searcherState > 2) ? (
+            <SearcherFailureContainer className="block-center">
+              <SearcherFailureHeader className="block-center">
+                {isOnline ? "Niestety, coś poszło nie tak i połączenie z serwerem nie zakończyło się pomyślnie" : "Brak połączenia z internetem. Sprawdź swoje połączenie sieciowe"}
+              </SearcherFailureHeader>
+              {isOnline ? (
+                <SearcherFailureButton
+                  className="block-center"
+                  onClick={() => { setSearcherState(0); setSearchedProgramme(""); navigate("/searcher/"); }}
+                >
+                  Powrót do wyszukiwania
+                </SearcherFailureButton>
+              ) : null}
+            </SearcherFailureContainer>
+          ) : !isLoaded ? <SearchingPreloaderComponent /> : searcherState === 0 ? (
             <Suspense fallback={null}>
               <SearchBarComponent 
                 universities={universitiesList}
@@ -228,7 +259,7 @@ const Searcher:React.FC = () => {
               />
             </Suspense>
           ) 
-            : searcherState === 1 ? <SearchingPreloaderComponent /> : searcherState === 2 ? (
+            : searcherState === 1 ? <SearchingPreloaderComponent /> : (
               <SearchingResultsSection className="block-center">
                 <SearcherFilters
                   openedFilters={openedFilters}
@@ -301,18 +332,6 @@ const Searcher:React.FC = () => {
                 </SearchingResultsWrapper>
 
               </SearchingResultsSection>
-            ) : (
-              <SearcherFailureContainer className="block-center">
-                <SearcherFailureHeader className="block-center">
-                  Niestety, coś poszło nie tak i połączenie z serwerem nie zakończyło się pomyślnie
-                </SearcherFailureHeader>
-                <SearcherFailureButton
-                  className="block-center"
-                  onClick={() => { setSearcherState(0); setSearchedProgramme(""); navigate("/searcher/"); }}
-                >
-                  Powrót do wyszukiwania
-                </SearcherFailureButton>
-              </SearcherFailureContainer>
             )}
         </LandingSectionFilter>    
       </LandingSectionWrapper>
