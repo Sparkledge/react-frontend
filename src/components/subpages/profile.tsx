@@ -56,7 +56,7 @@ const Profile:React.FC = () => {
   const [userPinterest, setUserPinterest] = useState<string>("");
   const [isActivityWorking, toggleIsActivityWorking] = useState<boolean>(true);
   const [totalPublications, setTotalPublications] = useState<number>(-1);
-  const [totalLikes, setTotalLikes] = useState<number>(0);
+  const [totalLikes, setTotalLikes] = useState<number>(-1);
   const [isUserProfile, toggleIsUserProfile] = useState<boolean>(false);
   const [isWorking, toggleIsWorking] = useState<boolean>(true);
   const [areUserSettingsOpened, toggleAreUserSettingsOpened] = useState<boolean>(false);
@@ -74,7 +74,8 @@ const Profile:React.FC = () => {
         userId, 
         validateIfEmail(userId) ? "Email" : "Id", 
         setUserName, 
-        setUserEmail, 
+        setUserEmail,
+        setUserJoiningDate, 
         setUserDescription,
         setUserFacebook, 
         setUserInstagram, 
@@ -103,6 +104,7 @@ const Profile:React.FC = () => {
         "Id", 
         setUserName, 
         setUserEmail, 
+        setUserJoiningDate,
         setUserDescription,
         setUserFacebook, 
         setUserInstagram, 
@@ -175,11 +177,13 @@ const Profile:React.FC = () => {
                       {" "}
                       {totalPublications}
                     </ProfilePublishingInfoContainer>
-                    <ProfilePublishingInfoContainer className="block-center">
-                      Polubienia: 
-                      {" "}
-                      {totalLikes}
-                    </ProfilePublishingInfoContainer>
+                    {totalLikes === -1 ? null : (
+                      <ProfilePublishingInfoContainer className="block-center">
+                        Polubienia: 
+                        {" "}
+                        {totalLikes}
+                      </ProfilePublishingInfoContainer>
+                    )}
                   </ProfileUserDataContainer>
                 ) : null
 }

@@ -11,6 +11,7 @@ const getUserDetails = async (
   route: string,
   setUserName: (newState: string) => void,
   setUserEmail: (newState: string) => void,
+  setUserJoiningDate: (newState: string) => void,
   setDescription: (newState: string) => void,
   setFacebook: (newState: string) => void,
   setInstagram: (newState: string) => void,
@@ -24,6 +25,7 @@ const getUserDetails = async (
     },
   })
     .then((res) => {
+      console.log(res.data);
       if (setUserId !== undefined) setUserId(res.data.id);
       setUserName(`${res.data.firstName} ${res.data.lastName}`);
       setUserEmail(res.data.email);
@@ -32,6 +34,8 @@ const getUserDetails = async (
       setInstagram(res.data.instagramUrl);
       setLinkedin(res.data.linkedinUrl);
       setPinterest(res.data.pinterestUrl);
+      const userJoiningDate:string = res.data.joinedAt.substring(0, 10).split("-").reverse().join(".");
+      setUserJoiningDate(userJoiningDate);
     })
     .catch((err) => {
       setUserEmail("undefined");
