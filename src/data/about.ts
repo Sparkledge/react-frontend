@@ -9,13 +9,13 @@ export type TeamDataType = { name: string, position: string, describe: string, p
 const TeamData:TeamDataType[] = [
   {
     name: "Szymon Kupisz",
-    position: "Co-founder, Frontend Developer",
+    position: "Co-founder, President of the project, Frontend Developer",
     describe: "Dzięki niemu Sparkledge wygląda tak dobrze. Interesuje się bronią i żeglarstwem. Pasjonat włoskiej kuchni i wina.",
     photo: SzymonKupisz,
   },
   {
     name: "Wojciech Basiński",
-    position: "Co-founder, Backend Developer",
+    position: "Co-founder, Vice-president of the project, Backend Developer",
     describe: "Odpowiedzialny za backend naszej platformy. Pasjonuje się szachami i pokerem. Lubi grać w piłkę nożną i pić kwasne drinki 🙂. ",
     photo: WojtekBasinski,
   },

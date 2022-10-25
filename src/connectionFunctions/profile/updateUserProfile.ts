@@ -23,7 +23,11 @@ const updateUserProfile = async (
   setUserLinkedin: (newState: string) => void,
   pinterest: string,
   setUserPinterest: (newState: string) => void,
+  toggleIsSendingData: (newState: boolean) => void,
+  closeCallback: () => void,
 ) => {
+  toggleIsSendingData(true);
+
   const decodedToken:{
     email: string,
     exp: number,
@@ -53,9 +57,13 @@ const updateUserProfile = async (
       setUserInstagram(instagram);
       setUserLinkedin(linkedin);
       setUserPinterest(pinterest);
+      toggleIsSendingData(false);
+      closeCallback();
     })
     .catch((err) => {
       console.log(err);
+      toggleIsSendingData(false);
+      closeCallback();
     });
 };
 
