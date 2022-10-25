@@ -12,6 +12,7 @@ export const getTheData = async (
   toggleIsLiked: (newState: boolean) => void,
   setViewsNumber: (newState: number) => void, 
   setFileAuthor: (newState: string) => void, 
+  setFileAuthorEmail: (newState: string) => void,
   setDescriptionOfFile: (newState: string) => void, 
   toggleIsError: (newState: boolean) => void, 
   setFileSrc: (newState: any) => void, 
@@ -28,13 +29,13 @@ export const getTheData = async (
       },
     })
       .then(async (res) => {
-        console.log(res.data);
         let id:any = jwt(loginUserSelector);
         setTitle(res.data.title);
         setLikesNumber(res.data.likesNumber);
         toggleIsLiked(res.data.likesList.find((elem: string) => elem === id.id) !== undefined);
         setViewsNumber(res.data.viewsNumber);
         setFileAuthor(`${res.data.user.firstName} ${res.data.user.lastName}`);
+        setFileAuthorEmail(res.data.user.email);
         setDescriptionOfFile(res.data.description);
         setFileId(res.data.fileId);
         setFileCourse(`${res.data.faculty.name}, ${res.data.course.name}` || "");

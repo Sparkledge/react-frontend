@@ -8,6 +8,10 @@ interface ProfileUserDataEditSocialMediaClosingsInterface {
   alignment: string
 }
 
+interface ProfileUserDataEditSocialMediaInputInterface {
+  isCorrect: boolean
+}
+
 export const ProfileUserDataEditContainer = styled.section<ProfileUserDataEditContainerInterface>`
     width: calc(98% - 20px);
     height: calc(70vh - 20px);
@@ -164,7 +168,7 @@ export const ProfileUserDataEditSocialMediaIcon = styled.div`
     }
 `;
 
-export const ProfileUserDataEditSocialMediaInput = styled.input`
+export const ProfileUserDataEditSocialMediaInput = styled.input<ProfileUserDataEditSocialMediaInputInterface>`
     width: calc(80% - 30px);
     padding: 10px;
     text-indent: 0.4em;
@@ -173,11 +177,16 @@ export const ProfileUserDataEditSocialMediaInput = styled.input`
     font-family: ${(props) => props.theme.fonts.main};
     text-shadow: ${(props) => props.theme.fonts.textShadowMain};
     background: ${(props) => props.theme.landingButtonColor};
+    ${(props) => props.isCorrect ? null : "box-shadow: 0px 0px 10px rgba(240,20,20,.6);"}
     border: none;
     border-radius: 10px;
     display: inline-block;
     vertical-align: top;
     margin: 0px 5px;
+
+    &:focus{
+        outline: none;
+    }
 
     @media screen and (min-width: 768px){
         font-size: 1.2em;

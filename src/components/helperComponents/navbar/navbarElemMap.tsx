@@ -19,7 +19,7 @@ interface NavbarElemMapInterface {
 
 const NavbarElemMap:React.FC<NavbarElemMapInterface> = ({ data, groupName } : NavbarElemMapInterface) => (
   <>
-    {data.map((elem, ind) => <NavbarElemComponent {...elem} />)}
+    {data.map((elem, ind) => elem.content !== null ? <NavbarElemComponent {...elem} /> : null)}
   </>
 );
 

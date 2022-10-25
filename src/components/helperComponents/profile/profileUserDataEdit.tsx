@@ -13,6 +13,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import PinterestIcon from "@mui/icons-material/Pinterest";
 import BackspaceIcon from "@mui/icons-material/Backspace";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
 
 import {
   ProfileUserDataEditContainer,
@@ -55,6 +56,8 @@ const ProfileUserDataEdit:React.FC<ProfileUserDataEditInterface> = ({
   setUserPinterest,
   closeCallback,
 }:ProfileUserDataEditInterface) => {
+  const [isSendingAllowed, toggleIsSendingAllowed] = useState<boolean>(true);
+  const [isSendingData, toggleIsSendingData] = useState<boolean>(false);
   const [currentDescription, setCurrentDescription] = useState<string>(userDescription);
   const [currentFbProfile, setCurrentFbProfile] = useState<string>(userFb);
   const [currentIgProfile, setCurrentIgProfile] = useState<string>(userIg);
@@ -81,26 +84,32 @@ const ProfileUserDataEdit:React.FC<ProfileUserDataEditInterface> = ({
       <ProfileUserDataEditSocialMediaClosings
         alignment="right"
         onClick={() => {
-          updateUserProfile(
-            memoryUserId, 
-            currentFbProfile, 
-            currentIgProfile, 
-            currentLkProfile, 
-            currentPtProfile, 
-            currentDescription,
-            setUserDescription, 
-            currentFbProfile,
-            setUserFacebook, 
-            currentIgProfile,
-            setUserInstagram,
-            currentLkProfile, 
-            setUserLinkedin, 
-            currentPtProfile,
-            setUserPinterest,
-          ); closeCallback(!isOpened); 
+          if (isSendingAllowed) {
+            updateUserProfile(
+              memoryUserId, 
+              currentFbProfile, 
+              currentIgProfile, 
+              currentLkProfile, 
+              currentPtProfile, 
+              currentDescription,
+              setUserDescription, 
+              currentFbProfile,
+              setUserFacebook, 
+              currentIgProfile,
+              setUserInstagram,
+              currentLkProfile, 
+              setUserLinkedin, 
+              currentPtProfile,
+              setUserPinterest,
+              toggleIsSendingData,
+              () => closeCallback(!isOpened),
+            );
+          }
         }}
       >
-        <CheckBoxIcon style={{ color: "rgba(10,210,10,.9)", fontSize: "inherit" }} />
+        {isSendingAllowed 
+          ? isSendingData ? <HourglassBottomIcon style={{ color: "rgba(10,210,10,.9)", fontSize: "inherit" }} /> 
+            : <CheckBoxIcon style={{ color: "rgba(10,210,10,.9)", fontSize: "inherit" }} /> : null}
       </ProfileUserDataEditSocialMediaClosings>
       <ProfileUserDataEditHeader className="block-center">
         Ustawienia profilu
@@ -124,10 +133,38 @@ const ProfileUserDataEdit:React.FC<ProfileUserDataEditInterface> = ({
       <ProfileUserDataEditSubHeader className="block-center">
         Linki do social mediów
       </ProfileUserDataEditSubHeader>
-      <ProfileUserDataEditSocialMedia Icon={FacebookIcon} currentLink={currentFbProfile} setCurrentLink={setCurrentFbProfile} placeholder="Link do profilu na Facebook'u..." />
-      <ProfileUserDataEditSocialMedia Icon={InstagramIcon} currentLink={currentIgProfile} setCurrentLink={setCurrentIgProfile} placeholder="Link do profilu na Instagramie..." />
-      <ProfileUserDataEditSocialMedia Icon={LinkedInIcon} currentLink={currentLkProfile} setCurrentLink={setCurrentLkProfile} placeholder="Link do profilu na Linkedinie..." />
-      <ProfileUserDataEditSocialMedia Icon={PinterestIcon} currentLink={currentPtProfile} setCurrentLink={setCurrentPtProfile} placeholder="Link do profilu na Pinterest..." />
+      <ProfileUserDataEditSocialMedia
+        Icon={FacebookIcon}
+        currentLink={currentFbProfile}
+        setCurrentLink={setCurrentFbProfile} 
+        mediaVerificator="facebook"
+        allowanceOfSubmitCallback={toggleIsSendingAllowed}
+        placeholder="Link do profilu na Facebook'u..."
+      />
+      <ProfileUserDataEditSocialMedia
+        Icon={InstagramIcon}
+        currentLink={currentIgProfile}
+        setCurrentLink={setCurrentIgProfile} 
+        mediaVerificator="instagram"
+        allowanceOfSubmitCallback={toggleIsSendingAllowed}
+        placeholder="Link do profilu na Instagramie..."
+      />
+      <ProfileUserDataEditSocialMedia
+        Icon={LinkedInIcon}
+        currentLink={currentLkProfile}
+        setCurrentLink={setCurrentLkProfile} 
+        mediaVerificator="linkedin"
+        allowanceOfSubmitCallback={toggleIsSendingAllowed}
+        placeholder="Link do profilu na Linkedinie..."
+      />
+      <ProfileUserDataEditSocialMedia
+        Icon={PinterestIcon}
+        currentLink={currentPtProfile}
+        setCurrentLink={setCurrentPtProfile} 
+        mediaVerificator="pinterest"
+        allowanceOfSubmitCallback={toggleIsSendingAllowed}
+        placeholder="Link do profilu na Pinterest..."
+      />
     </ProfileUserDataEditContainer>
   );
 };

@@ -64,6 +64,7 @@ const DocumentDisplayer:React.FC = () => {
   const [descriptionOfFile, setDescriptionOfFile] = useState<string>("");
   const [fileCourse, setFileCourse] = useState<string>("");
   const [fileAuthor, setFileAuthor] = useState<string>("");
+  const [fileAuthorEmail, setFileAuthorEmail] = useState<string>("");
   const [fileId, setFileId] = useState<string>("");
   const [commentsList, setCommentsList] = useState<any[]>([]);
   const [isCommentsError, toggleIsCommentsError] = useState<boolean>(false);
@@ -127,6 +128,7 @@ const DocumentDisplayer:React.FC = () => {
           toggleIsLiked, 
           setViewsNumber, 
           setFileAuthor,
+          setFileAuthorEmail,
           setDescriptionOfFile, 
           toggleIsError, 
           setFileSrc, 
@@ -327,11 +329,13 @@ const DocumentDisplayer:React.FC = () => {
                       </InfoContainer>
                     </DocumentDataWrapper>
                     <DescriptionDataContainer className="block-center">
-                      <DescriptionDataHeader className="block-center">
-                        Autor: 
-                        {" "}
-                        {fileAuthor}
-                      </DescriptionDataHeader>
+                      <Link to={`/profile/${fileAuthorEmail}`}>
+                        <DescriptionDataHeader className="block-center">
+                          Autor: 
+                          {" "}
+                          {fileAuthor}
+                        </DescriptionDataHeader>
+                      </Link>
                       {fileCourse.length > 0 ? (
                         <DescriptionDataHeader className="block-center" isSmaller>
                           {fileCourse}

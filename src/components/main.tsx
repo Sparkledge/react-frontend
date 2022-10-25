@@ -49,7 +49,7 @@ const Main: React.FC = () => {
       dispatch(setNewToken(memoryUserId));
     } else if (refreshToken !== undefined) {
       setMemoryUserId(undefined);
-      dispatch(setNewToken(memoryUserId));
+      dispatch(setNewToken(""));
     }
   }, [refreshUserId]);
 
