@@ -226,6 +226,7 @@ export const DescriptionDataHeader = styled.header<DescriptionDataHeaderInterfac
     font-size: ${(props) => props.isSmaller !== undefined ? "1.1em" : "1.3em"};
     margin-bottom: 2vh;
     color: ${(props) => props.theme.color};
+    ${(props) => props.isSmaller === undefined ? "text-decoration: underline;" : null}
 
     @media screen and (min-width: 425px){
         font-size: ${(props) => props.isSmaller !== undefined ? "1.4em" : "1.6em"};

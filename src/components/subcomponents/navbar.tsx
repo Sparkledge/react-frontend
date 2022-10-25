@@ -9,6 +9,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import GroupIcon from "@mui/icons-material/Group";
 import LiveHelpIcon from "@mui/icons-material/LiveHelp";
 import DescriptionIcon from "@mui/icons-material/Description";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 import {
@@ -92,6 +93,20 @@ const Navbar:React.FC = () => {
         isImage: false,
         content: currentToken.length === 0 ? "Zaloguj się" : (
           <DescriptionIcon style={{
+            color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
+          }}
+          />
+        ),
+        callback: () => toggleIsOpened(false),
+      },
+      {
+        isDropDown: false,
+        dropDownElems: [],
+        isLink: true,
+        to: "/profile/",
+        isImage: false,
+        content: currentToken.length === 0 ? null : (
+          <AccountCircleIcon style={{
             color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
           }}
           />
