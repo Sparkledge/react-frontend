@@ -11,10 +11,10 @@ import { LightMode, DarkMode, SparkledgeGlobalStyle } from "../styled/main";
 import { setNewToken } from "../redux/actions/generalActions";
 import { RootState } from "../redux/mainReducer";
 import refreshToken from "../connectionFunctions/main/refreshToken";
-import SearchingPreloaderComponent from "./helperComponents/searcher/searchingPreloaderComponent";
 
 import Navbar from "./subcomponents/navbar";
 import MemoryUsingBanner from "./subcomponents/memoryUsingBanner";
+import MainPreloadingComponent from "./subcomponents/mainPreloading";
 // import Welcome from "./subpages/welcome";
 // import About from "./subpages/about";
 // import SigningPanel from "./subpages/signing";
@@ -78,7 +78,7 @@ const Main: React.FC = () => {
     <ThemeProvider theme={graphicalMode === 0 ? LightMode : DarkMode}>
       <SparkledgeGlobalStyle isLight={graphicalMode === 0} />
 
-      <Suspense fallback={<SearchingPreloaderComponent />}>
+      <Suspense fallback={<MainPreloadingComponent />}>
         <Router>
           <Navbar />
           <Routes>
