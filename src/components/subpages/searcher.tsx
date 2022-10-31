@@ -11,6 +11,7 @@ import {
 } from "src/styled/subpages/searcher/searcherResults";
 import { SearcherFailureContainer, SearcherFailureHeader, SearcherFailureButton } from "src/styled/subpages/searcher/searcherFailure";
 import { SearcherBarInputContainer, SearcherInput } from "src/styled/subpages/searcher/searcherBar";
+import { SearcherPagingContainer } from "src/styled/subpages/searcher/searcherPaging";
 
 import SearchingPreloaderComponent from "src/components/helperComponents/searcher/searchingPreloaderComponent";
 import SearcherFilters from "src/components/helperComponents/searcher/searcherFilters";
@@ -21,6 +22,7 @@ import submitTheQuery from "src/connectionFunctions/searcher/submitTheQuery";
 
 import checkIfFound from "src/components/auxiliaryFunctions/searcher/checkIfFound";
 import SearchingMainResultComponent from "src/components/helperComponents/searcher/searchingMainResultComponent";
+import SearcherPagingComponent from "src/components/helperComponents/searcher/searcherPagingComponent";
 import HeadTags from "src/components/subcomponents/headTags";
 
 const SearchBarComponent = React.lazy(() => import("../helperComponents/searcher/searchBarComponent"));
@@ -29,6 +31,8 @@ const FooterComponent = React.lazy(() => import("../helperComponents/welcome/foo
 const BackgroundPattern = require("../../assets/pattern_background5.webp");
 
 const Searcher:React.FC = () => {
+  const NUMBER_OF_MATERIALS_PER_PAGE:number = 10;
+
   const [isLoaded, toggleIsLoaded] = useState<boolean>(false);
   const [areDocumentsLoaded, toggleAreDocumentsLoaded] = useState<boolean>(false);
   const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
@@ -48,6 +52,7 @@ const Searcher:React.FC = () => {
   const [searchedType, setSearchedType] = useState<string>("");
   const [searchedPhrase, setSearchedPhrase] = useState<string>("");
   const [searchedResults, setSearchedResults] = useState<any[]>([]);
+  const [currentSearchedResultsPage, setCurrentSearchedResultsPage] = useState<number>(0);
   const [areFiltersOn, toggleAreFiltersOn] = useState<boolean>(false);
   const [openedFilters, setOpenedFilters] = useState<boolean[]>([false, false, false, false, false]); // 0 - course, 1 - programme, 2 - semester, 3 - degree, 4 - course type
 
@@ -181,6 +186,7 @@ const Searcher:React.FC = () => {
           setSearchedResults,
           toggleAreDocumentsLoaded,
         );
+        setCurrentSearchedResultsPage(0);
         setSearcherState(2);
       }
     }
@@ -189,6 +195,7 @@ const Searcher:React.FC = () => {
     searchedType, chosenSort, chosenSortOrder]);
 
   useEffect(() => {
+    setCurrentSearchedResultsPage(0);
     if (searchedResults.length > 0) {
       const operand = [...searchedResults];
       operand.map((elem:any) => {
@@ -314,20 +321,33 @@ const Searcher:React.FC = () => {
                         Brak wyników. Spróbuj innych słów kluczowych
                       </SearchingNoResultsContainer>
                     ) 
-                      : searchedResults.map((elem: any, ind: number) => elem.isDisplayed === 0
-                        ? null : (
-                          <Link to={`/document/${elem.id}`}>
-                            <SearchingMainResultComponent
-                              title={elem.title}
-                              publishedOn={elem.createdAt}
-                              publisher={`${elem.user.firstName} ${elem.user.lastName}`}
-                              description={elem.description}
-                              likesNum={elem.likesNumber}
-                              viewsNum={elem.viewsNumber}
-                              animAlign={ind % 2 === 0 ? -10 : 10}
-                            />
-                          </Link>
-                        ))
+                      : (
+                        <> 
+                          {" "}
+                          {
+                        searchedResults.map((elem: any, ind: number) => elem.isDisplayed === 0 || (ind < (NUMBER_OF_MATERIALS_PER_PAGE * currentSearchedResultsPage) - 1
+                      || ind > (NUMBER_OF_MATERIALS_PER_PAGE * (currentSearchedResultsPage + 1)))
+                          ? null : (
+                            <Link to={`/document/${elem.id}`}>
+                              <SearchingMainResultComponent
+                                title={elem.title}
+                                publishedOn={elem.createdAt}
+                                publisher={`${elem.user.firstName} ${elem.user.lastName}`}
+                                description={elem.description}
+                                likesNum={elem.likesNumber}
+                                viewsNum={elem.viewsNumber}
+                                animAlign={ind % 2 === 0 ? -10 : 10}
+                              />
+                            </Link>
+                          ))
+                      }
+                          <SearcherPagingComponent
+                            currentPage={currentSearchedResultsPage}
+                            maxPagesNumber={Math.ceil(searchedResults.length / NUMBER_OF_MATERIALS_PER_PAGE)}
+                            changeCurrentPage={setCurrentSearchedResultsPage}
+                          />
+                        </>
+                      )
 }
                 </SearchingResultsWrapper>
 
