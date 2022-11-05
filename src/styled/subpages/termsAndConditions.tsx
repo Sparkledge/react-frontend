@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 interface TermsAndConditionsParagraphInterface {
   isHeader?: boolean,
+  isSubHeader?: boolean,
 }
 
 export const TermsAndConditionsHeader = styled.header`
@@ -35,15 +36,17 @@ export const TermsAndConditionsParagraph = styled.p<TermsAndConditionsParagraphI
     padding: 10px;
     text-align: left;
     text-indent: 0.8em;
-    font-size: ${(props) => props.isHeader !== undefined ? "1.1em" : "1em"};
+    font-size: ${(props) => props.isHeader !== undefined ? "1.1em" : props.isSubHeader ? "1.05em" : "1em"};
     color: ${(props) => props.theme.color};
     letter-spacing: 0.06em;
     line-height: 1.2em;
     margin-bottom: 2vh;
+    position: relative;
+    ${(props) => props.isHeader !== undefined ? "top: 3vh;" : null}
 
     @media screen and (min-width: 425px){
         width: calc(80% - 20px);
-        font-size: ${(props) => props.isHeader !== undefined ? "1.35em" : "1.2em"};
+        font-size: ${(props) => props.isHeader !== undefined ? "1.35em" : props.isSubHeader !== undefined ? "1.25em" : "1.2em"};
     }
 
     @media screen and (min-width: 768px){
@@ -54,6 +57,6 @@ export const TermsAndConditionsParagraph = styled.p<TermsAndConditionsParagraphI
 
     @media screen and (min-width: 1024px){
         width: calc(60% - 20px);
-        font-size: ${(props) => props.isHeader !== undefined ? "1.6em" : "1.4em"};
+        font-size: ${(props) => props.isHeader !== undefined ? "1.6em" : props.isSubHeader !== undefined ? "1.5em" : "1.4em"};
     }
 `;
