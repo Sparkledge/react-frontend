@@ -57,6 +57,11 @@ const TermsAndConditions:React.FC = () => (
           <LicenceSection />
           <LinksSection />
           <LawsAndResponsibilities />
+          <TermsAndConditionsParagraph className="block-center">
+            Regulamin dostępny jest również w wersji PDF (
+            <a style={{ color: "inherit", textDecoration: "underline" }} download href="./Sparkledge-Therms-And-Conditions.pdf">Pobierz</a>
+            )
+          </TermsAndConditionsParagraph>
         </TermsAndConditionsParagraphsContainer>
       </LandingSectionFilter>
     </LandingSectionWrapper>
