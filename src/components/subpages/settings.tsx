@@ -8,6 +8,9 @@ import { LandingSectionWrapper, LandingSectionFilter } from "src/styled/subpages
 
 import {
   SettingsContainer, SettingsHeader, SettingsWrapper, 
+  SettingsSegmentSubHeader,
+  SettingsSegmentInput,
+  SettingsSegmentButton,
 } from "src/styled/subpages/settings";
 
 import SettingsSegmentComponent from "src/components/helperComponents/settings/settingsSegmentComponent";
@@ -31,7 +34,16 @@ const Settings:React.FC = () => (
             Ustawienia konta
           </SettingsHeader>
           <SettingsWrapper className="block-center">
-            <SettingsSegmentComponent segmentName="Ustawienia ogólne" />
+            <SettingsSegmentComponent segmentName="Ustawienia ogólne">
+              <SettingsSegmentSubHeader className="block-center">
+                Zmiana hasła
+              </SettingsSegmentSubHeader>
+              <SettingsSegmentInput className="block-center" type="text" placeholder="Nowe hasło..." />
+              <SettingsSegmentInput className="block-center" type="text" placeholder="Powtórz hasło..." />
+              <SettingsSegmentButton className="block-center">
+                Zmień hasło
+              </SettingsSegmentButton>
+            </SettingsSegmentComponent>
           </SettingsWrapper>
         </SettingsContainer>
       </LandingSectionFilter>

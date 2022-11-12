@@ -14,11 +14,13 @@ import {
 } from "src/styled/subpages/settings";
 
 interface SettingsSegmentComponentInterface {
-  segmentName: string
+  segmentName: string,
+  children: React.ReactNode,
 }
 
 const SettingsSegmentComponent:React.FC<SettingsSegmentComponentInterface> = ({
   segmentName,
+  children,
 }:SettingsSegmentComponentInterface) => {
   const [isOpened, toggleIsOpened] = useState<boolean>(false);
 
@@ -35,6 +37,8 @@ const SettingsSegmentComponent:React.FC<SettingsSegmentComponentInterface> = ({
               width: "fit-content",
               height: "fit-content",
               transformOrigin: "50% 35%",
+              marginLeft: "auto",
+              display: "block",
             }} 
             layout
             animate={{
@@ -54,13 +58,18 @@ const SettingsSegmentComponent:React.FC<SettingsSegmentComponentInterface> = ({
       <SettingsSegmentContent
         className="block-center"
         layout
+        initial={{
+          height: "0vh",
+        }}
         animate={{
-          minHeight: isOpened ? ["0", "60vh"] : ["60vh", "0"],
+          height: isOpened ? ["0vh", "50vh"] : ["50vh", "0vh"],
         }}
         transition={{
           duration: 0.4,
         }}
-      />
+      >
+        {children}
+      </SettingsSegmentContent>
     </SettingsSegment>
   );
 };
