@@ -21,8 +21,7 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import ReportIcon from "@mui/icons-material/Report";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import { MainContainer } from "src/styled/main";
-import { LandingSectionWrapper, LandingSectionFilter, LandingSectionHeader } from "src/styled/subpages/welcome";
+import { LandingSectionHeader } from "src/styled/subpages/welcome";
 import {
   DocumentDisplayerErrorHeader, DocumentDisplayerDataWrapper, DocumentDisplayerWrapper,
   DocumentDataWrapper, SwipperBtn, InfoContainer, DescriptionDataContainer,
@@ -38,19 +37,15 @@ import checkTheOwnership from "src/connectionFunctions/documentDisplayer/checkTh
 import deleteMaterial from "src/connectionFunctions/userPanel/deleteMaterial";
 
 import { RootState } from "src/redux/mainReducer";
-import blobToBase64 from "../auxiliaryFunctions/documentDisplayer/decodingToBase64";
+import blobToBase64 from "src/components/auxiliaryFunctions/documentDisplayer/decodingToBase64";
+import Template from "src/components/subcomponents/template";
 import SearchingPreloaderComponent from "../helperComponents/searcher/searchingPreloaderComponent";
-import HeadTags from "../subcomponents/headTags";
 import DeletingMaterialPopup from "../helperComponents/documentDisplayer/deletingMaterialPopup";
 
 const ReportingPanel = React.lazy(() => import("../helperComponents/documentDisplayer/reportingPanel"));
 
 const CommentingForm = React.lazy(() => import("../helperComponents/documentDisplayer/commentingForm"));
 const CommentingSectionDisplay = React.lazy(() => import("../helperComponents/documentDisplayer/commentingDisplay"));
-
-const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
-
-const Background = require("../../assets/pattern_background5.webp");
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -162,18 +157,9 @@ const DocumentDisplayer:React.FC = () => {
   }; */
 
   return (
-    <MainContainer className="block-center">
-      <LandingSectionWrapper
-        className="block-center"
-        source={Background}
-        backgroundSize="initial"
-        bottomPadding={10}
-        backgroundRepeat="repeat"
-      >
-        <HeadTags areAdsOn title={`${title !== "" ? title : isError ? "Error" : "Dokument"} - Sparkledge`} description="" />
-        <LandingSectionFilter>
+    <Template headTagTitle={`${title !== "" ? title : isError ? "Error" : "Dokument"} - Sparkledge`} bottomPadding={10}>
 
-          {
+      {
             isReportingOn ? (
               <Suspense fallback={null}>
                 <ReportingPanel loginUserSelector={loginUserSelector} documentId={docId} closeThePanel={toggleIsReportingOn} />
@@ -181,91 +167,91 @@ const DocumentDisplayer:React.FC = () => {
             ) : null
           }
 
-          <LandingSectionHeader className="block-center" isSmaller>
-            {isDeleted ? "Dokument został usunięty" : title}
-          </LandingSectionHeader>
+      <LandingSectionHeader className="block-center" isSmaller>
+        {isDeleted ? "Dokument został usunięty" : title}
+      </LandingSectionHeader>
 
-          {isConsentWindowOpened ? (
-            <DeletingMaterialPopup 
-              consentCallback={() => {
-                deleteMaterial(memoryUserId, docId, undefined, undefined, toggleIsDeleted); 
-                toggleIsConsetWindowOpened(false);
-              }} 
-              denyingCallback={() => toggleIsConsetWindowOpened(false)}
-            />
-          ) : null}
+      {isConsentWindowOpened ? (
+        <DeletingMaterialPopup 
+          consentCallback={() => {
+            deleteMaterial(memoryUserId, docId, undefined, undefined, toggleIsDeleted); 
+            toggleIsConsetWindowOpened(false);
+          }} 
+          denyingCallback={() => toggleIsConsetWindowOpened(false)}
+        />
+      ) : null}
 
-          {isDeleted ? null : loginUserSelector.length === 0 || isError 
-            ? (
-              <DocumentDisplayerErrorHeader className="block-center">
-                {isError ? "Coś poszło nie tak. Spróbuj ponownie" : (
-                  <Link to="/signin">
-                    <DocumentDisplayerDownloadBtn className="block-center">
-                      Zaloguj się
-                    </DocumentDisplayerDownloadBtn>
-                  </Link>
-                )}
-              </DocumentDisplayerErrorHeader>
-            ) : !isFileRequested && title.length > 0
-              ? (
-                <DocumentDisplayerDownloadBtn
-                  className="block-center"
-                  onClick={() => {
-                    loadTheDownloadLink(
-                      loginUserSelector, 
-                      docId,  
-                      toggleIsError,
-                      setFileSrc,
-                      toggleIsFileRequested,
-                    ); loadTheFile(
-                      loginUserSelector,
-                      docId,
-                      toggleIsFile,
-                      toggleIsError,
-                      setFile,
-                    );
-                  }}
-                >
-                  <CloudDownloadIcon style={{ color: "inherit", fontSize: "1.2em" }} />
+      {isDeleted ? null : loginUserSelector.length === 0 || isError 
+        ? (
+          <DocumentDisplayerErrorHeader className="block-center">
+            {isError ? "Coś poszło nie tak. Spróbuj ponownie" : (
+              <Link to="/signin">
+                <DocumentDisplayerDownloadBtn className="block-center">
+                  Zaloguj się
                 </DocumentDisplayerDownloadBtn>
-              )
-              : isFile ? (
-                <DocumentDisplayerWrapper
-                  className="block-center"
-                  onContextMenu={(e:MouseEvent) => e.preventDefault()} 
-                  onScroll={(e: any) => handleScrolling(e)}
-                >
-                  {/* smallDevicesWidthChecker ? <DocumentDisplayerIframe src={`${fileSrc}#toolbar=1&view=Fit`} 
+              </Link>
+            )}
+          </DocumentDisplayerErrorHeader>
+        ) : !isFileRequested && title.length > 0
+          ? (
+            <DocumentDisplayerDownloadBtn
+              className="block-center"
+              onClick={() => {
+                loadTheDownloadLink(
+                  loginUserSelector, 
+                  docId,  
+                  toggleIsError,
+                  setFileSrc,
+                  toggleIsFileRequested,
+                ); loadTheFile(
+                  loginUserSelector,
+                  docId,
+                  toggleIsFile,
+                  toggleIsError,
+                  setFile,
+                );
+              }}
+            >
+              <CloudDownloadIcon style={{ color: "inherit", fontSize: "1.2em" }} />
+            </DocumentDisplayerDownloadBtn>
+          )
+          : isFile ? (
+            <DocumentDisplayerWrapper
+              className="block-center"
+              onContextMenu={(e:MouseEvent) => e.preventDefault()} 
+              onScroll={(e: any) => handleScrolling(e)}
+            >
+              {/* smallDevicesWidthChecker ? <DocumentDisplayerIframe src={`${fileSrc}#toolbar=1&view=Fit`} 
                         title={title}
                         width={smallDevicesWidthChecker ? 
                             phoneWidthChecker ? tabletWidthChecker ? width*0.6 : width*0.8 : width*0.9 : width*0.95}
                         ref={setFileContentRef}
                         onLoad={() => insertStylesToPDF()}/>: <></> */}
-                  <Document
-                    file={`data:application/pdf;base64,${file}`} 
-                    onLoadSuccess={onDocumentLoad} 
-                    loading={<SearchingPreloaderComponent />}
-                    onLoadError={() => toggleIsError(true)} 
-                    error={<div />}
-                    className="inline displayer"
-                    inputRef={documentRef}
-                  >
-                    {Array.from(
-                      new Array(pagesNumber),
-                      (el, index) => (
-                        index < currentlyRendered ? (
-                          <Page 
-                            key={`page_${index + 1}`}
-                            pageNumber={index + 1}
-                          />
-                        ) : null
-                      ),
-                    )}
+              <Document
+                file={`data:application/pdf;base64,${file}`} 
+                onLoadSuccess={onDocumentLoad} 
+                loading={<SearchingPreloaderComponent />}
+                onLoadError={() => toggleIsError(true)} 
+                error={<div />}
+                className="inline displayer"
+                inputRef={documentRef}
+              >
+                {Array.from(
+                  new Array(pagesNumber),
+                  (el, index) => (
+                    index < currentlyRendered ? (
+                      <Page 
+                        key={`page_${index + 1}`}
+                        pageNumber={index + 1}
+                      />
+                    ) : null
+                  ),
+                )}
                         
-                  </Document>
-                </DocumentDisplayerWrapper>
-              ) : null}
-          {
+              </Document>
+            </DocumentDisplayerWrapper>
+          ) : null}
+      {
               loginUserSelector.length > 0 && !isError && title.length > 0 ? (
                 <>
                   <DocumentDisplayerDataWrapper className="block-center">
@@ -371,15 +357,7 @@ const DocumentDisplayer:React.FC = () => {
                 </>
               ) : null
             }
-
-        </LandingSectionFilter>
-                
-      </LandingSectionWrapper>
-      <Suspense fallback={null}>
-        <FooterComponent />
-      </Suspense>
-
-    </MainContainer>
+    </Template>
   );
 };
 /* */

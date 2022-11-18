@@ -4,27 +4,20 @@
 
 import React, { useState, useEffect } from "react";
 import { useMediaQuery } from "@mui/material";
-import { MainContainer } from "src/styled/main";
-import { LandingSectionWrapper, LandingSectionFilter } from "src/styled/subpages/welcome";
 
 import {
   SettingsContainer, SettingsHeader, SettingsWrapper, 
   SettingsSegmentSubHeader,
   SettingsSegmentInput,
   SettingsSegmentButton,
-  SettingsSegmentCheckbox,
-  SettingsSegmentCheckboxWrapper,
-  SettingsSegmentCheckboxText,
 } from "src/styled/subpages/settings";
 
 import { UserPanelDeleteNotification } from "src/styled/subpages/userpanel";
 
+import Template from "src/components/subcomponents/template";
+
 import SettingsSegmentComponent from "src/components/helperComponents/settings/settingsSegmentComponent";
 import SettingsSegmentCheckboxComponent from "src/components/helperComponents/settings/settingsSegmentCheckboxComponent";
-
-import HeadTags from "../subcomponents/headTags";
-
-const BackgroundPattern = require("../../assets/pattern_background5.webp");
 
 const Settings:React.FC = () => {
   const isBiggerThanTablet = useMediaQuery("(min-width: 768px)");
@@ -60,85 +53,75 @@ const Settings:React.FC = () => {
   }, [isNotificationShown]);
 
   return (
-    <MainContainer className="block-center">
-      <HeadTags areAdsOn={false} title="Ustawienia konta - Sparkledge" description="" />
-      <LandingSectionWrapper
-        className="block-center"
-        source={BackgroundPattern}
-        backgroundSize="initial"
-        backgroundRepeat="repeat"
-      >
-        <LandingSectionFilter>
-          <SettingsContainer className="block-center">
-            <SettingsHeader className="block-center">
-              Ustawienia konta
-            </SettingsHeader>
-            <SettingsWrapper className="block-center">
-              <SettingsSegmentComponent segmentName="Ustawienia ogólne">
-                <SettingsSegmentSubHeader className="block-center">
-                  Zmiana hasła
-                </SettingsSegmentSubHeader>
-                <SettingsSegmentInput
-                  className="block-center"
-                  type="text"
-                  placeholder="Nowe hasło..."
-                  value={newPassword}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewPassword(event.currentTarget.value)}
-                />
-                <SettingsSegmentInput
-                  className="block-center"
-                  type="text"
-                  placeholder="Powtórz hasło..." 
-                  value={newPasswordRep}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewPasswordRep(event.currentTarget.value)}
-                />
-                <SettingsSegmentButton className="block-center" onClick={() => triggerChangingThePassword()}>
-                  Zmień hasło
-                </SettingsSegmentButton>
-                <SettingsSegmentSubHeader className="block-center">
-                  Zmiana Danych osobowych
-                </SettingsSegmentSubHeader>
-                <SettingsSegmentInput
-                  className="block-center"
-                  type="text"
-                  placeholder="Nowe imię..."
-                  value={newName}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewName(event.currentTarget.value)}
-                />
-                <SettingsSegmentInput
-                  className="block-center"
-                  type="text"
-                  placeholder="Nowe nazwisko..." 
-                  value={newSurname}
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewSurname(event.currentTarget.value)}
-                />
-                <SettingsSegmentButton className="block-center" onClick={() => triggerChangingThePersonalData()}>
-                  Zatwierdź
-                </SettingsSegmentButton>
-              </SettingsSegmentComponent>
-              <SettingsSegmentComponent segmentName="Ustawienia szukania">
-                <SettingsSegmentCheckboxComponent 
-                  title={!isBiggerThanTablet ? "Pamiętaj sortowanie" : "Pamiętaj ustawienia sortowania"}
-                  isChecked={isSortingMemorized}
-                  onClickCallback={() => toggleIsSortingMemorized(!isSortingMemorized)}
-                />
-                <SettingsSegmentCheckboxComponent 
-                  title={!isBiggerThanTablet ? "Pamiętaj filtry" : "Pamiętaj ustawienia filtrów"}
-                  isChecked={areFiltersMemorized}
-                  onClickCallback={() => toggleAreFiltersMemorized(!areFiltersMemorized)}
-                />
-                <SettingsSegmentButton className="block-center" onClick={() => triggerChangingTheSearcherData()}>
-                  Zatwierdź
-                </SettingsSegmentButton>
-              </SettingsSegmentComponent>
-            </SettingsWrapper>
-          </SettingsContainer>
-          <UserPanelDeleteNotification className="block-center" isOpened={isNotificationShown}>
-            {notificationMessage}
-          </UserPanelDeleteNotification>
-        </LandingSectionFilter>
-      </LandingSectionWrapper>
-    </MainContainer>
+    <Template headTagTitle="Ustawienia - Sparkledge">
+      <SettingsContainer className="block-center">
+        <SettingsHeader className="block-center">
+          Ustawienia konta
+        </SettingsHeader>
+        <SettingsWrapper className="block-center">
+          <SettingsSegmentComponent segmentName="Ustawienia ogólne">
+            <SettingsSegmentSubHeader className="block-center">
+              Zmiana hasła
+            </SettingsSegmentSubHeader>
+            <SettingsSegmentInput
+              className="block-center"
+              type="text"
+              placeholder="Nowe hasło..."
+              value={newPassword}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewPassword(event.currentTarget.value)}
+            />
+            <SettingsSegmentInput
+              className="block-center"
+              type="text"
+              placeholder="Powtórz hasło..." 
+              value={newPasswordRep}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewPasswordRep(event.currentTarget.value)}
+            />
+            <SettingsSegmentButton className="block-center" onClick={() => triggerChangingThePassword()}>
+              Zmień hasło
+            </SettingsSegmentButton>
+            <SettingsSegmentSubHeader className="block-center">
+              Zmiana Danych osobowych
+            </SettingsSegmentSubHeader>
+            <SettingsSegmentInput
+              className="block-center"
+              type="text"
+              placeholder="Nowe imię..."
+              value={newName}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewName(event.currentTarget.value)}
+            />
+            <SettingsSegmentInput
+              className="block-center"
+              type="text"
+              placeholder="Nowe nazwisko..." 
+              value={newSurname}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewSurname(event.currentTarget.value)}
+            />
+            <SettingsSegmentButton className="block-center" onClick={() => triggerChangingThePersonalData()}>
+              Zatwierdź
+            </SettingsSegmentButton>
+          </SettingsSegmentComponent>
+          <SettingsSegmentComponent segmentName="Ustawienia szukania">
+            <SettingsSegmentCheckboxComponent 
+              title={!isBiggerThanTablet ? "Pamiętaj sortowanie" : "Pamiętaj ustawienia sortowania"}
+              isChecked={isSortingMemorized}
+              onClickCallback={() => toggleIsSortingMemorized(!isSortingMemorized)}
+            />
+            <SettingsSegmentCheckboxComponent 
+              title={!isBiggerThanTablet ? "Pamiętaj filtry" : "Pamiętaj ustawienia filtrów"}
+              isChecked={areFiltersMemorized}
+              onClickCallback={() => toggleAreFiltersMemorized(!areFiltersMemorized)}
+            />
+            <SettingsSegmentButton className="block-center" onClick={() => triggerChangingTheSearcherData()}>
+              Zatwierdź
+            </SettingsSegmentButton>
+          </SettingsSegmentComponent>
+        </SettingsWrapper>
+      </SettingsContainer>
+      <UserPanelDeleteNotification className="block-center" isOpened={isNotificationShown}>
+        {notificationMessage}
+      </UserPanelDeleteNotification>
+    </Template>
   );
 };
 

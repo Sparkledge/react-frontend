@@ -2,8 +2,6 @@ import React, { useState, useEffect, Suspense } from "react";
 import useLocalStorage from "use-local-storage";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
-import { MainContainer } from "src/styled/main";
-import { LandingSectionWrapper, LandingSectionFilter } from "src/styled/subpages/welcome";
 import { AboutHeader } from "src/styled/subpages/about";
 import { SearchingResultsSection } from "src/styled/subpages/searcher";
 import {
@@ -20,15 +18,12 @@ import getUniversitiesInfrastructure from "src/connectionFunctions/searcher/getU
 import getUniversitySubInfrastructure from "src/connectionFunctions/searcher/getUniversitySubInfrastructure";
 import submitTheQuery from "src/connectionFunctions/searcher/submitTheQuery";
 
+import Template from "src/components/subcomponents/template";
 import checkIfFound from "src/components/auxiliaryFunctions/searcher/checkIfFound";
 import SearchingMainResultComponent from "src/components/helperComponents/searcher/searchingMainResultComponent";
 import SearcherPagingComponent from "src/components/helperComponents/searcher/searcherPagingComponent";
-import HeadTags from "src/components/subcomponents/headTags";
 
 const SearchBarComponent = React.lazy(() => import("../helperComponents/searcher/searchBarComponent"));
-const FooterComponent = React.lazy(() => import("../helperComponents/welcome/footerComponent"));
-// const SearchingMainResultComponent = React.lazy(() => import("../helperComponents/searcher/searchingMainResultComponent"));
-const BackgroundPattern = require("../../assets/pattern_background5.webp");
 
 const Searcher:React.FC = () => {
   const NUMBER_OF_MATERIALS_PER_PAGE:number = 10;
@@ -207,16 +202,8 @@ const Searcher:React.FC = () => {
   }, [searchedPhrase]);
 
   return (
-    <MainContainer className="block-center">
-      <HeadTags areAdsOn={false} title="Wyszukiwarka - Sparkledge" description="" />
-      <LandingSectionWrapper
-        className="block-center"
-        source={BackgroundPattern}
-        backgroundSize="initial"
-        backgroundRepeat="repeat"
-      >
-        <LandingSectionFilter>
-          {
+    <Template headTagTitle="Wyszukiwarka - Sparkledge">
+      {
             searcherState === 2 ? null : (
               
               <AboutHeader className="block-center">
@@ -224,96 +211,96 @@ const Searcher:React.FC = () => {
               </AboutHeader>
             )
           }
-          {!isOnline || (searcherState < 0 || searcherState > 2) ? (
-            <SearcherFailureContainer className="block-center">
-              <SearcherFailureHeader className="block-center">
-                {isOnline ? "Niestety, coś poszło nie tak i połączenie z serwerem nie zakończyło się pomyślnie" : "Brak połączenia z internetem. Sprawdź swoje połączenie sieciowe"}
-              </SearcherFailureHeader>
-              {isOnline ? (
-                <SearcherFailureButton
-                  className="block-center"
-                  onClick={() => { setSearcherState(0); setSearchedProgramme(""); navigate("/searcher/"); }}
-                >
-                  Powrót do wyszukiwania
-                </SearcherFailureButton>
-              ) : null}
-            </SearcherFailureContainer>
-          ) : !isLoaded ? <SearchingPreloaderComponent /> : searcherState === 0 ? (
-            <Suspense fallback={null}>
-              <SearchBarComponent 
-                universities={universitiesList}
-                faculties={facultiesList}
-                programmes={programmesList}
-                searchedUniversity={searchedUniversity}
-                setSearchedUniversity={(newUni:string) => {
-                  setSearchedUniversity(newUni);
-                  setPreviouslySearchedUni(newUni === "" ? undefined : newUni);
-                  if (newUni === "") setPreviouslySearchedFac(undefined);
-                }}
-                searchedFaculty={searchedFaculty}
-                setSearchedFaculty={(newFac: string) => {
-                  setSearchedFaculty(newFac);
-                  if (previouslySearchedUni !== undefined 
+      {!isOnline || (searcherState < 0 || searcherState > 2) ? (
+        <SearcherFailureContainer className="block-center">
+          <SearcherFailureHeader className="block-center">
+            {isOnline ? "Niestety, coś poszło nie tak i połączenie z serwerem nie zakończyło się pomyślnie" : "Brak połączenia z internetem. Sprawdź swoje połączenie sieciowe"}
+          </SearcherFailureHeader>
+          {isOnline ? (
+            <SearcherFailureButton
+              className="block-center"
+              onClick={() => { setSearcherState(0); setSearchedProgramme(""); navigate("/searcher/"); }}
+            >
+              Powrót do wyszukiwania
+            </SearcherFailureButton>
+          ) : null}
+        </SearcherFailureContainer>
+      ) : !isLoaded ? <SearchingPreloaderComponent /> : searcherState === 0 ? (
+        <Suspense fallback={null}>
+          <SearchBarComponent 
+            universities={universitiesList}
+            faculties={facultiesList}
+            programmes={programmesList}
+            searchedUniversity={searchedUniversity}
+            setSearchedUniversity={(newUni:string) => {
+              setSearchedUniversity(newUni);
+              setPreviouslySearchedUni(newUni === "" ? undefined : newUni);
+              if (newUni === "") setPreviouslySearchedFac(undefined);
+            }}
+            searchedFaculty={searchedFaculty}
+            setSearchedFaculty={(newFac: string) => {
+              setSearchedFaculty(newFac);
+              if (previouslySearchedUni !== undefined 
                     && previouslySearchedUni.length > 0 
                     && searchedUniversity.length > 0) setPreviouslySearchedFac(newFac === "" ? undefined : newFac);
-                }}
-                searchedProgramme={searchedProgramme} 
-                setSearchedProgramme={setSearchedProgramme}
-                searchedSemester={searchedSemester}
-                setSearchedSemester={setSearchedSemester}
-                searchedCourse={searchedCourse} 
-                setSearchedCourse={setSearchedCourse}
-              />
-            </Suspense>
-          ) 
-            : searcherState === 1 ? <SearchingPreloaderComponent /> : (
-              <SearchingResultsSection className="block-center">
-                <SearcherFilters
-                  openedFilters={openedFilters}
-                  setOpenedFilters={setOpenedFilters}
-                  chosenSemester={searchedSemester}
-                  setChosenSemester={setSearchedSemester}
-                  chosenProgramme={searchedProgramme}
-                  setChosenProgramme={setSearchedProgramme}
-                  programmesList={programmesList}
-                  chosenCourse={searchedCourse}
-                  setChosenCourse={setSearchedCourse}
-                  coursesList={coursesList}
-                  chosenDegree={searchedDegree}
-                  setChosenDegree={setSearchedDegree}
-                  chosenType={searchedType}
-                  setChosenType={setSearchedType}
-                  chosenSort={chosenSort}
-                  setChosenSort={setChosenSort}
-                  chosenSortOrder={chosenSortOrder}
-                  setChosenSortOrder={setChosenSortOrder}
-                  areFiltersOn={areFiltersOn}
-                  toggleAreFiltersOn={toggleAreFiltersOn}
+            }}
+            searchedProgramme={searchedProgramme} 
+            setSearchedProgramme={setSearchedProgramme}
+            searchedSemester={searchedSemester}
+            setSearchedSemester={setSearchedSemester}
+            searchedCourse={searchedCourse} 
+            setSearchedCourse={setSearchedCourse}
+          />
+        </Suspense>
+      ) 
+        : searcherState === 1 ? <SearchingPreloaderComponent /> : (
+          <SearchingResultsSection className="block-center">
+            <SearcherFilters
+              openedFilters={openedFilters}
+              setOpenedFilters={setOpenedFilters}
+              chosenSemester={searchedSemester}
+              setChosenSemester={setSearchedSemester}
+              chosenProgramme={searchedProgramme}
+              setChosenProgramme={setSearchedProgramme}
+              programmesList={programmesList}
+              chosenCourse={searchedCourse}
+              setChosenCourse={setSearchedCourse}
+              coursesList={coursesList}
+              chosenDegree={searchedDegree}
+              setChosenDegree={setSearchedDegree}
+              chosenType={searchedType}
+              setChosenType={setSearchedType}
+              chosenSort={chosenSort}
+              setChosenSort={setChosenSort}
+              chosenSortOrder={chosenSortOrder}
+              setChosenSortOrder={setChosenSortOrder}
+              areFiltersOn={areFiltersOn}
+              toggleAreFiltersOn={toggleAreFiltersOn}
+            />
+            <SearchingResultsWrapper>
+              <SearcherBarInputContainer className="block-center">
+                <SearcherInput
+                  type="text"
+                  placeholder="Czego szukamy?"
+                  value={searchedPhrase} 
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchedPhrase(e.currentTarget.value)}
+                  className="block-center"
                 />
-                <SearchingResultsWrapper>
-                  <SearcherBarInputContainer className="block-center">
-                    <SearcherInput
-                      type="text"
-                      placeholder="Czego szukamy?"
-                      value={searchedPhrase} 
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchedPhrase(e.currentTarget.value)}
-                      className="block-center"
-                    />
-                  </SearcherBarInputContainer>
-                  <SearchingResultsOpenFiltersBtn
-                    className="block-center"
-                    isAlwaysVisible
-                    onClick={() => goBackToTheBeginning()}
-                  >
-                    Wróć
-                  </SearchingResultsOpenFiltersBtn>
-                  <SearchingResultsOpenFiltersBtn
-                    className="block-center"
-                    onClick={() => toggleAreFiltersOn(!areFiltersOn)}
-                  >
-                    Filtry
-                  </SearchingResultsOpenFiltersBtn>
-                  {
+              </SearcherBarInputContainer>
+              <SearchingResultsOpenFiltersBtn
+                className="block-center"
+                isAlwaysVisible
+                onClick={() => goBackToTheBeginning()}
+              >
+                Wróć
+              </SearchingResultsOpenFiltersBtn>
+              <SearchingResultsOpenFiltersBtn
+                className="block-center"
+                onClick={() => toggleAreFiltersOn(!areFiltersOn)}
+              >
+                Filtry
+              </SearchingResultsOpenFiltersBtn>
+              {
                     !areDocumentsLoaded ? (
                       <SearchingPreloaderComponent />
                     ) : searchedResults.filter((elem: any) => elem.isDisplayed === 1).length === 0 ? (
@@ -349,16 +336,11 @@ const Searcher:React.FC = () => {
                         </>
                       )
 }
-                </SearchingResultsWrapper>
+            </SearchingResultsWrapper>
 
-              </SearchingResultsSection>
-            )}
-        </LandingSectionFilter>    
-      </LandingSectionWrapper>
-      <Suspense fallback={null}>
-        <FooterComponent />
-      </Suspense>
-    </MainContainer>
+          </SearchingResultsSection>
+        )}
+    </Template>
   );
 };
 

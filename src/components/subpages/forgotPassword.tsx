@@ -1,9 +1,7 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import useLocalStorage from "use-local-storage";
 import { useNavigate } from "react-router-dom";
 
-import { MainContainer } from "src/styled/main";
-import { LandingSectionWrapper, LandingSectionFilter } from "src/styled/subpages/welcome";
 import {
   ForgotPasswordContainer, ForgotPasswordHeader, ForgotPasswordDescription,
   ForgotPasswordEmailInput, 
@@ -12,14 +10,11 @@ import {
   ForgotPasswordSuccessDescription,
 } from "src/styled/subpages/forgotPassword";
 
-import BackgroundPattern from "src/assets/pattern_background5.webp";
+import Template from "src/components/subcomponents/template";
 import startTheProcedure from "src/connectionFunctions/forgotPassword/startTheProcedure";
 import SearchingPreloaderComponent from "src/components/helperComponents/searcher/searchingPreloaderComponent";
-import HeadTags from "src/components/subcomponents/headTags";
 
 import validateIfEmail from "src/components/auxiliaryFunctions/forgotPassword/validateIfEmail";
-
-const FooterComponent = React.lazy(() => import("src/components/helperComponents/welcome/footerComponent"));
 
 const ForgotPassword:React.FC = () => {
   const [currentEmail, setCurrentEmail] = useState<string>("");
@@ -34,18 +29,9 @@ const ForgotPassword:React.FC = () => {
   }, []);
 
   return (
-    <MainContainer className="block-center">
-      <HeadTags areAdsOn={false} title="Reset hasła - Sparkledge" description="" />
-      <Suspense fallback={<SearchingPreloaderComponent />}>
-        <LandingSectionWrapper
-          className="block-center"
-          backgroundSize="initial"
-          source={BackgroundPattern}
-          backgroundRepeat="repeat"
-        >
-          <LandingSectionFilter>
-            <ForgotPasswordContainer className="block-center">
-              {
+    <Template headTagTitle="Reset hasła - Sparkledge" fallbackComponent={<SearchingPreloaderComponent />}>
+      <ForgotPasswordContainer className="block-center">
+        {
                 pageStatus === 0 ? (
                   <>
                     <ForgotPasswordHeader className="block-center">
@@ -83,12 +69,8 @@ const ForgotPassword:React.FC = () => {
                 )
               }
               
-            </ForgotPasswordContainer>
-          </LandingSectionFilter>
-        </LandingSectionWrapper>
-        <FooterComponent />
-      </Suspense>
-    </MainContainer>
+      </ForgotPasswordContainer>
+    </Template>
   );
 };
 
