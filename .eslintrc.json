@@ -76,6 +76,7 @@
         "react/react-in-jsx-scope": ["off"],
         "react/jsx-props-no-spreading": ["off"],
         "no-useless-escape": ["warn"],
-        "no-shadow": "off"
+        "no-shadow": "off",
+        "react/no-unstable-nested-components": ["warn"]
     }
 }

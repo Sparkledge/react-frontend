@@ -1,6 +1,10 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, {
+  useState, useEffect, Suspense, 
+} from "react";
 import useLocalStorage from "use-local-storage";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import { FixedSizeList, ListChildComponentProps } from "react-window";
+import { useMediaQuery } from "@mui/material";
 
 import { AboutHeader } from "src/styled/subpages/about";
 import { SearchingResultsSection } from "src/styled/subpages/searcher";
@@ -27,6 +31,8 @@ const SearchBarComponent = React.lazy(() => import("../helperComponents/searcher
 
 const Searcher:React.FC = () => {
   const NUMBER_OF_MATERIALS_PER_PAGE:number = 10;
+  const isBiggerThanTablet:boolean = useMediaQuery("(min-width: 768px)");
+  const [listWidth, setListWidth] = useState<number>(0);
 
   const [isLoaded, toggleIsLoaded] = useState<boolean>(false);
   const [areDocumentsLoaded, toggleAreDocumentsLoaded] = useState<boolean>(false);
@@ -57,9 +63,27 @@ const Searcher:React.FC = () => {
   const [previouslySearchedUni, setPreviouslySearchedUni] = useLocalStorage<string>("uni", "");
   const [previouslySearchedFac, setPreviouslySearchedFac] = useLocalStorage<string>("fac", "");
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "", { syncData: true });
+
+  const LinkToAMaterial:React.FC<ListChildComponentProps> = ({ index, style }) => (
+    <Link to={`/document/${searchedResults[index].id}`} style={style}>
+      <SearchingMainResultComponent
+        title={searchedResults[index].title}
+        publishedOn={searchedResults[index].createdAt}
+        publisher={`${searchedResults[index].user.firstName} ${searchedResults[index].user.lastName}`}
+        description={searchedResults[index].description}
+        likesNum={searchedResults[index].likesNumber}
+        viewsNum={searchedResults[index].viewsNumber}
+        animAlign={index % 2 === 0 ? -10 : 10}
+      />
+    </Link>
+  );
     
   const { courseId } = useParams();
   const navigate = useNavigate();
+
+  const windowResizing = ():void => {
+    setListWidth(window.innerWidth - 50);
+  };
 
   const goBackToTheBeginning = () => {
     setPreviouslySearchedFac(undefined); 
@@ -97,6 +121,7 @@ const Searcher:React.FC = () => {
 
   useEffect(() => {
     if (isOnline) {
+      window.addEventListener("resize", windowResizing);
       toggleIsLoaded(false);
       if (previouslySearchedFac !== undefined && previouslySearchedUni !== undefined
         && previouslySearchedFac.length > 0 && previouslySearchedUni.length > 0) {
@@ -129,6 +154,9 @@ const Searcher:React.FC = () => {
       }
       toggleIsLoaded(true);
     } else goBackToTheBeginning();
+    return () => {
+      window.removeEventListener("resize", windowResizing);
+    };
   }, [isOnline]);
 
   useEffect(() => {
@@ -308,7 +336,7 @@ const Searcher:React.FC = () => {
                         Brak wyników. Spróbuj innych słów kluczowych
                       </SearchingNoResultsContainer>
                     ) 
-                      : (
+                      : isBiggerThanTablet ? (
                         <> 
                           {" "}
                           {
@@ -334,6 +362,16 @@ const Searcher:React.FC = () => {
                             changeCurrentPage={setCurrentSearchedResultsPage}
                           />
                         </>
+                      ) : (
+                        <FixedSizeList
+                          itemCount={searchedResults.length}
+                          itemSize={320}
+                          width={listWidth}
+                          height={500}
+                          className="block-center"
+                        >
+                          {LinkToAMaterial}
+                        </FixedSizeList>
                       )
 }
             </SearchingResultsWrapper>
