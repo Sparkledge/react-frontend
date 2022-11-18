@@ -148,12 +148,12 @@ export const QuestionAnswerContent = styled.div<QuestionAnswerContentInterface>`
 
     @media screen and (min-width: 425px){
         text-align: left;
-        font-size: 1.2em;
+        font-size: 1.05em;
         line-height: 1.4em;
     }
 
     @media screen and (min-width: 768px){
-        font-size: 1.5em;
+        font-size: 1.2em;
         line-height: 1.6em;
     }
 `;

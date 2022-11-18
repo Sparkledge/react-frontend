@@ -4,7 +4,7 @@
 */
 
 import React, {
-  Suspense, useState, useEffect, memo, 
+  useState, useEffect, memo, 
 } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import useLocalStorage from "use-local-storage";
@@ -14,8 +14,7 @@ import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 
-import { MainContainer } from "src/styled/main";
-import { LandingSectionWrapper, LandingSectionFilter, EndingBlock } from "src/styled/subpages/welcome";
+import { EndingBlock } from "src/styled/subpages/welcome";
 import {
   ProfileHeader, ProfileContainer, ProfilePublishingData, 
   ProfileDataHeader, ProfileUserDataContainer,
@@ -27,7 +26,6 @@ import {
 } from "src/styled/subpages/userpanel";
 
 import validateIfEmail from "src/components/auxiliaryFunctions/forgotPassword/validateIfEmail";
-import HeadTags from "src/components/subcomponents/headTags";
 import SearchingPreloaderComponent from "src/components/helperComponents/searcher/searchingPreloaderComponent";
 import LastViewItemComponent from "src/components/helperComponents/userPanel/LastViewItemComponent";
 import ProfileUserDataEdit from "src/components/helperComponents/profile/profileUserDataEdit";
@@ -40,9 +38,7 @@ import getNumberOfPublishedMaterials from "src/connectionFunctions/profile/getNu
 import getUserDetails from "src/connectionFunctions/profile/getUserDetails";
 import getLastViews from "src/connectionFunctions/userPanel/loadLastViews";
 
-import BackgroundPattern from "src/assets/pattern_background5.webp";
-
-const FooterComponent = React.lazy(() => import("src/components/helperComponents/welcome/footerComponent"));
+import Template from "../subcomponents/template";
 
 const Profile:React.FC = () => {
   const [helperUserId, setHelperUserId] = useState<string>("");
@@ -123,53 +119,44 @@ const Profile:React.FC = () => {
   }, [helperUserId]);
 
   return (
-    <MainContainer className="block-center">
-      <HeadTags areAdsOn={false} title="Profil użytkownika - Sparkledge" description="" />
-      <Suspense fallback={<SearchingPreloaderComponent />}>
-        <LandingSectionWrapper
-          className="block-center"
-          backgroundSize="initial"
-          source={BackgroundPattern}
-          backgroundRepeat="repeat"
-        >
-          <LandingSectionFilter>
-            <ProfileHeader className="block-center">
-              {userName.length === 0 ? "Profil użytkownika" : userName}
-            </ProfileHeader>
-            {isUserProfile ? (
-              <ProfileUserDataEdit
-                isOpened={areUserSettingsOpened}
-                userDescription={userDescription}
-                setUserDescription={setUserDescription}
-                userFb={userFacebook}
-                setUserFacebook={setUserFacebook}
-                userIg={userInstagram}
-                setUserInstagram={setUserInstagram}
-                userLk={userLinkedin}
-                setUserLinkedin={setUserLinkedin}
-                userPt={userPinterest}
-                setUserPinterest={setUserPinterest}
-                closeCallback={toggleAreUserSettingsOpened}
-              />
-            ) : null}
-            <ProfileContainer className="block-center">
-              <ProfileUserDataComponent 
-                isUserProfile={isUserProfile && isWorking}
-                areUserSettingsOpened={areUserSettingsOpened}
-                toggleAreUserSettingsOpened={toggleAreUserSettingsOpened}
-                userDescription={userDescription}
-                userJoiningDate={userJoiningDate}
-                userEmail={userEmail}
-                facebookLink={userFacebook}
-                instagramLink={userInstagram}
-                linkedinLink={userLinkedin}
-                pinterestLink={userPinterest}
-              />
-              <ProfilePublishingData className="block-center">
-                <ProfileDataHeader className="block-center">
-                  {isActivityWorking ? "Aktywność" : "Błąd połączenia"}
-                </ProfileDataHeader>
-                {
+    <Template headTagTitle="Profil użytkownika - Sparkledge" fallbackComponent={<SearchingPreloaderComponent />}>
+      <ProfileHeader className="block-center">
+        {userName.length === 0 ? "Profil użytkownika" : userName}
+      </ProfileHeader>
+      {isUserProfile ? (
+        <ProfileUserDataEdit
+          isOpened={areUserSettingsOpened}
+          userDescription={userDescription}
+          setUserDescription={setUserDescription}
+          userFb={userFacebook}
+          setUserFacebook={setUserFacebook}
+          userIg={userInstagram}
+          setUserInstagram={setUserInstagram}
+          userLk={userLinkedin}
+          setUserLinkedin={setUserLinkedin}
+          userPt={userPinterest}
+          setUserPinterest={setUserPinterest}
+          closeCallback={toggleAreUserSettingsOpened}
+        />
+      ) : null}
+      <ProfileContainer className="block-center">
+        <ProfileUserDataComponent 
+          isUserProfile={isUserProfile && isWorking}
+          areUserSettingsOpened={areUserSettingsOpened}
+          toggleAreUserSettingsOpened={toggleAreUserSettingsOpened}
+          userDescription={userDescription}
+          userJoiningDate={userJoiningDate}
+          userEmail={userEmail}
+          facebookLink={userFacebook}
+          instagramLink={userInstagram}
+          linkedinLink={userLinkedin}
+          pinterestLink={userPinterest}
+        />
+        <ProfilePublishingData className="block-center">
+          <ProfileDataHeader className="block-center">
+            {isActivityWorking ? "Aktywność" : "Błąd połączenia"}
+          </ProfileDataHeader>
+          {
                 isActivityWorking ? totalPublications === -1 ? <SearchingPreloaderComponent /> : (
                   <ProfileUserDataContainer className="block-center">
                     <ProfilePublishingInfoContainer className="block-center">
@@ -187,15 +174,15 @@ const Profile:React.FC = () => {
                   </ProfileUserDataContainer>
                 ) : null
 }
-              </ProfilePublishingData>
-            </ProfileContainer>
-            <UserPanelWelcomeSection className="block-center">
-              <UserPanelLastView width={90} className="block-center">
-                <UserPanelLastViewHeader className="block-center">
-                  Ostatnio publikowane
-                </UserPanelLastViewHeader>
-                <UserPanelLastViewGallery className="block-center">
-                  {
+        </ProfilePublishingData>
+      </ProfileContainer>
+      <UserPanelWelcomeSection className="block-center">
+        <UserPanelLastView width={90} className="block-center">
+          <UserPanelLastViewHeader className="block-center">
+            Ostatnio publikowane
+          </UserPanelLastViewHeader>
+          <UserPanelLastViewGallery className="block-center">
+            {
                 lastPublishedList.length > 0 && !isPublishedLoading ? lastPublishedList.map((elem, ind) => (
                   <Link to={`/document/${elem.id}`}>
                     <LastViewItemComponent
@@ -230,15 +217,11 @@ const Profile:React.FC = () => {
                   </UserPanelLastViewNoItemsHeader>
                 )
               }
-                </UserPanelLastViewGallery>
-              </UserPanelLastView>
-            </UserPanelWelcomeSection>
-            <EndingBlock />
-          </LandingSectionFilter>
-        </LandingSectionWrapper>
-        <FooterComponent />
-      </Suspense>
-    </MainContainer>
+          </UserPanelLastViewGallery>
+        </UserPanelLastView>
+      </UserPanelWelcomeSection>
+      <EndingBlock />
+    </Template>
   );
 };
 

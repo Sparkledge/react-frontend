@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import SwipeRightAltIcon from "@mui/icons-material/SwipeRightAlt";
 
-import { MainContainer } from "src/styled/main";
-import { LandingSectionWrapper, LandingSectionFilter } from "src/styled/subpages/welcome";
 import {
   DocumentUploadFormWrapper, DocumentUploadFormHeader,
   DocumentUploadFormDataSection, DocumentUploadNotWorking, DocumentUploadTextInput,
@@ -17,13 +15,11 @@ import { RootState } from "src/redux/mainReducer";
 import sendFile from "src/connectionFunctions/documentUpload/sendFile";
 import getUniversitySubInfrastructure from "src/connectionFunctions/searcher/getUniversitySubInfrastructure";
 import loadUniversities from "src/connectionFunctions/documentUpload/loadUniversities";
+import Template from "src/components/subcomponents/template";
 import SearchingParametersPicker from "src/components/helperComponents/documentUpload/searchingParametersPicker";
 import SearchingPreloaderComponent from "src/components/helperComponents/searcher/searchingPreloaderComponent";
-import HeadTags from "src/components/subcomponents/headTags";
 
 import selectFile from "src/components/auxiliaryFunctions/documentUpload/selectFile";
-
-const BackgroundPattern = require("../../assets/pattern_background5.webp");
 
 const DocumentUpload:React.FC = () => {
   const currentToken:string = useSelector((state: RootState) => state.generalData.currentToken);
@@ -123,21 +119,13 @@ const DocumentUpload:React.FC = () => {
   }, [currentToken]);
 
   return (
-    <MainContainer className="block-center">
-      <HeadTags areAdsOn={false} title="Upload dokumentu - Sparkledge" description="" />
-      <LandingSectionWrapper
-        className="block-center"
-        backgroundSize="initial"
-        source={BackgroundPattern}
-        backgroundRepeat="repeat"
-      >
-        <LandingSectionFilter>
-          <DocumentUploadFormWrapper className="block-center">
-            <DocumentUploadFormHeader className="block-center">
-              Tworzenie dokumentu
-            </DocumentUploadFormHeader>
-            <DocumentUploadFormDataSection className="block-center">
-              {
+    <Template headTagTitle="Upload dokumentu - Sparkledge">
+      <DocumentUploadFormWrapper className="block-center">
+        <DocumentUploadFormHeader className="block-center">
+          Tworzenie dokumentu
+        </DocumentUploadFormHeader>
+        <DocumentUploadFormDataSection className="block-center">
+          {
                             isWorking && isOnline ? phaseNumber === 1 ? (
                               <DocumentUploadTextInput
                                 type="text"
@@ -240,23 +228,21 @@ const DocumentUpload:React.FC = () => {
                               </DocumentUploadNotWorking>
                             )
                         }
-            </DocumentUploadFormDataSection>
-            {isOnline ? (
-              <DocumentUploadNextButton
-                className="block-center"
-                scale={(materialName.length > 0 && phaseNumber === 1) || (phaseNumber === 2 
+        </DocumentUploadFormDataSection>
+        {isOnline ? (
+          <DocumentUploadNextButton
+            className="block-center"
+            scale={(materialName.length > 0 && phaseNumber === 1) || (phaseNumber === 2 
                   && searchedUniversity.toString().length > 0 && searchedFaculty.toString().length > 0
                   && searchedType.length > 0 && searchedProgramme.toString().length > 0
                   && searchedCourse.toString().length > 0 && searchedTypeOfSubject.toString().length > 0) ? 1 : 0}
-                onClick={() => setPhaseNumber(phaseNumber + 1)}
-              >
-                <SwipeRightAltIcon style={{ color: "inherit", fontSize: "inherit" }} />
-              </DocumentUploadNextButton>
-            ) : null}
-          </DocumentUploadFormWrapper>
-        </LandingSectionFilter>
-      </LandingSectionWrapper>
-    </MainContainer>
+            onClick={() => setPhaseNumber(phaseNumber + 1)}
+          >
+            <SwipeRightAltIcon style={{ color: "inherit", fontSize: "inherit" }} />
+          </DocumentUploadNextButton>
+        ) : null}
+      </DocumentUploadFormWrapper>
+    </Template>
   );
 };
 

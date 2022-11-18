@@ -24,10 +24,6 @@ export const SearchingResultsWrapper = styled.section`
       text-align: center;
       position: relative;
       top: 4vh;
-
-      @media screen and (min-width: 425px){
-        width: calc(80% - 30px);
-      }
   
       @media screen and (min-width: 768px){
           width: calc(65% - 30px);
