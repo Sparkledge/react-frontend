@@ -3,7 +3,7 @@ import React, {
 } from "react";
 import useLocalStorage from "use-local-storage";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { FixedSizeList, ListChildComponentProps } from "react-window";
+import { FixedSizeList } from "react-window";
 import { useMediaQuery } from "@mui/material";
 
 import { AboutHeader } from "src/styled/subpages/about";
@@ -13,7 +13,6 @@ import {
 } from "src/styled/subpages/searcher/searcherResults";
 import { SearcherFailureContainer, SearcherFailureHeader, SearcherFailureButton } from "src/styled/subpages/searcher/searcherFailure";
 import { SearcherBarInputContainer, SearcherInput } from "src/styled/subpages/searcher/searcherBar";
-import { SearcherPagingContainer } from "src/styled/subpages/searcher/searcherPaging";
 
 import SearchingPreloaderComponent from "src/components/helperComponents/searcher/searchingPreloaderComponent";
 import SearcherFilters from "src/components/helperComponents/searcher/searcherFilters";
@@ -26,6 +25,7 @@ import Template from "src/components/subcomponents/template";
 import checkIfFound from "src/components/auxiliaryFunctions/searcher/checkIfFound";
 import SearchingMainResultComponent from "src/components/helperComponents/searcher/searchingMainResultComponent";
 import SearcherPagingComponent from "src/components/helperComponents/searcher/searcherPagingComponent";
+import LinkToAMaterial from "src/components/helperComponents/searcher/linkToAMaterial";
 
 const SearchBarComponent = React.lazy(() => import("../helperComponents/searcher/searchBarComponent"));
 
@@ -63,20 +63,6 @@ const Searcher:React.FC = () => {
   const [previouslySearchedUni, setPreviouslySearchedUni] = useLocalStorage<string>("uni", "");
   const [previouslySearchedFac, setPreviouslySearchedFac] = useLocalStorage<string>("fac", "");
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "", { syncData: true });
-
-  const LinkToAMaterial:React.FC<ListChildComponentProps> = ({ index, style }) => (
-    <Link to={`/document/${searchedResults[index].id}`} style={style}>
-      <SearchingMainResultComponent
-        title={searchedResults[index].title}
-        publishedOn={searchedResults[index].createdAt}
-        publisher={`${searchedResults[index].user.firstName} ${searchedResults[index].user.lastName}`}
-        description={searchedResults[index].description}
-        likesNum={searchedResults[index].likesNumber}
-        viewsNum={searchedResults[index].viewsNumber}
-        animAlign={index % 2 === 0 ? -10 : 10}
-      />
-    </Link>
-  );
     
   const { courseId } = useParams();
   const navigate = useNavigate();
@@ -365,6 +351,7 @@ const Searcher:React.FC = () => {
                       ) : (
                         <FixedSizeList
                           itemCount={searchedResults.length}
+                          itemData={searchedResults}
                           itemSize={320}
                           width={listWidth}
                           height={500}
