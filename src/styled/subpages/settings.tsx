@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
+interface SettingsSegmentCheckboxInterface {
+  isChecked: boolean,
+}
+
 export const SettingsContainer = styled.section`
     width: calc(100% - 20px);
     padding: 10px;
@@ -182,6 +186,45 @@ export const SettingsSegmentInput = styled.input`
     @media screen and (min-width: 1024px){
         width: calc(80% - 10px);
         font-size: 1.4em;
+    }
+`;
+
+export const SettingsSegmentCheckboxWrapper = styled.div`
+    width: calc(100% - 10px);
+    padding: 15px 5px;
+    text-align: center;
+`;
+
+export const SettingsSegmentCheckboxText = styled.div`
+    width: fit-content;
+    max-width: calc(100% - 70px);
+    padding: 10px 5px;
+    text-align: center;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0px 5px;
+    font-size: 1em;
+
+    @media screen and (min-width: 1440px){
+        font-size: 1.3em;
+    }
+`;
+
+export const SettingsSegmentCheckbox = styled.div<SettingsSegmentCheckboxInterface>`
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    background: ${(props) => props.isChecked ? props.theme.color : props.theme.memoryBannerBackground};
+    border-radius: 10px;
+    box-shadow: ${(props) => props.theme.fonts.textShadowMain};
+    cursor: pointer;
+    transition: all 0.4s;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0px 5px;
+
+    &:hover{
+        filter: brightness(70%);
     }
 `;
 

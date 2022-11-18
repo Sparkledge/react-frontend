@@ -3,6 +3,7 @@
 */
 
 import React, { useState, useEffect } from "react";
+import { useMediaQuery } from "@mui/material";
 import { MainContainer } from "src/styled/main";
 import { LandingSectionWrapper, LandingSectionFilter } from "src/styled/subpages/welcome";
 
@@ -11,6 +12,9 @@ import {
   SettingsSegmentSubHeader,
   SettingsSegmentInput,
   SettingsSegmentButton,
+  SettingsSegmentCheckbox,
+  SettingsSegmentCheckboxWrapper,
+  SettingsSegmentCheckboxText,
 } from "src/styled/subpages/settings";
 
 import { UserPanelDeleteNotification } from "src/styled/subpages/userpanel";
@@ -22,11 +26,15 @@ import HeadTags from "../subcomponents/headTags";
 const BackgroundPattern = require("../../assets/pattern_background5.webp");
 
 const Settings:React.FC = () => {
+  const isBiggerThanTablet = useMediaQuery("(min-width: 768px)");
+
   const [newPassword, setNewPassword] = useState<string>("");
   const [newPasswordRep, setNewPasswordRep] = useState<string>("");
   const [notificationMessage, setNotificationMessage] = useState<string>("");
   const [newName, setNewName] = useState<string>("");
   const [newSurname, setNewSurname] = useState<string>("");
+
+  const [isSortingMemorized, toggleIsSortingMemorized] = useState<boolean>(false);
 
   const [isNotificationShown, toggleIsNotificationShown] = useState<boolean>(false);
 
@@ -37,6 +45,11 @@ const Settings:React.FC = () => {
 
   const triggerChangingThePassword = ():void => {
     setNotificationMessage("Hasło wysłane");
+    toggleIsNotificationShown(true);
+  };
+
+  const triggerChangingTheSearcherData = ():void => {
+    setNotificationMessage("Wyszukiwarka zaktualizowana");
     toggleIsNotificationShown(true);
   };
 
@@ -98,6 +111,21 @@ const Settings:React.FC = () => {
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewSurname(event.currentTarget.value)}
                 />
                 <SettingsSegmentButton className="block-center" onClick={() => triggerChangingThePersonalData()}>
+                  Zatwierdź
+                </SettingsSegmentButton>
+              </SettingsSegmentComponent>
+              <SettingsSegmentComponent segmentName="Ustawienia szukania">
+                <SettingsSegmentCheckboxWrapper className="block-center">
+                  <SettingsSegmentCheckboxText>
+                    {!isBiggerThanTablet ? "Pamiętaj sortowanie" : "Pamiętaj ustawienia sortowania"}
+                  </SettingsSegmentCheckboxText>
+                  <SettingsSegmentCheckbox
+                    className="block-center"
+                    isChecked={isSortingMemorized}
+                    onClick={() => toggleIsSortingMemorized(!isSortingMemorized)}
+                  />
+                </SettingsSegmentCheckboxWrapper>
+                <SettingsSegmentButton className="block-center" onClick={() => triggerChangingTheSearcherData()}>
                   Zatwierdź
                 </SettingsSegmentButton>
               </SettingsSegmentComponent>
