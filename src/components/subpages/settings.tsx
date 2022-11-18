@@ -20,6 +20,7 @@ import {
 import { UserPanelDeleteNotification } from "src/styled/subpages/userpanel";
 
 import SettingsSegmentComponent from "src/components/helperComponents/settings/settingsSegmentComponent";
+import SettingsSegmentCheckboxComponent from "src/components/helperComponents/settings/settingsSegmentCheckboxComponent";
 
 import HeadTags from "../subcomponents/headTags";
 
@@ -35,6 +36,7 @@ const Settings:React.FC = () => {
   const [newSurname, setNewSurname] = useState<string>("");
 
   const [isSortingMemorized, toggleIsSortingMemorized] = useState<boolean>(false);
+  const [areFiltersMemorized, toggleAreFiltersMemorized] = useState<boolean>(false);
 
   const [isNotificationShown, toggleIsNotificationShown] = useState<boolean>(false);
 
@@ -115,16 +117,16 @@ const Settings:React.FC = () => {
                 </SettingsSegmentButton>
               </SettingsSegmentComponent>
               <SettingsSegmentComponent segmentName="Ustawienia szukania">
-                <SettingsSegmentCheckboxWrapper className="block-center">
-                  <SettingsSegmentCheckboxText>
-                    {!isBiggerThanTablet ? "Pamiętaj sortowanie" : "Pamiętaj ustawienia sortowania"}
-                  </SettingsSegmentCheckboxText>
-                  <SettingsSegmentCheckbox
-                    className="block-center"
-                    isChecked={isSortingMemorized}
-                    onClick={() => toggleIsSortingMemorized(!isSortingMemorized)}
-                  />
-                </SettingsSegmentCheckboxWrapper>
+                <SettingsSegmentCheckboxComponent 
+                  title={!isBiggerThanTablet ? "Pamiętaj sortowanie" : "Pamiętaj ustawienia sortowania"}
+                  isChecked={isSortingMemorized}
+                  onClickCallback={() => toggleIsSortingMemorized(!isSortingMemorized)}
+                />
+                <SettingsSegmentCheckboxComponent 
+                  title={!isBiggerThanTablet ? "Pamiętaj filtry" : "Pamiętaj ustawienia filtrów"}
+                  isChecked={areFiltersMemorized}
+                  onClickCallback={() => toggleAreFiltersMemorized(!areFiltersMemorized)}
+                />
                 <SettingsSegmentButton className="block-center" onClick={() => triggerChangingTheSearcherData()}>
                   Zatwierdź
                 </SettingsSegmentButton>
