@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -14,7 +14,7 @@ import {
   SearchingFilterOptionChoiceCheckbox,
   SearchingFilterOptionLabel,
   SearchingFilterOptionOpenBtn,
-} from "../../../../styled/subpages/searcher/searcherFilters";
+} from "src/styled/subpages/searcher/searcherFilters";
 
 interface SearcherFiltersHelperFiltersInterface {
   chosenSort: string,
@@ -34,6 +34,34 @@ const SearcherFiltersHelperFilters:React.FC<SearcherFiltersHelperFiltersInterfac
     ["viewsNumber", "Odsłony"], ["likesNumber", "Polubienia"]];
 
   const listOfOrders:[string, string][] = [["asc", "rosnąco"], ["desc", "malejąco"]];
+
+  const listOfSortsMemoList:JSX.Element[] = useMemo(() => listOfSorts.map((elem: [string, string]) => (
+    <SearchingFilterOptionChoice>
+      <SearchingFilterOptionChoiceDesc>
+        {elem[1].length > 20 ? `${elem[1].substring(0, 17)}...` : elem[1]}
+      </SearchingFilterOptionChoiceDesc>
+      <SearchingFilterOptionChoiceCheckbox
+        className="block-center"
+        isChosen={chosenSort === elem[0]}
+        onClick={() => setChosenSort(chosenSort === elem[0] ? "viewsNumber" : elem[0])}
+      />
+
+    </SearchingFilterOptionChoice>
+  )), [listOfSorts]);
+
+  const listOfOrdersMemoList:JSX.Element[] = useMemo(() => listOfOrders.map((elem: [string, string]) => (
+    <SearchingFilterOptionChoice>
+      <SearchingFilterOptionChoiceDesc>
+        {elem[1].length > 20 ? `${elem[1].substring(0, 17)}...` : elem[1]}
+      </SearchingFilterOptionChoiceDesc>
+      <SearchingFilterOptionChoiceCheckbox
+        className="block-center"
+        isChosen={chosenSortOrder === elem[0]}
+        onClick={() => setChosenSortOrder(chosenSortOrder === elem[0] ? "asc" : elem[0])}
+      />
+
+    </SearchingFilterOptionChoice>
+  )), [listOfOrders]);
 
   return (
     <>
@@ -70,22 +98,7 @@ const SearcherFiltersHelperFilters:React.FC<SearcherFiltersHelperFiltersInterfac
 
           </SearchingFilterOptionOpenBtn>
         </SearchingFilterOptionChoice>
-        {" "}
-        {
-        listOfSorts.map((elem: [string, string]) => (
-          <SearchingFilterOptionChoice>
-            <SearchingFilterOptionChoiceDesc>
-              {elem[1].length > 20 ? `${elem[1].substring(0, 17)}...` : elem[1]}
-            </SearchingFilterOptionChoiceDesc>
-            <SearchingFilterOptionChoiceCheckbox
-              className="block-center"
-              isChosen={chosenSort === elem[0]}
-              onClick={() => setChosenSort(chosenSort === elem[0] ? "viewsNumber" : elem[0])}
-            />
-    
-          </SearchingFilterOptionChoice>
-        ))
-      }
+        {listOfSortsMemoList}
       </SearchingFiltersOptionWrapper>
       <SearchingFiltersOptionWrapper
         className="block-center"
@@ -111,22 +124,7 @@ const SearcherFiltersHelperFilters:React.FC<SearcherFiltersHelperFiltersInterfac
 
           </SearchingFilterOptionOpenBtn>
         </SearchingFilterOptionChoice>
-        {" "}
-        {
-        listOfOrders.map((elem: [string, string]) => (
-          <SearchingFilterOptionChoice>
-            <SearchingFilterOptionChoiceDesc>
-              {elem[1].length > 20 ? `${elem[1].substring(0, 17)}...` : elem[1]}
-            </SearchingFilterOptionChoiceDesc>
-            <SearchingFilterOptionChoiceCheckbox
-              className="block-center"
-              isChosen={chosenSortOrder === elem[0]}
-              onClick={() => setChosenSortOrder(chosenSortOrder === elem[0] ? "asc" : elem[0])}
-            />
-    
-          </SearchingFilterOptionChoice>
-        ))
-      }
+        {listOfOrdersMemoList}
       </SearchingFiltersOptionWrapper>
     </>
   );

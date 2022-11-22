@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -27,6 +27,50 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
   const semesters:number[] = [1, 2, 3, 4, 5, 6, 7];
   const degrees:[string, string][] = [["inżynierskie", "BACHELOR"], ["magisterskie", "MASTER"], ["doktorskie", "PHD"]];
   const types:[string, string][] = [["obligatoryjny", "OBLIGATORY"], ["obieralny", "FACULTATIVE"]];
+
+  const coursesDegreesList:JSX.Element[] = useMemo(() => degrees.map((elem: [string, string]) => (
+    <SearchingFilterOptionChoice>
+      <SearchingFilterOptionChoiceDesc>
+        {elem[0]}
+      </SearchingFilterOptionChoiceDesc>
+      <SearchingFilterOptionChoiceCheckbox
+        className="block-center"
+        isChosen={chosenDegree === elem[1]}
+        onClick={() => setChosenDegree(chosenDegree === elem[1] ? "" : elem[1])}
+      />
+
+    </SearchingFilterOptionChoice>
+  )), [degrees]);
+
+  const coursesTypesList:JSX.Element[] = useMemo(() => types.map((elem: [string, string]) => (
+    <SearchingFilterOptionChoice>
+      <SearchingFilterOptionChoiceDesc>
+        {elem[0]}
+      </SearchingFilterOptionChoiceDesc>
+      <SearchingFilterOptionChoiceCheckbox
+        className="block-center"
+        isChosen={chosenType === elem[1]}
+        onClick={() => setChosenType(chosenType === elem[1] ? "" : elem[1])}
+      />
+
+    </SearchingFilterOptionChoice>
+  )), [types]);
+
+  const coursesSemestersList:(JSX.Element | null)[] = useMemo(() => semesters.map((elem: number) => chosenDegree === "BACHELOR" && elem > 4 ? null : (
+    <SearchingFilterOptionChoice>
+      <SearchingFilterOptionChoiceDesc>
+        Semestr 
+        {" "}
+        {elem}
+      </SearchingFilterOptionChoiceDesc>
+      <SearchingFilterOptionChoiceCheckbox
+        className="block-center"
+        isChosen={chosenSemester === elem}
+        onClick={() => setChosenSemester(chosenSemester === elem ? 0 : elem)}
+      />
+
+    </SearchingFilterOptionChoice>
+  )), [semesters]);
     
   return (
     <>
@@ -55,21 +99,7 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
 
           </SearchingFilterOptionOpenBtn>
         </SearchingFilterOptionChoice>
-        {
-    degrees.map((elem: [string, string]) => (
-      <SearchingFilterOptionChoice>
-        <SearchingFilterOptionChoiceDesc>
-          {elem[0]}
-        </SearchingFilterOptionChoiceDesc>
-        <SearchingFilterOptionChoiceCheckbox
-          className="block-center"
-          isChosen={chosenDegree === elem[1]}
-          onClick={() => setChosenDegree(chosenDegree === elem[1] ? "" : elem[1])}
-        />
-
-      </SearchingFilterOptionChoice>
-    ))
-  }
+        {coursesDegreesList}
       </SearchingFiltersOptionWrapper>
       <SearchingFiltersOptionWrapper
         className="block-center"
@@ -131,23 +161,7 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
 
           </SearchingFilterOptionOpenBtn>
         </SearchingFilterOptionChoice>
-        {
-    semesters.map((elem: number) => chosenDegree === "BACHELOR" && elem > 4 ? null : (
-      <SearchingFilterOptionChoice>
-        <SearchingFilterOptionChoiceDesc>
-          Semestr 
-          {" "}
-          {elem}
-        </SearchingFilterOptionChoiceDesc>
-        <SearchingFilterOptionChoiceCheckbox
-          className="block-center"
-          isChosen={chosenSemester === elem}
-          onClick={() => setChosenSemester(chosenSemester === elem ? 0 : elem)}
-        />
-
-      </SearchingFilterOptionChoice>
-    ))
-  }
+        {coursesSemestersList}
       </SearchingFiltersOptionWrapper>
       <SearchingFiltersOptionWrapper
         className="block-center"
@@ -220,21 +234,7 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
 
           </SearchingFilterOptionOpenBtn>
         </SearchingFilterOptionChoice>
-        {
-    types.map((elem: [string, string]) => (
-      <SearchingFilterOptionChoice>
-        <SearchingFilterOptionChoiceDesc>
-          {elem[0]}
-        </SearchingFilterOptionChoiceDesc>
-        <SearchingFilterOptionChoiceCheckbox
-          className="block-center"
-          isChosen={chosenType === elem[1]}
-          onClick={() => setChosenType(chosenType === elem[1] ? "" : elem[1])}
-        />
-
-      </SearchingFilterOptionChoice>
-    ))
-  }
+        {coursesTypesList}
       </SearchingFiltersOptionWrapper>
     </>
   );
