@@ -4,6 +4,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useMediaQuery } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import useLocalStorage from "use-local-storage";
 
 import {
   SettingsContainer, SettingsHeader, SettingsWrapper, 
@@ -33,6 +35,9 @@ const Settings:React.FC = () => {
 
   const [isNotificationShown, toggleIsNotificationShown] = useState<boolean>(false);
 
+  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "", { syncData: true });
+  const navigate = useNavigate();
+
   const triggerChangingThePersonalData = ():void => {
     setNotificationMessage("Dane zaktualizowane");
     toggleIsNotificationShown(true);
@@ -51,6 +56,10 @@ const Settings:React.FC = () => {
   useEffect(() => {
     if (isNotificationShown) setTimeout(() => toggleIsNotificationShown(false), 2000);
   }, [isNotificationShown]);
+
+  useEffect(() => {
+    if (memoryUserId === undefined || memoryUserId.length === 0) navigate("/");
+  }, []);
 
   return (
     <Template headTagTitle="Ustawienia - Sparkledge">
