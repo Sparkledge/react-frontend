@@ -10,7 +10,7 @@ import React from "react";
 import {
   SearchingMainResult, SearchingSideResultTitle,
   SearchingSideResultData, 
-} from "../../../styled/subpages/searcher/searcherResults";
+} from "src/styled/subpages/searcher/searcherResults";
 
 import { SearchingMainResultComponentInterface } from "./searchingMainResultComponent";
 

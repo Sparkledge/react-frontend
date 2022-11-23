@@ -1,6 +1,6 @@
 import React from "react";
 
-import { SearchingPreloader, SearchingPreloaderElem } from "../../../styled/subpages/searcher";
+import { SearchingPreloader, SearchingPreloaderElem } from "src/styled/subpages/searcher";
 
 const SearchingPreloaderComponent:React.FC = () => (
   <SearchingPreloader className="block-center">

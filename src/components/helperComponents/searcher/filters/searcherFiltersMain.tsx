@@ -56,7 +56,7 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
     </SearchingFilterOptionChoice>
   )), [types]);
 
-  const coursesSemestersList:(JSX.Element | null)[] = useMemo(() => semesters.map((elem: number) => chosenDegree === "BACHELOR" && elem > 4 ? null : (
+  const coursesSemestersList:(JSX.Element | null)[] = useMemo(() => semesters.map((elem: number) => (chosenDegree === "MASTER" && elem > 4) || (chosenDegree === "PHD" && elem > 5) ? null : (
     <SearchingFilterOptionChoice>
       <SearchingFilterOptionChoiceDesc>
         Semestr 
@@ -70,7 +70,7 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
       />
 
     </SearchingFilterOptionChoice>
-  )), [semesters]);
+  )), [semesters, chosenDegree]);
     
   return (
     <>
@@ -142,7 +142,7 @@ const SearcherFiltersMain:React.FC<SearcherFiltersInterface> = ({
       <SearchingFiltersOptionWrapper
         className="block-center"
         isOpened={openedFilters[2]}
-        elementsNumber={semesters.length + 1}
+        elementsNumber={chosenDegree === "MASTER" ? 5 : chosenDegree === "PHD" ? 6 : semesters.length + 1}
       >
         <SearchingFilterOptionChoice isInterfaceButton onClick={() => setOpenedFilters([openedFilters[0], openedFilters[1], !openedFilters[2], openedFilters[3], openedFilters[4]])}>
           <SearchingFilterOptionLabel>

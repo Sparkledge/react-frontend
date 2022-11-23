@@ -3,7 +3,7 @@
     page
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -37,46 +37,48 @@ const SearcherFiltersCategory:React.FC<SearcherFiltersCategoryInterface> = ({
   listToMap,
   chosenOption,
   setChosenOption,
-}:SearcherFiltersCategoryInterface) => (
-  <SearchingFiltersOptionWrapper
-    className="block-center"
-    isOpened={isFullyOpened}
-    elementsNumber={elementsNumber}
-  >
-
-    <SearchingFilterOptionChoice onClick={() => openingFunction(!isChoosingOpened)}>
-      <SearchingFilterOptionLabel>
-        {header}
-      </SearchingFilterOptionLabel>
-      <SearchingFilterOptionOpenBtn>
-        {!isChoosingOpened ? (
-          <ArrowDropDownIcon
-            style={{ color: "inherit", fontSize: "1.2em" }}
-          />
-        ) : (
-          <ArrowDropUpIcon
-            style={{ color: "inherit", fontSize: "1.2em" }}
-          />
-        )}
-
-      </SearchingFilterOptionOpenBtn>
+}:SearcherFiltersCategoryInterface) => {
+  const mappedListToMap:JSX.Element[] = useMemo(() => listToMap.map((elem: [string, string]) => (
+    <SearchingFilterOptionChoice>
+      <SearchingFilterOptionChoiceDesc>
+        {elem[0].length > 20 ? `${elem[0].substring(0, 17)}...` : elem[0]}
+      </SearchingFilterOptionChoiceDesc>
+      <SearchingFilterOptionChoiceCheckbox
+        className="block-center"
+        isChosen={chosenOption === elem[1]}
+        onClick={() => { setChosenOption(chosenOption === elem[1] ? "" : elem[1]); openingFunction(false); }}
+      />
+    
     </SearchingFilterOptionChoice>
-    {
-listToMap.map((elem: [string, string]) => (
-  <SearchingFilterOptionChoice>
-    <SearchingFilterOptionChoiceDesc>
-      {elem[0].length > 20 ? `${elem[0].substring(0, 17)}...` : elem[0]}
-    </SearchingFilterOptionChoiceDesc>
-    <SearchingFilterOptionChoiceCheckbox
-      className="block-center"
-      isChosen={chosenOption === elem[1]}
-      onClick={() => { setChosenOption(chosenOption === elem[1] ? "" : elem[1]); openingFunction(false); }}
-    />
+  )), [listToMap]);
 
-  </SearchingFilterOptionChoice>
-))
-}
-  </SearchingFiltersOptionWrapper>
-);
+  return (
+    <SearchingFiltersOptionWrapper
+      className="block-center"
+      isOpened={isFullyOpened}
+      elementsNumber={elementsNumber}
+    >
+
+      <SearchingFilterOptionChoice onClick={() => openingFunction(!isChoosingOpened)}>
+        <SearchingFilterOptionLabel>
+          {header}
+        </SearchingFilterOptionLabel>
+        <SearchingFilterOptionOpenBtn>
+          {!isChoosingOpened ? (
+            <ArrowDropDownIcon
+              style={{ color: "inherit", fontSize: "1.2em" }}
+            />
+          ) : (
+            <ArrowDropUpIcon
+              style={{ color: "inherit", fontSize: "1.2em" }}
+            />
+          )}
+
+        </SearchingFilterOptionOpenBtn>
+      </SearchingFilterOptionChoice>
+      {mappedListToMap}
+    </SearchingFiltersOptionWrapper>
+  );
+};
 
 export default SearcherFiltersCategory;
