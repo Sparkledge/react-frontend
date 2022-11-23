@@ -2,7 +2,7 @@ import React from "react";
 import {
   SearchingMainResult, SearchingResultHeader, SearchingResultSubInfo, 
   SearchingResultTagsSection, SearchingResultTag, 
-} from "../../../styled/subpages/searcher/searcherResults";
+} from "src/styled/subpages/searcher/searcherResults";
 
 interface SearchResultComponentInterface {
   align: boolean,

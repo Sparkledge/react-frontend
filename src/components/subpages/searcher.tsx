@@ -342,11 +342,13 @@ const Searcher:React.FC = () => {
                             </Link>
                           ))
                       }
-                          <SearcherPagingComponent
-                            currentPage={currentSearchedResultsPage}
-                            maxPagesNumber={Math.ceil(searchedResults.length / NUMBER_OF_MATERIALS_PER_PAGE)}
-                            changeCurrentPage={setCurrentSearchedResultsPage}
-                          />
+                          {searchedResults.length < NUMBER_OF_MATERIALS_PER_PAGE ? null : (
+                            <SearcherPagingComponent
+                              currentPage={currentSearchedResultsPage}
+                              maxPagesNumber={Math.ceil(searchedResults.length / NUMBER_OF_MATERIALS_PER_PAGE)}
+                              changeCurrentPage={setCurrentSearchedResultsPage}
+                            />
+                          )}
                         </>
                       ) : (
                         <FixedSizeList
