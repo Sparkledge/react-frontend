@@ -57,7 +57,7 @@ const UserPanel:React.FC = () => {
   const navigate = useNavigate();
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "", { syncData: true });
   const [isLoading, toggleIsLoading] = useState<boolean>(false);
-  const [isNotificationShown, toggleIsNotificationShown] = useState<boolean>(false);
+  const [notificationContent, setNotificationContent] = useState<string>("");
 
   useEffect(() => {
     if (memoryUserId === undefined) toggleIsLoading(true);
@@ -75,13 +75,10 @@ const UserPanel:React.FC = () => {
     }
   }, [currentToken, memoryUserId]);
 
-  useEffect(() => {
-    if (isNotificationShown) setTimeout(() => toggleIsNotificationShown(false), 2000);
-  }, [isNotificationShown]);
-
   return (
     <Template
       headTagTitle="User Panel - Sparkledge"
+      notificationContent={notificationContent}
       bottomPadding={0} 
       fallbackComponent={<Preloader className="block-center">Ładowanie...</Preloader>}
     >
@@ -185,7 +182,7 @@ const UserPanel:React.FC = () => {
                                 verticalAlign: "top",
                                 zIndex: 2,
                               }}
-                              onClick={() => { deleteMaterial(memoryUserId, elem.id, lastPublishedList, setLastPublishedList); toggleIsNotificationShown(true); }}
+                              onClick={() => { deleteMaterial(memoryUserId, elem.id, lastPublishedList, setLastPublishedList); setNotificationContent("Dokument został usunięty"); }}
                             />, "",
                           ], [
                             <Link to={`/document/${elem.id}`} style={{ color: "inherit" }}>
@@ -207,10 +204,6 @@ const UserPanel:React.FC = () => {
           </UserPanelWelcomeSection>
         </>
       )}
-      <UserPanelDeleteNotification className="block-center" isOpened={isNotificationShown}>
-        Dokument został usunięty
-      </UserPanelDeleteNotification>
-      <EndingBlock />
     </Template>
   );
 };

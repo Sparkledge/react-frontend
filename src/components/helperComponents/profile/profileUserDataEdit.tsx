@@ -39,6 +39,7 @@ interface ProfileUserDataEditInterface {
   setUserLinkedin: (newState: string) => void,
   userPt: string,
   setUserPinterest: (newState: string) => void,
+  setNotificationMessage: (newState: string) => void,
   closeCallback: (newState: boolean) => void,
 }
 
@@ -54,6 +55,7 @@ const ProfileUserDataEdit:React.FC<ProfileUserDataEditInterface> = ({
   setUserLinkedin,
   userPt,
   setUserPinterest,
+  setNotificationMessage,
   closeCallback,
 }:ProfileUserDataEditInterface) => {
   const [isSendingAllowed, toggleIsSendingAllowed] = useState<boolean>(true);
@@ -102,6 +104,7 @@ const ProfileUserDataEdit:React.FC<ProfileUserDataEditInterface> = ({
               currentPtProfile,
               setUserPinterest,
               toggleIsSendingData,
+              setNotificationMessage,
               () => closeCallback(!isOpened),
             );
           }

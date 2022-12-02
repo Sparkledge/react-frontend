@@ -58,6 +58,7 @@ const Profile:React.FC = () => {
   const [areUserSettingsOpened, toggleAreUserSettingsOpened] = useState<boolean>(false);
   const [lastPublishedList, setLastPublishedList] = useState<LastPublishedItemType[]>([]);
   const [isPublishedLoading, toggleIsPublishedLoading] = useState<boolean>(false);
+  const [notificationMessage, setNotificationMessage] = useState<string>("");
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "", { syncData: true });
 
   const { userId } = useParams();
@@ -119,7 +120,11 @@ const Profile:React.FC = () => {
   }, [helperUserId]);
 
   return (
-    <Template headTagTitle="Profil użytkownika - Sparkledge" fallbackComponent={<SearchingPreloaderComponent />}>
+    <Template
+      headTagTitle="Profil użytkownika - Sparkledge"
+      fallbackComponent={<SearchingPreloaderComponent />}
+      notificationContent={notificationMessage}
+    >
       <ProfileHeader className="block-center">
         {userName.length === 0 ? "Profil użytkownika" : userName}
       </ProfileHeader>
@@ -136,6 +141,7 @@ const Profile:React.FC = () => {
           setUserLinkedin={setUserLinkedin}
           userPt={userPinterest}
           setUserPinterest={setUserPinterest}
+          setNotificationMessage={setNotificationMessage}
           closeCallback={toggleAreUserSettingsOpened}
         />
       ) : null}

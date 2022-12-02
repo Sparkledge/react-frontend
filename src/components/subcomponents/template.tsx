@@ -3,9 +3,10 @@
     new pages in Sparkledge
 */
 
-import React, { Suspense } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { MainContainer } from "src/styled/main";
-import { LandingSectionWrapper, LandingSectionFilter } from "src/styled/subpages/welcome";
+import { UserPanelDeleteNotification } from "src/styled/subpages/userpanel";
+import { LandingSectionWrapper, LandingSectionFilter, EndingBlock } from "src/styled/subpages/welcome";
 
 import HeadTags from "./headTags";
 
@@ -16,6 +17,7 @@ const FooterComponent = React.lazy(() => import("src/components/helperComponents
 interface TemplateInterface {
   children: any,
   headTagTitle: string,
+  notificationContent?: string,
   headTagDesc?: string,
   bottomPadding?: number,
   fallbackComponent?: JSX.Element,
@@ -24,14 +26,46 @@ interface TemplateInterface {
 const Template:React.FC<TemplateInterface> = ({
   children,
   headTagTitle,
+  notificationContent,
   headTagDesc,
   bottomPadding,
   fallbackComponent,
-}:TemplateInterface) => (
-  <MainContainer className="block-center">
-    <HeadTags areAdsOn={false} title={headTagTitle} description={headTagDesc !== undefined ? headTagDesc : ""} />
-    {fallbackComponent !== undefined ? (
-      <Suspense fallback={fallbackComponent}>
+}:TemplateInterface) => {
+  const [isNotificationShown, toggleIsNotificationShown] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (notificationContent !== undefined && notificationContent.length > 0) {
+      toggleIsNotificationShown(true);
+    }
+  }, [notificationContent]);
+
+  useEffect(() => {
+    if (isNotificationShown) setTimeout(() => toggleIsNotificationShown(false), 2000);
+  }, [isNotificationShown]);
+
+  return (
+    <MainContainer className="block-center">
+      <HeadTags areAdsOn={false} title={headTagTitle} description={headTagDesc !== undefined ? headTagDesc : ""} />
+      {fallbackComponent !== undefined ? (
+        <Suspense fallback={fallbackComponent}>
+          <LandingSectionWrapper
+            className="block-center"
+            source={BackgroundPattern}
+            backgroundSize="initial"
+            backgroundRepeat="repeat"
+            bottomPadding={bottomPadding}
+          >
+            <LandingSectionFilter>
+              {children}
+
+              <UserPanelDeleteNotification className="block-center" isOpened={isNotificationShown}>
+                {notificationContent}
+              </UserPanelDeleteNotification>
+              <EndingBlock />
+            </LandingSectionFilter>
+          </LandingSectionWrapper>
+        </Suspense>
+      ) : (
         <LandingSectionWrapper
           className="block-center"
           source={BackgroundPattern}
@@ -41,30 +75,24 @@ const Template:React.FC<TemplateInterface> = ({
         >
           <LandingSectionFilter>
             {children}
+          
+            <UserPanelDeleteNotification className="block-center" isOpened={isNotificationShown}>
+              {notificationContent}
+            </UserPanelDeleteNotification>
+            <EndingBlock />
           </LandingSectionFilter>
         </LandingSectionWrapper>
-      </Suspense>
-    ) : (
-      <LandingSectionWrapper
-        className="block-center"
-        source={BackgroundPattern}
-        backgroundSize="initial"
-        backgroundRepeat="repeat"
-        bottomPadding={bottomPadding}
-      >
-        <LandingSectionFilter>
-          {children}
-        </LandingSectionFilter>
-      </LandingSectionWrapper>
-    )}
+      )}
     
-    <Suspense fallback={null}>
-      <FooterComponent />
-    </Suspense>
-  </MainContainer>
-);
+      <Suspense fallback={null}>
+        <FooterComponent />
+      </Suspense>
+    </MainContainer>
+  );
+};
 
 Template.defaultProps = {
+  notificationContent: "",
   headTagDesc: "",
   bottomPadding: undefined,
   fallbackComponent: undefined,
