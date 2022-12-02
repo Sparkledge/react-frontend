@@ -24,6 +24,7 @@ const updateUserProfile = async (
   pinterest: string,
   setUserPinterest: (newState: string) => void,
   toggleIsSendingData: (newState: boolean) => void,
+  setNotificationMessage: (newState: string) => void,
   closeCallback: () => void,
 ) => {
   toggleIsSendingData(true);
@@ -58,11 +59,13 @@ const updateUserProfile = async (
       setUserLinkedin(linkedin);
       setUserPinterest(pinterest);
       toggleIsSendingData(false);
+      setNotificationMessage("Dane zaktualizowane");
       closeCallback();
     })
     .catch((err) => {
       console.log(err);
       toggleIsSendingData(false);
+      setNotificationMessage("Błąd połączenia");
       closeCallback();
     });
 };

@@ -14,8 +14,6 @@ import {
   SettingsSegmentButton,
 } from "src/styled/subpages/settings";
 
-import { UserPanelDeleteNotification } from "src/styled/subpages/userpanel";
-
 import Template from "src/components/subcomponents/template";
 
 import SettingsSegmentComponent from "src/components/helperComponents/settings/settingsSegmentComponent";
@@ -33,36 +31,27 @@ const Settings:React.FC = () => {
   const [isSortingMemorized, toggleIsSortingMemorized] = useState<boolean>(false);
   const [areFiltersMemorized, toggleAreFiltersMemorized] = useState<boolean>(false);
 
-  const [isNotificationShown, toggleIsNotificationShown] = useState<boolean>(false);
-
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "", { syncData: true });
   const navigate = useNavigate();
 
   const triggerChangingThePersonalData = ():void => {
     setNotificationMessage("Dane zaktualizowane");
-    toggleIsNotificationShown(true);
   };
 
   const triggerChangingThePassword = ():void => {
     setNotificationMessage("Hasło wysłane");
-    toggleIsNotificationShown(true);
   };
 
   const triggerChangingTheSearcherData = ():void => {
     setNotificationMessage("Wyszukiwarka zaktualizowana");
-    toggleIsNotificationShown(true);
   };
-
-  useEffect(() => {
-    if (isNotificationShown) setTimeout(() => toggleIsNotificationShown(false), 2000);
-  }, [isNotificationShown]);
 
   useEffect(() => {
     if (memoryUserId === undefined || memoryUserId.length === 0) navigate("/");
   }, []);
 
   return (
-    <Template headTagTitle="Ustawienia - Sparkledge">
+    <Template headTagTitle="Ustawienia - Sparkledge" notificationContent={notificationMessage}>
       <SettingsContainer className="block-center">
         <SettingsHeader className="block-center">
           Ustawienia konta
@@ -127,9 +116,6 @@ const Settings:React.FC = () => {
           </SettingsSegmentComponent>
         </SettingsWrapper>
       </SettingsContainer>
-      <UserPanelDeleteNotification className="block-center" isOpened={isNotificationShown}>
-        {notificationMessage}
-      </UserPanelDeleteNotification>
     </Template>
   );
 };
