@@ -3,7 +3,6 @@ import React, {
 } from "react";
 import useLocalStorage from "use-local-storage";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { FixedSizeList } from "react-window";
 import { useMediaQuery } from "@mui/material";
 
 import { AboutHeader } from "src/styled/subpages/about";
@@ -25,7 +24,7 @@ import Template from "src/components/subcomponents/template";
 import checkIfFound from "src/components/auxiliaryFunctions/searcher/checkIfFound";
 import SearchingMainResultComponent from "src/components/helperComponents/searcher/searchingMainResultComponent";
 import SearcherPagingComponent from "src/components/helperComponents/searcher/searcherPagingComponent";
-import LinkToAMaterial from "src/components/helperComponents/searcher/linkToAMaterial";
+import DisplayList from "src/components/helperComponents/searcher/searchingResultsLazyLoading";
 
 const SearchBarComponent = React.lazy(() => import("../helperComponents/searcher/searchBarComponent"));
 
@@ -351,16 +350,10 @@ const Searcher:React.FC = () => {
                           )}
                         </>
                       ) : (
-                        <FixedSizeList
-                          itemCount={searchedResults.length}
-                          itemData={searchedResults}
-                          itemSize={320}
-                          width={listWidth}
-                          height={500}
-                          className="block-center"
-                        >
-                          {LinkToAMaterial}
-                        </FixedSizeList>
+                        <DisplayList
+                          searchedResults={searchedResults}
+                          listWidth={listWidth}
+                        />
                       )
 }
             </SearchingResultsWrapper>

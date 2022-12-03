@@ -5,7 +5,7 @@
 */
 
 import React from "react";
-import { ListChildComponentProps } from "react-window";
+import { FixedSizeList, ListChildComponentProps } from "react-window";
 import { Link } from "react-router-dom";
 
 import SearchingMainResultComponent from "src/components/helperComponents/searcher/searchingMainResultComponent";
@@ -23,6 +23,11 @@ interface SearchMaterialData {
   description: string,
 }
 
+interface DisplayListInterface {
+  searchedResults: any[],
+  listWidth: number,
+}
+
 const LinkToAMaterial:React.FC<ListChildComponentProps<SearchMaterialData[]>> = ({ data, index, style }) => (
   <Link to={`/document/${data[index].id}`} style={style}>
     <SearchingMainResultComponent
@@ -37,4 +42,20 @@ const LinkToAMaterial:React.FC<ListChildComponentProps<SearchMaterialData[]>> = 
   </Link>
 );
 
-export default LinkToAMaterial;
+const DisplayList:React.FC<DisplayListInterface> = ({ searchedResults, listWidth }:DisplayListInterface) => {
+  const renderData:any[] = searchedResults.filter((elem:any) => elem.isDisplayed === 1);
+  return (
+    <FixedSizeList
+      itemCount={renderData.length}
+      itemData={renderData}
+      itemSize={320}
+      width={listWidth}
+      height={500}
+      className="block-center"
+    >
+      {LinkToAMaterial}
+    </FixedSizeList>
+  );
+};
+
+export default DisplayList;

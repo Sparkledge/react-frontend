@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 interface DocumentDisplayerDownloadBtnInterface {
+  isUserSignedOut?: boolean,
   isInline?:boolean
 }
 
@@ -35,10 +36,34 @@ export const DocumentDisplayerErrorHeader = styled.header`
     }
 `;
 
+export const DocumentDisplayerNotSignedInHeader = styled.header`
+    width: calc(100% - 20px);
+    padding: 10px;
+    text-align: center;
+    font-size: 1.4em;
+    letter-spacing: 0.04em;
+    color: ${(props) => props.theme.color};
+    font-family: ${(props) => props.theme.fonts.main};
+    text-shadow: ${(props) => props.theme.fonts.textShadowMain};
+    margin-bottom: 4vh;
+
+    @media screen and (min-width: 375px){
+        font-size: 1.7em;
+    }
+
+    @media screen and (min-width: 425px){
+        font-size: 2.1em;
+    }
+
+    @media screen and (min-width: 768px){
+        font-size: 2.4em;
+    }
+`;
+
 export const DocumentDisplayerDownloadBtn = styled.button<DocumentDisplayerDownloadBtnInterface>`
     width: fit-content;
     height: fit-content;
-    padding: ${(props) => props.isInline === undefined ? "10px 25px" : "0px"};
+    padding: ${(props) => props.isUserSignedOut !== undefined ? "15px 40px" : props.isInline === undefined ? "10px 25px" : "0px"};
     border: none;
     border-radius: 10px;
     background: ${(props) => props.isInline === undefined ? props.theme.resultBackground : "transparent"};
@@ -55,7 +80,11 @@ export const DocumentDisplayerDownloadBtn = styled.button<DocumentDisplayerDownl
     }
 
     @media screen and (min-width: 425px){
-        font-size: 1.9em;
+        font-size: ${(props) => props.isUserSignedOut !== undefined ? "1.3em" : "1.9em"};
+    }
+
+    @media screen and (min-width: 768px){
+        font-size: ${(props) => props.isUserSignedOut !== undefined ? "1.6em" : "1.9em"};
     }
 `;
 
