@@ -38,7 +38,7 @@ const LandingComponent:React.FC = () => (
         <LandingSectionDesc className="block-center">
           Sparkledge to platforma łącząca studentów, dającą im możliwość rozwoju i osiągania lepszych wyników.
           Znajdziesz na niej notatki Twoich znajomych oraz absolwentów ocenione przez innych użytkowników. 
-          Jedyne co musisz zrobić aby dostać dostęp do skarbnicy wiedzy to załączyć swoje notataki
+          Jedyne co musisz zrobić aby dostać dostęp do skarbnicy wiedzy to załączyć swoje notatki
         </LandingSectionDesc>
       </motion.div>
       <motion.div 

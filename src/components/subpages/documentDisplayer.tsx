@@ -27,6 +27,7 @@ import {
   DocumentDataWrapper, SwipperBtn, InfoContainer, DescriptionDataContainer,
   DescriptionDataHeader, DescriptionDataContent, DocumentDisplayerIframe, 
   DocumentDisplayerDownloadBtn,
+  DocumentDisplayerNotSignedInHeader,
 } from "src/styled/subpages/documentDisplayer";
 
 import { getTheData, loadTheDownloadLink, loadTheFile } from "src/connectionFunctions/documentDisplayer/getTheData";
@@ -183,15 +184,22 @@ const DocumentDisplayer:React.FC = () => {
 
       {isDeleted ? null : loginUserSelector.length === 0 || isError 
         ? (
-          <DocumentDisplayerErrorHeader className="block-center">
-            {isError ? "Coś poszło nie tak. Spróbuj ponownie" : (
-              <Link to="/signin">
-                <DocumentDisplayerDownloadBtn className="block-center">
-                  Zaloguj się
-                </DocumentDisplayerDownloadBtn>
-              </Link>
+          <>
+            {isError ? null : (
+              <DocumentDisplayerNotSignedInHeader className="block-center">
+                Wyświetlanie niedostępne
+              </DocumentDisplayerNotSignedInHeader>
             )}
-          </DocumentDisplayerErrorHeader>
+            <DocumentDisplayerErrorHeader className="block-center">
+              {isError ? "Coś poszło nie tak. Spróbuj ponownie" : (
+                <Link to="/signin">
+                  <DocumentDisplayerDownloadBtn className="block-center" isUserSignedOut>
+                    Zaloguj się
+                  </DocumentDisplayerDownloadBtn>
+                </Link>
+              )}
+            </DocumentDisplayerErrorHeader>
+          </>
         ) : !isFileRequested && title.length > 0
           ? (
             <DocumentDisplayerDownloadBtn
