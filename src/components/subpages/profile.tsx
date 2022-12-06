@@ -4,9 +4,10 @@
 */
 
 import React, {
-  useState, useEffect, memo, 
+  useState, useEffect, useMemo, 
 } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import { useMediaQuery } from "@mui/material";
 import useLocalStorage from "use-local-storage";
 import jwtDecode from "jwt-decode";
 
@@ -63,6 +64,40 @@ const Profile:React.FC = () => {
 
   const { userId } = useParams();
   const navigate = useNavigate();
+
+  const LastPublishedMaterials = useMemo(() => lastPublishedList.length > 0 && !isPublishedLoading ? lastPublishedList.map((elem, ind) => (
+    <Link to={`/document/${elem.id}`}>
+      <LastViewItemComponent
+        key="last-view-material"
+        title={elem.title}
+        name={" "}
+        additionalData={[[<PublishedWithChangesIcon style={{
+          color: "inherit",
+          fontSize: "1.3em", 
+          verticalAlign: "top", 
+        }}
+        />, elem.createdAt], [<VisibilityIcon style={{
+          color: "inherit",
+          fontSize: "1.3em", 
+          verticalAlign: "top", 
+        }}
+        />, elem.viewsNumber !== undefined ? elem.viewsNumber : elem.views,
+        ], [<ThumbUpIcon style={{
+          color: "inherit",
+          fontSize: "1.3em", 
+          verticalAlign: "top", 
+        }}
+        />, elem.likesNumber !== undefined ? elem.likesNumber : elem.likes]]}
+        isPublishedByUser={false}
+      />
+    </Link>
+  )) : isPublishedLoading ? (
+    <SearchingPreloaderComponent />
+  ) : (
+    <UserPanelLastViewNoItemsHeader className="block-center">
+      Brak danych
+    </UserPanelLastViewNoItemsHeader>
+  ), [lastPublishedList]);
 
   useEffect(() => {
     if (userId !== undefined) {
@@ -188,41 +223,7 @@ const Profile:React.FC = () => {
             Ostatnio publikowane
           </UserPanelLastViewHeader>
           <UserPanelLastViewGallery className="block-center">
-            {
-                lastPublishedList.length > 0 && !isPublishedLoading ? lastPublishedList.map((elem, ind) => (
-                  <Link to={`/document/${elem.id}`}>
-                    <LastViewItemComponent
-                      key="last-view-material"
-                      title={elem.title}
-                      name={" "}
-                      additionalData={[[<PublishedWithChangesIcon style={{
-                        color: "inherit",
-                        fontSize: "1.3em", 
-                        verticalAlign: "top", 
-                      }}
-                      />, elem.createdAt], [<VisibilityIcon style={{
-                        color: "inherit",
-                        fontSize: "1.3em", 
-                        verticalAlign: "top", 
-                      }}
-                      />, elem.viewsNumber !== undefined ? elem.viewsNumber : elem.views,
-                      ], [<ThumbUpIcon style={{
-                        color: "inherit",
-                        fontSize: "1.3em", 
-                        verticalAlign: "top", 
-                      }}
-                      />, elem.likesNumber !== undefined ? elem.likesNumber : elem.likes]]}
-                      isPublishedByUser={false}
-                    />
-                  </Link>
-                )) : isPublishedLoading ? (
-                  <SearchingPreloaderComponent />
-                ) : (
-                  <UserPanelLastViewNoItemsHeader className="block-center">
-                    Brak danych
-                  </UserPanelLastViewNoItemsHeader>
-                )
-              }
+            {LastPublishedMaterials}
           </UserPanelLastViewGallery>
         </UserPanelLastView>
       </UserPanelWelcomeSection>

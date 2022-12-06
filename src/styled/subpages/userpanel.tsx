@@ -58,7 +58,7 @@ export const UserPanelLastView = styled.section<UserPanelWelcomeViewInterface>`
     }
 
     @media screen and (min-width: 768px){
-        width: calc(80% - 20px);
+        width: calc(85% - 20px);
     }
 
     @media screen and (min-width: 1024px){
@@ -138,12 +138,8 @@ export const UserPanelLastViewItem = styled.div<UserPanelLastViewItemInterface>`
         filter: brightness(70%);
     }
 
-    @media screen and (min-width: 375px){
-        width: calc(80% - 20px);
-    }
-
     @media screen and (min-width: 425px){
-        width: calc(60% - 20px);
+        width: calc(70% - 20px);
     }
 
     @media screen and (min-width: 768px){
