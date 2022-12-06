@@ -28,6 +28,7 @@ const Settings:React.FC = () => {
   const [newName, setNewName] = useState<string>("");
   const [newSurname, setNewSurname] = useState<string>("");
 
+  const [areBasicSettingsMemorized, toggleAreBasicSettingsMemorized] = useState<boolean>(false);
   const [isSortingMemorized, toggleIsSortingMemorized] = useState<boolean>(false);
   const [areFiltersMemorized, toggleAreFiltersMemorized] = useState<boolean>(false);
 
@@ -100,6 +101,11 @@ const Settings:React.FC = () => {
             </SettingsSegmentButton>
           </SettingsSegmentComponent>
           <SettingsSegmentComponent segmentName="Ustawienia szukania">
+            <SettingsSegmentCheckboxComponent 
+              title={!isBiggerThanTablet ? "Pamiętaj wyszukiwanie" : "Pamiętaj ustawienia wyszukiwania"}
+              isChecked={areBasicSettingsMemorized}
+              onClickCallback={() => toggleAreBasicSettingsMemorized(!areBasicSettingsMemorized)}
+            />
             <SettingsSegmentCheckboxComponent 
               title={!isBiggerThanTablet ? "Pamiętaj sortowanie" : "Pamiętaj ustawienia sortowania"}
               isChecked={isSortingMemorized}
