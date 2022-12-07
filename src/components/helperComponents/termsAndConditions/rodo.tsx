@@ -191,7 +191,7 @@ const RodoSection:React.FC = () => (
     <TermsAndConditionsParagraph className="block-center">
       Powyższe dane uzyskiwane są poprzez skrypt Google Analytics i są anonimowe.
     </TermsAndConditionsParagraph>
-    <TermsAndConditionsParagraph>
+    <TermsAndConditionsParagraph className="block-center">
       <strong>Dane zbierane podczas rejestracji: </strong>
       {" "}
       Nazwa użytkownika, imię i nazwisko, adres e-mail. W
