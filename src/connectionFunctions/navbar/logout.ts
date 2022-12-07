@@ -19,8 +19,8 @@ const logout = async (
     .then((res) => {
       if (res.status === 200 || res.status === 204) {
         deleteToken();
-        eraseTheMemory(undefined);
-        setRefreshUserId(undefined);
+        eraseTheMemory("");
+        setRefreshUserId("");
         toggleIsOpened(false);
       }
     })

@@ -7,7 +7,6 @@ import React, {
   useState, useEffect, useMemo, 
 } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { useMediaQuery } from "@mui/material";
 import useLocalStorage from "use-local-storage";
 import jwtDecode from "jwt-decode";
 

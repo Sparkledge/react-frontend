@@ -42,6 +42,7 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
   const [error, setError] = useState<string>("");
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
   const [refreshUserId, setRefreshUserId] = useLocalStorage<string>("u_r", "");
+  const [lastUserSigned, setLastUserSigned] = useLocalStorage<string>("u_l", "");
   const currentToken:string = useSelector((state:RootState) => state.generalData.currentToken);
     
   const navigate = useNavigate();
@@ -74,8 +75,15 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
       }, 
       setRefreshUserId, 
       toggleIsLoading,
+      setLastUserSigned,
     );
   };
+
+  useEffect(() => {
+    console.log(mode);
+    if (lastUserSigned !== undefined && lastUserSigned.length > 0 && mode === 1) setLogin(lastUserSigned);
+    else setLogin("");
+  }, [mode]);
 
   useEffect(() => {
     // toggleIsVerificationSuccessful(0);

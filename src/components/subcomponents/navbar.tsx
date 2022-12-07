@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useLocalStorage from "use-local-storage";
+import { useLocalStorage } from "usehooks-ts";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
@@ -14,15 +14,15 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 import {
   NavbarContainer, NavbarAlignGroup, RespOpeningCloseBtn, RotatingBtnElem, 
-} from "../../styled/subcomponents/navbar";
+} from "src/styled/subcomponents/navbar";
 
-import NavbarElemMap from "../helperComponents/navbar/navbarElemMap";
-import { changeGraphicalMode, setNewToken } from "../../redux/actions/generalActions";
-import { RootState } from "../../redux/mainReducer";
+import NavbarElemMap from "src/components/helperComponents/navbar/navbarElemMap";
+import { changeGraphicalMode, setNewToken } from "src/redux/actions/generalActions";
+import { RootState } from "src/redux/mainReducer";
 
-import logout from "../../connectionFunctions/navbar/logout";
+import logout from "src/connectionFunctions/navbar/logout";
 
-const NavbarLogo = require("../../assets/sparkledge_logo.webp");
+const NavbarLogo = require("src/assets/sparkledge_logo.webp");
 
 const Navbar:React.FC = () => {
   const [isOpened, toggleIsOpened] = useState<boolean>(false);

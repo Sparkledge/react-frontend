@@ -13,6 +13,7 @@ const TriggerTheShot = (
   changeTheToken: (newState: string) => void,
   setRefreshToken: (newState: string) => void,
   toggleIsLoading: (newState: boolean) => void,
+  setLastUserSigned?: (newState: string) => void,
 ) : void => {
   toggleIsSuccess(false);
   if ((mode === 1 && Login.length !== 0 && Password.length !== 0) 
@@ -35,6 +36,7 @@ const TriggerTheShot = (
         },
       }).then((res) => {
         if (res.status === 200) {
+          if (setLastUserSigned !== undefined) setLastUserSigned(Login);
           setPassword("");
           setLogin("");
           setRefreshToken(res.data.refreshToken);
