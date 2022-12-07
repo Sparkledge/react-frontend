@@ -5,7 +5,8 @@ import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import DeleteIcon from "@mui/icons-material/Delete";
-import useLocalStorage from "use-local-storage";
+// import useLocalStorage from "use-local-storage";
+import { useLocalStorage } from "usehooks-ts";
 
 import { Preloader } from "src/styled/main";
 import { EndingBlock } from "src/styled/subpages/welcome";
@@ -55,7 +56,7 @@ const UserPanel:React.FC = () => {
   const [isMostPopularLoading, toggleIsMostPopularLoading] = useState<boolean>(false);
   const currentToken:string = useSelector((state: RootState) => state.generalData.currentToken);
   const navigate = useNavigate();
-  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "", { syncData: true });
+  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
   const [isLoading, toggleIsLoading] = useState<boolean>(false);
   const [notificationContent, setNotificationContent] = useState<string>("");
 
