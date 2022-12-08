@@ -1,14 +1,16 @@
-import { CHANGE_GRAPHICAL_MODE, SET_NEW_TOKEN } from "../types/generalTypes";
+import { CHANGE_GRAPHICAL_MODE, SET_NEW_TOKEN, TOGGLE_OPENING_NOTIFICATIONS } from "../types/generalTypes";
 import { ActionType } from "../actions/generalActions";
 
 export type InitialStateType = {
   graphicalMode: number,
-  currentToken: string
+  currentToken: string,
+  areNotificationsOpened: boolean,
 };
 
 const initialState:InitialStateType = {
   graphicalMode: 1,
   currentToken: "",
+  areNotificationsOpened: false,
 };
 
 const generalReducer = (
@@ -25,6 +27,11 @@ const generalReducer = (
       return {
         ...state,
         currentToken: action.supportData.newToken,
+      };
+    case TOGGLE_OPENING_NOTIFICATIONS: 
+      return {
+        ...state,
+        areNotificationsOpened: !state.areNotificationsOpened,
       };
     default:
       return state;

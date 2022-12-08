@@ -9,7 +9,9 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import GroupIcon from "@mui/icons-material/Group";
 import LiveHelpIcon from "@mui/icons-material/LiveHelp";
 import DescriptionIcon from "@mui/icons-material/Description";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 import {
@@ -17,12 +19,25 @@ import {
 } from "src/styled/subcomponents/navbar";
 
 import NavbarElemMap from "src/components/helperComponents/navbar/navbarElemMap";
-import { changeGraphicalMode, setNewToken } from "src/redux/actions/generalActions";
+import { changeGraphicalMode, setNewToken, toggleOpeningNotifications } from "src/redux/actions/generalActions";
 import { RootState } from "src/redux/mainReducer";
 
 import logout from "src/connectionFunctions/navbar/logout";
 
 const NavbarLogo = require("src/assets/sparkledge_logo.webp");
+
+type NavbarDataType = { isDropDown: boolean, 
+  dropDownElems: {
+    to: string,
+    content: any,
+    callback: () => void,
+  }[],
+  isLink: boolean, 
+  to: string, 
+  isImage: boolean, 
+  content: any, 
+  callback: () => void,
+};
 
 const Navbar:React.FC = () => {
   const [isOpened, toggleIsOpened] = useState<boolean>(false);
@@ -33,13 +48,7 @@ const Navbar:React.FC = () => {
   const [refreshUserId, setRefreshUserId] = useLocalStorage<string>("u_r", "");
   const dispatch = useDispatch();
 
-  const NavbarData:{ isDropDown: boolean, 
-    dropDownElems: {
-      to: string,
-      content: any,
-      callback: () => void,
-    }[],
-    isLink: boolean, to: string, isImage: boolean, content: any, callback: () => void }[][] = [
+  const NavbarData:NavbarDataType[][] = [
     [
       {
         isDropDown: false,
@@ -102,6 +111,20 @@ const Navbar:React.FC = () => {
       {
         isDropDown: false,
         dropDownElems: [],
+        isLink: false,
+        to: "",
+        isImage: false,
+        content: currentToken.length > 0 ? (
+          <NotificationsActiveIcon style={{
+            color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
+          }}
+          />
+        ) : "noRender",
+        callback: () => currentToken.length > 0 ? dispatch(toggleOpeningNotifications()) : null,
+      },
+      {
+        isDropDown: false,
+        dropDownElems: [],
         isLink: true,
         to: "/profile/",
         isImage: false,
@@ -113,6 +136,20 @@ const Navbar:React.FC = () => {
         ),
         callback: () => toggleIsOpened(false),
       },
+      /* {
+        isDropDown: false,
+        dropDownElems: [],
+        isLink: true,
+        to: "/settings/",
+        isImage: false,
+        content: currentToken.length === 0 ? null : (
+          <SettingsIcon style={{
+            color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
+          }}
+          />
+        ),
+        callback: () => toggleIsOpened(false),
+      }, */
       {
         isDropDown: false,
         dropDownElems: [],
