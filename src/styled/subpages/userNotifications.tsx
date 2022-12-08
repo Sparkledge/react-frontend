@@ -1,35 +1,30 @@
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
-export const UserNotificationsContainer = styled.section`
+export const UserNotificationsContainer = styled(motion.section)`
     width: calc(100% - 20px);
     padding: 10px;
     text-align: center;
     height: calc(90vh - 20px);
-    position: absolute;
-    top: 0vh;
-    left: 0%;
     background: ${(props) => props.theme.filtersButtonResponsiveBackground};
     box-shadow: -3px 4px 4px rgba(0,0,0,.15);
-    z-index: 16;
+    z-index: 4;
+    left: 100%;
 
     @media screen and (min-width: 550px){
         width: calc(70% - 20px);
-        left: 30%;
     }
 
     @media screen and (min-width: 768px){
         width: calc(50% - 20px);
-        left: 50%;
     }
 
     @media screen and (min-width: 1024px){
         width: calc(40% - 20px);
-        left: 60%;
     }
 
     @media screen and (min-width: 1440px){
         width: calc(30% - 20px);
-        left: 70%;
     }
 `;
 

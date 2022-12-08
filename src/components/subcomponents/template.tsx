@@ -4,8 +4,6 @@
 */
 
 import React, { useEffect, useState, Suspense } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "src/redux/mainReducer";
 
 import { MainContainer } from "src/styled/main";
 import { UserPanelDeleteNotification } from "src/styled/subpages/userpanel";
@@ -36,8 +34,6 @@ const Template:React.FC<TemplateInterface> = ({
   fallbackComponent,
 }:TemplateInterface) => {
   const [isNotificationShown, toggleIsNotificationShown] = useState<boolean>(false); // this kind of notification is used for displaying a temporary info, for example the result of changing the password, the user settings etc.
-
-  const areGeneralNotificationsOpened:boolean = useSelector((state:RootState) => state.generalData.areNotificationsOpened);
 
   useEffect(() => {
     if (notificationContent !== undefined && notificationContent.length > 0) {
