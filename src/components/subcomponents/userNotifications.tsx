@@ -7,6 +7,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "src/redux/mainReducer";
+import { AnimatePresence } from "framer-motion";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 import {
@@ -47,24 +48,32 @@ const UserNotifications:React.FC = () => {
   }, [areGeneralNotificationsOpened, isBiggerThanBigLaptop, isBiggerThanLaptop, isBiggerThanTablet, isBiggerThanMobile]);
 
   return (
-    <UserNotificationsContainer
-      className="block-center" 
-      layout
-      initial={{
-        position: "absolute",
-        top: "0vh",
-        left: "100%",
-      }}
-      animate={{
-        left: areGeneralNotificationsOpened ? ["100%", `${leftPosition}%`] : [`${leftPosition}%`, "100%"],
-      }}
-      transition={{
-        duration: 0.2,
-        delay: 0.05,
-      }}
-    >
-      {RenderedList}
-    </UserNotificationsContainer>
+    <AnimatePresence>
+      {areGeneralNotificationsOpened ? (
+        <UserNotificationsContainer
+          className="block-center" 
+          layout
+          initial={{
+            position: "absolute",
+            top: "0vh",
+            left: "100%",
+          }}
+          animate={{
+            left: ["100%", `${leftPosition}%`],
+          }}
+          exit={{
+            left: [`${leftPosition}%`, "100%"],
+          }}
+          transition={{
+            duration: 0.2,
+            delay: 0.05,
+          }}
+        >
+          {RenderedList}
+        </UserNotificationsContainer>
+      ) : null}
+
+    </AnimatePresence>
   );
 };
 

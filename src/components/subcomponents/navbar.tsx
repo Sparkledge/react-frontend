@@ -108,6 +108,7 @@ const Navbar:React.FC = () => {
         ),
         callback: () => toggleIsOpened(false),
       },
+      /* 
       {
         isDropDown: false,
         dropDownElems: [],
@@ -121,7 +122,7 @@ const Navbar:React.FC = () => {
           />
         ) : "noRender",
         callback: () => currentToken.length > 0 ? dispatch(toggleOpeningNotifications()) : null,
-      },
+      }, */
       {
         isDropDown: false,
         dropDownElems: [],
