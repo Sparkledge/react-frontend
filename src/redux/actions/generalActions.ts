@@ -1,4 +1,4 @@
-import { CHANGE_GRAPHICAL_MODE, SET_NEW_TOKEN } from "../types/generalTypes";
+import { CHANGE_GRAPHICAL_MODE, SET_NEW_TOKEN, TOGGLE_OPENING_NOTIFICATIONS } from "../types/generalTypes";
 
 export type ActionType = {
   type: string,
@@ -14,4 +14,8 @@ export const setNewToken = (tokenToPass:string) => ({
   supportData: {
     newToken: tokenToPass,
   },
+});
+
+export const toggleOpeningNotifications = () => ({
+  type: TOGGLE_OPENING_NOTIFICATIONS,
 });

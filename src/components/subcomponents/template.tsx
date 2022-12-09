@@ -4,11 +4,13 @@
 */
 
 import React, { useEffect, useState, Suspense } from "react";
+
 import { MainContainer } from "src/styled/main";
 import { UserPanelDeleteNotification } from "src/styled/subpages/userpanel";
 import { LandingSectionWrapper, LandingSectionFilter, EndingBlock } from "src/styled/subpages/welcome";
 
 import HeadTags from "./headTags";
+import UserNotifications from "./userNotifications";
 
 const BackgroundPattern = require("../../assets/pattern_background5.webp");
 
@@ -31,7 +33,7 @@ const Template:React.FC<TemplateInterface> = ({
   bottomPadding,
   fallbackComponent,
 }:TemplateInterface) => {
-  const [isNotificationShown, toggleIsNotificationShown] = useState<boolean>(false);
+  const [isNotificationShown, toggleIsNotificationShown] = useState<boolean>(false); // this kind of notification is used for displaying a temporary info, for example the result of changing the password, the user settings etc.
 
   useEffect(() => {
     if (notificationContent !== undefined && notificationContent.length > 0) {
@@ -57,7 +59,7 @@ const Template:React.FC<TemplateInterface> = ({
           >
             <LandingSectionFilter>
               {children}
-
+              <UserNotifications />
               <UserPanelDeleteNotification className="block-center" isOpened={isNotificationShown}>
                 {notificationContent}
               </UserPanelDeleteNotification>
@@ -75,7 +77,7 @@ const Template:React.FC<TemplateInterface> = ({
         >
           <LandingSectionFilter>
             {children}
-          
+            <UserNotifications />
             <UserPanelDeleteNotification className="block-center" isOpened={isNotificationShown}>
               {notificationContent}
             </UserPanelDeleteNotification>
