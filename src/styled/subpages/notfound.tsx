@@ -17,7 +17,7 @@ export const NotFoundContainer = styled.div`
 
   background: ${(props) => props.theme.bgColor};
   border-radius: 16px;
-  border: 1px solid ${(props) => props.theme.descriptionColor404};
+  border: 1px solid #565656;
 
   display: flex;
   align-items: center;
@@ -33,7 +33,7 @@ export const NotFoundContainer = styled.div`
 export const NotFoundDescription = styled.div`
   font-size: 2rem;
 
-  color: ${(props) => props.theme.descriptionColor404};
+  color: ${(props) => props.theme.color};
 
   @media screen and (max-width: 800px) {
     font-size: 1.4rem;
@@ -72,14 +72,13 @@ export const NotfoundPanelButton = styled.button`
   align-items: center;
   gap: 1rem;
 
-  background: ${(props) => props.theme.landingButtonColor};
+  background: transparent;
 
   color: ${(props) => props.theme.color};
   font-size: 1.8rem;
   font-family: ${(props) => props.theme.fonts.main};
   text-shadow: ${(props) => props.theme.fonts.textShadowMain};
 
-  /* border: 1px solid currentColor; */
   box-shadow: 0 0 4px 0 currentColor;
   border: none;
   border-radius: 8px;
