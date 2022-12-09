@@ -1,46 +1,29 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { MainContainer, Preloader } from "src/styled/main";
+import { Preloader } from "src/styled/main";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
-  NotfoundPanelButton,
-  NotfoundWrapper,
-  NotfoundHeader1,
-  NotfoundHeader2,
+  NotFound404, NotFoundContainer, NotFoundDescription, NotfoundPanelButton, NotFoundWrapper, 
 } from "src/styled/subpages/notfound";
-import {
-  LandingSectionWrapper,
-  LandingSectionFilter,
-} from "src/styled/subpages/welcome";
-import HeadTags from "src/components/subcomponents/headTags";
-
-const BackgroundImage = require("../../assets/notfound_background.jpg");
-
-const FooterComponent = React.lazy(
-  () => import("../helperComponents/welcome/footerComponent"),
-);
+import Template from "../subcomponents/template";
 
 const Notfound: React.FC = () => (
-  <MainContainer className="block-center">
-    <HeadTags areAdsOn={false} title="Error 404 - Sparkledge" description="" />
-    <Suspense
-      fallback={<Preloader className="block-center">Ładowanie...</Preloader>}
-    >
-      <LandingSectionWrapper>
-        <NotfoundWrapper source={BackgroundImage}>
-          <NotfoundHeader1 className="block-center">#404</NotfoundHeader1>
-          <NotfoundHeader2 className="block-center">
-            Ups... Nie znaleziono strony
-          </NotfoundHeader2>
-          <Link to="/">
-            <NotfoundPanelButton className="block-center">
-              Powrót
-            </NotfoundPanelButton>
-          </Link>
-        </NotfoundWrapper>
-      </LandingSectionWrapper>
-      <FooterComponent />
-    </Suspense>
-  </MainContainer>
+  <Template headTagTitle="Error 404 - Sparkledge" fallbackComponent={<Preloader className="block-center">Ładowanie...</Preloader>}>
+    <NotFoundWrapper>
+      <NotFoundContainer>
+        <NotFound404>#404</NotFound404>
+        <NotFoundDescription>
+          Ups... Wygląda na to że strona do której próbowałeś się dostać nie istnieje 
+        </NotFoundDescription>
+        <Link to="/">
+          <NotfoundPanelButton className="block-center">
+            <ArrowBackIcon fontSize="medium" />
+            Główna
+          </NotfoundPanelButton>
+        </Link>
+      </NotFoundContainer>
+    </NotFoundWrapper>
+  </Template>
 );
 
 export default Notfound;

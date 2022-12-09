@@ -33,6 +33,9 @@ export const LightMode = {
     main: "Mohave, sans-serif",
     textShadowMain: "3px 3px 4px rgba(0,0,0,.1)",
   },
+  
+  gradient404: "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)",
+  descriptionColor404: "black",
 };
 
 export const DarkMode = {
@@ -55,6 +58,9 @@ export const DarkMode = {
     main: "Mohave, sans-serif",
     textShadowMain: "3px 3px 4px rgba(0,0,0,.2)",
   },
+
+  gradient404: "linear-gradient(90deg, rgba(0,102,212,1) 0%, rgba(0,176,212,1) 45%, rgba(0,212,255,1) 100%)",
+  descriptionColor404: "white",
 };
 
 export const MainContainer = styled.section`

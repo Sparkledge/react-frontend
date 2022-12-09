@@ -1,59 +1,97 @@
 import styled from "styled-components";
 
-interface NotfoundWrapperInterface {
-  source?: any;
-  bottomPadding?: number;
-}
+export const NotFoundWrapper = styled.div`
+  min-width: 100%;
+  min-height: inherit;
 
-export const NotfoundHeader1 = styled.h1`
-  font-size: xx-large;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
+
+export const NotFoundContainer = styled.div`
+  width: 80%;
+  height: 80%;
+  padding: 2rem;
+
+  background: ${(props) => props.theme.bgColor};
+  border-radius: 16px;
+  border: 1px solid ${(props) => props.theme.descriptionColor404};
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+
+  @media screen and (max-width: 800px) {
+    width: 100%;
+  }
+`;
+
+export const NotFoundDescription = styled.div`
+  font-size: 2rem;
+
+  color: ${(props) => props.theme.descriptionColor404};
+
+  @media screen and (max-width: 800px) {
+    font-size: 1.4rem;
+  }
+`;
+
+export const NotFound404 = styled.div`
+  padding: 0;
+  margin: 0;
+
+  font-size: 12rem;
   font-weight: bolder;
-  font-size: 6em;
-  margin-top: 4vh;
-  margin-bottom: 2vh;
-  color: ${(props) => props.theme.color};
+  user-select: none;
+
+  margin-bottom: -3rem;
+
+  background-color: rgba(2,0,36,1); 
+  background-image: ${(props) => props.theme.gradient404};
+  
+  background-size: 100%;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent; 
+  -moz-text-fill-color: transparent;
+
+  @media screen and (max-width: 800px) {
+    font-size: 10rem;
+  }
 `;
 
-export const NotfoundHeader2 = styled.h2`
-  font-size: xx-large;
-  margin-top: 2vh;
-  margin-bottom: 4vh;
-  color: ${(props) => props.theme.color};
-`;
 export const NotfoundPanelButton = styled.button`
   width: fit-content;
-  padding: 20px 40px;
-  font-size: 1em;
-  color: ${(props) => props.theme.color};
+  padding: 1rem 2rem;
+
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
   background: ${(props) => props.theme.landingButtonColor};
+
+  color: ${(props) => props.theme.color};
+  font-size: 1.8rem;
   font-family: ${(props) => props.theme.fonts.main};
   text-shadow: ${(props) => props.theme.fonts.textShadowMain};
+
+  /* border: 1px solid currentColor; */
+  box-shadow: 0 0 4px 0 currentColor;
   border: none;
-  border-radius: 10px;
-  text-align: center;
+  border-radius: 8px;
+
   cursor: pointer;
   transition: all 0.4s;
-  margin-bottom: 5vh;
 
   &:hover {
     filter: brightness(70%);
   }
 
-  @media screen and (min-width: 425px) {
-    font-size: 1.2em;
+  @media screen and (max-width: 800px) {
+    font-size: 1.2rem;
   }
-`;
-
-export const NotfoundWrapper = styled.div<NotfoundWrapperInterface>`
-  border-radius: 25px;
-  background: rgba(34, 107, 255, 0.15);
-  width: calc(70% - 40px);
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 10%;
-  padding: 20px;
-  color: red;
-  text-align: center;
-  background-image: url(${(props) => props.source});
-  background-size: cover;
 `;
