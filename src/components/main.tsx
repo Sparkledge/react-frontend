@@ -5,7 +5,7 @@ import {
 import { ThemeProvider } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import ReactGA from "react-ga";
-import useLocalStorage from "use-local-storage";
+import { useLocalStorage } from "usehooks-ts";
 
 import { LightMode, DarkMode, SparkledgeGlobalStyle } from "../styled/main";
 import { setNewToken } from "../redux/actions/generalActions";
@@ -33,7 +33,7 @@ import refreshToken from "../connectionFunctions/main/refreshToken";
 ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS_ID);
 
 const Main: React.FC = () => {
-  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "", { syncData: true });
+  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
   const [refreshUserId, setRefreshUserId] = useLocalStorage<string>("u_r", "");
   const [isUserConsent, toggleIsUserConsent] = useLocalStorage<boolean>("u_a", false);
 
@@ -48,7 +48,7 @@ const Main: React.FC = () => {
       refreshToken(refreshUserId, setMemoryUserId, setRefreshUserId);
       dispatch(setNewToken(memoryUserId));
     } else if (refreshToken !== undefined) {
-      setMemoryUserId(undefined);
+      setMemoryUserId("");
       dispatch(setNewToken(""));
     }
   }, [refreshUserId]);

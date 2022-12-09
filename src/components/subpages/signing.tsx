@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import useLocalStorage from "use-local-storage";
+import { useLocalStorage } from "usehooks-ts";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { useMediaQuery } from "@mui/material";
 

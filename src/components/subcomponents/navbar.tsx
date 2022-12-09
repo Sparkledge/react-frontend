@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocalStorage } from "usehooks-ts";
 
@@ -42,7 +42,6 @@ type NavbarDataType = { isDropDown: boolean,
 const Navbar:React.FC = () => {
   const [isOpened, toggleIsOpened] = useState<boolean>(false);
   const graphicalMode: number = useSelector((state:RootState) => state.generalData.graphicalMode);
-  const currentToken:string = useSelector((state: RootState) => state.generalData.currentToken);
 
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
   const [refreshUserId, setRefreshUserId] = useLocalStorage<string>("u_r", "");
@@ -54,7 +53,7 @@ const Navbar:React.FC = () => {
         isDropDown: false,
         dropDownElems: [],
         isLink: true,
-        to: currentToken.length === 0 ? "/" : "/panel",
+        to: memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0) ? "/" : "/panel",
         isImage: true,
         content: NavbarLogo,
         callback: () => toggleIsOpened(false),
@@ -98,9 +97,9 @@ const Navbar:React.FC = () => {
         isDropDown: false,
         dropDownElems: [],
         isLink: true,
-        to: currentToken.length === 0 ? "/signin" : "/documentUpload",
+        to: memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0) ? "/signin" : "/documentUpload",
         isImage: false,
-        content: currentToken.length === 0 ? "Zaloguj się" : (
+        content: memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0) ? "Zaloguj się" : (
           <DescriptionIcon style={{
             color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
           }}
@@ -115,13 +114,13 @@ const Navbar:React.FC = () => {
         isLink: false,
         to: "",
         isImage: false,
-        content: currentToken.length > 0 ? (
+        content: memoryUserId !== undefined && memoryUserId.length > 0 ? (
           <NotificationsActiveIcon style={{
             color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
           }}
           />
         ) : "noRender",
-        callback: () => currentToken.length > 0 ? dispatch(toggleOpeningNotifications()) : null,
+        callback: () => memoryUserId !== undefined && memoryUserId.length > 0 ? dispatch(toggleOpeningNotifications()) : null,
       }, */
       {
         isDropDown: false,
@@ -129,7 +128,7 @@ const Navbar:React.FC = () => {
         isLink: true,
         to: "/profile/",
         isImage: false,
-        content: currentToken.length === 0 ? null : (
+        content: memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0) ? null : (
           <AccountCircleIcon style={{
             color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
           }}
@@ -143,7 +142,7 @@ const Navbar:React.FC = () => {
         isLink: true,
         to: "/settings/",
         isImage: false,
-        content: currentToken.length === 0 ? null : (
+        content: memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0) ? null : (
           <SettingsIcon style={{
             color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
           }}
@@ -154,19 +153,19 @@ const Navbar:React.FC = () => {
       {
         isDropDown: false,
         dropDownElems: [],
-        isLink: currentToken.length === 0,
-        to: currentToken.length === 0 ? "/signup" : "/",
+        isLink: memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0),
+        to: memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0) ? "/signup" : "/",
         isImage: false,
-        content: currentToken.length === 0 ? "Zarejestruj się" : (
+        content: memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0) ? "Zarejestruj się" : (
           <ExitToAppIcon style={{
             color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
           }}
           />
         ),
         callback: () => {
-          currentToken.length === 0 
+          memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0)
             ? toggleIsOpened(false) 
-            : logout(currentToken, () => dispatch(setNewToken("")), setMemoryUserId, setRefreshUserId, toggleIsOpened);
+            : logout(memoryUserId, () => dispatch(setNewToken("")), setMemoryUserId, setRefreshUserId, toggleIsOpened);
         },
       },
       {
@@ -175,7 +174,7 @@ const Navbar:React.FC = () => {
         isLink: false,
         to: "/",
         isImage: false,
-        content: graphicalMode === 0 ? <LightModeIcon style={{ fontSize: "inherit", height: "inherit" }} /> 
+        content: memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0) ? <LightModeIcon style={{ fontSize: "inherit", height: "inherit" }} /> 
           : <DarkModeIcon style={{ fontSize: "inherit", height: "inherit" }} />,
         callback: () => {
           dispatch(changeGraphicalMode());
