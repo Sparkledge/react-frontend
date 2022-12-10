@@ -11,13 +11,11 @@ export const NotFoundWrapper = styled.div`
 `;
 
 export const NotFoundContainer = styled.div`
-  width: 80%;
-  height: 80%;
   padding: 2rem;
 
   background: ${(props) => props.theme.bgColor};
   border-radius: 16px;
-  border: 1px solid ${(props) => props.theme.descriptionColor404};
+  border: 1px solid #565656;
 
   display: flex;
   align-items: center;
@@ -25,18 +23,23 @@ export const NotFoundContainer = styled.div`
   flex-direction: column;
   gap: 1rem;
 
-  @media screen and (max-width: 800px) {
-    width: 100%;
+  @media screen and (min-width: 425px) {
+    width: 80%;
+    height: 80%;
   }
 `;
 
 export const NotFoundDescription = styled.div`
-  font-size: 2rem;
+  font-size: 1rem;
 
-  color: ${(props) => props.theme.descriptionColor404};
+  color: ${(props) => props.theme.color};
 
-  @media screen and (max-width: 800px) {
-    font-size: 1.4rem;
+  @media screen and (min-width: 425px) {
+    font-size: 1.2rem;
+  }
+
+  @media screen and (min-width: 768px) {
+    font-size: 2rem;
   }
 `;
 
@@ -44,7 +47,7 @@ export const NotFound404 = styled.div`
   padding: 0;
   margin: 0;
 
-  font-size: 12rem;
+  font-size: 6rem;
   font-weight: bolder;
   user-select: none;
 
@@ -59,27 +62,30 @@ export const NotFound404 = styled.div`
   -webkit-text-fill-color: transparent; 
   -moz-text-fill-color: transparent;
 
-  @media screen and (max-width: 800px) {
-    font-size: 10rem;
+  @media screen and (min-width: 425px) {
+    font-size: 9rem;
+  }
+
+  @media screen and (min-width: 768px) {
+    font-size: 12rem;
   }
 `;
 
 export const NotfoundPanelButton = styled.button`
   width: fit-content;
-  padding: 1rem 2rem;
+  padding: 0.6rem 1.2rem;
 
   display: flex;
   align-items: center;
   gap: 1rem;
 
-  background: ${(props) => props.theme.landingButtonColor};
+  background: transparent;
 
   color: ${(props) => props.theme.color};
-  font-size: 1.8rem;
+  font-size: 1rem;
   font-family: ${(props) => props.theme.fonts.main};
   text-shadow: ${(props) => props.theme.fonts.textShadowMain};
 
-  /* border: 1px solid currentColor; */
   box-shadow: 0 0 4px 0 currentColor;
   border: none;
   border-radius: 8px;
@@ -91,7 +97,8 @@ export const NotfoundPanelButton = styled.button`
     filter: brightness(70%);
   }
 
-  @media screen and (max-width: 800px) {
-    font-size: 1.2rem;
+  @media screen and (min-width: 768px) {
+    font-size: 1.8rem;
+    padding: 1rem 2rem;
   }
 `;
