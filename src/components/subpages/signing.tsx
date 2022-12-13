@@ -80,7 +80,6 @@ const SigningPanel:React.FC<SigningInterface> = ({ mode }: SigningInterface) => 
   };
 
   useEffect(() => {
-    console.log(mode);
     if (lastUserSigned !== undefined && lastUserSigned.length > 0 && mode === 1) setLogin(lastUserSigned);
     else setLogin("");
   }, [mode]);

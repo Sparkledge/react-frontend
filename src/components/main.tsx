@@ -80,6 +80,7 @@ const Main: React.FC = () => {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/profile/" element={<Profile />} />
+          <Route path="/settings/" element={<Settings />} />
           <Route path="*" element={<Notfound />} />
         </Routes>
         {!isUserConsent ? <MemoryUsingBanner toggleIsUserConsent={toggleIsUserConsent} /> : null}
