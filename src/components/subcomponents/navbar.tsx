@@ -2,23 +2,9 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocalStorage } from "usehooks-ts";
 
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import GroupIcon from "@mui/icons-material/Group";
-import LiveHelpIcon from "@mui/icons-material/LiveHelp";
-import DescriptionIcon from "@mui/icons-material/Description";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import SettingsIcon from "@mui/icons-material/Settings";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
-import {
-  NavbarContainer, NavbarAlignGroup, RespOpeningCloseBtn, RotatingBtnElem, 
-} from "src/styled/subcomponents/navbar";
-
-import NavbarElemMap from "src/components/helperComponents/navbar/navbarElemMap";
 import { changeGraphicalMode, setNewToken, toggleOpeningNotifications } from "src/redux/actions/generalActions";
 import { RootState } from "src/redux/mainReducer";
 
@@ -28,10 +14,20 @@ import { Link } from "react-router-dom";
 
 const NavbarLogo = require("src/assets/sparkledge_logo.webp");
 
+// TODO: extract constants from styled-components
+// TODO: move styled-components to separate files
+// TODO: solve problem with black square below navbar
+// TODO: find way to place menu expand button in top right corner
+// TODO: make sure this is responsive
+// TODO: ...
+
 const NavbarItemLink = styled(Link)`
   box-sizing: border-box;
 
-  /* border: 2px solid red; */
+  border: 1px solid transparent;
+  border-radius: 16px;
+  background: transparent;
+
   height: 100%;
   padding: 0.8rem 1.2rem;
   
@@ -45,65 +41,101 @@ const NavbarItemLink = styled(Link)`
   color: ${(props) => props.theme.color};
 
   font-size: 1.2rem;
+  white-space: nowrap;
 
-  transition: 0.4s all;
+  transition: 0.2s all;
 
   &:hover {
-    /* border: 2px solid white; */
-    border-radius: 16px;
-
-    background: #ffffff55;
+    background: ${(props) => props.theme.hoverBgPrimary};
   }
 `;
 
+const NavbarItemButton = styled(NavbarItemLink)`
+  cursor: pointer;
+`;
+
+const NavbarExpandButton = styled(NavbarItemLink)`
+  cursor: pointer;
+
+  display: none;
+  @media screen and (max-width: 1000px) {
+    display: inline-block;
+  }
+
+  position: sticky;
+  top: 0;
+  right: 0;
+`;
+
 const NavbarImg = styled.img`
-  max-height: 100%;
-  width: auto;
+  padding: 0.8rem 1.2rem;
+  height: 2rem;
 `;
 
 const NavbarItemBreak = styled.div`
   flex-grow: 1;
 `;
 
-const NavbarContainer2 = styled.div`
+type NavbarProps = {
+  isOpened: boolean;
+};
+
+const NavbarContainer2 = styled.div<NavbarProps>`
   box-sizing: border-box;
 
   height: 5rem;
   width: 100%;
 
-  padding: 0.2rem;
+  padding: 0.4rem 0.8rem;
 
   border: 2px solid blue;
 
+  @media screen and (max-width: 1000px) {
+    flex-direction: column;
+    height: ${(props) => props.isOpened ? "fit-content" : "5rem"};
+  }
+
   display: flex;
   flex-direction: row;
+  gap: 0.5rem;
 
   position: sticky;
   top: 0;
 
   // this needs to change at some point
   z-index: 10;
+  overflow: hidden;
 
   background: ${(props) => props.theme.navBgColor};
 `;
 
 const Navbar:React.FC = () => {
-  const [isOpened, toggleIsOpened] = useState<boolean>(false);
   const graphicalMode: number = useSelector((state: RootState) => state.generalData.graphicalMode);
 
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
   const [refreshUserId, setRefreshUserId] = useLocalStorage<string>("u_r", "");
   const dispatch = useDispatch();
 
-  const handleThemeChange = () => {
-    dispatch(changeGraphicalMode);
+  const [isMenuExpanded, setIsMenuExpanded] = useState(false);
+
+  const handleThemeChanged = () => {
+    dispatch(changeGraphicalMode());
+  };
+
+  const handleMenuExpanded = () => {
+    setIsMenuExpanded(!isMenuExpanded);
   };
 
   return (
-    <NavbarContainer2>
+    <NavbarContainer2 isOpened={isMenuExpanded}>
+      <NavbarExpandButton as="button" onClick={handleMenuExpanded}>
+        =
+      </NavbarExpandButton>
+
       <NavbarItemLink to="/">
         <NavbarImg src={NavbarLogo} alt="sparkledge logo" />
       </NavbarItemLink>
+
       <NavbarItemLink to="/">
         wyszukiwarka
       </NavbarItemLink>
@@ -122,9 +154,11 @@ const Navbar:React.FC = () => {
         zarejestruj się
       </NavbarItemLink>
 
-      <NavbarItemLink to="/">
-        <DarkModeIcon style={{ fontSize: "inherit", height: "inherit" }} />
-      </NavbarItemLink>
+      <NavbarItemButton as="button" onClick={handleThemeChanged}>
+        {graphicalMode
+          ? <LightModeIcon style={{ fontSize: "inherit", height: "inherit" }} />
+          : <DarkModeIcon style={{ fontSize: "inherit", height: "inherit" }} />}
+      </NavbarItemButton>
 
     </NavbarContainer2>
   );

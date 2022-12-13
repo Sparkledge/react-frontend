@@ -35,6 +35,7 @@ export const LightMode = {
   },
   
   gradient404: "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)",
+  hoverBgPrimary: "#e0e0e0",
 };
 
 export const DarkMode = {
@@ -59,6 +60,7 @@ export const DarkMode = {
   },
 
   gradient404: "linear-gradient(90deg, rgba(0,102,212,1) 0%, rgba(0,176,212,1) 45%, rgba(0,212,255,1) 100%)",
+  hoverBgPrimary: "#272727",
 };
 
 export const MainContainer = styled.section`
