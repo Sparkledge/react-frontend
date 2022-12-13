@@ -23,184 +23,110 @@ import { changeGraphicalMode, setNewToken, toggleOpeningNotifications } from "sr
 import { RootState } from "src/redux/mainReducer";
 
 import logout from "src/connectionFunctions/navbar/logout";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const NavbarLogo = require("src/assets/sparkledge_logo.webp");
 
-type NavbarDataType = { isDropDown: boolean, 
-  dropDownElems: {
-    to: string,
-    content: any,
-    callback: () => void,
-  }[],
-  isLink: boolean, 
-  to: string, 
-  isImage: boolean, 
-  content: any, 
-  callback: () => void,
-};
+const NavbarItemLink = styled(Link)`
+  box-sizing: border-box;
+
+  /* border: 2px solid red; */
+  height: 100%;
+  padding: 0.8rem 1.2rem;
+  
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  text-decoration: none;
+  font-family: ${(props) => props.theme.fonts.main};
+  color: ${(props) => props.theme.color};
+
+  font-size: 1.2rem;
+
+  transition: 0.4s all;
+
+  &:hover {
+    /* border: 2px solid white; */
+    border-radius: 16px;
+
+    background: #ffffff55;
+  }
+`;
+
+const NavbarImg = styled.img`
+  max-height: 100%;
+  width: auto;
+`;
+
+const NavbarItemBreak = styled.div`
+  flex-grow: 1;
+`;
+
+const NavbarContainer2 = styled.div`
+  box-sizing: border-box;
+
+  height: 5rem;
+  width: 100%;
+
+  padding: 0.2rem;
+
+  border: 2px solid blue;
+
+  display: flex;
+  flex-direction: row;
+
+  position: sticky;
+  top: 0;
+
+  // this needs to change at some point
+  z-index: 10;
+
+  background: ${(props) => props.theme.navBgColor};
+`;
 
 const Navbar:React.FC = () => {
   const [isOpened, toggleIsOpened] = useState<boolean>(false);
-  const graphicalMode: number = useSelector((state:RootState) => state.generalData.graphicalMode);
+  const graphicalMode: number = useSelector((state: RootState) => state.generalData.graphicalMode);
 
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
   const [refreshUserId, setRefreshUserId] = useLocalStorage<string>("u_r", "");
   const dispatch = useDispatch();
 
-  const NavbarData:NavbarDataType[][] = [
-    [
-      {
-        isDropDown: false,
-        dropDownElems: [],
-        isLink: true,
-        to: memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0) ? "/" : "/panel",
-        isImage: true,
-        content: NavbarLogo,
-        callback: () => toggleIsOpened(false),
-      },
-      {
-        isDropDown: false,
-        dropDownElems: [],
-        isLink: true,
-        to: "/searcher",
-        isImage: false,
-        content: "Wyszukiwarka",
-        callback: () => toggleIsOpened(false),
-      },
-    ],
-    [
-      {
-        isDropDown: false,
-        dropDownElems: [],
-        isLink: true,
-        to: "/faq",
-        isImage: false,
-        content: <LiveHelpIcon style={{
-          color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
-        }}
-        />,
-        callback: () => toggleIsOpened(false),
-      },
-      {
-        isDropDown: false,
-        dropDownElems: [],
-        isLink: true,
-        to: "/about",
-        isImage: false,
-        content: <GroupIcon style={{
-          color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
-        }}
-        />,
-        callback: () => toggleIsOpened(false),
-      },
-      {
-        isDropDown: false,
-        dropDownElems: [],
-        isLink: true,
-        to: memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0) ? "/signin" : "/documentUpload",
-        isImage: false,
-        content: memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0) ? "Zaloguj się" : (
-          <DescriptionIcon style={{
-            color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
-          }}
-          />
-        ),
-        callback: () => toggleIsOpened(false),
-      },
-      /* 
-      {
-        isDropDown: false,
-        dropDownElems: [],
-        isLink: false,
-        to: "",
-        isImage: false,
-        content: memoryUserId !== undefined && memoryUserId.length > 0 ? (
-          <NotificationsActiveIcon style={{
-            color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
-          }}
-          />
-        ) : "noRender",
-        callback: () => memoryUserId !== undefined && memoryUserId.length > 0 ? dispatch(toggleOpeningNotifications()) : null,
-      }, */
-      {
-        isDropDown: false,
-        dropDownElems: [],
-        isLink: true,
-        to: "/profile/",
-        isImage: false,
-        content: memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0) ? null : (
-          <AccountCircleIcon style={{
-            color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
-          }}
-          />
-        ),
-        callback: () => toggleIsOpened(false),
-      },
-      /* {
-        isDropDown: false,
-        dropDownElems: [],
-        isLink: true,
-        to: "/settings/",
-        isImage: false,
-        content: memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0) ? null : (
-          <SettingsIcon style={{
-            color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
-          }}
-          />
-        ),
-        callback: () => toggleIsOpened(false),
-      }, */
-      {
-        isDropDown: false,
-        dropDownElems: [],
-        isLink: memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0),
-        to: memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0) ? "/signup" : "/",
-        isImage: false,
-        content: memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0) ? "Zarejestruj się" : (
-          <ExitToAppIcon style={{
-            color: "inherit", fontSize: "1.6em", position: "relative", top: "1vh",
-          }}
-          />
-        ),
-        callback: () => {
-          memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0)
-            ? toggleIsOpened(false) 
-            : logout(memoryUserId, () => dispatch(setNewToken("")), setMemoryUserId, setRefreshUserId, toggleIsOpened);
-        },
-      },
-      {
-        isDropDown: false,
-        dropDownElems: [],
-        isLink: false,
-        to: "/",
-        isImage: false,
-        content: memoryUserId === undefined || (memoryUserId !== undefined && memoryUserId.length === 0) ? <LightModeIcon style={{ fontSize: "inherit", height: "inherit" }} /> 
-          : <DarkModeIcon style={{ fontSize: "inherit", height: "inherit" }} />,
-        callback: () => {
-          dispatch(changeGraphicalMode());
-          toggleIsOpened(false);
-        },
-      },
-    ],
-  ];
+  const handleThemeChange = () => {
+    dispatch(changeGraphicalMode);
+  };
 
   return (
-    <NavbarContainer className="block-center" isOpened={isOpened.toString()}>
-      <RespOpeningCloseBtn onClick={() => toggleIsOpened(!isOpened)}>
-        <RotatingBtnElem isrotated={isOpened ? "true" : "false"}>
-          <MenuIcon style={{ fontSize: "inherit" }} />
-        </RotatingBtnElem>
-        <RotatingBtnElem isrotated={isOpened ? "false" : "true"}>
-          <CloseIcon style={{ fontSize: "inherit" }} />
-        </RotatingBtnElem>
-      </RespOpeningCloseBtn>
-      <NavbarAlignGroup alignDir="left">
-        <NavbarElemMap data={NavbarData[0]} groupName="left" />
-      </NavbarAlignGroup>
-      <NavbarAlignGroup alignDir="right">
-        <NavbarElemMap data={NavbarData[1]} groupName="right" />
-      </NavbarAlignGroup>
-    </NavbarContainer>
+    <NavbarContainer2>
+      <NavbarItemLink to="/">
+        <NavbarImg src={NavbarLogo} alt="sparkledge logo" />
+      </NavbarItemLink>
+      <NavbarItemLink to="/">
+        wyszukiwarka
+      </NavbarItemLink>
+
+      <NavbarItemBreak />
+
+      <NavbarItemLink to="/">
+        o nas
+      </NavbarItemLink>
+
+      <NavbarItemLink to="/">
+        zaloguj się
+      </NavbarItemLink>
+
+      <NavbarItemLink to="/">
+        zarejestruj się
+      </NavbarItemLink>
+
+      <NavbarItemLink to="/">
+        <DarkModeIcon style={{ fontSize: "inherit", height: "inherit" }} />
+      </NavbarItemLink>
+
+    </NavbarContainer2>
   );
 };
 
