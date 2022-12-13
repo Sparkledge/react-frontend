@@ -13,6 +13,7 @@ interface RotatingBtnElemInterface {
 }
 
 export const NavbarContainer = styled.nav<NavbarOpeningInterface>`
+    border: 2px solid red;
     width: calc(100% - 20px);
     height: ${(props) => props.isOpened === "true" ? "100vh" : "10vh"};
     padding: 0px 10px;
