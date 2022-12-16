@@ -116,7 +116,7 @@ const NavbarContainer = styled.div<NavbarProps>`
     height: ${(props) => props.isOpened ? "100vh" : "5rem"};
     overflow: ${(props) => props.isOpened ? "scroll" : "hidden"};
 
-    /* scroll-behavior: contain; */
+    overscroll-behavior: contain;
   }
 
   display: flex;
@@ -135,13 +135,14 @@ const NavbarContainer = styled.div<NavbarProps>`
 `;
 
 const Navbar:React.FC = () => {
-  const graphicalMode: number = useSelector((state: RootState) => state.generalData.graphicalMode);
+  const graphicalMode = useSelector((state: RootState) => state.generalData.graphicalMode);
 
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
   const [refreshUserId, setRefreshUserId] = useLocalStorage<string>("u_r", "");
   const dispatch = useDispatch();
 
   const [isMenuExpanded, setIsMenuExpanded] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -169,55 +170,61 @@ const Navbar:React.FC = () => {
   return (
     <NavbarContainer ref={ref} isOpened={isMenuExpanded}>
       <NavbarItemWrapper>
-        <NavbarItem as={Link} to="/">
+        <NavbarItem as={Link} title="sparkledge" to="/">
           LOGO
         </NavbarItem>
 
-        <NavbarItem as={NavbarExpandButton} onClick={handleMenuExpanded}>
+        <NavbarItem as={NavbarExpandButton} title="otwórz/zamknij" onClick={handleMenuExpanded}>
           {isMenuExpanded ? "x" : "="}
-        </NavbarItem>
-      </NavbarItemWrapper>
-
-      <NavbarItemWrapper>
-        <NavbarItem as={Link} to="/" onClick={handleMenuHidden}>
-          wyszukiwarka
         </NavbarItem>
       </NavbarItemWrapper>
 
       <NavbarItemBreak />
 
       <NavbarItemWrapper>
-        <NavbarItem as={Link} to="/faq" onClick={handleMenuHidden}>
-          o nas
+        <NavbarItem as={Link} title="wyszukiwarka" to="/" onClick={handleMenuHidden}>
+          wyszukiwarka
         </NavbarItem>
       </NavbarItemWrapper>
 
-      <NavbarItemWrapper>
-        <NavbarItem as={Link} to="/" onClick={handleMenuHidden}>
-          zarejestruj się
-        </NavbarItem>
-      </NavbarItemWrapper>
+      {isLoggedIn ? (
+        <>
+          <NavbarItemWrapper>
+            <NavbarItem as={Link} title="zarejestruj się" to="/" onClick={handleMenuHidden}>
+              zarejestruj się
+            </NavbarItem>
+          </NavbarItemWrapper>
+
+          <NavbarItemWrapper>
+            <NavbarItem as={Link} title="zaloguj się" to="/" onClick={handleMenuHidden}>
+              zaloguj się
+            </NavbarItem>
+          </NavbarItemWrapper>
+        </>
+      ) : (
+        <>
+          <NavbarItemWrapper>
+            <NavbarItem as={Link} title="dodaj dokument" to="/" onClick={handleMenuHidden}>
+              dodaj
+            </NavbarItem>
+          </NavbarItemWrapper>
+
+          <NavbarItemWrapper>
+            <NavbarItem as={Link} title="wyloguj się" to="/" onClick={handleMenuHidden}>
+              wyloguj się
+            </NavbarItem>
+          </NavbarItemWrapper>
+
+          <NavbarItemWrapper>
+            <NavbarItem as={Link} title="ustawienia" to="/" onClick={handleMenuHidden}>
+              ustawienia
+            </NavbarItem>
+          </NavbarItemWrapper>
+        </>
+      )}
 
       <NavbarItemWrapper>
-        <NavbarItem as={Link} to="/" onClick={handleMenuHidden}>
-          zaloguj się
-        </NavbarItem>
-      </NavbarItemWrapper>
-
-      <NavbarItemWrapper>
-        <NavbarItem as={Link} to="/" onClick={handleMenuHidden}>
-          TEST
-        </NavbarItem>
-      </NavbarItemWrapper>
-
-      <NavbarItemWrapper>
-        <NavbarItem as={Link} to="/" onClick={handleMenuHidden}>
-          TEST
-        </NavbarItem>
-      </NavbarItemWrapper>
-
-      <NavbarItemWrapper>
-        <NavbarItem as={NavbarItemButton} onClick={handleThemeChanged}>
+        <NavbarItem as={NavbarItemButton} title="tryb ciemny/jasny" onClick={handleThemeChanged}>
           {graphicalMode
             ? <LightModeIcon style={{ fontSize: "inherit", height: "inherit" }} />
             : <DarkModeIcon style={{ fontSize: "inherit", height: "inherit" }} />}
