@@ -30,6 +30,15 @@ const UserNotifications:React.FC = () => {
   const listOfNotifications:{ title: string, content: string }[] = [{
     title: "Test Notification",
     content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore vero dignissimos sit nobis, dicta molestias ipsam officia voluptate harum temporibus repudiandae obcaecati mollitia ipsum doloribus, optio blanditiis architecto, sed quidem.",
+  }, {
+    title: "Test Notification",
+    content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore vero dignissimos sit nobis, dicta molestias ipsam officia voluptate harum temporibus repudiandae obcaecati mollitia ipsum doloribus, optio blanditiis architecto, sed quidem.",
+  }, {
+    title: "Test Notification",
+    content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore vero dignissimos sit nobis, dicta molestias ipsam officia voluptate harum temporibus repudiandae obcaecati mollitia ipsum doloribus, optio blanditiis architecto, sed quidem.",
+  }, {
+    title: "Test Notification",
+    content: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore vero dignissimos sit nobis, dicta molestias ipsam officia voluptate harum temporibus repudiandae obcaecati mollitia ipsum doloribus, optio blanditiis architecto, sed quidem.",
   }];
 
   const RenderedList = useMemo(() => listOfNotifications.map((elem: { title: string, content: string }) => (
@@ -44,7 +53,7 @@ const UserNotifications:React.FC = () => {
   )), [listOfNotifications]);
 
   useEffect(() => {
-    setLeftPosition(!isBiggerThanMobile ? 0 : !isBiggerThanTablet ? 30 : !isBiggerThanLaptop ? 60 : 70);
+    setLeftPosition(!isBiggerThanMobile ? 0 : !isBiggerThanTablet ? 29 : !isBiggerThanLaptop ? 59 : 69);
   }, [areGeneralNotificationsOpened, isBiggerThanBigLaptop, isBiggerThanLaptop, isBiggerThanTablet, isBiggerThanMobile]);
 
   return (

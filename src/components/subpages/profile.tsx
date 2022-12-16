@@ -7,7 +7,7 @@ import React, {
   useState, useEffect, useMemo, 
 } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import useLocalStorage from "use-local-storage";
+import { useLocalStorage } from "usehooks-ts";
 import jwtDecode from "jwt-decode";
 
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
@@ -59,7 +59,7 @@ const Profile:React.FC = () => {
   const [lastPublishedList, setLastPublishedList] = useState<LastPublishedItemType[]>([]);
   const [isPublishedLoading, toggleIsPublishedLoading] = useState<boolean>(false);
   const [notificationMessage, setNotificationMessage] = useState<string>("");
-  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "", { syncData: true });
+  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
 
   const { userId } = useParams();
   const navigate = useNavigate();

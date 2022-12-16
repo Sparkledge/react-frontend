@@ -24,7 +24,7 @@ export const NavbarContainer = styled.nav<NavbarOpeningInterface>`
     overflow-y: hidden;
     position: fixed;
     top: 0px;
-    z-index: 5;
+    z-index: 10;
 
     a{
         text-decoration: none;

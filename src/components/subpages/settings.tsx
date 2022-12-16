@@ -5,7 +5,7 @@
 import React, { useState, useEffect } from "react";
 import { useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import useLocalStorage from "use-local-storage";
+import { useLocalStorage } from "usehooks-ts";
 
 import {
   SettingsContainer, SettingsHeader, SettingsWrapper, 
@@ -19,6 +19,9 @@ import Template from "src/components/subcomponents/template";
 import SettingsSegmentComponent from "src/components/helperComponents/settings/settingsSegmentComponent";
 import SettingsSegmentCheckboxComponent from "src/components/helperComponents/settings/settingsSegmentCheckboxComponent";
 
+import changePersonalData from "src/connectionFunctions/settings/changePersonalData";
+import checkTheTypeOfAccount from "src/connectionFunctions/main/checkTheTypeOfAccount";
+
 const Settings:React.FC = () => {
   const isBiggerThanTablet = useMediaQuery("(min-width: 768px)");
 
@@ -28,15 +31,19 @@ const Settings:React.FC = () => {
   const [newName, setNewName] = useState<string>("");
   const [newSurname, setNewSurname] = useState<string>("");
 
+  const [areBasicSettingsAvailable, toggleAreBasicSettingsAvailable] = useState<boolean>(true);
   const [areBasicSettingsMemorized, toggleAreBasicSettingsMemorized] = useState<boolean>(false);
   const [isSortingMemorized, toggleIsSortingMemorized] = useState<boolean>(false);
   const [areFiltersMemorized, toggleAreFiltersMemorized] = useState<boolean>(false);
 
-  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "", { syncData: true });
+  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
   const navigate = useNavigate();
 
-  const triggerChangingThePersonalData = ():void => {
-    setNotificationMessage("Dane zaktualizowane");
+  const triggerChangingThePersonalData = async () => {
+    await changePersonalData(memoryUserId, newName, newSurname, setNotificationMessage, () => {
+      setNewName("");
+      setNewSurname("");
+    });
   };
 
   const triggerChangingThePassword = ():void => {
@@ -49,6 +56,7 @@ const Settings:React.FC = () => {
 
   useEffect(() => {
     if (memoryUserId === undefined || memoryUserId.length === 0) navigate("/");
+    checkTheTypeOfAccount(memoryUserId);
   }, []);
 
   return (
@@ -58,48 +66,50 @@ const Settings:React.FC = () => {
           Ustawienia konta
         </SettingsHeader>
         <SettingsWrapper className="block-center">
-          <SettingsSegmentComponent segmentName="Ustawienia ogólne">
-            <SettingsSegmentSubHeader className="block-center">
-              Zmiana hasła
-            </SettingsSegmentSubHeader>
-            <SettingsSegmentInput
-              className="block-center"
-              type="text"
-              placeholder="Nowe hasło..."
-              value={newPassword}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewPassword(event.currentTarget.value)}
-            />
-            <SettingsSegmentInput
-              className="block-center"
-              type="text"
-              placeholder="Powtórz hasło..." 
-              value={newPasswordRep}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewPasswordRep(event.currentTarget.value)}
-            />
-            <SettingsSegmentButton className="block-center" onClick={() => triggerChangingThePassword()}>
-              Zmień hasło
-            </SettingsSegmentButton>
-            <SettingsSegmentSubHeader className="block-center">
-              Zmiana Danych osobowych
-            </SettingsSegmentSubHeader>
-            <SettingsSegmentInput
-              className="block-center"
-              type="text"
-              placeholder="Nowe imię..."
-              value={newName}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewName(event.currentTarget.value)}
-            />
-            <SettingsSegmentInput
-              className="block-center"
-              type="text"
-              placeholder="Nowe nazwisko..." 
-              value={newSurname}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewSurname(event.currentTarget.value)}
-            />
-            <SettingsSegmentButton className="block-center" onClick={() => triggerChangingThePersonalData()}>
-              Zatwierdź
-            </SettingsSegmentButton>
-          </SettingsSegmentComponent>
+          {areBasicSettingsAvailable ? (
+            <SettingsSegmentComponent segmentName="Ustawienia ogólne">
+              <SettingsSegmentSubHeader className="block-center">
+                Zmiana hasła
+              </SettingsSegmentSubHeader>
+              <SettingsSegmentInput
+                className="block-center"
+                type="text"
+                placeholder="Nowe hasło..."
+                value={newPassword}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewPassword(event.currentTarget.value)}
+              />
+              <SettingsSegmentInput
+                className="block-center"
+                type="text"
+                placeholder="Powtórz hasło..." 
+                value={newPasswordRep}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewPasswordRep(event.currentTarget.value)}
+              />
+              <SettingsSegmentButton className="block-center" onClick={() => triggerChangingThePassword()}>
+                Zmień hasło
+              </SettingsSegmentButton>
+              <SettingsSegmentSubHeader className="block-center">
+                Zmiana Danych osobowych
+              </SettingsSegmentSubHeader>
+              <SettingsSegmentInput
+                className="block-center"
+                type="text"
+                placeholder="Nowe imię..."
+                value={newName}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewName(event.currentTarget.value)}
+              />
+              <SettingsSegmentInput
+                className="block-center"
+                type="text"
+                placeholder="Nowe nazwisko..." 
+                value={newSurname}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => setNewSurname(event.currentTarget.value)}
+              />
+              <SettingsSegmentButton className="block-center" onClick={() => triggerChangingThePersonalData()}>
+                Zatwierdź
+              </SettingsSegmentButton>
+            </SettingsSegmentComponent>
+          ) : null}
           <SettingsSegmentComponent segmentName="Ustawienia szukania">
             <SettingsSegmentCheckboxComponent 
               title={!isBiggerThanTablet ? "Pamiętaj wyszukiwanie" : "Pamiętaj ustawienia wyszukiwania"}

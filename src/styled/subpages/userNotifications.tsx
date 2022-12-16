@@ -8,8 +8,23 @@ export const UserNotificationsContainer = styled(motion.section)`
     height: calc(90vh - 20px);
     background: ${(props) => props.theme.filtersButtonResponsiveBackground};
     box-shadow: -3px 4px 4px rgba(0,0,0,.15);
-    z-index: 4;
+    z-index: 6;
     left: 100%;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar{
+        width: 6px;
+    }
+        
+    &::-webkit-scrollbar-thumb{
+        border-radius: 10px;
+        width: 3px;
+        background: rgba(34,107,255,.9);
+    }
+        
+    &::-webkit-scrollbar-track{
+        width: 5px;
+    }
 
     @media screen and (min-width: 550px){
         width: calc(70% - 20px);
