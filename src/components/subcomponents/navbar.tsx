@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocalStorage } from "usehooks-ts";
 
@@ -16,18 +16,15 @@ const NavbarLogo = require("src/assets/sparkledge_logo.webp");
 
 // TODO: extract constants from styled-components
 // TODO: move styled-components to separate files
+
 // TODO: solve problem with black square below navbar
 // TODO: make sure this is responsive
 // TODO: block scrolling when menu is expanded
-// TODO: remove break in navbar when in hamurger mode
 // TODO: ...
 
 const NavbarItemWrapper = styled.div`
   box-sizing: border-box;
   padding: 0.3rem; 
-
-  // to remove
-  /* border: 1px solid lime; */
 
   min-height: 100%;
   @media screen and (max-width: 1000px) {
@@ -46,8 +43,6 @@ const NavbarItem = styled.div`
   border: 1px solid transparent;
   border-radius: 16px;
 
-  /* height: 100%; */
-  /* padding: 0.8rem 1.2rem; */
   height: 100%;
   padding-inline: 1rem;
   
@@ -100,6 +95,10 @@ const NavbarImg = styled.img`
 
 const NavbarItemBreak = styled.div`
   flex-grow: 1;
+
+  @media screen and (max-width: 1000px) {
+    display: none;
+  }
 `;
 
 type NavbarProps = {
@@ -111,24 +110,18 @@ const NavbarContainer = styled.div<NavbarProps>`
 
   height: 5rem;
   width: 100%;
-  /* padding-inline: 0.4rem; */
-
-  // to remove
-  /* border: 2px solid blue; */
 
   @media screen and (max-width: 1000px) {
     flex-direction: column;
     height: ${(props) => props.isOpened ? "100vh" : "5rem"};
     overflow: ${(props) => props.isOpened ? "scroll" : "hidden"};
-    /* gap: 0; */
 
-    scroll-behavior: contain;
+    /* scroll-behavior: contain; */
   }
 
   display: flex;
   flex-direction: row;
-  /* gap: 0.5rem; */
-
+  
   position: fixed;
   top: 0;
 
@@ -150,20 +143,31 @@ const Navbar:React.FC = () => {
 
   const [isMenuExpanded, setIsMenuExpanded] = useState(false);
 
-  const handleThemeChanged = () => {
-    dispatch(changeGraphicalMode());
-  };
+  const ref = useRef<HTMLDivElement>(null);
 
   const handleMenuExpanded = () => {
     setIsMenuExpanded(!isMenuExpanded);
+    // reset scroll position
+    if (ref && ref.current) {
+      ref.current.scrollTop = 0;
+    }
   };
 
   const handleMenuHidden = () => {
     setIsMenuExpanded(false);
+    // reset scroll position
+    if (ref && ref.current) {
+      ref.current.scrollTop = 0;
+    }
+  };
+
+  const handleThemeChanged = () => {
+    dispatch(changeGraphicalMode());
+    handleMenuHidden();
   };
 
   return (
-    <NavbarContainer isOpened={isMenuExpanded}>
+    <NavbarContainer ref={ref} isOpened={isMenuExpanded}>
       <NavbarItemWrapper>
         <NavbarItem as={Link} to="/">
           LOGO
@@ -213,7 +217,7 @@ const Navbar:React.FC = () => {
       </NavbarItemWrapper>
 
       <NavbarItemWrapper>
-        <NavbarItem as={NavbarItemButton} onClick={() => { handleThemeChanged(); handleMenuHidden(); }}>
+        <NavbarItem as={NavbarItemButton} onClick={handleThemeChanged}>
           {graphicalMode
             ? <LightModeIcon style={{ fontSize: "inherit", height: "inherit" }} />
             : <DarkModeIcon style={{ fontSize: "inherit", height: "inherit" }} />}
