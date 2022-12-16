@@ -19,6 +19,8 @@ import Template from "src/components/subcomponents/template";
 import SettingsSegmentComponent from "src/components/helperComponents/settings/settingsSegmentComponent";
 import SettingsSegmentCheckboxComponent from "src/components/helperComponents/settings/settingsSegmentCheckboxComponent";
 
+import changePersonalData from "src/connectionFunctions/settings/changePersonalData";
+
 const Settings:React.FC = () => {
   const isBiggerThanTablet = useMediaQuery("(min-width: 768px)");
 
@@ -36,8 +38,11 @@ const Settings:React.FC = () => {
   const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
   const navigate = useNavigate();
 
-  const triggerChangingThePersonalData = ():void => {
-    setNotificationMessage("Dane zaktualizowane");
+  const triggerChangingThePersonalData = async () => {
+    await changePersonalData(memoryUserId, newName, newSurname, setNotificationMessage, () => {
+      setNewName("");
+      setNewSurname("");
+    });
   };
 
   const triggerChangingThePassword = ():void => {
