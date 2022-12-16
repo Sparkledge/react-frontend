@@ -24,14 +24,15 @@ const NavbarLogo = require("src/assets/sparkledge_logo.webp");
 
 const NavbarItemWrapper = styled.div`
   box-sizing: border-box;
-  padding: 0.3rem 0.6rem;
+  padding: 0.3rem; 
 
   // to remove
-  border: 1px solid lime;
+  /* border: 1px solid lime; */
 
   min-height: 100%;
   @media screen and (max-width: 1000px) {
     min-height: 5rem;
+    border-bottom: 1px solid ${(props) => props.theme.navBottomBorderColor};
   }
 
   display: inline-flex;
@@ -46,7 +47,9 @@ const NavbarItem = styled.div`
   border-radius: 16px;
 
   /* height: 100%; */
-  padding: 0.8rem 1.2rem;
+  /* padding: 0.8rem 1.2rem; */
+  height: 100%;
+  padding-inline: 1rem;
   
   display: inline-flex;
   flex-direction: row;
@@ -69,13 +72,17 @@ const NavbarItem = styled.div`
 `;
 
 const NavbarItemButton = styled.button`
+  box-sizing: border-box;
+
   cursor: pointer;
 `;
 
 const NavbarExpandButton = styled.button`
+  box-sizing: border-box;
+
   cursor: pointer;
 
-  height: fit-content;
+  aspect-ratio: 1/1;
 
   display: none;
   @media screen and (max-width: 1000px) {
@@ -85,6 +92,8 @@ const NavbarExpandButton = styled.button`
 `;
 
 const NavbarImg = styled.img`
+  box-sizing: border-box;
+  
   padding: 0.8rem 1.2rem;
   height: 2rem;
 `;
@@ -102,29 +111,32 @@ const NavbarContainer = styled.div<NavbarProps>`
 
   height: 5rem;
   width: 100%;
-  padding-inline: 0.4rem;
+  /* padding-inline: 0.4rem; */
 
   // to remove
-  border: 2px solid blue;
+  /* border: 2px solid blue; */
 
   @media screen and (max-width: 1000px) {
     flex-direction: column;
     height: ${(props) => props.isOpened ? "100vh" : "5rem"};
     overflow: ${(props) => props.isOpened ? "scroll" : "hidden"};
-    gap: 0;
+    /* gap: 0; */
+
     scroll-behavior: contain;
   }
 
   display: flex;
   flex-direction: row;
-  gap: 0.5rem;
+  /* gap: 0.5rem; */
 
   position: fixed;
   top: 0;
 
   // this needs to change at some point
   z-index: 10;
+
   overflow: hidden;
+  border-bottom: 1px solid ${(props) => props.theme.navBottomBorderColor};
 
   background: ${(props) => props.theme.navBgColor};
 `;
