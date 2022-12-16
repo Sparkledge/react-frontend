@@ -20,6 +20,7 @@ import SettingsSegmentComponent from "src/components/helperComponents/settings/s
 import SettingsSegmentCheckboxComponent from "src/components/helperComponents/settings/settingsSegmentCheckboxComponent";
 
 import changePersonalData from "src/connectionFunctions/settings/changePersonalData";
+import checkTheTypeOfAccount from "src/connectionFunctions/main/checkTheTypeOfAccount";
 
 const Settings:React.FC = () => {
   const isBiggerThanTablet = useMediaQuery("(min-width: 768px)");
@@ -55,6 +56,7 @@ const Settings:React.FC = () => {
 
   useEffect(() => {
     if (memoryUserId === undefined || memoryUserId.length === 0) navigate("/");
+    checkTheTypeOfAccount(memoryUserId);
   }, []);
 
   return (
