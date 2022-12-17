@@ -14,6 +14,17 @@ import CloseIcon from "@mui/icons-material/Close";
 import { changeGraphicalMode, setNewToken, toggleOpeningNotifications } from "src/redux/actions/generalActions";
 import { RootState } from "src/redux/mainReducer";
 
+import {
+  NavbarContainer, 
+  NavbarItem, 
+  NavbarItemWrapper, 
+  NavbarItemDescription, 
+  NavbarItemBreak, 
+  NavbarImg, 
+  NavbarItemButton, 
+  NavbarExpandButton, 
+} from "src/styled/subcomponents/navbar";
+
 import logout from "src/connectionFunctions/navbar/logout";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
@@ -25,127 +36,6 @@ const NavbarLogo = require("src/assets/sparkledge_logo.webp");
 
 // TODO: solve problem with black square below navbar
 // TODO: ...
-
-const NavbarItemWrapper = styled.div`
-  box-sizing: border-box;
-  padding: 0.3rem; 
-
-  min-height: 100%;
-  @media screen and (max-width: 1000px) {
-    min-height: 5rem;
-    border-bottom: 1px solid ${(props) => props.theme.navBottomBorderColor};
-  }
-
-  display: inline-flex;
-  flex-direction: row;
-  align-items: center;  
-`;
-
-const NavbarItem = styled.div`
-  box-sizing: border-box;
-
-  border: 1px solid transparent;
-  border-radius: 16px;
-
-  height: 100%;
-  padding-inline: 1rem;
-  
-  display: inline-flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-
-  text-decoration: none;
-  font-family: ${(props) => props.theme.fonts.main};
-  color: ${(props) => props.theme.color};
-  font-size: 1.2rem;
-  white-space: nowrap;
-
-  transition: 0.2s all;
-
-  background: transparent;
-
-  &:hover {
-    background: ${(props) => props.theme.hoverBgPrimary};
-  }
-`;
-
-const NavbarItemDescription = styled.div`
-  display: none;
-  @media screen and (max-width: 1000px) {
-    display: block;
-  }
-`;
-
-const NavbarItemButton = styled.button`
-  box-sizing: border-box;
-
-  cursor: pointer;
-`;
-
-const NavbarExpandButton = styled.button`
-  box-sizing: border-box;
-
-  cursor: pointer;
-
-  aspect-ratio: 1/1;
-
-  display: none;
-  @media screen and (max-width: 1000px) {
-    display: flex;
-    margin-left: auto;
-  }
-`;
-
-const NavbarImg = styled.img`
-  box-sizing: border-box;
-  
-  height: 2rem;
-  padding-inline: 1rem;
-  scale: 1.4;
-`;
-
-const NavbarItemBreak = styled.div`
-  flex-grow: 1;
-
-  @media screen and (max-width: 1000px) {
-    display: none;
-  }
-`;
-
-type NavbarProps = {
-  isOpened: boolean;
-};
-
-const NavbarContainer = styled.div<NavbarProps>`
-  box-sizing: border-box;
-
-  height: 5rem;
-  width: 100%;
-
-  @media screen and (max-width: 1000px) {
-    flex-direction: column;
-    height: ${(props) => props.isOpened ? "100vh" : "5rem"};
-    overflow: ${(props) => props.isOpened ? "scroll" : "hidden"};
-  }
-
-  display: flex;
-  flex-direction: row;
-  
-  position: fixed;
-  top: 0;
-
-  // this needs to change at some point
-  z-index: 10;
-
-  overflow: hidden;
-  border-bottom: 1px solid ${(props) => props.theme.navBottomBorderColor};
-
-  transition: 0.2s height;
-
-  background: ${(props) => props.theme.navBgColor};
-`;
 
 const Navbar:React.FC = () => {
   const isDarkModeOn = useSelector((state: RootState) => state.generalData.graphicalMode);

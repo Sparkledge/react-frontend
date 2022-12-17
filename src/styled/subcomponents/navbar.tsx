@@ -1,133 +1,122 @@
 import styled from "styled-components";
 
-interface NavbarAlignGroupInterface {
-  alignDir: string
-}
+export const NavbarItemWrapper = styled.div`
+  box-sizing: border-box;
+  padding: 0.3rem; 
 
-interface NavbarOpeningInterface {
-  isOpened?: string
-}
+  min-height: 100%;
+  @media screen and (max-width: 1000px) {
+    min-height: 5rem;
+    border-bottom: 1px solid ${(props) => props.theme.navBottomBorderColor};
+  }
 
-interface RotatingBtnElemInterface {
-  isrotated: string
-}
-
-export const NavbarContainer = styled.nav<NavbarOpeningInterface>`
-    border: 2px solid red;
-    width: calc(100% - 20px);
-    height: ${(props) => props.isOpened === "true" ? "100vh" : "10vh"};
-    padding: 0px 10px;
-    background: ${(props) => props.theme.navBgColor};
-    font-family: ${(props) => props.theme.fonts.main};
-    color: ${(props) => props.theme.color};
-    box-shadow: 0px 3px 4px rgba(0,0,0,.2);
-    transition: all 0.4s;
-    overflow-y: hidden;
-    position: fixed;
-    top: 0px;
-    z-index: 5;
-
-    a{
-        text-decoration: none;
-        color: inherit;
-    }
-
-    @media screen and (min-width: 1200px){
-        height: 10vh;
-    }
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;  
 `;
 
-export const NavbarAlignGroup = styled.div<NavbarAlignGroupInterface>`
-    @media screen and (min-width: 1200px){
-        float: ${(props) => props.alignDir}
-    }
+export const NavbarItem = styled.div`
+  box-sizing: border-box;
+
+  border: 1px solid transparent;
+  border-radius: 16px;
+
+  height: 100%;
+  padding-inline: 1rem;
+  
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+
+  text-decoration: none;
+  font-family: ${(props) => props.theme.fonts.main};
+  color: ${(props) => props.theme.color};
+  font-size: 1.2rem;
+  white-space: nowrap;
+
+  transition: 0.2s all;
+
+  background: transparent;
+
+  &:hover {
+    background: ${(props) => props.theme.hoverBgPrimary};
+  }
 `;
 
-export const NavbarElemColumn = styled.div`
-    height: fit-content;
-    z-index: 9;
+export const NavbarItemDescription = styled.div`
+  display: none;
+  @media screen and (max-width: 1000px) {
     display: block;
-    margin: 0px auto 1vh;
-    
-
-    @media screen and (min-width: 1200px){
-        width: fit-content;
-        top: 0.5vh;
-        display: inline-block;
-        vertical-align: top;
-        margin: 0px 5px;
-    }
+  }
 `;
 
-export const NavbarElem = styled.div`
-    width: calc(80% - 40px);
-    padding: 10px 20px;
-    height: calc(9vh - 20px);
-    line-height: calc(9vh - 20px);
-    position: relative;
-    top: 0.5vh;
-    display: block;
-    margin: 0px auto 1vh;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 0.95em;
-    letter-spacing: 0.04em;
-    text-shadow: 3px 3px 4px rgba(0,0,0,.05);
-    transition: all 0.4s;
-    cursor: pointer;
-    background: ${(props) => props.theme.navElemBgColor};
+export const NavbarItemButton = styled.button`
+  box-sizing: border-box;
 
-    &:hover{
-        filter: brightness(70%);
-    }
-
-    @media screen and (min-width: 425px){
-        font-size: 0.95em;
-    }
-
-    @media screen and (min-width: 1024px){
-        font-size: 1.4em;
-    }
-
-    @media screen and (min-width: 1200px){
-        font-size: 1.1em;
-        width: fit-content;
-        top: 0.5vh;
-        display: inline-block;
-        vertical-align: top;
-        margin: 0px 5px;
-    }
+  cursor: pointer;
 `;
 
-export const NavbarElemImg = styled.img`
-    max-height: 100%;
-    width: auto;
+export const NavbarExpandButton = styled.button`
+  box-sizing: border-box;
+
+  cursor: pointer;
+
+  aspect-ratio: 1/1;
+
+  display: none;
+  @media screen and (max-width: 1000px) {
+    display: flex;
+    margin-left: auto;
+  }
 `;
 
-export const RespOpeningCloseBtn = styled.div`
-    width: fit-content;
-    position: absolute;
-    color: ${(props) => props.theme.color};
-    right: 5px;
-    font-size: 4vh;
-    top: 3vh;
-    @media screen and (min-width: 425px){
-        top: 3vh;
-        right: 10px;
-        font-size: 5vh;
-    }
-    
-    @media screen and (min-width: 1200px){
-        display: none;
-    }
+export const NavbarImg = styled.img`
+  box-sizing: border-box;
+  
+  height: 2rem;
+  padding-inline: 1rem;
+  scale: 1.4;
 `;
 
-export const RotatingBtnElem = styled.div<RotatingBtnElemInterface>`
-    transition: all 0.4s;
-    width: fit-content;
-    height: fit-content;
-    transition: all 0.4s;
-    ${(props) => props.isrotated === "true" ? `
-        transform: rotateX(90deg) scale(0);
-        font-size: 0;` : ""}
+export const NavbarItemBreak = styled.div`
+  flex-grow: 1;
+
+  @media screen and (max-width: 1000px) {
+    display: none;
+  }
+`;
+
+type NavbarProps = {
+  isOpened: boolean;
+};
+
+export const NavbarContainer = styled.div<NavbarProps>`
+  box-sizing: border-box;
+
+  height: 5rem;
+  width: 100%;
+
+  @media screen and (max-width: 1000px) {
+    flex-direction: column;
+    height: ${(props) => props.isOpened ? "100vh" : "5rem"};
+    overflow: ${(props) => props.isOpened ? "scroll" : "hidden"};
+  }
+
+  display: flex;
+  flex-direction: row;
+  
+  position: fixed;
+  top: 0;
+
+  // this needs to change at some point
+  z-index: 10;
+
+  overflow: hidden;
+  border-bottom: 1px solid ${(props) => props.theme.navBottomBorderColor};
+
+  transition: 0.2s height;
+
+  background: ${(props) => props.theme.navBgColor};
 `;
