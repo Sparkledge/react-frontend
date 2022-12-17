@@ -90,7 +90,12 @@ const Navbar:React.FC = () => {
   return (
     <NavbarContainer ref={ref} isOpened={isMenuExpanded}>
       <NavbarItemWrapper>
-        <NavbarItem as={Link} title="sparkledge" to="/">
+        <NavbarItem 
+          as={Link} 
+          title="sparkledge" 
+          to="/" 
+          onClick={handleMenuHidden}
+        >
           <NavbarImg src={NavbarLogo} alt="sparkledge" />
         </NavbarItem>
 
@@ -106,7 +111,12 @@ const Navbar:React.FC = () => {
       <NavbarItemBreak />
 
       <NavbarItemWrapper>
-        <NavbarItem as={Link} title="wyszukiwarka" to="/searcher">
+        <NavbarItem 
+          as={Link} 
+          title="wyszukiwarka" 
+          to="/searcher"
+          onClick={handleMenuHidden}
+        >
           wyszukiwarka
         </NavbarItem>
       </NavbarItemWrapper>
@@ -128,7 +138,7 @@ const Navbar:React.FC = () => {
             <NavbarItem 
               as={Link} 
               title="dodaj dokument" 
-              to="/docmentUpload"
+              to="/documentUpload"
               onClick={handleMenuHidden}
             >
               <AddIcon />
