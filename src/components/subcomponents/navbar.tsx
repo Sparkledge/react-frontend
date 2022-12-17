@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocalStorage } from "usehooks-ts";
 
@@ -24,7 +24,6 @@ const NavbarLogo = require("src/assets/sparkledge_logo.webp");
 // TODO: move styled-components to separate files
 
 // TODO: solve problem with black square below navbar
-// TODO: make sure this is responsive
 // TODO: ...
 
 const NavbarItemWrapper = styled.div`
@@ -102,8 +101,9 @@ const NavbarExpandButton = styled.button`
 const NavbarImg = styled.img`
   box-sizing: border-box;
   
-  padding: 0.8rem 1.2rem;
   height: 2rem;
+  padding-inline: 1rem;
+  scale: 1.4;
 `;
 
 const NavbarItemBreak = styled.div`
@@ -150,12 +150,16 @@ const NavbarContainer = styled.div<NavbarProps>`
 const Navbar:React.FC = () => {
   const isDarkModeOn = useSelector((state: RootState) => state.generalData.graphicalMode);
 
-  const [memoryUserId, setMemoryUserId] = useLocalStorage<string>("u", "");
-  const [refreshUserId, setRefreshUserId] = useLocalStorage<string>("u_r", "");
+  const [memoryUserId, setMemoryUserId] = useLocalStorage("u", "");
+  const [refreshUserId, setRefreshUserId] = useLocalStorage("u_r", "");
   const dispatch = useDispatch();
 
   const [isMenuExpanded, setIsMenuExpanded] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(true);
+
+  useEffect(() => {
+    setIsUserLoggedIn((memoryUserId !== undefined && memoryUserId.length !== 0));
+  }, [memoryUserId]);
 
   const ref = useRef<HTMLDivElement>(null);
 
@@ -169,7 +173,7 @@ const Navbar:React.FC = () => {
     enableBodyScroll(document.body);
   };
 
-  const toggleMenu = () => {
+  const handleMenuToggled = () => {
     if (isMenuExpanded) {
       handleMenuHidden();
     } else {
@@ -182,14 +186,22 @@ const Navbar:React.FC = () => {
     dispatch(changeGraphicalMode());
   };
 
+  // last function in logout is for closing menu
+  // logout should be done with a hook
+  const handleUserLogedOut = () => {
+    logout(memoryUserId, () => dispatch(setNewToken("")), setMemoryUserId, setRefreshUserId, (x) => {});
+
+    handleMenuHidden();
+  };
+
   return (
     <NavbarContainer ref={ref} isOpened={isMenuExpanded}>
       <NavbarItemWrapper>
         <NavbarItem as={Link} title="sparkledge" to="/">
-          LOGO
+          <NavbarImg src={NavbarLogo} alt="sparkledge" />
         </NavbarItem>
 
-        <NavbarItem as={NavbarExpandButton} title="otwórz/zamknij" onClick={toggleMenu}>
+        <NavbarItem as={NavbarExpandButton} title="otwórz/zamknij" onClick={handleMenuToggled}>
           {isMenuExpanded ? <CloseIcon /> : <MenuIcon />}
         </NavbarItem>
       </NavbarItemWrapper>
@@ -197,21 +209,21 @@ const Navbar:React.FC = () => {
       <NavbarItemBreak />
 
       <NavbarItemWrapper>
-        <NavbarItem as={Link} title="wyszukiwarka" to="/" onClick={handleMenuHidden}>
+        <NavbarItem as={Link} title="wyszukiwarka" to="/searcher" onClick={handleMenuHidden}>
           wyszukiwarka
         </NavbarItem>
       </NavbarItemWrapper>
 
-      {isLoggedIn ? (
+      {isUserLoggedIn ? (
         <>
           <NavbarItemWrapper>
-            <NavbarItem as={Link} title="wyloguj się" to="/" onClick={handleMenuHidden}>
+            <NavbarItem as={Link} title="wyloguj się" to="/" onClick={handleUserLogedOut}>
               wyloguj się
             </NavbarItem>
           </NavbarItemWrapper>
 
           <NavbarItemWrapper>
-            <NavbarItem as={Link} title="dodaj dokument" to="/" onClick={handleMenuHidden}>
+            <NavbarItem as={Link} title="dodaj dokument" to="/docmentUpload" onClick={handleMenuHidden}>
               <AddIcon />
 
               <NavbarItemDescription>
@@ -221,7 +233,7 @@ const Navbar:React.FC = () => {
           </NavbarItemWrapper>
 
           <NavbarItemWrapper>
-            <NavbarItem as={Link} title="ustawienia" to="/" onClick={handleMenuHidden}>
+            <NavbarItem as={Link} title="ustawienia" to="/profile" onClick={handleMenuHidden}>
               <SettingsIcon />
               
               <NavbarItemDescription>
@@ -233,13 +245,13 @@ const Navbar:React.FC = () => {
       ) : (
         <>
           <NavbarItemWrapper>
-            <NavbarItem as={Link} title="zarejestruj się" to="/" onClick={handleMenuHidden}>
+            <NavbarItem as={Link} title="zarejestruj się" to="/signup" onClick={handleMenuHidden}>
               zarejestruj się
             </NavbarItem>
           </NavbarItemWrapper>
 
           <NavbarItemWrapper>
-            <NavbarItem as={Link} title="zaloguj się" to="/" onClick={handleMenuHidden}>
+            <NavbarItem as={Link} title="zaloguj się" to="/signin" onClick={handleMenuHidden}>
               zaloguj się
             </NavbarItem>
           </NavbarItemWrapper>
@@ -267,7 +279,6 @@ const Navbar:React.FC = () => {
             )}
         </NavbarItem>
       </NavbarItemWrapper>
-
     </NavbarContainer>
   );
 };
