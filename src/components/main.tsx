@@ -61,7 +61,7 @@ const Main: React.FC = () => {
     <ThemeProvider theme={graphicalMode === 0 ? LightMode : DarkMode}>
       <SparkledgeGlobalStyle isLight={graphicalMode === 0} />
       <Router>
-        <Navbar />
+        {/* <Navbar /> */}
         <Routes>
           <Route path="/" element={<Welcome />} />
           <Route path="/about" element={<About />} />

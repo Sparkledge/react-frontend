@@ -10,6 +10,7 @@ import { UserPanelDeleteNotification } from "src/styled/subpages/userpanel";
 import { LandingSectionWrapper, LandingSectionFilter, EndingBlock } from "src/styled/subpages/welcome";
 
 import HeadTags from "./headTags";
+import Navbar from "./navbar";
 import UserNotifications from "./userNotifications";
 
 const BackgroundPattern = require("../../assets/pattern_background5.webp");
@@ -47,6 +48,7 @@ const Template:React.FC<TemplateInterface> = ({
 
   return (
     <MainContainer className="block-center">
+      <Navbar />
       <HeadTags areAdsOn={false} title={headTagTitle} description={headTagDesc !== undefined ? headTagDesc : ""} />
       {fallbackComponent !== undefined ? (
         <Suspense fallback={fallbackComponent}>
