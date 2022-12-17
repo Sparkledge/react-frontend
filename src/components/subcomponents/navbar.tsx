@@ -169,7 +169,7 @@ const Navbar:React.FC = () => {
     if (ref && ref.current) {
       ref.current.scrollTop = 0;
     }
-
+  
     enableBodyScroll(document.body);
   };
 
@@ -184,6 +184,9 @@ const Navbar:React.FC = () => {
 
   const handleThemeChanged = () => {
     dispatch(changeGraphicalMode());
+
+    // not sure about that
+    // handleMenuHidden();
   };
 
   // last function in logout is for closing menu
@@ -201,7 +204,11 @@ const Navbar:React.FC = () => {
           <NavbarImg src={NavbarLogo} alt="sparkledge" />
         </NavbarItem>
 
-        <NavbarItem as={NavbarExpandButton} title="otwórz/zamknij" onClick={handleMenuToggled}>
+        <NavbarItem 
+          as={NavbarExpandButton} 
+          title="otwórz/zamknij" 
+          onClick={handleMenuToggled}
+        >
           {isMenuExpanded ? <CloseIcon /> : <MenuIcon />}
         </NavbarItem>
       </NavbarItemWrapper>
@@ -209,7 +216,7 @@ const Navbar:React.FC = () => {
       <NavbarItemBreak />
 
       <NavbarItemWrapper>
-        <NavbarItem as={Link} title="wyszukiwarka" to="/searcher" onClick={handleMenuHidden}>
+        <NavbarItem as={Link} title="wyszukiwarka" to="/searcher">
           wyszukiwarka
         </NavbarItem>
       </NavbarItemWrapper>
@@ -217,13 +224,23 @@ const Navbar:React.FC = () => {
       {isUserLoggedIn ? (
         <>
           <NavbarItemWrapper>
-            <NavbarItem as={Link} title="wyloguj się" to="/" onClick={handleUserLogedOut}>
+            <NavbarItem 
+              as={Link} 
+              title="wyloguj się" 
+              to="/" 
+              onClick={handleUserLogedOut}
+            >
               wyloguj się
             </NavbarItem>
           </NavbarItemWrapper>
 
           <NavbarItemWrapper>
-            <NavbarItem as={Link} title="dodaj dokument" to="/docmentUpload" onClick={handleMenuHidden}>
+            <NavbarItem 
+              as={Link} 
+              title="dodaj dokument" 
+              to="/docmentUpload"
+              onClick={handleMenuHidden}
+            >
               <AddIcon />
 
               <NavbarItemDescription>
@@ -233,7 +250,12 @@ const Navbar:React.FC = () => {
           </NavbarItemWrapper>
 
           <NavbarItemWrapper>
-            <NavbarItem as={Link} title="ustawienia" to="/profile" onClick={handleMenuHidden}>
+            <NavbarItem 
+              as={Link} 
+              title="ustawienia" 
+              to="/profile"
+              onClick={handleMenuHidden}
+            >
               <SettingsIcon />
               
               <NavbarItemDescription>
@@ -245,13 +267,23 @@ const Navbar:React.FC = () => {
       ) : (
         <>
           <NavbarItemWrapper>
-            <NavbarItem as={Link} title="zarejestruj się" to="/signup" onClick={handleMenuHidden}>
+            <NavbarItem 
+              as={Link} 
+              title="zarejestruj się" 
+              to="/signup"
+              onClick={handleMenuHidden}
+            >
               zarejestruj się
             </NavbarItem>
           </NavbarItemWrapper>
 
           <NavbarItemWrapper>
-            <NavbarItem as={Link} title="zaloguj się" to="/signin" onClick={handleMenuHidden}>
+            <NavbarItem 
+              as={Link} 
+              title="zaloguj się" 
+              to="/signin"
+              onClick={handleMenuHidden}
+            >
               zaloguj się
             </NavbarItem>
           </NavbarItemWrapper>
@@ -259,7 +291,11 @@ const Navbar:React.FC = () => {
       )}
 
       <NavbarItemWrapper>
-        <NavbarItem as={NavbarItemButton} title="tryb ciemny/jasny" onClick={handleThemeChanged}>
+        <NavbarItem 
+          as={NavbarItemButton} 
+          title="tryb ciemny/jasny" 
+          onClick={handleThemeChanged}
+        >
           {isDarkModeOn
             ? (
               <>
