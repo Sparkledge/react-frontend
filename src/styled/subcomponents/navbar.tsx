@@ -10,6 +10,10 @@ export const NavbarItemWrapper = styled.div`
     border-bottom: 1px solid ${(props) => props.theme.navBottomBorderColor};
   }
 
+  &:last-child {
+    padding-right: 0.6rem;
+  }
+
   display: inline-flex;
   flex-direction: row;
   align-items: center;  
