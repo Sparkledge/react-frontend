@@ -40,7 +40,7 @@ export const LandingSectionWrapper = styled.section<LandingWrapperInterface>`
 `;
 
 export const LandingSectionFilter = styled.section<FilterInterface>`
-    padding-top: 2rem;
+    /* padding-top: 2rem; */
     width: 100%;
     min-height: ${(props) => props.minheight !== undefined ? `${props.minheight}vh !important` : "inherit"};
     height: fit-content;

@@ -14,7 +14,6 @@ const Welcome:React.FC = () => (
   >
     <LandingComponent />    
     <DescribeComponent />  
-    <FooterComponent />
   </Template>
 );
 
