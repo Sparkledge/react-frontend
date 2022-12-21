@@ -62,7 +62,7 @@ export const DarkMode = {
 
   gradient404: "linear-gradient(90deg, rgba(0,102,212,1) 0%, rgba(0,176,212,1) 45%, rgba(0,212,255,1) 100%)",
   hoverBgPrimary: "#272727",
-  navBottomBorderColor: "#444444",
+  navBottomBorderColor: "#2f2f2f",
 };
 
 export const MainContainer = styled.section`

@@ -2,12 +2,13 @@ import styled from "styled-components";
 
 export const NavbarItemWrapper = styled.div`
   box-sizing: border-box;
-  padding: 0.3rem; 
+  padding: 0.6rem 0.3rem; 
 
   min-height: 100%;
-  @media screen and (max-width: 1000px) {
+  @media screen and (max-width: 768px) {
     min-height: 5rem;
     border-bottom: 1px solid ${(props) => props.theme.navBottomBorderColor};
+    padding: 0.6rem; 
   }
 
   &:last-child {
@@ -22,7 +23,6 @@ export const NavbarItemWrapper = styled.div`
 export const NavbarItem = styled.div`
   box-sizing: border-box;
 
-  border: 1px solid transparent;
   border-radius: 16px;
 
   height: 100%;
@@ -51,26 +51,28 @@ export const NavbarItem = styled.div`
 
 export const NavbarItemDescription = styled.div`
   display: none;
-  @media screen and (max-width: 1000px) {
+  @media screen and (max-width: 768px) {
     display: block;
   }
 `;
 
 export const NavbarItemButton = styled.button`
   box-sizing: border-box;
+  border: 1px solid transparent;
 
   cursor: pointer;
 `;
 
 export const NavbarExpandButton = styled.button`
   box-sizing: border-box;
+  border: 1px solid transparent;
 
   cursor: pointer;
 
   aspect-ratio: 1/1;
 
   display: none;
-  @media screen and (max-width: 1000px) {
+  @media screen and (max-width: 768px) {
     display: flex;
     margin-left: auto;
   }
@@ -80,14 +82,14 @@ export const NavbarImg = styled.img`
   box-sizing: border-box;
   
   height: 2rem;
-  padding-inline: 1rem;
+  margin-inline: 1rem;
   scale: 1.4;
 `;
 
 export const NavbarItemBreak = styled.div`
   flex-grow: 1;
 
-  @media screen and (max-width: 1000px) {
+  @media screen and (max-width: 768px) {
     display: none;
   }
 `;
@@ -102,7 +104,7 @@ export const NavbarContainer = styled.div<NavbarProps>`
   height: 5rem;
   width: 100%;
 
-  @media screen and (max-width: 1000px) {
+  @media screen and (max-width: 768px) {
     flex-direction: column;
     height: ${(props) => props.isOpened ? "100vh" : "5rem"};
     overflow: ${(props) => props.isOpened ? "scroll" : "hidden"};

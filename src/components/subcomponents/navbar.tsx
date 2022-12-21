@@ -7,12 +7,13 @@ import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import AddIcon from "@mui/icons-material/Add";
-import SettingsIcon from "@mui/icons-material/Settings";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 
 import { changeGraphicalMode, setNewToken, toggleOpeningNotifications } from "src/redux/actions/generalActions";
 import { RootState } from "src/redux/mainReducer";
+import { useNavigate, Link, Navigate } from "react-router-dom";
 
 import {
   NavbarContainer, 
@@ -26,16 +27,11 @@ import {
 } from "src/styled/subcomponents/navbar";
 
 import logout from "src/connectionFunctions/navbar/logout";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { AccountCircle } from "@mui/icons-material";
 
 const NavbarLogo = require("src/assets/sparkledge_logo.webp");
 
-// TODO: extract constants from styled-components
-// TODO: move styled-components to separate files
-
-// TODO: solve problem with black square below navbar
-// TODO: ...
+const isTokenPresent = (token: string) => token !== undefined && token.length !== 0;
 
 const Navbar:React.FC = () => {
   const isDarkModeOn = useSelector((state: RootState) => state.generalData.graphicalMode);
@@ -45,10 +41,12 @@ const Navbar:React.FC = () => {
   const dispatch = useDispatch();
 
   const [isMenuExpanded, setIsMenuExpanded] = useState(false);
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(true);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(isTokenPresent(memoryUserId));
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setIsUserLoggedIn((memoryUserId !== undefined && memoryUserId.length !== 0));
+    setIsUserLoggedIn(isTokenPresent(memoryUserId));
   }, [memoryUserId]);
 
   const ref = useRef<HTMLDivElement>(null);
@@ -82,9 +80,16 @@ const Navbar:React.FC = () => {
   // last function in logout is for closing menu
   // logout should be done with a hook
   const handleUserLogedOut = () => {
-    logout(memoryUserId, () => dispatch(setNewToken("")), setMemoryUserId, setRefreshUserId, (x) => {});
-
-    handleMenuHidden();
+    logout(
+      memoryUserId, 
+      () => dispatch(setNewToken("")),
+      setMemoryUserId,
+      setRefreshUserId,
+      (x) => {
+        handleMenuHidden();
+        navigate("/");
+      },
+    );
   };
 
   return (
@@ -108,8 +113,6 @@ const Navbar:React.FC = () => {
         </NavbarItem>
       </NavbarItemWrapper>
 
-      <NavbarItemBreak />
-
       <NavbarItemWrapper>
         <NavbarItem 
           as={Link} 
@@ -121,19 +124,10 @@ const Navbar:React.FC = () => {
         </NavbarItem>
       </NavbarItemWrapper>
 
+      <NavbarItemBreak />
+
       {isUserLoggedIn ? (
         <>
-          <NavbarItemWrapper>
-            <NavbarItem 
-              as={Link} 
-              title="wyloguj się" 
-              to="/" 
-              onClick={handleUserLogedOut}
-            >
-              wyloguj się
-            </NavbarItem>
-          </NavbarItemWrapper>
-
           <NavbarItemWrapper>
             <NavbarItem 
               as={Link} 
@@ -152,15 +146,25 @@ const Navbar:React.FC = () => {
           <NavbarItemWrapper>
             <NavbarItem 
               as={Link} 
-              title="ustawienia" 
+              title="profil" 
               to="/profile"
               onClick={handleMenuHidden}
             >
-              <SettingsIcon />
+              <AccountCircle />
               
               <NavbarItemDescription>
-                ustawienia
+                profil
               </NavbarItemDescription>
+            </NavbarItem>
+          </NavbarItemWrapper>
+
+          <NavbarItemWrapper>
+            <NavbarItem 
+              as={NavbarItemButton} 
+              title="wyloguj się" 
+              onClick={handleUserLogedOut}
+            >
+              wyloguj się
             </NavbarItem>
           </NavbarItemWrapper>
         </>
